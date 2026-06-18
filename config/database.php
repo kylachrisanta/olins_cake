@@ -1,4 +1,7 @@
 <?php
+// Set timezone default untuk PHP
+date_default_timezone_set('Asia/Jakarta');
+
 $host = "localhost";
 $user = "root";
 $pass = "";
@@ -14,4 +17,7 @@ if ($conn->connect_error) {
 
 // Set charset to utf8mb4
 $conn->set_charset("utf8mb4");
+
+// Set timezone untuk session MySQL
+$conn->query("SET time_zone = '+07:00'");
 ?>

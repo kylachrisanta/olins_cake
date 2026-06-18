@@ -276,6 +276,9 @@ $stmt->close();
                                             <i class="fa-solid fa-wallet" style="margin-right: 6px;"></i> Bayar Sekarang
                                         </a>
                                     <?php endif; ?>
+                                    <a href="detail_pesanan.php?id=<?= $order['id_pesanan'] ?>" class="btn btn-outline btn-sm">
+                                        <i class="fa-solid fa-circle-info" style="margin-right: 6px;"></i> Detail Pesanan
+                                    </a>
                                     <a href="<?= $wa_link ?>" target="_blank" class="btn btn-outline btn-sm btn-wa">
                                         <i class="fa-brands fa-whatsapp" style="margin-right: 6px;"></i> Hubungi Admin
                                     </a>

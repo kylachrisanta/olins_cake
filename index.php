@@ -15,6 +15,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 // Fetch Favorite Products (limit 3)
 $products_query = "SELECT * FROM produk LIMIT 3";
 $products_result = $conn->query($products_query);
+
+// Fetch Active Testimonials from Database
+$testi_result = $conn->query("SELECT * FROM testimoni WHERE status = 'Aktif' ORDER BY dibuat_pada DESC");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -252,42 +255,24 @@ $products_result = $conn->query($products_query);
             </div>
 
             <div class="testimonials-grid">
-                <div class="testi-card">
-                    <p class="testi-content">
-                        "Pesan Strawberry Shortcake untuk ulang tahun mama kemarin, semua sepupu dan tante memuji kuenya! Lembut sekali, manisnya pas dan buah stroberinya banyak yang manis segar. Sangat direkomendasikan!"
-                    </p>
-                    <div class="testi-profile">
-                        <div class="testi-avatar">RN</div>
-                        <div>
-                            <h4 class="testi-name">Ratih Ningsih</h4>
-                            <span class="testi-role">Ibu Rumah Tangga (42 thn)</span>
+                <?php if ($testi_result && $testi_result->num_rows > 0): ?>
+                    <?php while($row = $testi_result->fetch_assoc()): ?>
+                        <div class="testi-card">
+                            <p class="testi-content">
+                                "<?= htmlspecialchars($row['isi_testimoni']) ?>"
+                            </p>
+                            <div class="testi-profile">
+                                <div class="testi-avatar"><?= htmlspecialchars($row['avatar_initial']) ?></div>
+                                <div>
+                                    <h4 class="testi-name"><?= htmlspecialchars($row['nama_lengkap']) ?></h4>
+                                    <span class="testi-role"><?= htmlspecialchars($row['pekerjaan']) ?></span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="testi-card">
-                    <p class="testi-content">
-                        "Chocolate Fudge-nya juara! Cokelatnya terasa sangat premium, tidak getir dan tidak bikin enek. Anak-anak saya makan sampai habis tidak tersisa. Pre-ordernya juga gampang dan pengiriman on time."
-                    </p>
-                    <div class="testi-profile">
-                        <div class="testi-avatar">DA</div>
-                        <div>
-                            <h4 class="testi-name">Dewi Amalia</h4>
-                            <span class="testi-role">Karyawati & Ibu 2 Anak (35 thn)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="testi-card">
-                    <p class="testi-content">
-                        "Pandan Cheese-nya wangi sekali pandan asli, taburan kejunya tebal melimpah. Teksturnya lumer banget di mulut. Sangat cocok dinikmati sore hari bersama teh hangat bersama keluarga."
-                    </p>
-                    <div class="testi-profile">
-                        <div class="testi-avatar">HS</div>
-                        <div>
-                            <h4 class="testi-name">Hartati S.</h4>
-                            <span class="testi-role">Pecinta Kuliner (55 thn)</span>
-                        </div>
-                    </div>
-                </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Belum ada ulasan testimoni dari pelanggan saat ini.</p>
+                <?php endif; ?>
             </div>
         </div>
     </section>
