@@ -386,7 +386,7 @@ $list_produk = $conn->query("SELECT * FROM produk ORDER BY dibuat_pada DESC");
                             
                             <div class="admin-form-group">
                                 <label for="harga">Harga (Rp) *</label>
-                                <input type="number" id="harga" name="harga" class="admin-form-control" placeholder="Contoh: 150000" min="0" required>
+                                <input type="text" id="harga" name="harga" class="admin-form-control" placeholder="Contoh: 150000" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
                         </div>
 
@@ -452,7 +452,7 @@ $list_produk = $conn->query("SELECT * FROM produk ORDER BY dibuat_pada DESC");
                             
                             <div class="admin-form-group">
                                 <label for="harga">Harga (Rp) *</label>
-                                <input type="number" id="harga" name="harga" class="admin-form-control" value="<?= $edit_produk['harga'] ?>" min="0" required>
+                                <input type="text" id="harga" name="harga" class="admin-form-control" value="<?= $edit_produk['harga'] ?>" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             </div>
                         </div>
 
