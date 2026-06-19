@@ -32,6 +32,52 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'
     }
 }
 
+// VERIFIKASI / TOLAK PEMBAYARAN (GET)
+if (isset($_GET['action_payment'])) {
+    // Proteksi halaman admin
+    if (!isset($_SESSION['admin_id'])) {
+        header("Location: login.php");
+        exit;
+    }
+    
+    $id_pesanan = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    $action_payment = $_GET['action_payment'];
+    
+    if ($id_pesanan > 0) {
+        if ($action_payment === 'verify') {
+            $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Sudah Bayar', status_pesanan = 'Diproses' WHERE id_pesanan = ?");
+            $stmt->bind_param("i", $id_pesanan);
+            if ($stmt->execute()) {
+                $msg_success = "Pembayaran untuk Pesanan OLN-" . (10000 + $id_pesanan) . " berhasil diverifikasi. Status diperbarui ke 'Diproses'.";
+            } else {
+                $msg_error = "Gagal memverifikasi pembayaran: " . $conn->error;
+            }
+            $stmt->close();
+        } elseif ($action_payment === 'reject') {
+            // Ambil nama file bukti lama untuk dihapus
+            $res = $conn->query("SELECT bukti_pembayaran FROM pesanan WHERE id_pesanan = $id_pesanan");
+            if ($res && $res->num_rows > 0) {
+                $bukti_old = $res->fetch_assoc()['bukti_pembayaran'];
+                
+                // Hapus file
+                if (!empty($bukti_old) && file_exists('../assets/uploads/bukti_pembayaran/' . $bukti_old)) {
+                    unlink('../assets/uploads/bukti_pembayaran/' . $bukti_old);
+                }
+                
+                // Reset status di database
+                $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Belum Bayar', status_pesanan = 'Menunggu Pembayaran', bukti_pembayaran = NULL, metode_pembayaran = NULL WHERE id_pesanan = ?");
+                $stmt->bind_param("i", $id_pesanan);
+                if ($stmt->execute()) {
+                    $msg_success = "Bukti pembayaran ditolak. Status dikembalikan ke 'Menunggu Pembayaran' agar pelanggan dapat mengunggah bukti baru.";
+                } else {
+                    $msg_error = "Gagal memproses penolakan: " . $conn->error;
+                }
+                $stmt->close();
+            }
+        }
+    }
+}
+
 // 2. DETAIL PESANAN VIEW (GET)
 $view_order = null;
 $order_items = [];
@@ -386,9 +432,16 @@ $list_pesanan = $conn->query($query_all);
                                             </span>
                                         </a>
                                     </div>
-                                    <div style="display: flex; gap: 10px; margin-top: 12px;">
-                                        <a href="pembayaran.php?action=verify&id=<?= $view_order['id_pesanan'] ?>" class="admin-btn admin-btn-success admin-btn-sm" style="flex: 1; justify-content: center; text-align: center;">Verifikasi Pembayaran</a>
-                                    </div>
+                                    <?php if ($view_order['status_pembayaran'] === 'Menunggu Verifikasi'): ?>
+                                        <div style="display: flex; gap: 10px; margin-top: 12px;">
+                                            <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=verify" class="admin-btn admin-btn-success admin-btn-sm" style="flex: 1; justify-content: center; text-align: center;" onclick="return confirm('Konfirmasi bahwa dana transfer telah masuk?')">
+                                                <i class="fa-solid fa-check"></i> Setujui
+                                            </a>
+                                            <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=reject" class="admin-btn admin-btn-danger admin-btn-sm" style="flex: 1; justify-content: center; text-align: center;" onclick="return confirm('Tolak bukti pembayaran ini? Pelanggan harus mengunggah ulang.')">
+                                                <i class="fa-solid fa-xmark"></i> Tolak
+                                            </a>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             <?php else: ?>
                                 <div class="admin-banner admin-banner-danger" style="margin-bottom: 0; padding: 12px; font-size: 0.85rem;">

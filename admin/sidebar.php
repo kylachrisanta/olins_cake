@@ -31,11 +31,7 @@ $current_page = isset($page) ? $page : 'dashboard';
                 <i class="fa-solid fa-receipt"></i> Kelola Pesanan
             </a>
         </li>
-        <li class="admin-menu-item <?= $current_page === 'pembayaran' ? 'active' : '' ?>">
-            <a href="pembayaran.php">
-                <i class="fa-solid fa-credit-card"></i> Kelola Pembayaran
-            </a>
-        </li>
+
         <li class="admin-menu-item <?= $current_page === 'testimoni' ? 'active' : '' ?>">
             <a href="testimoni.php">
                 <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
