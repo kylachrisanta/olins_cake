@@ -337,7 +337,8 @@ $list_pesanan = $conn->query($query_all);
                                     <option value="Menunggu Pembayaran" <?= $view_order['status_pesanan'] === 'Menunggu Pembayaran' ? 'selected' : '' ?>>Menunggu Pembayaran</option>
                                     <option value="Menunggu Verifikasi" <?= $view_order['status_pesanan'] === 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
                                     <option value="Diproses" <?= $view_order['status_pesanan'] === 'Diproses' ? 'selected' : '' ?>>Diproses</option>
-                                    <option value="Siap Dikirim" <?= $view_order['status_pesanan'] === 'Siap Dikirim' ? 'selected' : '' ?>>Siap Dikirim / Diambil</option>
+                                    <option value="Siap Dikirim" <?= $view_order['status_pesanan'] === 'Siap Dikirim' ? 'selected' : '' ?>>Siap Dikirim</option>
+                                    <option value="Siap Diambil" <?= $view_order['status_pesanan'] === 'Siap Diambil' ? 'selected' : '' ?>>Siap Diambil</option>
                                     <option value="Selesai" <?= $view_order['status_pesanan'] === 'Selesai' ? 'selected' : '' ?>>Selesai</option>
                                     <option value="Dibatalkan" <?= $view_order['status_pesanan'] === 'Dibatalkan' ? 'selected' : '' ?>>Dibatalkan</option>
                                     <option value="Kedaluwarsa" <?= $view_order['status_pesanan'] === 'Kedaluwarsa' ? 'selected' : '' ?>>Kedaluwarsa</option>

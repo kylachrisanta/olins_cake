@@ -151,8 +151,9 @@ $stmt->close();
                                     $icon_class = 'fa-solid fa-cookie-bite';
                                     break;
                                 case 'Siap Dikirim':
+                                case 'Siap Diambil':
                                     $status_class = 'status-ready';
-                                    $icon_class = 'fa-solid fa-truck-fast';
+                                    $icon_class = ($order['status_pesanan'] === 'Siap Diambil') ? 'fa-solid fa-store' : 'fa-solid fa-truck-fast';
                                     break;
                                 case 'Selesai':
                                     $status_class = 'status-completed';

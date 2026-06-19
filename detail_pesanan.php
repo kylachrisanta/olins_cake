@@ -101,7 +101,7 @@ if ($status_pesanan === 'Menunggu Pembayaran') {
     $current_step_index = 1;
 } elseif ($status_pesanan === 'Diproses') {
     $current_step_index = 2;
-} elseif ($status_pesanan === 'Siap Dikirim' || $status_pesanan === 'Dikirim') {
+} elseif ($status_pesanan === 'Siap Dikirim' || $status_pesanan === 'Siap Diambil' || $status_pesanan === 'Dikirim') {
     $current_step_index = 3;
 } elseif ($status_pesanan === 'Selesai') {
     $current_step_index = 4;
@@ -826,6 +826,7 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
                         case 'Menunggu Konfirmasi': $status_badge_class = 'badge-verifying'; break;
                         case 'Diproses': $status_badge_class = 'badge-processing'; break;
                         case 'Siap Dikirim':
+                        case 'Siap Diambil':
                         case 'Dikirim': $status_badge_class = 'badge-ready'; break;
                         case 'Selesai': $status_badge_class = 'badge-completed'; break;
                         case 'Dibatalkan':
@@ -839,7 +840,7 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
                             <i class="fa-solid fa-spinner fa-spin"></i>
                         <?php elseif ($status_pesanan === 'Diproses'): ?>
                             <i class="fa-solid fa-cookie-bite"></i>
-                        <?php elseif ($status_pesanan === 'Siap Dikirim' || $status_pesanan === 'Dikirim'): ?>
+                        <?php elseif ($status_pesanan === 'Siap Dikirim' || $status_pesanan === 'Siap Diambil' || $status_pesanan === 'Dikirim'): ?>
                             <i class="fa-solid fa-truck-fast"></i>
                         <?php elseif ($status_pesanan === 'Selesai'): ?>
                             <i class="fa-solid fa-circle-check"></i>
