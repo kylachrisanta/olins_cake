@@ -336,7 +336,6 @@ $list_pesanan = $conn->query($query_all);
                                 <select id="status_pesanan" name="status_pesanan" class="admin-form-control" required>
                                     <option value="Menunggu Pembayaran" <?= $view_order['status_pesanan'] === 'Menunggu Pembayaran' ? 'selected' : '' ?>>Menunggu Pembayaran</option>
                                     <option value="Menunggu Verifikasi" <?= $view_order['status_pesanan'] === 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                    <option value="Menunggu Konfirmasi" <?= $view_order['status_pesanan'] === 'Menunggu Konfirmasi' ? 'selected' : '' ?>>Menunggu Konfirmasi</option>
                                     <option value="Diproses" <?= $view_order['status_pesanan'] === 'Diproses' ? 'selected' : '' ?>>Diproses</option>
                                     <option value="Siap Dikirim" <?= $view_order['status_pesanan'] === 'Siap Dikirim' ? 'selected' : '' ?>>Siap Dikirim / Diambil</option>
                                     <option value="Selesai" <?= $view_order['status_pesanan'] === 'Selesai' ? 'selected' : '' ?>>Selesai</option>
