@@ -131,7 +131,7 @@ if (!function_exists('formatIndonesianDate')) {
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="testimoni.php" class="dropdown-menu-item">Testimoni</a></li>
+                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
                             <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                         </ul>
                     </li>
@@ -145,7 +145,7 @@ if (!function_exists('formatIndonesianDate')) {
                     <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
                     <li><a href="index.php#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
-                    <li><a href="testimoni.php" class="nav-link">Testimoni</a></li>
+                    <li><a href="index.php#testimoni" class="nav-link">Testimoni</a></li>
                     <li><a href="index.php#hubungi" class="nav-link">Hubungi Kami</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>

@@ -95,7 +95,7 @@ if (count($checkout_items) === 0) {
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                         <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        <li><a href="testimoni.php" class="dropdown-menu-item">Testimoni</a></li>
+                        <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
                         <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                     </ul>
                 </li>

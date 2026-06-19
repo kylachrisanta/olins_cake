@@ -109,7 +109,7 @@ if (!function_exists('renderStars')) {
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="#testimoni" class="dropdown-menu-item">Testimoni</a></li>
+                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
                             <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                         </ul>
                     </li>
