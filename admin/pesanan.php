@@ -136,7 +136,44 @@ $list_pesanan = $conn->query($query_all);
             margin-top: 16px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+        }
+
+        /* Modal Bukti Pembayaran Admin */
+        .admin-proof-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .admin-proof-modal-content {
+            background-color: var(--admin-card-bg);
+            border-radius: var(--radius-md);
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--admin-border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -342,9 +379,9 @@ $list_pesanan = $conn->query($query_all);
                                 <div class="detail-row-item">
                                     <label>Bukti Transfer</label>
                                     <div style="margin-top: 8px;">
-                                        <a href="../assets/uploads/bukti_pembayaran/<?= htmlspecialchars($view_order['bukti_pembayaran']) ?>" target="_blank" style="display: block; width: 100%; text-align: center; border-radius: var(--radius-sm); border: 1px solid var(--admin-border); overflow: hidden;">
+                                        <a href="javascript:void(0);" onclick="openAdminProofModal('../assets/uploads/bukti_pembayaran/<?= htmlspecialchars($view_order['bukti_pembayaran']) ?>')" style="display: block; width: 100%; text-align: center; border-radius: var(--radius-sm); border: 1px solid var(--admin-border); overflow: hidden;">
                                             <img src="../assets/uploads/bukti_pembayaran/<?= htmlspecialchars($view_order['bukti_pembayaran']) ?>" alt="Bukti Transfer" style="max-width: 100%; max-height: 250px; object-fit: contain; padding: 4px;">
-                                            <span style="display: block; background-color: rgba(0,0,0,0.3); padding: 8px; font-size: 0.8rem; color: var(--admin-accent); font-weight: 700;">
+                                            <span style="display: block; background-color: rgba(0,0,0,0.05); padding: 8px; font-size: 0.8rem; color: var(--admin-accent); font-weight: 700;">
                                                 <i class="fa-solid fa-magnifying-glass"></i> Lihat Gambar Penuh
                                             </span>
                                         </a>
@@ -437,5 +474,39 @@ $list_pesanan = $conn->query($query_all);
 
     </div>
 
+    <script>
+        function openAdminProofModal(imgSrc) {
+            document.getElementById('adminProofImg').src = imgSrc;
+            document.getElementById('adminProofModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAdminProofModal() {
+            document.getElementById('adminProofModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('adminProofModal');
+            if (event.target === modal) {
+                closeAdminProofModal();
+            }
+        });
+    </script>
+
+    <!-- Modal Bukti Pembayaran Admin -->
+    <div id="adminProofModal" class="admin-proof-modal">
+        <div class="admin-proof-modal-content">
+            <h4 style="color: var(--admin-text-main); font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1px solid var(--admin-border); padding-bottom: 12px; text-align: left;">
+                <i class="fa-solid fa-receipt" style="color: var(--admin-accent); margin-right: 6px;"></i> Bukti Transfer Pembayaran
+            </h4>
+            <img id="adminProofImg" src="" alt="Bukti Transfer" style="max-width: 100%; max-height: 400px; object-fit: contain; border-radius: var(--radius-sm); border: 1px solid var(--admin-border);">
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 8px;">
+                <button onclick="closeAdminProofModal()" class="admin-btn admin-btn-secondary" style="min-width: 120px; justify-content: center; cursor: pointer;">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
