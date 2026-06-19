@@ -16,11 +16,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 $products_query = "SELECT * FROM produk LIMIT 3";
 $products_result = $conn->query($products_query);
 
-// Fetch Active Testimonials Overall Rating & Review Counts
-$overall_stats_query = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM testimoni WHERE status = 'Aktif'";
-$overall_stats_res = $conn->query($overall_stats_query)->fetch_assoc();
-$overall_total_reviews = intval($overall_stats_res['total_reviews']);
-$overall_avg_rating = $overall_total_reviews > 0 ? round(floatval($overall_stats_res['avg_rating']), 1) : 0.0;
 
 // Fetch up to 6 Latest Active Testimonials (from completed orders or seeded)
 $testi_query = "SELECT t.*, p.nama_produk 
@@ -323,16 +318,6 @@ if (!function_exists('renderStars')) {
                 <p>Ulasan tulus dari para pelanggan yang telah mempercayakan perayaan mereka kepada Olin's Cake.</p>
             </div>
 
-            <!-- Testimonial Overall Summary -->
-            <div class="homepage-testi-summary" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--warm-bg); padding: 20px 30px; border-radius: var(--radius-md); border: 1px solid rgba(68, 45, 28, 0.05); margin-bottom: 40px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; box-shadow: var(--shadow-sm);">
-                <div style="display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                    <div style="color: #E29547; font-size: 1.35rem; display: flex; gap: 4px;">
-                        <?= renderStars($overall_avg_rating) ?>
-                    </div>
-                    <span style="font-weight: 800; font-size: 1.3rem; color: var(--cowhide-cocoa);"><?= number_format($overall_avg_rating, 1, ',', '.') ?> dari 5</span>
-                </div>
-                <div style="font-size: 0.95rem; color: var(--text-muted); margin-top: 6px; font-weight: 500;">Berdasarkan <?= $overall_total_reviews ?> ulasan pelanggan</div>
-            </div>
 
             <!-- Testimonials Slider -->
             <div class="testimonials-slider-container">
