@@ -681,6 +681,43 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
                 flex-direction: column;
             }
         }
+
+        /* Modal Bukti Pembayaran */
+        .proof-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.75);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .proof-modal-content {
+            background-color: var(--white);
+            border-radius: var(--radius-md);
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -1000,7 +1037,7 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
                         <?php if (!empty($order['bukti_pembayaran'])): ?>
                             <div class="info-item" style="margin-top: 10px;">
                                 <span class="info-item-label">Bukti Pembayaran Anda</span>
-                                <a href="assets/uploads/bukti_pembayaran/<?= htmlspecialchars($order['bukti_pembayaran']) ?>" target="_blank" class="payment-proof-badge-link">
+                                <a href="javascript:void(0);" onclick="openProofModal('assets/uploads/bukti_pembayaran/<?= htmlspecialchars($order['bukti_pembayaran']) ?>')" class="payment-proof-badge-link">
                                     <i class="fa-solid fa-image"></i> Lihat Bukti Terkirim
                                 </a>
                             </div>
@@ -1182,6 +1219,40 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
         
         window.addEventListener('resize', adjustMobileProgress);
         window.addEventListener('DOMContentLoaded', adjustMobileProgress);
+
+        // Modal Bukti Pembayaran Actions
+        function openProofModal(imgSrc) {
+            document.getElementById('proofImg').src = imgSrc;
+            document.getElementById('proofModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProofModal() {
+            document.getElementById('proofModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('proofModal');
+            if (event.target === modal) {
+                closeProofModal();
+            }
+        });
     </script>
+
+    <!-- Modal Bukti Pembayaran -->
+    <div id="proofModal" class="proof-modal">
+        <div class="proof-modal-content">
+            <h4 style="color: var(--cowhide-cocoa); font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1px solid rgba(68, 45, 28, 0.08); padding-bottom: 12px; text-align: left;">
+                <i class="fa-solid fa-receipt" style="color: var(--spiced-wine); margin-right: 6px;"></i> Bukti Pembayaran Terkirim
+            </h4>
+            <img id="proofImg" src="" alt="Bukti Pembayaran" style="max-width: 100%; max-height: 400px; object-fit: contain; border-radius: var(--radius-sm); border: 1px solid rgba(68, 45, 28, 0.08);">
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 8px;">
+                <button onclick="closeProofModal()" class="btn btn-outline" style="min-width: 120px; justify-content: center; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
