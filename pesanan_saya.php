@@ -35,7 +35,7 @@ while ($row = $result->fetch_assoc()) {
     $id_pesanan = $row['id_pesanan'];
     
     // Ambil detail produk untuk pesanan ini
-    $detail_query = "SELECT dp.jumlah, dp.harga_satuan, p.nama_produk, p.gambar, p.ukuran, p.kategori 
+    $detail_query = "SELECT dp.id_produk, dp.jumlah, dp.harga_satuan, p.nama_produk, p.gambar, p.ukuran, p.kategori 
                      FROM detail_pesanan dp 
                      JOIN produk p ON dp.id_produk = p.id_produk 
                      WHERE dp.id_pesanan = ?";
@@ -90,7 +90,7 @@ $stmt->close();
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                         <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
+                        <li><a href="testimoni.php" class="dropdown-menu-item">Testimoni</a></li>
                         <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                     </ul>
                 </li>
@@ -237,6 +237,21 @@ $stmt->close();
                                     <h5>Rincian Kue Dipesan:</h5>
                                     <div class="order-items-scrollable">
                                         <?php foreach ($order['items'] as $item): ?>
+                                            <?php 
+                                                // Cek apakah tombol Beri Testimoni harus ditampilkan
+                                                $show_review_btn = false;
+                                                if ($order['status_pesanan'] === 'Selesai') {
+                                                    $reviewed_stmt = $conn->prepare("SELECT 1 FROM testimoni WHERE id_pelanggan = ? AND id_pesanan = ? AND id_produk = ?");
+                                                    $reviewed_stmt->bind_param("iii", $id_pelanggan, $order['id_pesanan'], $item['id_produk']);
+                                                    $reviewed_stmt->execute();
+                                                    $has_reviewed = $reviewed_stmt->get_result()->num_rows > 0;
+                                                    $reviewed_stmt->close();
+                                                    
+                                                    if (!$has_reviewed) {
+                                                        $show_review_btn = true;
+                                                    }
+                                                }
+                                            ?>
                                             <div class="order-item-row-detail">
                                                 <div class="item-img-circle">
                                                     <img src="assets/images/<?= htmlspecialchars($item['gambar']) ?>" alt="<?= htmlspecialchars($item['nama_produk']) ?>">
@@ -244,6 +259,9 @@ $stmt->close();
                                                 <div class="item-name-spec">
                                                     <span class="name"><?= htmlspecialchars($item['nama_produk']) ?></span>
                                                     <span class="category"><?= htmlspecialchars($item['kategori']) ?> (<?= htmlspecialchars($item['ukuran']) ?>)</span>
+                                                    <?php if ($show_review_btn): ?>
+                                                        <a href="testimoni.php?id_produk=<?= $item['id_produk'] ?>&id_pesanan=<?= $order['id_pesanan'] ?>" class="btn btn-accent btn-sm" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; display: inline-flex; width: fit-content; margin-top: 6px; height: auto;"><i class="fa-solid fa-star" style="margin-right: 4px; font-size: 0.7rem;"></i> Beri Testimoni</a>
+                                                    <?php endif; ?>
                                                 </div>
                                                 <div class="item-qty-price">
                                                     <span class="qty">Jumlah: <strong><?= $item['jumlah'] ?>x</strong></span>

@@ -38,12 +38,20 @@ if ($conn->query($query_kategori)) {
 // 3. Buat Tabel Testimoni
 $query_testimoni = "CREATE TABLE IF NOT EXISTS `testimoni` (
   `id_testimoni` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_pelanggan` INT NULL,
+  `id_produk` INT NULL,
+  `id_pesanan` INT NULL,
   `nama_lengkap` VARCHAR(100) NOT NULL,
   `pekerjaan` VARCHAR(100) NOT NULL,
   `isi_testimoni` TEXT NOT NULL,
   `avatar_initial` VARCHAR(5) NOT NULL,
+  `rating` INT NOT NULL DEFAULT 5,
+  `gambar` VARCHAR(255) NULL,
   `status` ENUM('Aktif', 'Nonaktif') DEFAULT 'Aktif',
-  `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`) ON DELETE CASCADE,
+  FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE,
+  FOREIGN KEY (`id_pesanan`) REFERENCES `pesanan` (`id_pesanan`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
 
 if ($conn->query($query_testimoni)) {

@@ -16,8 +16,65 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
 $products_query = "SELECT * FROM produk LIMIT 3";
 $products_result = $conn->query($products_query);
 
-// Fetch Active Testimonials from Database
-$testi_result = $conn->query("SELECT * FROM testimoni WHERE status = 'Aktif' ORDER BY dibuat_pada DESC");
+// Fetch Active Testimonials Overall Rating & Review Counts
+$overall_stats_query = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM testimoni WHERE status = 'Aktif'";
+$overall_stats_res = $conn->query($overall_stats_query)->fetch_assoc();
+$overall_total_reviews = intval($overall_stats_res['total_reviews']);
+$overall_avg_rating = $overall_total_reviews > 0 ? round(floatval($overall_stats_res['avg_rating']), 1) : 0.0;
+
+// Fetch up to 6 Latest Active Testimonials (from completed orders or seeded)
+$testi_query = "SELECT t.*, p.nama_produk 
+                FROM testimoni t
+                LEFT JOIN produk p ON t.id_produk = p.id_produk
+                LEFT JOIN pesanan o ON t.id_pesanan = o.id_pesanan
+                WHERE t.status = 'Aktif' AND (t.id_pesanan IS NULL OR o.status_pesanan = 'Selesai')
+                ORDER BY t.rating DESC, t.dibuat_pada DESC
+                LIMIT 6";
+$testi_result = $conn->query($testi_query);
+
+// Helper for date formatting
+if (!function_exists('formatIndonesianDate')) {
+    function formatIndonesianDate($dateStr) {
+        $timestamp = strtotime($dateStr);
+        $months = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        $day = date('j', $timestamp);
+        $month = date('n', $timestamp);
+        $year = date('Y', $timestamp);
+        return "$day " . $months[$month] . " $year";
+    }
+}
+
+
+// Ambil data rating rata-rata & jumlah ulasan per produk
+$product_ratings = [];
+$ratings_res = $conn->query("SELECT id_produk, AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM testimoni WHERE status = 'Aktif' AND id_produk IS NOT NULL GROUP BY id_produk");
+if ($ratings_res) {
+    while ($rat_row = $ratings_res->fetch_assoc()) {
+        $product_ratings[$rat_row['id_produk']] = [
+            'avg_rating' => round(floatval($rat_row['avg_rating']), 1),
+            'total_reviews' => intval($rat_row['total_reviews'])
+        ];
+    }
+}
+
+// Helper untuk render bintang
+if (!function_exists('renderStars')) {
+    function renderStars($rating) {
+        $html = '';
+        $floor = floor($rating);
+        $diff = $rating - $floor;
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= $floor) {
+                $html .= '<i class="fa-solid fa-star"></i>';
+            } elseif ($i == $floor + 1 && $diff >= 0.4) {
+                $html .= '<i class="fa-solid fa-star-half-stroke"></i>';
+            } else {
+                $html .= '<i class="fa-regular fa-star"></i>';
+            }
+        }
+        return $html;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -57,7 +114,7 @@ $testi_result = $conn->query("SELECT * FROM testimoni WHERE status = 'Aktif' ORD
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
+                            <li><a href="#testimoni" class="dropdown-menu-item">Testimoni</a></li>
                             <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                         </ul>
                     </li>
@@ -177,14 +234,26 @@ $testi_result = $conn->query("SELECT * FROM testimoni WHERE status = 'Aktif' ORD
                                 </div>
                                 <p class="product-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
                                 <div class="product-footer">
-                                    <div class="product-rating">
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 4px;">(5.0)</span>
-                                    </div>
+                                    <?php
+                                    $p_id = $row['id_produk'];
+                                    $avg_rat = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['avg_rating'] : 0.0;
+                                    $tot_rev = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['total_reviews'] : 0;
+                                    ?>
+                                    <a href="testimoni.php?id_produk=<?= $p_id ?>" class="product-rating" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                                        <?php if ($tot_rev > 0): ?>
+                                            <?= renderStars($avg_rat) ?>
+                                            <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">
+                                                <?= number_format($avg_rat, 1, ',', '.') ?> (<?= $tot_rev ?>)
+                                            </span>
+                                        <?php else: ?>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <i class="fa-regular fa-star"></i>
+                                            <span style="color: var(--text-light); font-size: 0.8rem; margin-left: 4px;">(0)</span>
+                                        <?php endif; ?>
+                                    </a>
                                     <span class="product-status">Hanya Preview</span>
                                 </div>
                             </div>
@@ -254,28 +323,79 @@ $testi_result = $conn->query("SELECT * FROM testimoni WHERE status = 'Aktif' ORD
                 <p>Ulasan tulus dari para pelanggan yang telah mempercayakan perayaan mereka kepada Olin's Cake.</p>
             </div>
 
-            <div class="testimonials-grid">
-                <?php if ($testi_result && $testi_result->num_rows > 0): ?>
-                    <?php while($row = $testi_result->fetch_assoc()): ?>
-                        <div class="testi-card">
-                            <p class="testi-content">
-                                "<?= htmlspecialchars($row['isi_testimoni']) ?>"
-                            </p>
-                            <div class="testi-profile">
-                                <div class="testi-avatar"><?= htmlspecialchars($row['avatar_initial']) ?></div>
-                                <div>
-                                    <h4 class="testi-name"><?= htmlspecialchars($row['nama_lengkap']) ?></h4>
-                                    <span class="testi-role"><?= htmlspecialchars($row['pekerjaan']) ?></span>
+            <!-- Testimonial Overall Summary -->
+            <div class="homepage-testi-summary" style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--warm-bg); padding: 20px 30px; border-radius: var(--radius-md); border: 1px solid rgba(68, 45, 28, 0.05); margin-bottom: 40px; width: fit-content; margin-left: auto; margin-right: auto; text-align: center; box-shadow: var(--shadow-sm);">
+                <div style="display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <div style="color: #E29547; font-size: 1.35rem; display: flex; gap: 4px;">
+                        <?= renderStars($overall_avg_rating) ?>
+                    </div>
+                    <span style="font-weight: 800; font-size: 1.3rem; color: var(--cowhide-cocoa);"><?= number_format($overall_avg_rating, 1, ',', '.') ?> dari 5</span>
+                </div>
+                <div style="font-size: 0.95rem; color: var(--text-muted); margin-top: 6px; font-weight: 500;">Berdasarkan <?= $overall_total_reviews ?> ulasan pelanggan</div>
+            </div>
+
+            <!-- Testimonials Slider -->
+            <div class="testimonials-slider-container">
+                <button class="slider-btn prev-btn" id="testi-prev" aria-label="Sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="testimonials-slider-viewport">
+                    <div class="testimonials-slider-track" id="testi-track">
+                        <?php if ($testi_result && $testi_result->num_rows > 0): ?>
+                            <?php while($row = $testi_result->fetch_assoc()): ?>
+                                <div class="testi-card-premium" data-rating="<?= intval($row['rating']) ?>" data-photo="<?= !empty($row['gambar']) ? 'true' : 'false' ?>">
+                                    <div>
+                                        <div class="testi-card-header">
+                                            <div class="testi-card-stars">
+                                                <?= renderStars($row['rating']) ?>
+                                            </div>
+                                            <div class="testi-card-date">
+                                                <?= formatIndonesianDate($row['dibuat_pada']) ?>
+                                            </div>
+                                        </div>
+                                        
+                                        <?php if (!empty($row['nama_produk'])): ?>
+                                            <span class="testi-card-product-badge"><?= htmlspecialchars($row['nama_produk']) ?></span>
+                                        <?php endif; ?>
+
+                                        <p class="testi-card-text" style="margin-top: 6px;">
+                                            "<?= htmlspecialchars($row['isi_testimoni']) ?>"
+                                        </p>
+                                        
+                                        <?php if (!empty($row['gambar'])): ?>
+                                            <div class="testi-card-img-container" onclick="openLightbox('assets/uploads/testimoni/<?= htmlspecialchars($row['gambar']) ?>')">
+                                                <img src="assets/uploads/testimoni/<?= htmlspecialchars($row['gambar']) ?>" alt="Foto ulasan pelanggan" class="testi-card-img" loading="lazy">
+                                                <div class="testi-card-img-zoom-hint">
+                                                    <i class="fa-solid fa-magnifying-glass-plus"></i> Perbesar
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <div class="testi-profile" style="margin-top: 10px; border-top: 1px solid rgba(68, 45, 28, 0.05); padding-top: 14px; display: flex; gap: 12px; align-items: center;">
+                                        <div class="testi-avatar" style="width: 40px; height: 40px; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; background-color: var(--cream-light); color: var(--spiced-wine); border-radius: 50%; font-weight: 700; flex-shrink: 0;"><?= htmlspecialchars($row['avatar_initial']) ?></div>
+                                        <div>
+                                            <h4 class="testi-name" style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; margin-top: 0; text-align: left;"><?= htmlspecialchars($row['nama_lengkap']) ?></h4>
+                                            <span class="testi-role" style="font-size: 0.75rem; color: var(--text-light); display: block; text-align: left;"><?= htmlspecialchars($row['pekerjaan']) ?></span>
+                                        </div>
+                                    </div>
                                 </div>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <div style="width: 100%; text-align: center; padding: 40px 0; color: var(--text-muted);">
+                                Belum ada ulasan testimoni dari pelanggan saat ini.
                             </div>
-                        </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Belum ada ulasan testimoni dari pelanggan saat ini.</p>
-                <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                <button class="slider-btn next-btn" id="testi-next" aria-label="Selanjutnya"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
         </div>
     </section>
+
+    <!-- LIGHTBOX OVERLAY FOR ZOOMING PHOTO -->
+    <div class="lightbox-modal" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+        <img src="" alt="Fullscreen image review" class="lightbox-content" id="lightbox-img">
+    </div>
 
     <!-- Hubungi Kami Section -->
     <section class="section section-bg" id="hubungi">
@@ -445,6 +565,106 @@ $testi_result = $conn->query("SELECT * FROM testimoni WHERE status = 'Aktif' ORD
 
             window.open(waUrl, '_blank');
         }
+
+        // ─── Testimonials Slider ────────────────────────────────────────────────
+        (function () {
+            const track      = document.getElementById('testi-track');
+            const prevBtn    = document.getElementById('testi-prev');
+            const nextBtn    = document.getElementById('testi-next');
+
+            if (!track || !prevBtn || !nextBtn) return;
+
+            const cards = track.querySelectorAll('.testi-card-premium');
+            if (!cards.length) return;
+
+            let currentIndex = 0;
+
+            function getVisibleCount() {
+                const vw = window.innerWidth;
+                if (vw <= 650)  return 1;
+                if (vw <= 992)  return 2;
+                return 3;
+            }
+
+            function getCardWidthPercent() {
+                const visible = getVisibleCount();
+                const gapPx   = 24;
+                // Card width as fraction of track width (same as CSS flex calc)
+                return (100 / visible);
+            }
+
+            function maxIndex() {
+                return Math.max(0, cards.length - getVisibleCount());
+            }
+
+            function slideTo(index) {
+                currentIndex = Math.max(0, Math.min(index, maxIndex()));
+                const visible  = getVisibleCount();
+                const gapPx    = 24;
+                // Calculate pixel offset for each step
+                const cardEl      = cards[0];
+                const cardWidth   = cardEl.getBoundingClientRect().width;
+                const offset      = currentIndex * (cardWidth + gapPx);
+                track.style.transform = `translateX(-${offset}px)`;
+
+                prevBtn.style.opacity = currentIndex === 0 ? '0.35' : '1';
+                prevBtn.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
+                nextBtn.style.opacity = currentIndex >= maxIndex() ? '0.35' : '1';
+                nextBtn.style.pointerEvents = currentIndex >= maxIndex() ? 'none' : 'auto';
+            }
+
+            prevBtn.addEventListener('click', () => slideTo(currentIndex - 1));
+            nextBtn.addEventListener('click', () => slideTo(currentIndex + 1));
+
+            // Re-calculate on resize
+            window.addEventListener('resize', () => slideTo(currentIndex));
+
+            // Initial state
+            slideTo(0);
+
+            // Auto-play every 5 seconds
+            let autoPlay = setInterval(() => {
+                if (currentIndex >= maxIndex()) {
+                    slideTo(0);
+                } else {
+                    slideTo(currentIndex + 1);
+                }
+            }, 5000);
+
+            // Pause auto-play on hover
+            track.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlay));
+            track.parentElement.addEventListener('mouseleave', () => {
+                autoPlay = setInterval(() => {
+                    if (currentIndex >= maxIndex()) {
+                        slideTo(0);
+                    } else {
+                        slideTo(currentIndex + 1);
+                    }
+                }, 5000);
+            });
+        })();
+
+        // ─── Lightbox ───────────────────────────────────────────────────────────
+        function openLightbox(imgUrl) {
+            const lightbox    = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            if (!lightbox || !lightboxImg) return;
+            lightboxImg.src              = imgUrl;
+            lightbox.style.display       = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox) return;
+            lightbox.style.display       = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Close lightbox with Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
     </script>
 </body>
 </html>

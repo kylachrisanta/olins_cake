@@ -14,6 +14,37 @@ if ($result && $result->num_rows > 0) {
         $products[] = $row;
     }
 }
+
+// Ambil data rating rata-rata & jumlah ulasan per produk
+$product_ratings = [];
+$ratings_res = $conn->query("SELECT id_produk, AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM testimoni WHERE status = 'Aktif' AND id_produk IS NOT NULL GROUP BY id_produk");
+if ($ratings_res) {
+    while ($rat_row = $ratings_res->fetch_assoc()) {
+        $product_ratings[$rat_row['id_produk']] = [
+            'avg_rating' => round(floatval($rat_row['avg_rating']), 1),
+            'total_reviews' => intval($rat_row['total_reviews'])
+        ];
+    }
+}
+
+// Helper untuk render bintang
+if (!function_exists('renderStars')) {
+    function renderStars($rating) {
+        $html = '';
+        $floor = floor($rating);
+        $diff = $rating - $floor;
+        for ($i = 1; $i <= 5; $i++) {
+            if ($i <= $floor) {
+                $html .= '<i class="fa-solid fa-star"></i>';
+            } elseif ($i == $floor + 1 && $diff >= 0.4) {
+                $html .= '<i class="fa-solid fa-star-half-stroke"></i>';
+            } else {
+                $html .= '<i class="fa-regular fa-star"></i>';
+            }
+        }
+        return $html;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -53,7 +84,7 @@ if ($result && $result->num_rows > 0) {
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
+                            <li><a href="testimoni.php" class="dropdown-menu-item">Testimoni</a></li>
                             <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                         </ul>
                     </li>
@@ -67,7 +98,7 @@ if ($result && $result->num_rows > 0) {
                     <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
                     <li><a href="index.php#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
-                    <li><a href="index.php#testimoni" class="nav-link">Testimoni</a></li>
+                    <li><a href="testimoni.php" class="nav-link">Testimoni</a></li>
                     <li><a href="index.php#hubungi" class="nav-link">Hubungi Kami</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
@@ -122,17 +153,29 @@ if ($result && $result->num_rows > 0) {
                                     <span class="product-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
                                 </div>
                                 <p class="product-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
-                                <div class="product-footer">
-                                    <div class="product-rating">
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <i class="fa-solid fa-star"></i>
-                                        <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 4px;">(5.0)</span>
-                                    </div>
-                                    <a href="detail_produk.php?id=<?= $row['id_produk'] ?>" class="btn btn-outline btn-sm">Lihat Detail</a>
-                                </div>
+                                 <div class="product-footer">
+                                     <?php
+                                     $p_id = $row['id_produk'];
+                                     $avg_rat = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['avg_rating'] : 0.0;
+                                     $tot_rev = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['total_reviews'] : 0;
+                                     ?>
+                                     <a href="testimoni.php?id_produk=<?= $p_id ?>" class="product-rating" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                                         <?php if ($tot_rev > 0): ?>
+                                             <?= renderStars($avg_rat) ?>
+                                             <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">
+                                                 <?= number_format($avg_rat, 1, ',', '.') ?> (<?= $tot_rev ?>)
+                                             </span>
+                                         <?php else: ?>
+                                             <i class="fa-regular fa-star"></i>
+                                             <i class="fa-regular fa-star"></i>
+                                             <i class="fa-regular fa-star"></i>
+                                             <i class="fa-regular fa-star"></i>
+                                             <i class="fa-regular fa-star"></i>
+                                             <span style="color: var(--text-light); font-size: 0.8rem; margin-left: 4px;">(0)</span>
+                                         <?php endif; ?>
+                                     </a>
+                                     <a href="detail_produk.php?id=<?= $row['id_produk'] ?>" class="btn btn-outline btn-sm">Lihat Detail</a>
+                                 </div>
                             </div>
                         </div>
                     <?php endforeach; ?>

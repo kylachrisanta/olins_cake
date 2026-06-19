@@ -64,7 +64,7 @@ if ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan' || $st
 }
 
 // Ambil rincian produk pesanan
-$detail_query = "SELECT dp.jumlah, dp.harga_satuan, p.nama_produk, p.gambar, p.ukuran, p.kategori 
+$detail_query = "SELECT dp.id_produk, dp.jumlah, dp.harga_satuan, p.nama_produk, p.gambar, p.ukuran, p.kategori 
                  FROM detail_pesanan dp 
                  JOIN produk p ON dp.id_produk = p.id_produk 
                  WHERE dp.id_pesanan = ?";
@@ -707,7 +707,7 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                         <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
+                        <li><a href="testimoni.php" class="dropdown-menu-item">Testimoni</a></li>
                         <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                     </ul>
                 </li>
@@ -1026,12 +1026,30 @@ $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
 
                 <!-- Product Items Rows -->
                 <?php foreach ($order_items as $item): ?>
+                    <?php 
+                        // Cek apakah tombol Beri Testimoni harus ditampilkan
+                        $show_review_btn = false;
+                        if ($status_pesanan === 'Selesai') {
+                            $reviewed_stmt = $conn->prepare("SELECT 1 FROM testimoni WHERE id_pelanggan = ? AND id_pesanan = ? AND id_produk = ?");
+                            $reviewed_stmt->bind_param("iii", $id_pelanggan, $id_pesanan, $item['id_produk']);
+                            $reviewed_stmt->execute();
+                            $has_reviewed = $reviewed_stmt->get_result()->num_rows > 0;
+                            $reviewed_stmt->close();
+                            
+                            if (!$has_reviewed) {
+                                $show_review_btn = true;
+                            }
+                        }
+                    ?>
                     <div class="product-item-row">
                         <div class="product-meta-col">
                             <img src="assets/images/<?= htmlspecialchars($item['gambar']) ?>" alt="<?= htmlspecialchars($item['nama_produk']) ?>" class="product-img-thumb">
                             <div class="product-text-details">
                                 <span class="product-name-title"><?= htmlspecialchars($item['nama_produk']) ?></span>
                                 <span class="product-spec-badge"><?= htmlspecialchars($item['kategori']) ?> &bull; <?= htmlspecialchars($item['ukuran']) ?></span>
+                                <?php if ($show_review_btn): ?>
+                                    <a href="testimoni.php?id_produk=<?= $item['id_produk'] ?>&id_pesanan=<?= $id_pesanan ?>" class="btn btn-accent btn-sm" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px; display: inline-flex; width: fit-content; margin-top: 6px; height: auto;"><i class="fa-solid fa-star" style="margin-right: 4px; font-size: 0.75rem;"></i> Beri Testimoni</a>
+                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="product-qty-col">
