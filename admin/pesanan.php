@@ -13,22 +13,101 @@ $msg_error = "";
 
 // 1. UPDATE STATUS PESANAN (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'])) {
+    // Proteksi: hanya admin yang login
+    if (!isset($_SESSION['admin_id'])) {
+        header("Location: login.php");
+        exit;
+    }
+
     $id_pesanan = isset($_POST['id_pesanan']) ? intval($_POST['id_pesanan']) : 0;
     $status_pesanan = isset($_POST['status_pesanan']) ? trim($_POST['status_pesanan']) : '';
     $status_pembayaran = isset($_POST['status_pembayaran']) ? trim($_POST['status_pembayaran']) : '';
-    
+
     if ($id_pesanan <= 0 || empty($status_pesanan) || empty($status_pembayaran)) {
         $msg_error = "Harap isi semua kolom status.";
     } else {
-        // Update database
-        $stmt = $conn->prepare("UPDATE pesanan SET status_pesanan = ?, status_pembayaran = ? WHERE id_pesanan = ?");
-        $stmt->bind_param("ssi", $status_pesanan, $status_pembayaran, $id_pesanan);
-        if ($stmt->execute()) {
-            $msg_success = "Status pesanan berhasil diperbarui.";
+        // Ambil data pelanggan dan status lama sebelum update
+        $stmt_check = $conn->prepare("SELECT status_pesanan, nama_penerima, nomor_wa, metode_pengiriman FROM pesanan WHERE id_pesanan = ?");
+        $stmt_check->bind_param("i", $id_pesanan);
+        $stmt_check->execute();
+        $order_info = $stmt_check->get_result()->fetch_assoc();
+        $stmt_check->close();
+
+        if ($order_info) {
+            $old_status = $order_info['status_pesanan'];
+            $nama_penerima = $order_info['nama_penerima'];
+            $nomor_wa = $order_info['nomor_wa'];
+            $metode_pengiriman_check = $order_info['metode_pengiriman'];
+
+            // Whitelist status berdasarkan metode pengiriman
+            $allowed_admin_statuses = ['Diproses', 'Selesai'];
+            if ($metode_pengiriman_check === 'Kirim ke Alamat') {
+                $allowed_admin_statuses[] = 'Siap Dikirim';
+            } else {
+                $allowed_admin_statuses[] = 'Siap Diambil';
+            }
+
+            // Tolak jika status bukan whitelist untuk metode ini
+            if (!in_array($status_pesanan, $allowed_admin_statuses)) {
+                $msg_error = "Status '{$status_pesanan}' tidak sesuai dengan metode pengiriman pesanan ini.";
+            }
+
+            // Validasi tambahan: pastikan status lama bukan status otomatis
+            $auto_statuses = ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dibatalkan', 'Kedaluwarsa'];
+            if (empty($msg_error) && in_array($old_status, $auto_statuses)) {
+                $msg_error = "Pesanan dengan status '{$old_status}' tidak dapat diubah secara manual melalui form ini.";
+            }
+
+            if (!empty($msg_error)) {
+                // error sudah di-set, tidak perlu lanjut
+            } else {
+                // Update database
+                $stmt = $conn->prepare("UPDATE pesanan SET status_pesanan = ?, status_pembayaran = ? WHERE id_pesanan = ?");
+                $stmt->bind_param("ssi", $status_pesanan, $status_pembayaran, $id_pesanan);
+                if ($stmt->execute()) {
+                    $msg_success = "Status pesanan berhasil diperbarui.";
+
+                    // Kirim Notifikasi WhatsApp jika status berubah
+                    if ($status_pesanan !== $old_status) {
+                        require_once '../config/fonnte_helper.php';
+                        $kode_order = "OLN-" . (10000 + $id_pesanan);
+
+                        $pesan_wa = "";
+                        if ($status_pesanan === 'Diproses') {
+                            $pesan_wa = "Halo *{$nama_penerima}*,\n\n"
+                                      . "Pesanan Anda dengan nomor *{$kode_order}* saat ini sedang *Diproses* oleh tim dapur Olin's Cake.\n\n"
+                                      . "Kami akan memastikan pesanan Anda dibuat dengan bahan berkualitas terbaik. Terima kasih telah memesan di Olin's Cake! ❤️";
+                        } elseif ($status_pesanan === 'Siap Dikirim') {
+                            $pesan_wa = "Halo *{$nama_penerima}*,\n\n"
+                                      . "Pesanan Anda dengan nomor *{$kode_order}* sudah selesai dan saat ini berstatus *Siap Dikirim*.\n\n"
+                                      . "Kurir kami akan segera mengantarkan pesanan Anda ke alamat tujuan. Harap pastikan nomor WhatsApp/telepon Anda aktif agar mudah dihubungi kurir. Terima kasih! 🚚";
+                        } elseif ($status_pesanan === 'Siap Diambil') {
+                            $pesan_wa = "Halo *{$nama_penerima}*,\n\n"
+                                      . "Pesanan Anda dengan nomor *{$kode_order}* sudah selesai dan saat ini berstatus *Siap Diambil*.\n\n"
+                                      . "Silakan datang ke toko Olin's Cake untuk mengambil pesanan Anda. Kami menantikan kedatangan Anda! 🍰";
+                        } elseif ($status_pesanan === 'Selesai') {
+                            $pesan_wa = "Halo *{$nama_penerima}*,\n\n"
+                                      . "Pesanan Anda dengan nomor *{$kode_order}* telah selesai diserahkan dan berstatus *Selesai*.\n\n"
+                                      . "Terima kasih banyak telah mempercayai Olin's Cake untuk menyajikan kelezatan di momen spesial Anda. Ditunggu pesanan berikutnya ya! 🥰";
+                        }
+
+                        if (!empty($pesan_wa)) {
+                            $res_wa = kirimPesanWhatsApp($nomor_wa, $pesan_wa);
+                            if ($res_wa['success']) {
+                                $msg_success .= " Notifikasi WhatsApp berhasil dikirim ke pelanggan.";
+                            } else {
+                                $msg_error = "Status berhasil diperbarui, namun gagal mengirim WhatsApp: " . $res_wa['message'];
+                            }
+                        }
+                    }
+                } else {
+                    $msg_error = "Gagal memperbarui status: " . $conn->error;
+                }
+                $stmt->close();
+            }
         } else {
-            $msg_error = "Gagal memperbarui status: " . $conn->error;
+            $msg_error = "Pesanan tidak ditemukan.";
         }
-        $stmt->close();
     }
 }
 
@@ -45,14 +124,45 @@ if (isset($_GET['action_payment'])) {
     
     if ($id_pesanan > 0) {
         if ($action_payment === 'verify') {
-            $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Sudah Bayar', status_pesanan = 'Diproses' WHERE id_pesanan = ?");
-            $stmt->bind_param("i", $id_pesanan);
-            if ($stmt->execute()) {
-                $msg_success = "Pembayaran untuk Pesanan OLN-" . (10000 + $id_pesanan) . " berhasil diverifikasi. Status diperbarui ke 'Diproses'.";
+            // Ambil data pelanggan dan status lama sebelum update
+            $stmt_check = $conn->prepare("SELECT status_pesanan, nama_penerima, nomor_wa FROM pesanan WHERE id_pesanan = ?");
+            $stmt_check->bind_param("i", $id_pesanan);
+            $stmt_check->execute();
+            $order_info = $stmt_check->get_result()->fetch_assoc();
+            $stmt_check->close();
+            
+            if ($order_info) {
+                $old_status = $order_info['status_pesanan'];
+                $nama_penerima = $order_info['nama_penerima'];
+                $nomor_wa = $order_info['nomor_wa'];
+                
+                $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Sudah Bayar', status_pesanan = 'Diproses' WHERE id_pesanan = ?");
+                $stmt->bind_param("i", $id_pesanan);
+                if ($stmt->execute()) {
+                    $msg_success = "Pembayaran untuk Pesanan OLN-" . (10000 + $id_pesanan) . " berhasil diverifikasi. Status diperbarui ke 'Diproses'.";
+                    
+                    // Kirim Notifikasi WhatsApp jika status berubah ke 'Diproses'
+                    if ($old_status !== 'Diproses') {
+                        require_once '../config/fonnte_helper.php';
+                        $kode_order = "OLN-" . (10000 + $id_pesanan);
+                        $pesan_wa = "Halo *{$nama_penerima}*,\n\n"
+                                  . "Pesanan Anda dengan nomor *{$kode_order}* saat ini sedang *Diproses* oleh tim dapur Olin's Cake.\n\n"
+                                  . "Kami akan memastikan pesanan Anda dibuat dengan bahan berkualitas terbaik. Terima kasih telah memesan di Olin's Cake! ❤️";
+                        
+                        $res_wa = kirimPesanWhatsApp($nomor_wa, $pesan_wa);
+                        if ($res_wa['success']) {
+                            $msg_success .= " Notifikasi WhatsApp berhasil dikirim ke pelanggan.";
+                        } else {
+                            $msg_error = "Pembayaran diverifikasi, namun gagal mengirim WhatsApp: " . $res_wa['message'];
+                        }
+                    }
+                } else {
+                    $msg_error = "Gagal memverifikasi pembayaran: " . $conn->error;
+                }
+                $stmt->close();
             } else {
-                $msg_error = "Gagal memverifikasi pembayaran: " . $conn->error;
+                $msg_error = "Pesanan tidak ditemukan.";
             }
-            $stmt->close();
         } elseif ($action_payment === 'reject') {
             // Ambil nama file bukti lama untuk dihapus
             $res = $conn->query("SELECT bukti_pembayaran FROM pesanan WHERE id_pesanan = $id_pesanan");
@@ -373,38 +483,71 @@ $list_pesanan = $conn->query($query_all);
                         <div class="panel-card-header">
                             <h3><i class="fa-solid fa-gears"></i> Kelola Status Pesanan</h3>
                         </div>
-                        <form action="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>" method="POST">
-                            <input type="hidden" name="action_update_status" value="1">
-                            <input type="hidden" name="id_pesanan" value="<?= $view_order['id_pesanan'] ?>">
-                            
+                        <?php
+                        $auto_statuses = ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dibatalkan', 'Kedaluwarsa'];
+                        $is_auto_status = in_array($view_order['status_pesanan'], $auto_statuses);
+                        ?>
+                        <?php if ($is_auto_status): ?>
                             <div class="admin-form-group">
-                                <label for="status_pesanan">Status Pesanan</label>
-                                <select id="status_pesanan" name="status_pesanan" class="admin-form-control" required>
-                                    <option value="Menunggu Pembayaran" <?= $view_order['status_pesanan'] === 'Menunggu Pembayaran' ? 'selected' : '' ?>>Menunggu Pembayaran</option>
-                                    <option value="Menunggu Verifikasi" <?= $view_order['status_pesanan'] === 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                    <option value="Diproses" <?= $view_order['status_pesanan'] === 'Diproses' ? 'selected' : '' ?>>Diproses</option>
-                                    <option value="Siap Dikirim" <?= $view_order['status_pesanan'] === 'Siap Dikirim' ? 'selected' : '' ?>>Siap Dikirim</option>
-                                    <option value="Siap Diambil" <?= $view_order['status_pesanan'] === 'Siap Diambil' ? 'selected' : '' ?>>Siap Diambil</option>
-                                    <option value="Selesai" <?= $view_order['status_pesanan'] === 'Selesai' ? 'selected' : '' ?>>Selesai</option>
-                                    <option value="Dibatalkan" <?= $view_order['status_pesanan'] === 'Dibatalkan' ? 'selected' : '' ?>>Dibatalkan</option>
-                                    <option value="Kedaluwarsa" <?= $view_order['status_pesanan'] === 'Kedaluwarsa' ? 'selected' : '' ?>>Kedaluwarsa</option>
-                                </select>
+                                <label>Status Pesanan</label>
+                                <div style="margin-top: 8px;">
+                                    <?php
+                                    $badge_class = 'admin-badge-info';
+                                    if ($view_order['status_pesanan'] === 'Menunggu Pembayaran') $badge_class = 'admin-badge-waiting';
+                                    elseif ($view_order['status_pesanan'] === 'Kedaluwarsa' || $view_order['status_pesanan'] === 'Dibatalkan') $badge_class = 'admin-badge-danger';
+                                    ?>
+                                    <span class="admin-badge <?= $badge_class ?>" style="font-size: 0.95rem; padding: 6px 12px; display: inline-block;"><?= htmlspecialchars($view_order['status_pesanan']) ?></span>
+                                </div>
+                                <small class="admin-text-muted" style="display: block; margin-top: 8px; font-style: italic;">
+                                    Status ini dikelola otomatis oleh sistem/aksi pelanggan dan tidak dapat diubah secara manual.
+                                </small>
                             </div>
 
-                            <div class="admin-form-group">
-                                <label for="status_pembayaran">Status Pembayaran</label>
-                                <select id="status_pembayaran" name="status_pembayaran" class="admin-form-control" required>
-                                    <option value="Belum Bayar" <?= $view_order['status_pembayaran'] === 'Belum Bayar' ? 'selected' : '' ?>>Belum Bayar</option>
-                                    <option value="Menunggu Verifikasi" <?= $view_order['status_pembayaran'] === 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                    <option value="Sudah Bayar" <?= $view_order['status_pembayaran'] === 'Sudah Bayar' ? 'selected' : '' ?>>Sudah Bayar</option>
-                                    <option value="Tidak Dibayar" <?= $view_order['status_pembayaran'] === 'Tidak Dibayar' ? 'selected' : '' ?>>Tidak Dibayar / Gagal</option>
-                                </select>
+                            <div class="admin-form-group" style="margin-top: 16px;">
+                                <label>Status Pembayaran</label>
+                                <div style="margin-top: 8px;">
+                                    <?php
+                                    $badge_pay_class = 'admin-badge-info';
+                                    if ($view_order['status_pembayaran'] === 'Belum Bayar') $badge_pay_class = 'admin-badge-waiting';
+                                    elseif ($view_order['status_pembayaran'] === 'Sudah Bayar') $badge_pay_class = 'admin-badge-success';
+                                    elseif ($view_order['status_pembayaran'] === 'Tidak Dibayar') $badge_pay_class = 'admin-badge-danger';
+                                    ?>
+                                    <span class="admin-badge <?= $badge_pay_class ?>" style="font-size: 0.95rem; padding: 6px 12px; display: inline-block;"><?= htmlspecialchars($view_order['status_pembayaran']) ?></span>
+                                </div>
                             </div>
-                            
-                            <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
-                                <i class="fa-solid fa-check"></i> Perbarui Status
-                            </button>
-                        </form>
+                        <?php else: ?>
+                            <form action="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>" method="POST">
+                                <input type="hidden" name="action_update_status" value="1">
+                                <input type="hidden" name="id_pesanan" value="<?= $view_order['id_pesanan'] ?>">
+                                
+                                <div class="admin-form-group">
+                                    <label for="status_pesanan">Status Pesanan</label>
+                                    <select id="status_pesanan" name="status_pesanan" class="admin-form-control" required>
+                                        <option value="Diproses" <?= $view_order['status_pesanan'] === 'Diproses' ? 'selected' : '' ?>>Diproses</option>
+                                        <?php if ($view_order['metode_pengiriman'] === 'Kirim ke Alamat'): ?>
+                                            <option value="Siap Dikirim" <?= $view_order['status_pesanan'] === 'Siap Dikirim' ? 'selected' : '' ?>>Siap Dikirim</option>
+                                        <?php else: ?>
+                                            <option value="Siap Diambil" <?= $view_order['status_pesanan'] === 'Siap Diambil' ? 'selected' : '' ?>>Siap Diambil</option>
+                                        <?php endif; ?>
+                                        <option value="Selesai" <?= $view_order['status_pesanan'] === 'Selesai' ? 'selected' : '' ?>>Selesai</option>
+                                    </select>
+                                </div>
+
+                                <div class="admin-form-group">
+                                    <label for="status_pembayaran">Status Pembayaran</label>
+                                    <select id="status_pembayaran" name="status_pembayaran" class="admin-form-control" required>
+                                        <option value="Belum Bayar" <?= $view_order['status_pembayaran'] === 'Belum Bayar' ? 'selected' : '' ?>>Belum Bayar</option>
+                                        <option value="Menunggu Verifikasi" <?= $view_order['status_pembayaran'] === 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
+                                        <option value="Sudah Bayar" <?= $view_order['status_pembayaran'] === 'Sudah Bayar' ? 'selected' : '' ?>>Sudah Bayar</option>
+                                        <option value="Tidak Dibayar" <?= $view_order['status_pembayaran'] === 'Tidak Dibayar' ? 'selected' : '' ?>>Tidak Dibayar / Gagal</option>
+                                    </select>
+                                </div>
+                                
+                                <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
+                                    <i class="fa-solid fa-check"></i> Perbarui Status
+                                </button>
+                            </form>
+                        <?php endif; ?>
                     </div>
 
                     <!-- 4. Detail Info Pembayaran -->

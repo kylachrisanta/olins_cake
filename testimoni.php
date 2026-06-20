@@ -388,7 +388,7 @@ if (isset($_SESSION['pelanggan_id'])) {
 
             <!-- Breadcrumbs -->
             <div class="detail-breadcrumb" style="margin-bottom: 24px;">
-                <a href="index.php">Beranda</a> <span>/</span> <a href="produk.php">Katalog</a> <span>/</span> <a href="detail_produk.php?id=<?= $id_produk ?>"><?= htmlspecialchars($product['nama_produk']) ?></a> <span>/</span> <span>Ulasan Produk</span>
+                <a href="index.php">Beranda</a> <span>/</span> <span><?= htmlspecialchars($product['nama_produk']) ?></span> <span>/</span> <span>Ulasan Produk</span>
             </div>
 
             <!-- Notifikasi Alert Sukses / Error -->
@@ -643,7 +643,7 @@ if (isset($_SESSION['pelanggan_id'])) {
                 <h4>Hubungi Kami</h4>
                 <p>
                     <i class="fa-solid fa-envelope" style="margin-right: 8px; color: var(--olive-harvest);"></i> info@olinscake.com<br>
-                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: var(--olive-harvest);"></i> +62 812-3456-7890<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: var(--olive-harvest);"></i> +62 895-2923-6657<br>
                     <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px; color: var(--olive-harvest);"></i> Kebayoran Baru, Jakarta Selatan
                 </p>
             </div>

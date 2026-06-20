@@ -110,7 +110,7 @@ if (!function_exists('renderStars')) {
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
                             <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-                            <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
+
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
@@ -124,7 +124,7 @@ if (!function_exists('renderStars')) {
                     <li><a href="#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="#cara-pesan" class="nav-link">Cara Pesan</a></li>
                     <li><a href="#testimoni" class="nav-link">Testimoni</a></li>
-                    <li><a href="#hubungi" class="nav-link">Hubungi Kami</a></li>
+
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
                         <a href="daftar.php" class="btn btn-primary btn-sm">Daftar</a>
@@ -144,10 +144,7 @@ if (!function_exists('renderStars')) {
                 <p class="hero-slogan">
                     Menghadirkan kelezatan kue rumahan premium bertekstur lembut dengan cita rasa elegan, diracik khusus untuk melengkapi momen istimewa Anda.
                 </p>
-                <div class="hero-actions">
-                    <a href="#produk" class="btn btn-primary">Lihat Produk Favorit</a>
-                    <a href="#tentang" class="btn btn-outline">Tentang Kami</a>
-                </div>
+
             </div>
             <div class="hero-img-container">
                 <div class="hero-img-backdrop"></div>
@@ -161,7 +158,7 @@ if (!function_exists('renderStars')) {
         <div class="container">
             <div class="section-header">
                 <span class="subtitle">Tentang Kami</span>
-                <h2>Kisah Manis Olin's Cake</h2>
+                <h2>Olin's Cake</h2>
                 <p>Kelezatan sejati yang lahir dari dapur rumahan dengan dedikasi cita rasa tinggi.</p>
             </div>
             
@@ -174,9 +171,7 @@ if (!function_exists('renderStars')) {
                     <p>
                         Setiap resep telah kami uji secara mendalam demi mendapatkan kombinasi tekstur yang super lembut dan rasa manis yang pas, tidak membuat enek (less sweet), sehingga sangat disukai oleh anak-anak hingga orang tua.
                     </p>
-                    <a href="https://wa.me/6281234567890?text=Halo%20Olin's%20Cake,%20saya%20ingin%20tanya%20mengenai%20kue..." target="_blank" class="btn btn-accent">
-                        <i class="fa-brands fa-whatsapp" style="margin-right: 8px;"></i> Hubungi via WhatsApp
-                    </a>
+
                 </div>
                 <div class="about-cards">
                     <div class="about-card">
@@ -382,67 +377,7 @@ if (!function_exists('renderStars')) {
         <img src="" alt="Fullscreen image review" class="lightbox-content" id="lightbox-img">
     </div>
 
-    <!-- Hubungi Kami Section -->
-    <section class="section section-bg" id="hubungi">
-        <div class="container contact-grid">
-            <div class="contact-info">
-                <span class="subtitle">Kontak & Lokasi</span>
-                <h3>Ada Pertanyaan Khusus?</h3>
-                <p>
-                    Kami melayani pesanan khusus seperti kue ulang tahun custom, pesanan dalam jumlah besar untuk arisan, atau sekadar konsultasi rasa. Hubungi kami, dengan senang hati kami akan membantu Anda.
-                </p>
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="contact-text">
-                            <h4>Lokasi Dapur Kami</h4>
-                            <p>Jl. Melati Raya No. 45, Kebayoran Baru, Jakarta Selatan</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
-                        <div class="contact-text">
-                            <h4>Jam Operasional Pre-Order</h4>
-                            <p>Senin - Sabtu: 08.00 - 17.00 WIB <br><span style="font-size: 0.85rem; color: var(--spiced-wine);">*Minggu libur (kecuali pengiriman pesanan khusus)</span></p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
-                        <div class="contact-text">
-                            <h4>WhatsApp Hotline</h4>
-                            <p>+62 812-3456-7890</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="contact-card">
-                <h4>Kirim Pesan Cepat</h4>
-                <form id="quick-message-form" onsubmit="sendWhatsAppMsg(event)">
-                    <div class="contact-form-group">
-                        <label for="msg-nama">Nama Lengkap</label>
-                        <input type="text" id="msg-nama" class="contact-form-control" placeholder="Masukkan nama Anda" required>
-                    </div>
-                    <div class="contact-form-group">
-                        <label for="msg-kue">Minat Kue</label>
-                        <select id="msg-kue" class="contact-form-control">
-                            <option value="Strawberry Shortcake">Strawberry Shortcake</option>
-                            <option value="Signature Chocolate Fudge">Signature Chocolate Fudge</option>
-                            <option value="Classic Pandan Cheese">Classic Pandan Cheese</option>
-                            <option value="Custom Order / Lainnya">Custom Order / Lainnya</option>
-                        </select>
-                    </div>
-                    <div class="contact-form-group">
-                        <label for="msg-catatan">Pesan / Detail Khusus</label>
-                        <textarea id="msg-catatan" class="contact-form-control" rows="4" placeholder="Tuliskan catatan pemesanan atau pertanyaan Anda..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">
-                        <i class="fa-brands fa-whatsapp" style="margin-right: 8px;"></i> Kirim via WhatsApp
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer>
@@ -485,7 +420,7 @@ if (!function_exists('renderStars')) {
                 <h4>Hubungi Kami</h4>
                 <p>
                     <i class="fa-solid fa-envelope" style="margin-right: 8px; color: var(--olive-harvest);"></i> info@olinscake.com<br>
-                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: var(--olive-harvest);"></i> +62 812-3456-7890<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: var(--olive-harvest);"></i> +62 895-2923-6657<br>
                     <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px; color: var(--olive-harvest);"></i> Kebayoran Baru, Jakarta Selatan
                 </p>
             </div>
@@ -546,7 +481,7 @@ if (!function_exists('renderStars')) {
 
             const baseText = `Halo Olin's Cake,\n\nSaya ingin menanyakan detail pemesanan:\nNama: ${nama}\nMinat Kue: ${kue}\nCatatan Khusus: ${catatan}\n\nTerima kasih!`;
             const encodedText = encodeURIComponent(baseText);
-            const waUrl = `https://wa.me/6281234567890?text=${encodedText}`;
+            const waUrl = `https://wa.me/6289529236657?text=${encodedText}`;
 
             window.open(waUrl, '_blank');
         }

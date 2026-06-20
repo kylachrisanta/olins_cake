@@ -19,8 +19,21 @@ $conn->query("UPDATE pesanan SET status_pesanan = 'Kedaluwarsa', status_pembayar
 
 // Ambil Status Sukses/Notifikasi jika ada
 $pesan_sukses = "";
+$tipe_sukses = "checkout";
+$pesan_error = "";
+
 if (isset($_GET['status']) && $_GET['status'] === 'sukses') {
     $pesan_sukses = "Pesanan Pre-Order Anda berhasil dibuat! Admin kami akan segera memeriksa detail pesanan Anda.";
+    $tipe_sukses = "checkout";
+} elseif (isset($_SESSION['pesan_sukses'])) {
+    $pesan_sukses = $_SESSION['pesan_sukses'];
+    $tipe_sukses = "batal";
+    unset($_SESSION['pesan_sukses']);
+}
+
+if (isset($_SESSION['pesan_error'])) {
+    $pesan_error = $_SESSION['pesan_error'];
+    unset($_SESSION['pesan_error']);
 }
 
 // Ambil Riwayat Pesanan Pelanggan Aktif
@@ -64,7 +77,7 @@ $stmt->close();
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.0.1">
 </head>
 <body>
 
@@ -117,8 +130,19 @@ $stmt->close();
                 <div class="orders-alert-success">
                     <div class="alert-icon-circle"><i class="fa-solid fa-circle-check"></i></div>
                     <div class="alert-text">
-                        <strong>Checkout Berhasil!</strong>
+                        <strong><?= $tipe_sukses === 'batal' ? 'Pesanan Dibatalkan' : 'Checkout Berhasil!' ?></strong>
                         <p><?= htmlspecialchars($pesan_sukses) ?></p>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Tampilkan Alert Error Jika Ada -->
+            <?php if (!empty($pesan_error)): ?>
+                <div class="orders-alert-danger" style="background-color: #fee2e2; border-left: 5px solid #ef4444; color: #991b1b; padding: 16px 20px; border-radius: var(--radius-md); margin-bottom: 24px; display: flex; align-items: center; gap: 14px;">
+                    <div class="alert-icon-circle" style="background-color: #fca5a5; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #b91c1c;"><i class="fa-solid fa-circle-exclamation"></i></div>
+                    <div class="alert-text">
+                        <strong>Terjadi Kesalahan</strong>
+                        <p><?= htmlspecialchars($pesan_error) ?></p>
                     </div>
                 </div>
             <?php endif; ?>
@@ -183,7 +207,7 @@ $stmt->close();
                             
                             // Membuat pesan WA dinamis
                             $wa_message = "Halo Olin's Cake, saya ingin menanyakan status pesanan pre-order saya dengan nomor *" . $kode_order . "* atas nama *" . htmlspecialchars($order['nama_penerima']) . "*. Terima kasih!";
-                            $wa_link = "https://wa.me/6281234567890?text=" . urlencode($wa_message);
+                            $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                         ?>
                         
                         <!-- Card Order -->
@@ -294,6 +318,9 @@ $stmt->close();
                                         <a href="pembayaran.php?id=<?= $order['id_pesanan'] ?>" class="btn btn-accent btn-sm">
                                             <i class="fa-solid fa-wallet" style="margin-right: 6px;"></i> Bayar Sekarang
                                         </a>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="openCancelModal(<?= $order['id_pesanan'] ?>, '<?= $kode_order ?>')">
+                                            <i class="fa-solid fa-ban" style="margin-right: 6px;"></i> Batalkan Pesanan
+                                        </button>
                                     <?php endif; ?>
                                     <a href="detail_pesanan.php?id=<?= $order['id_pesanan'] ?>" class="btn btn-outline btn-sm">
                                         <i class="fa-solid fa-circle-info" style="margin-right: 6px;"></i> Detail Pesanan
@@ -362,7 +389,7 @@ $stmt->close();
                 <h4>Hubungi Kami</h4>
                 <p>
                     <i class="fa-solid fa-envelope" style="margin-right: 8px; color: var(--olive-harvest);"></i> info@olinscake.com<br>
-                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: var(--olive-harvest);"></i> +62 812-3456-7890<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: var(--olive-harvest);"></i> +62 895-2923-6657<br>
                     <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px; color: var(--olive-harvest);"></i> Tambun Utara, Kabupaten Bekasi
                 </p>
             </div>
@@ -372,6 +399,26 @@ $stmt->close();
         </div>
     </footer>
 
+    <!-- Cancel Order Confirmation Modal -->
+    <div id="cancelModal" class="cancel-modal">
+        <div class="cancel-modal-content">
+            <h4 style="color: var(--cowhide-cocoa); font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1px solid rgba(68, 45, 28, 0.08); padding-bottom: 12px; text-align: left;">
+                <i class="fa-solid fa-triangle-exclamation" style="color: #c93b2b; margin-right: 6px;"></i> Batalkan Pesanan
+            </h4>
+            <div style="width: 100%; text-align: left; margin: 8px 0;">
+                <p style="font-weight: 700; margin-bottom: 8px; color: var(--text-main);">Apakah Anda yakin ingin membatalkan pesanan <span id="cancel-order-code" style="color: var(--spiced-wine);"></span> ini?</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; margin: 0;">
+                    <i class="fa-solid fa-circle-info" style="color: #c93b2b; margin-right: 4px;"></i> Pesanan yang dibatalkan tidak dapat dilanjutkan kembali.
+                </p>
+            </div>
+            <form action="proses_batal.php" method="POST" style="width: 100%; display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; margin-bottom: 0;">
+                <input type="hidden" name="id_pesanan" id="cancel-order-id" value="">
+                <button type="button" onclick="closeCancelModal()" class="btn btn-outline" style="padding: 10px 20px; font-size: 0.9rem; border-radius: 30px;">Kembali</button>
+                <button type="submit" class="btn btn-danger" style="padding: 10px 20px; font-size: 0.9rem; border-radius: 30px;">Ya, Batalkan Pesanan</button>
+            </form>
+        </div>
+    </div>
+
     <!-- JavaScript Actions -->
     <script>
         // Mobile Menu Toggle
@@ -380,6 +427,26 @@ $stmt->close();
         menuToggle.addEventListener('click', () => {
             menuToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
+        });
+
+        // Cancel Modal Actions
+        function openCancelModal(orderId, orderCode) {
+            document.getElementById('cancel-order-id').value = orderId;
+            document.getElementById('cancel-order-code').innerText = orderCode;
+            document.getElementById('cancelModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('cancelModal');
+            if (event.target === modal) {
+                closeCancelModal();
+            }
         });
     </script>
 </body>

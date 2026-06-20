@@ -20,9 +20,13 @@ if (isset($_COOKIE['ingat_nama_pengguna'])) {
     $cookie_username = $_COOKIE['ingat_nama_pengguna'];
 }
 
-// Cek apakah ada kiriman pesan sukses dari pendaftaran
-if (isset($_GET['status']) && $_GET['status'] === 'terdaftar') {
-    $pesan_sukses = "Pendaftaran berhasil! Silakan masuk menggunakan nama pengguna Anda.";
+// Cek apakah ada kiriman pesan sukses
+if (isset($_GET['status'])) {
+    if ($_GET['status'] === 'terdaftar') {
+        $pesan_sukses = "Pendaftaran berhasil! Silakan masuk menggunakan nama pengguna Anda.";
+    } elseif ($_GET['status'] === 'reset_sukses') {
+        $pesan_sukses = "Kata sandi berhasil diperbarui! Silakan masuk menggunakan kata sandi baru Anda.";
+    }
 }
 
 // Proses form masuk saat dikirim
@@ -133,9 +137,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="password" id="kata_sandi" name="kata_sandi" class="contact-form-control" placeholder="Masukkan kata sandi Anda" required autocomplete="current-password">
                     </div>
                     
-                    <div class="auth-checkbox-group">
-                        <input type="checkbox" id="ingat_saya" name="ingat_saya" <?= !empty($cookie_username) ? 'checked' : '' ?>>
-                        <label for="ingat_saya">Ingat Saya (Hanya Nama Pengguna)</label>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 8px;">
+                        <div class="auth-checkbox-group" style="margin-bottom: 0;">
+                            <input type="checkbox" id="ingat_saya" name="ingat_saya" <?= !empty($cookie_username) ? 'checked' : '' ?>>
+                            <label for="ingat_saya">Ingat Saya</label>
+                        </div>
+                        <a href="lupa_password.php" style="color: var(--spiced-wine); font-size: 0.95rem; font-weight: 600; text-decoration: none;">Lupa Password?</a>
                     </div>
                     
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
