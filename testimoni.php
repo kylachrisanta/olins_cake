@@ -331,7 +331,7 @@ if (isset($_SESSION['pelanggan_id'])) {
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.1">
 </head>
 <body>
 
@@ -351,28 +351,25 @@ if (isset($_SESSION['pelanggan_id'])) {
             <ul class="nav-menu" id="nav-menu">
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
                     <li class="dropdown-container">
-                        <span class="dropdown-trigger">
+                        <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
                             Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                        </span>
+                        </a>
                         <ul class="dropdown-menu-list">
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-                            <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
-                    <li><a href="keranjang.php" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Keranjang</a></li>
+                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
                 <?php else: ?>
+                    <li><a href="index.php#home" class="nav-link">Beranda</a></li>
                     <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
                     <li><a href="index.php#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
-                    <li><a href="index.php#testimoni" class="nav-link">Testimoni</a></li>
-                    <li><a href="index.php#hubungi" class="nav-link">Hubungi Kami</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
                         <a href="daftar.php" class="btn btn-primary btn-sm">Daftar</a>
@@ -537,64 +534,66 @@ if (isset($_SESSION['pelanggan_id'])) {
     </section>
 
     <!-- FORM TESTIMONI MODAL OVERLAY -->
-    <div class="modal-overlay" id="review-modal">
-        <div class="modal-container">
-            <div class="modal-header">
-                <h3>Beri Testimoni Kue</h3>
-                <button type="button" class="modal-close" onclick="closeReviewModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <form action="testimoni.php?id_produk=<?= $id_produk ?>" method="POST" enctype="multipart/form-data" id="testi-form">
-                    <input type="hidden" name="action_submit_testi" value="1">
-                    <input type="hidden" id="form-id-produk" name="id_produk" value="<?= $id_produk ?>">
-                    <input type="hidden" id="form-id-pesanan" name="id_pesanan" value="<?= $target_pesan_id ?>">
+    <?php if (isset($_SESSION['pelanggan_id']) && count($pending_orders) > 0): ?>
+        <div class="modal-overlay" id="review-modal">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h3>Beri Testimoni Kue</h3>
+                    <button type="button" class="modal-close" onclick="closeReviewModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form action="testimoni.php?id_produk=<?= $id_produk ?>" method="POST" enctype="multipart/form-data" id="testi-form">
+                        <input type="hidden" name="action_submit_testi" value="1">
+                        <input type="hidden" id="form-id-produk" name="id_produk" value="<?= $id_produk ?>">
+                        <input type="hidden" id="form-id-pesanan" name="id_pesanan" value="<?= $target_pesan_id ?>">
 
-                    <div style="margin-bottom: 20px; text-align: center; background: var(--warm-bg); padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(68, 45, 28, 0.05);">
-                        <strong style="color: var(--cowhide-cocoa); font-size: 1.05rem;" id="form-product-name"><?= htmlspecialchars($product['nama_produk']) ?></strong>
-                    </div>
-
-                    <!-- Input Rating (1-5) -->
-                    <div class="form-group-item">
-                        <label class="field-label">Rating Produk *</label>
-                        <div class="star-rating-selector">
-                            <input type="radio" id="star5" name="rating" value="5">
-                            <label for="star5" title="5 bintang"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star4" name="rating" value="4">
-                            <label for="star4" title="4 bintang"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star3" name="rating" value="3">
-                            <label for="star3" title="3 bintang"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star2" name="rating" value="2">
-                            <label for="star2" title="2 bintang"><i class="fa-solid fa-star"></i></label>
-                            <input type="radio" id="star1" name="rating" value="1">
-                            <label for="star1" title="1 bintang"><i class="fa-solid fa-star"></i></label>
+                        <div style="margin-bottom: 20px; text-align: center; background: var(--warm-bg); padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(68, 45, 28, 0.05);">
+                            <strong style="color: var(--cowhide-cocoa); font-size: 1.05rem;" id="form-product-name"><?= htmlspecialchars($product['nama_produk']) ?></strong>
                         </div>
-                        <span id="error-rating" style="color: #c93b2b; font-size: 0.85rem; display: none;">Harap pilih rating bintang.</span>
-                    </div>
 
-                    <!-- Input Isi Ulasan -->
-                    <div class="form-group-item">
-                        <label for="isi_testimoni" class="field-label">Isi Ulasan / Testimoni *</label>
-                        <textarea id="isi_testimoni" name="isi_testimoni" class="form-control-item" rows="5" placeholder="Tulis ulasan Anda mengenai kelezatan kue ini..."></textarea>
-                        <span id="error-ulasan" style="color: #c93b2b; font-size: 0.85rem; display: none;">Isi ulasan wajib diisi.</span>
-                    </div>
+                        <!-- Input Rating (1-5) -->
+                        <div class="form-group-item">
+                            <label class="field-label">Rating Produk *</label>
+                            <div class="star-rating-selector">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5" title="5 bintang"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4" title="4 bintang"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" id="star3" name="rating" value="3">
+                                <label for="star3" title="3 bintang"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2" title="2 bintang"><i class="fa-solid fa-star"></i></label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1" title="1 bintang"><i class="fa-solid fa-star"></i></label>
+                            </div>
+                            <span id="error-rating" style="color: #c93b2b; font-size: 0.85rem; display: none;">Harap pilih rating bintang.</span>
+                        </div>
 
-                    <!-- Input Upload Foto -->
-                    <div class="form-group-item">
-                        <label for="foto_testimoni" class="field-label">Unggah Foto (Opsional)</label>
-                        <input type="file" id="foto_testimoni" name="foto_testimoni" class="form-control-item" accept="image/png, image/jpeg, image/jpg" style="padding: 8px;">
-                        <small style="color: var(--text-muted); display: block; margin-top: 4px;">Format diizinkan: JPG, JPEG, PNG. Maksimal ukuran file: 2 MB.</small>
-                        <span id="error-file" style="color: #c93b2b; font-size: 0.85rem; display: none;">Format file atau ukuran tidak valid.</span>
-                    </div>
+                        <!-- Input Isi Ulasan -->
+                        <div class="form-group-item">
+                            <label for="isi_testimoni" class="field-label">Isi Ulasan / Testimoni *</label>
+                            <textarea id="isi_testimoni" name="isi_testimoni" class="form-control-item" rows="5" placeholder="Tulis ulasan Anda mengenai kelezatan kue ini..."></textarea>
+                            <span id="error-ulasan" style="color: #c93b2b; font-size: 0.85rem; display: none;">Isi ulasan wajib diisi.</span>
+                        </div>
 
-                    <!-- Actions -->
-                    <div style="display: flex; gap: 12px; margin-top: 30px;">
-                        <button type="submit" class="btn btn-primary" style="flex: 1;">Kirim Testimoni</button>
-                        <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeReviewModal()">Batal</button>
-                    </div>
-                </form>
+                        <!-- Input Upload Foto -->
+                        <div class="form-group-item">
+                            <label for="foto_testimoni" class="field-label">Unggah Foto (Opsional)</label>
+                            <input type="file" id="foto_testimoni" name="foto_testimoni" class="form-control-item" accept="image/png, image/jpeg, image/jpg" style="padding: 8px;">
+                            <small style="color: var(--text-muted); display: block; margin-top: 4px;">Format diizinkan: JPG, JPEG, PNG. Maksimal ukuran file: 2 MB.</small>
+                            <span id="error-file" style="color: #c93b2b; font-size: 0.85rem; display: none;">Format file atau ukuran tidak valid.</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div style="display: flex; gap: 12px; margin-top: 30px;">
+                            <button type="submit" class="btn btn-primary" style="flex: 1;">Kirim Testimoni</button>
+                            <button type="button" class="btn btn-outline" style="flex: 1;" onclick="closeReviewModal()">Batal</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 
     <!-- LIGHTBOX OVERLAY FOR ZOOMING PHOTO -->
     <div class="lightbox-modal" id="lightbox" onclick="closeLightbox()">

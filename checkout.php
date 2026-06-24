@@ -88,19 +88,17 @@ if (count($checkout_items) === 0) {
 
             <ul class="nav-menu" id="nav-menu">
                 <li class="dropdown-container">
-                    <span class="dropdown-trigger">
+                    <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
                         Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </span>
+                    </a>
                     <ul class="dropdown-menu-list">
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                         <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-                        <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                     </ul>
                 </li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.php" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Keranjang</a></li>
+                <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                 <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                 <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                 <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
@@ -127,6 +125,8 @@ if (count($checkout_items) === 0) {
                 <input type="hidden" id="input-jarak" name="jarak_km" value="0">
                 <input type="hidden" id="input-ongkir" name="ongkos_kirim" value="0">
                 <input type="hidden" id="input-total" name="total_bayar" value="<?= $subtotal_belanja ?>">
+                <input type="hidden" id="input-lat" name="garis_lintang" value="">
+                <input type="hidden" id="input-lng" name="garis_bujur" value="">
 
                 <div class="checkout-grid">
                     
@@ -185,39 +185,36 @@ if (count($checkout_items) === 0) {
 
                                 <!-- Bidang Input Pengiriman (Diantar ke Alamat) -->
                                 <div id="delivery-fields" class="delivery-details-box">
-                                    <div class="contact-form-group">
-                                        <label for="alamat_pengiriman">Alamat Lengkap Pengiriman <span class="text-danger">*</span></label>
-                                        <textarea id="alamat_pengiriman" name="alamat_pengiriman" class="contact-form-control" rows="3" placeholder="Contoh: Jl. Diponegoro No. 12, Perumahan Fajar Raya Blok C/3" required></textarea>
-                                    </div>
-                                    
-                                    <div class="contact-form-group">
-                                        <label for="kecamatan_pengiriman">Kecamatan Pengiriman <span class="text-danger">*</span></label>
-                                        <select id="kecamatan_pengiriman" name="kecamatan_pengiriman" class="contact-form-control" onchange="updateDeliveryFee(this.value)" required>
-                                            <option value="">-- Pilih Kecamatan Tujuan --</option>
-                                            <!-- Jarak <= 20 km -->
-                                            <option value="tambun_utara">Tambun Utara (3 km)</option>
-                                            <option value="tambun_selatan">Tambun Selatan (9 km)</option>
-                                            <option value="bekasi_utara">Bekasi Utara (6 km)</option>
-                                            <option value="bekasi_timur">Bekasi Timur (8 km)</option>
-                                            <option value="bekasi_barat">Bekasi Barat (13 km)</option>
-                                            <option value="bekasi_selatan">Bekasi Selatan (11 km)</option>
-                                            <option value="babelan">Babelan (7 km)</option>
-                                            <option value="cibitung">Cibitung (12 km)</option>
-                                            <option value="cikarang_utara">Cikarang Utara (18 km)</option>
-                                            <!-- Jarak > 20 km -->
-                                            <option value="cikarang_pusat">Cikarang Pusat (26 km - Di luar layanan)</option>
-                                            <option value="cibarusah">Cibarusah (35 km - Di luar layanan)</option>
-                                        </select>
+                                    <input type="hidden" id="input-alamat" name="alamat_pengiriman" value="">
+
+                                    <!-- Google Maps Container -->
+                                    <div class="contact-form-group" style="margin-top: 15px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Pilih Lokasi Pengantaran di Peta <span class="text-danger">*</span></label>
+                                        <div style="position: relative; margin-bottom: 8px;">
+                                            <input type="text" id="map-search-input" class="contact-form-control" placeholder="Cari alamat atau lokasi di peta..." style="padding-right: 40px;">
+                                            <i class="fa-solid fa-magnifying-glass" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888;"></i>
+                                        </div>
+                                        <div id="map" style="width: 100%; height: 350px; border-radius: 8px; border: 1px solid #ccc; overflow: hidden; margin-bottom: 8px;"></div>
+                                        <small class="text-muted" style="display: block; line-height: 1.4;">
+                                            <i class="fa-solid fa-map-pin" style="color: #ff4d4d; margin-right: 4px;"></i>
+                                            Geser pin merah ke lokasi pengantaran atau klik pada peta untuk memindahkan pin.
+                                        </small>
+
+                                        <!-- Alamat Terdeteksi UI -->
+                                        <div id="detected-address-box" style="margin-top: 12px; display: none;">
+                                            <strong style="font-size: 0.9rem; color: var(--cowhide-cocoa);">Alamat Pengiriman Terdeteksi:</strong>
+                                            <p id="display-alamat" style="margin: 6px 0 0 0; font-size: 0.95rem; color: #555; background: var(--warm-bg, #fdfaf7); padding: 12px; border-radius: 6px; border: 1px solid rgba(68, 45, 28, 0.08); line-height: 1.5;"></p>
+                                        </div>
                                     </div>
 
                                     <!-- Informasi Hasil Ongkir & Jarak -->
                                     <div class="delivery-calc-results" id="delivery-results-box" style="display: none;">
                                         <div class="calc-row">
-                                            <span>Jarak Estimasi:</span>
+                                            <span>Jarak Pengiriman:</span>
                                             <strong id="display-jarak">0 km</strong>
                                         </div>
                                         <div class="calc-row">
-                                            <span>Biaya Ongkos Kirim:</span>
+                                            <span>Ongkos Kirim:</span>
                                             <strong id="display-ongkir" class="text-primary">Rp 0</strong>
                                         </div>
                                     </div>
@@ -230,7 +227,7 @@ if (count($checkout_items) === 0) {
                                             <p>Jarak pengiriman melebihi batas maksimal 20 km dari toko kami di Tambun Utara. Silakan pilih opsi alternatif:</p>
                                             <div class="warning-actions">
                                                 <button type="button" class="btn btn-outline btn-sm" onclick="selectPickupOption()">Ambil di Toko</button>
-                                                <button type="button" class="btn btn-primary btn-sm" onclick="focusKecamatan()">Ubah Kecamatan</button>
+                                                <button type="button" class="btn btn-primary btn-sm" onclick="focusSearchInput()">Ubah Alamat Pengiriman</button>
                                             </div>
                                         </div>
                                     </div>
@@ -397,6 +394,10 @@ if (count($checkout_items) === 0) {
     </footer>
 
     <!-- JavaScript Handling -->
+    <!-- Google Maps API and Libraries -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc&libraries=places,geometry&callback=initMap" async defer></script>
+
+    <!-- JavaScript Handling -->
     <script>
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
@@ -406,104 +407,256 @@ if (count($checkout_items) === 0) {
             navMenu.classList.toggle('active');
         });
 
-        // Dictionary Jarak dan Status Pengiriman per Kecamatan
-        const kecamatanData = {
-            'tambun_utara': { jarak: 3, aktif: true },
-            'tambun_selatan': { jarak: 9, aktif: true },
-            'bekasi_utara': { jarak: 6, aktif: true },
-            'bekasi_timur': { jarak: 8, aktif: true },
-            'bekasi_barat': { jarak: 13, aktif: true },
-            'bekasi_selatan': { jarak: 11, aktif: true },
-            'babelan': { jarak: 7, aktif: true },
-            'cibitung': { jarak: 12, aktif: true },
-            'cikarang_utara': { jarak: 18, aktif: true },
-            'cikarang_pusat': { jarak: 26, aktif: false },
-            'cibarusah': { jarak: 35, aktif: false }
-        };
-
         const subtotalBelanja = <?= $subtotal_belanja ?>;
         let selectedMetode = 'Kirim ke Alamat';
         let currentJarak = 0;
         let currentOngkir = 0;
 
-        // Toggle Tampilan Form Berdasarkan Metode
-        function toggleDeliveryMethod(metode) {
-            selectedMetode = metode;
-            const deliveryBox = document.getElementById('delivery-fields');
-            const pickupBox = document.getElementById('pickup-fields');
+        // Google Maps Variables
+        let map;
+        let storeMarker;
+        let customerMarker;
+        let distanceMatrixService;
+        let searchBox;
+        let geocoder;
+
+        const storeLatLng = { lat: -6.1787633, lng: 107.0657549 };
+
+        // Initialize Map
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: storeLatLng,
+                zoom: 13,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: true
+            });
+
+            // Store Marker
+            storeMarker = new google.maps.Marker({
+                position: storeLatLng,
+                map: map,
+                title: "Olin's Cake (Toko)",
+                icon: {
+                    url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                }
+            });
+
+            const storeInfoWindow = new google.maps.InfoWindow({
+                content: "<strong>Olin's Cake (Toko)</strong><br>Jl. Kemandoran No. 89, Pekayon Jaya, Tambun Utara"
+            });
+            storeMarker.addListener('click', () => {
+                storeInfoWindow.open(map, storeMarker);
+            });
+
+            // Draggable Customer Marker (initially not placed)
+            customerMarker = new google.maps.Marker({
+                position: null,
+                map: null,
+                draggable: true,
+                title: "Lokasi Pengiriman Anda",
+                icon: {
+                    url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png"
+                }
+            });
+
+            // Distance Matrix & Geocoder Service
+            distanceMatrixService = new google.maps.DistanceMatrixService();
+            geocoder = new google.maps.Geocoder();
+
+            // Search Box Integration
+            const searchInput = document.getElementById('map-search-input');
+            searchBox = new google.maps.places.SearchBox(searchInput);
+
+            // Bias search results to map bounds
+            map.addListener('bounds_changed', () => {
+                searchBox.setBounds(map.getBounds());
+            });
+
+            // Listen for search results selection
+            searchBox.addListener('places_changed', () => {
+                const places = searchBox.getPlaces();
+                if (places.length === 0) return;
+
+                const place = places[0];
+                if (!place.geometry || !place.geometry.location) {
+                    console.warn("Tempat tidak memiliki informasi koordinat.");
+                    return;
+                }
+
+                // Place pin
+                customerMarker.setPosition(place.geometry.location);
+                customerMarker.setMap(map);
+
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(16);
+                }
+
+                const address = place.formatted_address || place.name;
+                document.getElementById('input-alamat').value = address;
+                document.getElementById('display-alamat').innerText = address;
+                document.getElementById('detected-address-box').style.display = 'block';
+
+                calculateDistance(place.geometry.location);
+            });
+
+            // Click Map to position pin
+            map.addListener('click', (event) => {
+                if (selectedMetode !== 'Kirim ke Alamat') return;
+                customerMarker.setPosition(event.latLng);
+                customerMarker.setMap(map);
+                calculateDistance(event.latLng);
+                reverseGeocode(event.latLng);
+            });
+
+            // Drag pin end
+            customerMarker.addListener('dragend', () => {
+                if (selectedMetode !== 'Kirim ke Alamat') return;
+                const pos = customerMarker.getPosition();
+                calculateDistance(pos);
+                reverseGeocode(pos);
+            });
             
-            const alamatInput = document.getElementById('alamat_pengiriman');
-            const kecSelect = document.getElementById('kecamatan_pengiriman');
-
-            if (metode === 'Kirim ke Alamat') {
-                deliveryBox.style.display = 'block';
-                pickupBox.style.display = 'none';
-                
-                // Aktifkan validasi required
-                alamatInput.setAttribute('required', 'required');
-                kecSelect.setAttribute('required', 'required');
-                
-                // Hitung ulang berdasarkan input kecamatan saat ini
-                updateDeliveryFee(kecSelect.value);
-            } else {
-                deliveryBox.style.display = 'none';
-                pickupBox.style.display = 'block';
-                
-                // Nonaktifkan validasi required
-                alamatInput.removeAttribute('required');
-                kecSelect.removeAttribute('required');
-
-                // Set Ongkir & Jarak ke 0
-                currentJarak = 0;
-                currentOngkir = 0;
-                
-                updateFormState(true, ''); // Selalu aktif untuk Ambil di Toko
-            }
+            // Initial call if delivery method requires it
+            toggleDeliveryMethod(selectedMetode);
         }
 
-        // Update Ongkir Berdasarkan Pilihan Kecamatan
-        function updateDeliveryFee(kecamatanKey) {
-            if (selectedMetode !== 'Kirim ke Alamat') return;
+        // Reverse Geocode coordinates to address string
+        function reverseGeocode(latLng) {
+            if (!latLng) return;
+            geocoder.geocode({ location: latLng }, (results, status) => {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        const address = results[0].formatted_address;
+                        document.getElementById('input-alamat').value = address;
+                        document.getElementById('display-alamat').innerText = address;
+                        document.getElementById('detected-address-box').style.display = 'block';
+                        
+                        // Check state
+                        updateFormState(currentJarak <= 20, currentJarak > 20 ? 'Pengiriman di luar area layanan.' : '');
+                    }
+                } else {
+                    console.error("Geocoding failed due to: " + status);
+                }
+            });
+        }
+
+        // Calculate distance from store to location
+        function calculateDistance(latLng) {
+            if (!latLng) return;
+
+            // Save coords to form inputs
+            document.getElementById('input-lat').value = latLng.lat();
+            document.getElementById('input-lng').value = latLng.lng();
+
+            distanceMatrixService.getDistanceMatrix({
+                origins: [storeLatLng],
+                destinations: [latLng],
+                travelMode: 'DRIVING'
+            }, (response, status) => {
+                let distanceInKm = 0;
+                let success = false;
+
+                if (status === 'OK' && response.rows[0].elements[0].status === 'OK') {
+                    const distanceValue = response.rows[0].elements[0].distance.value; // meters
+                    distanceInKm = distanceValue / 1000;
+                    success = true;
+                } else {
+                    // Fallback to straight-line distance if Directions service failed
+                    if (google.maps.geometry && google.maps.geometry.spherical) {
+                        const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(
+                            new google.maps.LatLng(storeLatLng.lat, storeLatLng.lng),
+                            latLng
+                        );
+                        distanceInKm = distanceInMeters / 1000;
+                        success = true;
+                    }
+                }
+
+                if (success) {
+                    processDistanceAndOngkir(distanceInKm);
+                } else {
+                    console.error("Gagal menghitung jarak.");
+                }
+            });
+        }
+
+        // Process distance and update shipping cost
+        function processDistanceAndOngkir(distanceInKm) {
+            currentJarak = distanceInKm;
 
             const resultsBox = document.getElementById('delivery-results-box');
             const warningBox = document.getElementById('warning-distance-box');
             const dispJarak = document.getElementById('display-jarak');
             const dispOngkir = document.getElementById('display-ongkir');
 
-            if (!kecamatanKey) {
-                resultsBox.style.display = 'none';
-                warningBox.style.display = 'none';
-                currentJarak = 0;
-                currentOngkir = 0;
-                updateFormState(false, 'Pilih kecamatan pengiriman terlebih dahulu.');
-                return;
-            }
+            // Format distance with comma separator for display (1 decimal place)
+            const formattedDistance = distanceInKm.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 1 }) + " km";
 
-            const data = kecamatanData[kecamatanKey];
-            currentJarak = data.jarak;
-
-            if (data.aktif) {
-                // Kurang dari atau sama dengan 20 km -> Valid
-                currentOngkir = currentJarak * 3000; // Tarif Rp 3.000 per km
+            if (distanceInKm <= 20) {
+                // Calculate ongkir using raw/exact distance * 3000 (rounded to nearest integer for DB/currency)
+                currentOngkir = Math.round(distanceInKm * 3000);
                 
-                // Tampilkan info ongkir
                 resultsBox.style.display = 'block';
                 warningBox.style.display = 'none';
-                dispJarak.innerText = currentJarak + " km";
+                dispJarak.innerText = formattedDistance;
                 dispOngkir.innerText = "Rp " + currentOngkir.toLocaleString('id-ID');
-                
+
                 updateFormState(true, '');
             } else {
-                // Lebih dari 20 km -> Pengiriman di luar layanan
+                // Out of service area
                 currentOngkir = 0;
                 resultsBox.style.display = 'none';
                 warningBox.style.display = 'flex';
-                
-                updateFormState(false, 'Pengiriman di luar area layanan. Silakan pilih ambil di toko.');
+
+                updateFormState(false, 'Pengiriman di luar area layanan.');
             }
         }
 
-        // Kelola status aktif tombol submit dan input tersembunyi
+        // Toggle Delivery Method Form Display
+        function toggleDeliveryMethod(metode) {
+            selectedMetode = metode;
+            const deliveryBox = document.getElementById('delivery-fields');
+            const pickupBox = document.getElementById('pickup-fields');
+            const summaryOngkirRow = document.getElementById('summary-ongkir').closest('.price-row');
+
+            if (metode === 'Kirim ke Alamat') {
+                deliveryBox.style.display = 'block';
+                pickupBox.style.display = 'none';
+                if (summaryOngkirRow) summaryOngkirRow.style.display = 'flex';
+                
+                // Trigger maps search layout update (resize event helps maps load properly)
+                if (map) {
+                    google.maps.event.trigger(map, 'resize');
+                    
+                    // If marker is set, calculate distance, else require pin placement
+                    const lat = document.getElementById('input-lat').value;
+                    const lng = document.getElementById('input-lng').value;
+                    if (lat && lng) {
+                        const latLng = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
+                        customerMarker.setPosition(latLng);
+                        customerMarker.setMap(map);
+                        calculateDistance(latLng);
+                    } else {
+                        updateFormState(false, 'Tentukan lokasi pada peta terlebih dahulu.');
+                    }
+                }
+            } else {
+                deliveryBox.style.display = 'none';
+                pickupBox.style.display = 'block';
+                if (summaryOngkirRow) summaryOngkirRow.style.display = 'none';
+
+                currentJarak = 0;
+                currentOngkir = 0;
+                
+                updateFormState(true, '');
+            }
+        }
+
+        // Form Submit State Handler
         function updateFormState(isValid, errorMsg) {
             const submitBtn = document.getElementById('btn-submit-checkout');
             const inputJarak = document.getElementById('input-jarak');
@@ -513,19 +666,29 @@ if (count($checkout_items) === 0) {
             const summaryOngkir = document.getElementById('summary-ongkir');
             const summaryTotal = document.getElementById('summary-total');
 
-            // Set values ke form hidden inputs
+            // Save raw decimal distance to hidden input
             inputJarak.value = currentJarak;
             inputOngkir.value = currentOngkir;
             
             const totalBayar = subtotalBelanja + currentOngkir;
             inputTotal.value = totalBayar;
 
-            // Tampilkan ke ringkasan harga
+            // Update checkout summary values
             summaryOngkir.innerText = currentOngkir > 0 ? "Rp " + currentOngkir.toLocaleString('id-ID') : "Rp 0";
             summaryTotal.innerText = "Rp " + totalBayar.toLocaleString('id-ID');
 
-            // Aktifkan / Nonaktifkan tombol submit
-            if (isValid) {
+            let finalValid = isValid;
+            if (selectedMetode === 'Kirim ke Alamat') {
+                const addressVal = document.getElementById('input-alamat').value;
+                const latVal = document.getElementById('input-lat').value;
+                const lngVal = document.getElementById('input-lng').value;
+                if (!addressVal || !latVal || !lngVal) {
+                    finalValid = false;
+                }
+            }
+
+            // Toggle Submit Button state
+            if (finalValid) {
                 submitBtn.disabled = false;
                 submitBtn.style.opacity = '1';
                 submitBtn.style.cursor = 'pointer';
@@ -536,7 +699,7 @@ if (count($checkout_items) === 0) {
             }
         }
 
-        // Pilihan Aksi Cepat pada Warning Box
+        // Action choices in Warning Box
         function selectPickupOption() {
             const radioAmbil = document.querySelector('input[name="metode_pengiriman"][value="Ambil Sendiri"]');
             if (radioAmbil) {
@@ -545,14 +708,16 @@ if (count($checkout_items) === 0) {
             }
         }
 
-        function focusKecamatan() {
-            const kecSelect = document.getElementById('kecamatan_pengiriman');
-            if (kecSelect) {
-                kecSelect.focus();
+        // Focus search input on map
+        function focusSearchInput() {
+            const searchInput = document.getElementById('map-search-input');
+            if (searchInput) {
+                searchInput.focus();
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
 
-        // Validasi Tanggal Pre-order Minimal H-3
+        // Pre-order date validation (min H+3)
         function validateDeliveryDate(selectedDateStr) {
             if (!selectedDateStr) return;
 
@@ -560,7 +725,6 @@ if (count($checkout_items) === 0) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
-            // Hitung H+3 hari dari hari ini
             const minDate = new Date(today);
             minDate.setDate(today.getDate() + 3);
 
@@ -569,11 +733,6 @@ if (count($checkout_items) === 0) {
                 document.getElementById('tanggal_pengiriman').value = '';
             }
         }
-
-        // Inisialisasi awal
-        window.addEventListener('DOMContentLoaded', () => {
-            toggleDeliveryMethod('Kirim ke Alamat');
-        });
     </script>
 </body>
 </html>

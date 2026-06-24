@@ -88,7 +88,7 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.1">
 </head>
 <body>
 
@@ -104,11 +104,7 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
                 <h1>Dashboard Admin</h1>
                 <p>Selamat Datang Kembali, <strong><?= htmlspecialchars($_SESSION['admin_name']) ?></strong>. Berikut adalah ringkasan performa toko Anda.</p>
             </div>
-            <div class="admin-header-actions">
-                <a href="pesanan.php" class="admin-btn admin-btn-primary">
-                    <i class="fa-solid fa-receipt"></i> Kelola Pesanan
-                </a>
-            </div>
+
         </div>
 
         <!-- Grid Statistik Card Modern -->

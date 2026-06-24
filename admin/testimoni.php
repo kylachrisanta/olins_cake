@@ -32,28 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add'])) {
     }
 }
 
-// 2. EDIT TESTIMONI
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit'])) {
-    $id_testimoni = isset($_POST['id_testimoni']) ? intval($_POST['id_testimoni']) : 0;
-    $nama_lengkap = isset($_POST['nama_lengkap']) ? trim($_POST['nama_lengkap']) : '';
-    $pekerjaan = isset($_POST['pekerjaan']) ? trim($_POST['pekerjaan']) : '';
-    $isi_testimoni = isset($_POST['isi_testimoni']) ? trim($_POST['isi_testimoni']) : '';
-    $avatar_initial = isset($_POST['avatar_initial']) ? trim($_POST['avatar_initial']) : '';
-    $status = isset($_POST['status']) ? trim($_POST['status']) : 'Aktif';
-    
-    if ($id_testimoni <= 0 || empty($nama_lengkap) || empty($pekerjaan) || empty($isi_testimoni) || empty($avatar_initial)) {
-        $msg_error = "Harap isi semua kolom wajib.";
-    } else {
-        $stmt = $conn->prepare("UPDATE testimoni SET nama_lengkap = ?, pekerjaan = ?, isi_testimoni = ?, avatar_initial = ?, status = ? WHERE id_testimoni = ?");
-        $stmt->bind_param("sssssi", $nama_lengkap, $pekerjaan, $isi_testimoni, $avatar_initial, $status, $id_testimoni);
-        if ($stmt->execute()) {
-            $msg_success = "Testimoni berhasil diperbarui.";
-        } else {
-            $msg_error = "Gagal memperbarui testimoni: " . $conn->error;
-        }
-        $stmt->close();
-    }
-}
+
 
 // 3. TOGGLE STATUS (AKTIF / NONAKTIF)
 if (isset($_GET['action']) && $_GET['action'] === 'toggle') {
@@ -85,17 +64,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
     }
 }
 
-// Ambil Testimoni untuk diedit jika ada request
-$edit_testi = null;
-if (isset($_GET['action']) && $_GET['action'] === 'edit') {
-    $id_edit = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    if ($id_edit > 0) {
-        $res = $conn->query("SELECT * FROM testimoni WHERE id_testimoni = $id_edit");
-        if ($res && $res->num_rows > 0) {
-            $edit_testi = $res->fetch_assoc();
-        }
-    }
-}
+
 
 // Ambil Semua Testimoni
 $list_testi = $conn->query("SELECT * FROM testimoni ORDER BY dibuat_pada DESC");
@@ -109,7 +78,7 @@ $list_testi = $conn->query("SELECT * FROM testimoni ORDER BY dibuat_pada DESC");
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.1">
 </head>
 <body>
 
@@ -144,85 +113,40 @@ $list_testi = $conn->query("SELECT * FROM testimoni ORDER BY dibuat_pada DESC");
         <!-- Grid Input & Daftar -->
         <div class="admin-row" style="grid-template-columns: 0.7fr 1.3fr;">
             
-            <!-- Kolom Form (Tambah/Edit) -->
+            <!-- Kolom Form (Tambah) -->
             <div class="admin-panel-card" style="height: fit-content;">
-                <?php if ($edit_testi): ?>
-                    <!-- Form Edit Testimoni -->
-                    <div class="panel-card-header">
-                        <h3><i class="fa-solid fa-pen-to-square"></i> Edit Testimoni</h3>
+                <!-- Form Tambah Testimoni -->
+                <div class="panel-card-header">
+                    <h3><i class="fa-solid fa-plus"></i> Tambah Testimoni</h3>
+                </div>
+                <form action="testimoni.php" method="POST">
+                    <input type="hidden" name="action_add" value="1">
+                    
+                    <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 10px;">
+                        <div class="admin-form-group">
+                            <label for="nama_lengkap">Nama Lengkap *</label>
+                            <input type="text" id="nama_lengkap" name="nama_lengkap" class="admin-form-control" placeholder="Contoh: Budi Santoso" required autocomplete="off">
+                        </div>
+                        <div class="admin-form-group">
+                            <label for="avatar_initial">Avatar *</label>
+                            <input type="text" id="avatar_initial" name="avatar_initial" class="admin-form-control" placeholder="BS" maxlength="3" required>
+                        </div>
                     </div>
-                    <form action="testimoni.php" method="POST">
-                        <input type="hidden" name="action_edit" value="1">
-                        <input type="hidden" name="id_testimoni" value="<?= $edit_testi['id_testimoni'] ?>">
-                        
-                        <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 10px;">
-                            <div class="admin-form-group">
-                                <label for="nama_lengkap">Nama Lengkap</label>
-                                <input type="text" id="nama_lengkap" name="nama_lengkap" class="admin-form-control" value="<?= htmlspecialchars($edit_testi['nama_lengkap']) ?>" required autocomplete="off">
-                            </div>
-                            <div class="admin-form-group">
-                                <label for="avatar_initial">Avatar Initials</label>
-                                <input type="text" id="avatar_initial" name="avatar_initial" class="admin-form-control" value="<?= htmlspecialchars($edit_testi['avatar_initial']) ?>" maxlength="3" required placeholder="RN">
-                            </div>
-                        </div>
 
-                        <div class="admin-form-group">
-                            <label for="pekerjaan">Pekerjaan / Jabatan</label>
-                            <input type="text" id="pekerjaan" name="pekerjaan" class="admin-form-control" value="<?= htmlspecialchars($edit_testi['pekerjaan']) ?>" required autocomplete="off">
-                        </div>
-
-                        <div class="admin-form-group">
-                            <label for="status">Status Keaktifan</label>
-                            <select id="status" name="status" class="admin-form-control" required>
-                                <option value="Aktif" <?= $edit_testi['status'] === 'Aktif' ? 'selected' : '' ?>>Aktif (Muncul di Web)</option>
-                                <option value="Nonaktif" <?= $edit_testi['status'] === 'Nonaktif' ? 'selected' : '' ?>>Nonaktif (Sembunyikan)</option>
-                            </select>
-                        </div>
-
-                        <div class="admin-form-group">
-                            <label for="isi_testimoni">Isi Testimoni</label>
-                            <textarea id="isi_testimoni" name="isi_testimoni" class="admin-form-control" rows="5" required><?= htmlspecialchars($edit_testi['isi_testimoni']) ?></textarea>
-                        </div>
-                        
-                        <div style="display: flex; gap: 10px;">
-                            <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">Simpan</button>
-                            <a href="testimoni.php" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
-                        </div>
-                    </form>
-                <?php else: ?>
-                    <!-- Form Tambah Testimoni -->
-                    <div class="panel-card-header">
-                        <h3><i class="fa-solid fa-plus"></i> Tambah Testimoni</h3>
+                    <div class="admin-form-group">
+                        <label for="pekerjaan">Pekerjaan / Jabatan *</label>
+                        <input type="text" id="pekerjaan" name="pekerjaan" class="admin-form-control" placeholder="Contoh: Karyawan Swasta" required autocomplete="off">
                     </div>
-                    <form action="testimoni.php" method="POST">
-                        <input type="hidden" name="action_add" value="1">
-                        
-                        <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 10px;">
-                            <div class="admin-form-group">
-                                <label for="nama_lengkap">Nama Lengkap *</label>
-                                <input type="text" id="nama_lengkap" name="nama_lengkap" class="admin-form-control" placeholder="Contoh: Budi Santoso" required autocomplete="off">
-                            </div>
-                            <div class="admin-form-group">
-                                <label for="avatar_initial">Avatar *</label>
-                                <input type="text" id="avatar_initial" name="avatar_initial" class="admin-form-control" placeholder="BS" maxlength="3" required>
-                            </div>
-                        </div>
 
-                        <div class="admin-form-group">
-                            <label for="pekerjaan">Pekerjaan / Jabatan *</label>
-                            <input type="text" id="pekerjaan" name="pekerjaan" class="admin-form-control" placeholder="Contoh: Karyawan Swasta" required autocomplete="off">
-                        </div>
-
-                        <div class="admin-form-group">
-                            <label for="isi_testimoni">Isi Ulasan Testimoni *</label>
-                            <textarea id="isi_testimoni" name="isi_testimoni" class="admin-form-control" rows="5" placeholder="Tuliskan ulasan jujur mengenai cita rasa kue Olin's Cake..." required></textarea>
-                        </div>
-                        
-                        <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
-                            <i class="fa-solid fa-floppy-disk"></i> Simpan Testimoni
-                        </button>
-                    </form>
-                <?php endif; ?>
+                    <div class="admin-form-group">
+                        <label for="isi_testimoni">Isi Ulasan Testimoni *</label>
+                        <textarea id="isi_testimoni" name="isi_testimoni" class="admin-form-control" rows="5" placeholder="Tuliskan ulasan jujur mengenai cita rasa kue Olin's Cake..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Testimoni
+                    </button>
+                </form>
             </div>
 
             <!-- Kolom Tabel Daftar -->
@@ -266,9 +190,6 @@ $list_testi = $conn->query("SELECT * FROM testimoni ORDER BY dibuat_pada DESC");
                                             </a>
                                         </td>
                                         <td style="text-align: right;">
-                                            <a href="testimoni.php?action=edit&id=<?= $row['id_testimoni'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" style="margin-right: 4px;" title="Ubah">
-                                                <i class="fa-solid fa-pen"></i> Edit
-                                            </a>
                                             <a href="testimoni.php?action=delete&id=<?= $row['id_testimoni'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus ulasan ini?')">
                                                 <i class="fa-solid fa-trash"></i> Hapus
                                             </a>

@@ -749,19 +749,17 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
 
             <ul class="nav-menu" id="nav-menu">
                 <li class="dropdown-container">
-                    <span class="dropdown-trigger">
+                    <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
                         Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </span>
+                    </a>
                     <ul class="dropdown-menu-list">
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                         <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-                        <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                     </ul>
                 </li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.php" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Keranjang</a></li>
+                <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                 <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                 <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                 <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
@@ -994,6 +992,16 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                             <span class="info-item-label">Alamat Lengkap</span>
                             <span class="info-item-value"><?= nl2br(htmlspecialchars($order['alamat_pengiriman'])) ?></span>
                         </div>
+                        <?php if ($order['metode_pengiriman'] === 'Kirim ke Alamat' && !empty($order['garis_lintang']) && !empty($order['garis_bujur'])): ?>
+                            <div class="info-item">
+                                <span class="info-item-label">Koordinat Lokasi</span>
+                                <span class="info-item-value">
+                                    <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode("{$order['garis_lintang']},{$order['garis_bujur']}") ?>" target="_blank" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; font-size: 0.8rem; margin-top: 4px; height: auto; border-radius: 4px; color: var(--spiced-wine); border-color: var(--spiced-wine);">
+                                        <i class="fa-solid fa-map-location-dot" style="color: #ff4d4d;"></i> Lihat di Google Maps
+                                    </a>
+                                </span>
+                            </div>
+                        <?php endif; ?>
                         <div class="info-item">
                             <span class="info-item-label">Estimasi Waktu</span>
                             <?php

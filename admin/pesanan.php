@@ -238,7 +238,7 @@ $list_pesanan = $conn->query($query_all);
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.1">
     <style>
         .details-grid {
             display: grid;
@@ -417,6 +417,16 @@ $list_pesanan = $conn->query($query_all);
                                 <label>Alamat Pengiriman</label>
                                 <span><?= nl2br(htmlspecialchars($view_order['alamat_pengiriman'])) ?></span>
                             </div>
+                            <?php if ($view_order['metode_pengiriman'] === 'Kirim ke Alamat' && !empty($view_order['garis_lintang']) && !empty($view_order['garis_bujur'])): ?>
+                                <div class="detail-row-item">
+                                    <label>Koordinat Pelanggan</label>
+                                    <span>
+                                        <a href="https://www.google.com/maps/search/?api=1&query=<?= urlencode("{$view_order['garis_lintang']},{$view_order['garis_bujur']}") ?>" target="_blank" style="color: var(--admin-accent); font-weight: bold; text-decoration: underline;">
+                                            <i class="fa-solid fa-map-location-dot" style="color: #ff4d4d;"></i> Buka di Google Maps
+                                        </a>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
                             <div class="detail-row-item">
                                 <label>Tanggal Pengiriman</label>
                                 <span><?= date('d M Y', strtotime($view_order['tanggal_pengiriman'])) ?></span>

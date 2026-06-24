@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $alamat = trim($_POST['alamat']);
     $kata_sandi_baru = $_POST['kata_sandi_baru'];
     $konfirmasi_sandi = $_POST['konfirmasi_sandi'];
+    $hapus_foto = isset($_POST['hapus_foto']) ? (int)$_POST['hapus_foto'] : 0;
 
     // Validasi
     if (empty($nama_lengkap) || empty($nomor_wa)) {
@@ -43,30 +44,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (empty($pesan_error)) {
-            if ($update_password) {
-                // Update dengan kata sandi baru
-                $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, alamat = ?, kata_sandi = ? WHERE id_pelanggan = ?");
-                $stmt->bind_param("ssssi", $nama_lengkap, $nomor_wa, $alamat, $hashed_password, $id_pelanggan);
-            } else {
-                // Update tanpa ganti kata sandi
-                $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, alamat = ? WHERE id_pelanggan = ?");
-                $stmt->bind_param("sssi", $nama_lengkap, $nomor_wa, $alamat, $id_pelanggan);
+            // Ambil foto profil lama
+            $stmt_old = $conn->prepare("SELECT foto_profil FROM pelanggan WHERE id_pelanggan = ?");
+            $stmt_old->bind_param("i", $id_pelanggan);
+            $stmt_old->execute();
+            $res_old = $stmt_old->get_result()->fetch_assoc();
+            $foto_lama = $res_old ? $res_old['foto_profil'] : null;
+            $stmt_old->close();
+
+            $foto_profil_new = $foto_lama;
+
+            // Proses Hapus Foto jika dicentang
+            if ($hapus_foto === 1) {
+                if (!empty($foto_lama) && file_exists(__DIR__ . '/assets/uploads/profil/' . $foto_lama)) {
+                    unlink(__DIR__ . '/assets/uploads/profil/' . $foto_lama);
+                }
+                $foto_profil_new = null;
             }
 
-            if ($stmt->execute()) {
-                $pesan_sukses = "Profil Anda berhasil diperbarui.";
-                // Perbarui nama di sesi
-                $_SESSION['pelanggan_nama'] = $nama_lengkap;
-            } else {
-                $pesan_error = "Terjadi kesalahan sistem saat memperbarui profil.";
+            // Proses Unggah Foto Baru
+            if (isset($_FILES['foto_profil']) && $_FILES['foto_profil']['error'] !== UPLOAD_ERR_NO_FILE) {
+                $file = $_FILES['foto_profil'];
+                $file_size = $file['size'];
+                $file_tmp = $file['tmp_name'];
+                $file_name = $file['name'];
+                
+                // Format file extension
+                $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                $allowed_exts = ['jpg', 'jpeg', 'png'];
+                
+                // Cek format & mime
+                $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                $file_mime = finfo_file($finfo, $file_tmp);
+                finfo_close($finfo);
+                $allowed_mimes = ['image/jpeg', 'image/png', 'image/jpg'];
+                
+                if (!in_array($file_ext, $allowed_exts) || !in_array($file_mime, $allowed_mimes)) {
+                    $pesan_error = "Format foto tidak didukung. Hanya file JPG, JPEG, dan PNG yang diperbolehkan.";
+                } elseif ($file_size > 2 * 1024 * 1024) {
+                    $pesan_error = "Ukuran foto terlalu besar. Maksimal ukuran file adalah 2 MB.";
+                } else {
+                    // Buat folder jika belum ada
+                    $upload_dir = __DIR__ . '/assets/uploads/profil/';
+                    if (!is_dir($upload_dir)) {
+                        mkdir($upload_dir, 0777, true);
+                    }
+
+                    // Buat nama unik
+                    $new_gambar_name = 'profil_' . $id_pelanggan . '_' . uniqid() . '.' . $file_ext;
+                    $dest_path = $upload_dir . $new_gambar_name;
+                    
+                    if (move_uploaded_file($file_tmp, $dest_path)) {
+                        // Hapus foto lama jika ada
+                        if (!empty($foto_lama) && file_exists($upload_dir . $foto_lama)) {
+                            unlink($upload_dir . $foto_lama);
+                        }
+                        $foto_profil_new = $new_gambar_name;
+                    } else {
+                        $pesan_error = "Gagal mengunggah foto profil. Silakan coba lagi.";
+                    }
+                }
             }
-            $stmt->close();
+
+            // Jika tidak ada error dalam proses file
+            if (empty($pesan_error)) {
+                if ($update_password) {
+                    // Update dengan kata sandi baru
+                    $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, alamat = ?, kata_sandi = ?, foto_profil = ? WHERE id_pelanggan = ?");
+                    $stmt->bind_param("sssssi", $nama_lengkap, $nomor_wa, $alamat, $hashed_password, $foto_profil_new, $id_pelanggan);
+                } else {
+                    // Update tanpa ganti kata sandi
+                    $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, alamat = ?, foto_profil = ? WHERE id_pelanggan = ?");
+                    $stmt->bind_param("ssssi", $nama_lengkap, $nomor_wa, $alamat, $foto_profil_new, $id_pelanggan);
+                }
+
+                if ($stmt->execute()) {
+                    $pesan_sukses = "Profil Anda berhasil diperbarui.";
+                    // Perbarui nama di sesi
+                    $_SESSION['pelanggan_nama'] = $nama_lengkap;
+                } else {
+                    $pesan_error = "Terjadi kesalahan sistem saat memperbarui profil.";
+                }
+                $stmt->close();
+            }
         }
     }
 }
 
 // Ambil Informasi Profil Terbaru Pelanggan
-$stmt = $conn->prepare("SELECT nama_lengkap, nama_pengguna, nomor_wa, alamat FROM pelanggan WHERE id_pelanggan = ?");
+$stmt = $conn->prepare("SELECT nama_lengkap, nama_pengguna, nomor_wa, alamat, foto_profil FROM pelanggan WHERE id_pelanggan = ?");
 $stmt->bind_param("i", $id_pelanggan);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -101,19 +167,17 @@ $stmt->close();
 
             <ul class="nav-menu" id="nav-menu">
                 <li class="dropdown-container">
-                    <span class="dropdown-trigger">
+                    <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
                         Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </span>
+                    </a>
                     <ul class="dropdown-menu-list">
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                         <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-                        <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                     </ul>
                 </li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.php" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Keranjang</a></li>
+                <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                 <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                 <li><a href="profil_saya.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Profil Saya</a></li>
                 <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
@@ -135,8 +199,12 @@ $stmt->close();
                 <!-- Kartu Kiri: Ringkasan Status Akun -->
                 <div class="profile-left-col">
                     <div class="profile-card info-card">
-                        <div class="avatar-large">
-                            <?= strtoupper(substr($user['nama_lengkap'], 0, 1)) ?>
+                        <div class="avatar-large" style="overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <?php if (!empty($user['foto_profil'])): ?>
+                                <img src="assets/uploads/profil/<?= htmlspecialchars($user['foto_profil']) ?>" alt="Foto Profil" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                            <?php else: ?>
+                                <?= strtoupper(substr($user['nama_lengkap'], 0, 1)) ?>
+                            <?php endif; ?>
                         </div>
                         <h3><?= htmlspecialchars($user['nama_lengkap']) ?></h3>
                         <p class="username">@<?= htmlspecialchars($user['nama_pengguna']) ?></p>
@@ -176,7 +244,7 @@ $stmt->close();
                                 </div>
                             <?php endif; ?>
 
-                            <form action="profil_saya.php" method="POST">
+                            <form action="profil_saya.php" method="POST" enctype="multipart/form-data">
                                 <div class="form-grid-2">
                                     <div class="contact-form-group">
                                         <label for="nama_lengkap">Nama Lengkap <span class="text-danger">*</span></label>
@@ -190,12 +258,23 @@ $stmt->close();
 
                                 <div class="contact-form-group" style="margin-top: 16px;">
                                     <label for="nomor_wa">Nomor WhatsApp <span class="text-danger">*</span></label>
-                                    <input type="text" id="nomor_wa" name="nomor_wa" class="contact-form-control" value="<?= htmlspecialchars($user['nomor_wa']) ?>" placeholder="Contoh: 081234567890" required>
+                                    <input type="text" id="nomor_wa" name="nomor_wa" class="contact-form-control" value="<?= htmlspecialchars($user['nomor_wa']) ?>" placeholder="Contoh: 6281234567890" required>
                                 </div>
 
                                 <div class="contact-form-group" style="margin-top: 16px;">
                                     <label for="alamat">Alamat Pengiriman Default <span class="text-muted">(Untuk mempermudah checkout)</span></label>
                                     <textarea id="alamat" name="alamat" class="contact-form-control" rows="3" placeholder="Masukkan alamat lengkap rumah Anda untuk pengantaran kue"><?= htmlspecialchars($user['alamat']) ?></textarea>
+                                </div>
+
+                                <div class="contact-form-group" style="margin-top: 16px;">
+                                    <label for="foto_profil">Foto Profil <span class="text-muted">(Format: JPG, JPEG, PNG. Maks: 2MB)</span></label>
+                                    <input type="file" id="foto_profil" name="foto_profil" class="contact-form-control" accept="image/png, image/jpeg, image/jpg" style="padding: 8px;">
+                                    <?php if (!empty($user['foto_profil'])): ?>
+                                        <div class="form-check" style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                                            <input type="checkbox" id="hapus_foto" name="hapus_foto" value="1" style="width: auto;">
+                                            <label for="hapus_foto" style="margin-bottom: 0; font-size: 0.9rem; cursor: pointer; color: var(--text-muted);">Hapus foto profil saat ini</label>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
 
                                 <!-- Bagian Ganti Kata Sandi -->

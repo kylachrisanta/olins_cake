@@ -12,32 +12,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
     exit;
 }
 
-// Fetch Favorite Products (limit 3)
-$products_query = "SELECT * FROM produk LIMIT 3";
+// Fetch All Products for Preview Carousel
+$products_query = "SELECT * FROM produk ORDER BY id_produk ASC";
 $products_result = $conn->query($products_query);
 
 
-// Fetch up to 6 Latest Active Testimonials (from completed orders or seeded)
-$testi_query = "SELECT t.*, p.nama_produk 
-                FROM testimoni t
-                LEFT JOIN produk p ON t.id_produk = p.id_produk
-                LEFT JOIN pesanan o ON t.id_pesanan = o.id_pesanan
-                WHERE t.status = 'Aktif' AND (t.id_pesanan IS NULL OR o.status_pesanan = 'Selesai')
-                ORDER BY t.rating DESC, t.dibuat_pada DESC
-                LIMIT 6";
-$testi_result = $conn->query($testi_query);
 
-// Helper for date formatting
-if (!function_exists('formatIndonesianDate')) {
-    function formatIndonesianDate($dateStr) {
-        $timestamp = strtotime($dateStr);
-        $months = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-        $day = date('j', $timestamp);
-        $month = date('n', $timestamp);
-        $year = date('Y', $timestamp);
-        return "$day " . $months[$month] . " $year";
-    }
-}
 
 
 // Ambil data rating rata-rata & jumlah ulasan per produk
@@ -80,8 +60,87 @@ if (!function_exists('renderStars')) {
     <meta name="description" content="Olin's Cake menyajikan kue premium buatan rumahan dengan bahan berkualitas terbaik. Freshly baked with love.">
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css?v=1.1">
+    <!-- Inline styles to prevent stylesheet caching issues on the new carousel -->
+    <style>
+        .product-carousel-container {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-top: 40px;
+            padding: 0 50px;
+        }
+        .product-carousel-viewport {
+            width: 100%;
+            overflow: hidden;
+        }
+        .product-carousel-track {
+            display: flex;
+            align-items: stretch;
+            gap: 30px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            padding: 15px 0;
+        }
+        .product-carousel-track .product-card {
+            flex: 0 0 calc((100% - 60px) / 3);
+            min-width: 280px;
+            height: auto;
+        }
+        .product-carousel-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: var(--white);
+            border: 1px solid rgba(68, 45, 28, 0.1);
+            color: var(--spiced-wine);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .product-carousel-nav-btn:hover {
+            background-color: var(--spiced-wine);
+            color: var(--white);
+            border-color: var(--spiced-wine);
+            box-shadow: var(--shadow-md);
+        }
+        .product-carousel-prev { left: -10px; }
+        .product-carousel-next { right: -10px; }
+        .best-seller-badge {
+            left: 16px;
+            right: auto !important;
+            background: linear-gradient(135deg, #FF4D4D, #FF9900) !important;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3) !important;
+        }
+        @media (max-width: 992px) {
+            .product-carousel-track .product-card {
+                flex: 0 0 calc((100% - 30px) / 2);
+            }
+        }
+        @media (max-width: 768px) {
+            .product-carousel-container { padding: 0; }
+            .product-carousel-viewport {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                scrollbar-width: none;
+            }
+            .product-carousel-viewport::-webkit-scrollbar { display: none; }
+            .product-carousel-track { gap: 20px; }
+            .product-carousel-track .product-card {
+                flex: 0 0 85%;
+                scroll-snap-align: center;
+            }
+            .product-carousel-nav-btn { display: none !important; }
+        }
+    </style>
 </head>
 <body>
 
@@ -102,28 +161,26 @@ if (!function_exists('renderStars')) {
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
                     <!-- Menu Navigasi Setelah Pelanggan Login -->
                     <li class="dropdown-container">
-                        <span class="dropdown-trigger">
+                        <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
                             Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                        </span>
+                        </a>
                         <ul class="dropdown-menu-list">
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
-                    <li><a href="keranjang.php" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Keranjang</a></li>
+                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
                 <?php else: ?>
                     <!-- Menu Navigasi Sebelum Login -->
+                    <li><a href="index.php#home" class="nav-link">Beranda</a></li>
                     <li><a href="#tentang" class="nav-link">Tentang Kami</a></li>
                     <li><a href="#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="#cara-pesan" class="nav-link">Cara Pesan</a></li>
-                    <li><a href="#testimoni" class="nav-link">Testimoni</a></li>
 
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
@@ -201,61 +258,79 @@ if (!function_exists('renderStars')) {
     </section>
 
     <!-- Produk Favorit Section -->
-    <section class="section" id="produk">
+    <section class="section" id="produk" style="overflow: hidden;">
         <div class="container">
             <div class="section-header">
                 <span class="subtitle">Menu Terlaris</span>
                 <h2>Produk Favorit</h2>
-                <p>Intip tiga varian kue signature kami yang paling sering dipesan oleh pelanggan setia.</p>
+                <p>Jelajahi seluruh varian kue premium signature kami yang paling sering dipesan oleh pelanggan setia.</p>
             </div>
 
-            <div class="products-grid">
-                <?php if ($products_result && $products_result->num_rows > 0): ?>
-                    <?php while($row = $products_result->fetch_assoc()): ?>
-                        <div class="product-card">
-                            <div class="product-img-wrapper">
-                                <span class="product-badge">Pre-Order</span>
-                                <img src="assets/images/<?= htmlspecialchars($row['gambar']) ?>" alt="<?= htmlspecialchars($row['nama_produk']) ?>" class="product-img">
-                            </div>
-                            <div class="product-info">
-                                <div class="product-header">
-                                    <h3 class="product-title"><?= htmlspecialchars($row['nama_produk']) ?></h3>
-                                    <span class="product-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
-                                </div>
-                                <p class="product-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
-                                <div class="product-footer">
-                                    <?php
-                                    $p_id = $row['id_produk'];
-                                    $avg_rat = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['avg_rating'] : 0.0;
-                                    $tot_rev = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['total_reviews'] : 0;
-                                    ?>
-                                    <a href="testimoni.php?id_produk=<?= $p_id ?>" class="product-rating" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-                                        <?php if ($tot_rev > 0): ?>
-                                            <?= renderStars($avg_rat) ?>
-                                            <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">
-                                                <?= number_format($avg_rat, 1, ',', '.') ?> (<?= $tot_rev ?>)
-                                            </span>
-                                        <?php else: ?>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <i class="fa-regular fa-star"></i>
-                                            <span style="color: var(--text-light); font-size: 0.8rem; margin-left: 4px;">(0)</span>
+            <div class="product-carousel-container">
+                <button class="product-carousel-nav-btn product-carousel-prev" id="product-carousel-prev" aria-label="Geser Kiri">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                
+                <div class="product-carousel-viewport">
+                    <div class="product-carousel-track" id="product-carousel-track">
+                        <?php if ($products_result && $products_result->num_rows > 0): ?>
+                            <?php 
+                            $product_counter = 0;
+                            while($row = $products_result->fetch_assoc()): 
+                                $product_counter++;
+                                $is_best_seller = ($product_counter <= 3);
+                                $p_id = $row['id_produk'];
+                                $avg_rat = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['avg_rating'] : 0.0;
+                                $tot_rev = isset($product_ratings[$p_id]) ? $product_ratings[$p_id]['total_reviews'] : 0;
+                            ?>
+                                <div class="product-card">
+                                    <div class="product-img-wrapper">
+                                        <span class="product-badge"><?= htmlspecialchars($row['kategori']) ?></span>
+                                        <?php if ($is_best_seller): ?>
+                                            <span class="product-badge best-seller-badge"><i class="fa-solid fa-fire"></i> Best Seller</span>
                                         <?php endif; ?>
-                                    </a>
-                                    <span class="product-status">Hanya Preview</span>
+                                        <img src="assets/images/<?= htmlspecialchars($row['gambar']) ?>" alt="<?= htmlspecialchars($row['nama_produk']) ?>" class="product-img">
+                                    </div>
+                                    <div class="product-info">
+                                        <div class="product-header">
+                                            <h3 class="product-title"><?= htmlspecialchars($row['nama_produk']) ?></h3>
+                                            <span class="product-price">Rp <?= number_format($row['harga'], 0, ',', '.') ?></span>
+                                        </div>
+                                        <p class="product-desc"><?= htmlspecialchars($row['deskripsi']) ?></p>
+                                        <div class="product-footer">
+                                            <a href="testimoni.php?id_produk=<?= $p_id ?>" class="product-rating" style="cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                                                <?php if ($tot_rev > 0): ?>
+                                                    <?= renderStars($avg_rat) ?>
+                                                    <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">
+                                                        <?= number_format($avg_rat, 1, ',', '.') ?> (<?= $tot_rev ?>)
+                                                    </span>
+                                                <?php else: ?>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <i class="fa-regular fa-star"></i>
+                                                    <span style="color: var(--text-light); font-size: 0.8rem; margin-left: 4px;">(0)</span>
+                                                <?php endif; ?>
+                                            </a>
+                                            <a href="detail_produk.php?id=<?= $p_id ?>" class="btn btn-outline btn-sm">Lihat Detail</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p style="grid-column: 1/-1; text-align: center; color: var(--text-muted);">Belum ada produk favorit saat ini.</p>
-                <?php endif; ?>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <p style="text-align: center; color: var(--text-muted); width: 100%;">Belum ada produk saat ini.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <button class="product-carousel-nav-btn product-carousel-next" id="product-carousel-next" aria-label="Geser Kanan">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
 
             <div class="product-preview-note">
-                Catatan: Saat ini kami hanya menampilkan preview produk terpopuler. <br>Untuk memesan, silakan <a href="<?php echo isset($_SESSION['pelanggan_id']) ? '#hubungi' : 'masuk.php' ?>">masuk ke akun Anda</a> atau hubungi WhatsApp kami.
+                Catatan: Section ini hanya berfungsi sebagai preview produk. Untuk melakukan pemesanan kue, silakan kunjungi menu <a href="produk.php">Produk</a>.
             </div>
         </div>
     </section>
@@ -304,78 +379,7 @@ if (!function_exists('renderStars')) {
         </div>
     </section>
 
-    <!-- Testimoni Section -->
-    <section class="section" id="testimoni">
-        <div class="container">
-            <div class="section-header">
-                <span class="subtitle">Ulasan Pelanggan</span>
-                <h2>Apa Kata Mereka?</h2>
-                <p>Ulasan tulus dari para pelanggan yang telah mempercayakan perayaan mereka kepada Olin's Cake.</p>
-            </div>
 
-
-            <!-- Testimonials Slider -->
-            <div class="testimonials-slider-container">
-                <button class="slider-btn prev-btn" id="testi-prev" aria-label="Sebelumnya"><i class="fa-solid fa-chevron-left"></i></button>
-                <div class="testimonials-slider-viewport">
-                    <div class="testimonials-slider-track" id="testi-track">
-                        <?php if ($testi_result && $testi_result->num_rows > 0): ?>
-                            <?php while($row = $testi_result->fetch_assoc()): ?>
-                                <div class="testi-card-premium" data-rating="<?= intval($row['rating']) ?>" data-photo="<?= !empty($row['gambar']) ? 'true' : 'false' ?>">
-                                    <div>
-                                        <div class="testi-card-header">
-                                            <div class="testi-card-stars">
-                                                <?= renderStars($row['rating']) ?>
-                                            </div>
-                                            <div class="testi-card-date">
-                                                <?= formatIndonesianDate($row['dibuat_pada']) ?>
-                                            </div>
-                                        </div>
-                                        
-                                        <?php if (!empty($row['nama_produk'])): ?>
-                                            <span class="testi-card-product-badge"><?= htmlspecialchars($row['nama_produk']) ?></span>
-                                        <?php endif; ?>
-
-                                        <p class="testi-card-text" style="margin-top: 6px;">
-                                            "<?= htmlspecialchars($row['isi_testimoni']) ?>"
-                                        </p>
-                                        
-                                        <?php if (!empty($row['gambar'])): ?>
-                                            <div class="testi-card-img-container" onclick="openLightbox('assets/uploads/testimoni/<?= htmlspecialchars($row['gambar']) ?>')">
-                                                <img src="assets/uploads/testimoni/<?= htmlspecialchars($row['gambar']) ?>" alt="Foto ulasan pelanggan" class="testi-card-img" loading="lazy">
-                                                <div class="testi-card-img-zoom-hint">
-                                                    <i class="fa-solid fa-magnifying-glass-plus"></i> Perbesar
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <div class="testi-profile" style="margin-top: 10px; border-top: 1px solid rgba(68, 45, 28, 0.05); padding-top: 14px; display: flex; gap: 12px; align-items: center;">
-                                        <div class="testi-avatar" style="width: 40px; height: 40px; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; background-color: var(--cream-light); color: var(--spiced-wine); border-radius: 50%; font-weight: 700; flex-shrink: 0;"><?= htmlspecialchars($row['avatar_initial']) ?></div>
-                                        <div>
-                                            <h4 class="testi-name" style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin-bottom: 2px; margin-top: 0; text-align: left;"><?= htmlspecialchars($row['nama_lengkap']) ?></h4>
-                                            <span class="testi-role" style="font-size: 0.75rem; color: var(--text-light); display: block; text-align: left;"><?= htmlspecialchars($row['pekerjaan']) ?></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <div style="width: 100%; text-align: center; padding: 40px 0; color: var(--text-muted);">
-                                Belum ada ulasan testimoni dari pelanggan saat ini.
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <button class="slider-btn next-btn" id="testi-next" aria-label="Selanjutnya"><i class="fa-solid fa-chevron-right"></i></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- LIGHTBOX OVERLAY FOR ZOOMING PHOTO -->
-    <div class="lightbox-modal" id="lightbox" onclick="closeLightbox()">
-        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-        <img src="" alt="Fullscreen image review" class="lightbox-content" id="lightbox-img">
-    </div>
 
 
 
@@ -486,31 +490,25 @@ if (!function_exists('renderStars')) {
             window.open(waUrl, '_blank');
         }
 
-        // ─── Testimonials Slider ────────────────────────────────────────────────
+
+        // ─── Product Carousel Slider ──────────────────────────────────────────
         (function () {
-            const track      = document.getElementById('testi-track');
-            const prevBtn    = document.getElementById('testi-prev');
-            const nextBtn    = document.getElementById('testi-next');
+            const track = document.getElementById('product-carousel-track');
+            const prevBtn = document.getElementById('product-carousel-prev');
+            const nextBtn = document.getElementById('product-carousel-next');
 
             if (!track || !prevBtn || !nextBtn) return;
 
-            const cards = track.querySelectorAll('.testi-card-premium');
+            const cards = track.querySelectorAll('.product-card');
             if (!cards.length) return;
 
             let currentIndex = 0;
 
             function getVisibleCount() {
                 const vw = window.innerWidth;
-                if (vw <= 650)  return 1;
-                if (vw <= 992)  return 2;
+                if (vw <= 768) return 1;
+                if (vw <= 992) return 2;
                 return 3;
-            }
-
-            function getCardWidthPercent() {
-                const visible = getVisibleCount();
-                const gapPx   = 24;
-                // Card width as fraction of track width (same as CSS flex calc)
-                return (100 / visible);
             }
 
             function maxIndex() {
@@ -519,14 +517,13 @@ if (!function_exists('renderStars')) {
 
             function slideTo(index) {
                 currentIndex = Math.max(0, Math.min(index, maxIndex()));
-                const visible  = getVisibleCount();
-                const gapPx    = 24;
-                // Calculate pixel offset for each step
-                const cardEl      = cards[0];
-                const cardWidth   = cardEl.getBoundingClientRect().width;
-                const offset      = currentIndex * (cardWidth + gapPx);
+                const gapPx = 30; // gap in px
+                const cardEl = cards[0];
+                const cardWidth = cardEl.getBoundingClientRect().width;
+                const offset = currentIndex * (cardWidth + gapPx);
                 track.style.transform = `translateX(-${offset}px)`;
 
+                // Update navigation button disabled states / opacity
                 prevBtn.style.opacity = currentIndex === 0 ? '0.35' : '1';
                 prevBtn.style.pointerEvents = currentIndex === 0 ? 'none' : 'auto';
                 nextBtn.style.opacity = currentIndex >= maxIndex() ? '0.35' : '1';
@@ -541,50 +538,8 @@ if (!function_exists('renderStars')) {
 
             // Initial state
             slideTo(0);
-
-            // Auto-play every 5 seconds
-            let autoPlay = setInterval(() => {
-                if (currentIndex >= maxIndex()) {
-                    slideTo(0);
-                } else {
-                    slideTo(currentIndex + 1);
-                }
-            }, 5000);
-
-            // Pause auto-play on hover
-            track.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlay));
-            track.parentElement.addEventListener('mouseleave', () => {
-                autoPlay = setInterval(() => {
-                    if (currentIndex >= maxIndex()) {
-                        slideTo(0);
-                    } else {
-                        slideTo(currentIndex + 1);
-                    }
-                }, 5000);
-            });
         })();
 
-        // ─── Lightbox ───────────────────────────────────────────────────────────
-        function openLightbox(imgUrl) {
-            const lightbox    = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            if (!lightbox || !lightboxImg) return;
-            lightboxImg.src              = imgUrl;
-            lightbox.style.display       = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            if (!lightbox) return;
-            lightbox.style.display       = 'none';
-            document.body.style.overflow = '';
-        }
-
-        // Close lightbox with Escape key
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') closeLightbox();
-        });
     </script>
 </body>
 </html>

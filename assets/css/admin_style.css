@@ -429,8 +429,8 @@ body {
 }
 
 .admin-form-control {
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--admin-border);
+    background-color: #FFFFFF;
+    border: 1px solid #A39082; /* Visible solid light cocoa border */
     color: var(--admin-text-main);
     padding: 12px 16px;
     border-radius: var(--radius-sm);
@@ -443,6 +443,36 @@ body {
 .admin-form-control:focus {
     border-color: var(--admin-accent);
     box-shadow: 0 0 10px rgba(210, 179, 140, 0.15);
+}
+
+.admin-form-control::placeholder {
+    color: var(--admin-text-light);
+    opacity: 0.7;
+}
+
+.admin-form-control:-webkit-autofill,
+.admin-form-control:-webkit-autofill:hover, 
+.admin-form-control:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--admin-text-main);
+    -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+select.admin-form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='%23743014' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 20px;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+select.admin-form-control option {
+    background-color: #FFFFFF;
+    color: var(--admin-text-main);
 }
 
 /* Admin Modal dialog */

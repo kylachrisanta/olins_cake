@@ -75,46 +75,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $alamat_pengiriman = null;
     $jarak_km = 0.00;
     $ongkos_kirim = 0;
+    $garis_lintang = null;
+    $garis_bujur = null;
 
     if ($metode_pengiriman === 'Kirim ke Alamat') {
         $alamat_pengiriman = isset($_POST['alamat_pengiriman']) ? trim($_POST['alamat_pengiriman']) : '';
-        $kecamatan = isset($_POST['kecamatan_pengiriman']) ? trim($_POST['kecamatan_pengiriman']) : '';
+        $garis_lintang = isset($_POST['garis_lintang']) ? trim($_POST['garis_lintang']) : '';
+        $garis_bujur = isset($_POST['garis_bujur']) ? trim($_POST['garis_bujur']) : '';
 
-        if (empty($alamat_pengiriman) || empty($kecamatan)) {
-            die("Kesalahan: Alamat lengkap dan kecamatan wajib diisi untuk metode pengantaran.");
+        if (empty($alamat_pengiriman)) {
+            die("Kesalahan: Alamat lengkap pengiriman wajib ditentukan.");
+        }
+        if (empty($garis_lintang) || empty($garis_bujur)) {
+            die("Kesalahan: Titik lokasi pengiriman pada peta harus ditentukan.");
         }
 
-        // Dictionary jarak per kecamatan di backend
-        $kecamatan_jarak = [
-            'tambun_utara' => 3,
-            'tambun_selatan' => 9,
-            'bekasi_utara' => 6,
-            'bekasi_timur' => 8,
-            'bekasi_barat' => 13,
-            'bekasi_selatan' => 11,
-            'babelan' => 7,
-            'cibitung' => 12,
-            'cikarang_utara' => 18,
-            'cikarang_pusat' => 26,
-            'cibarusah' => 35
-        ];
+        // Hitung jarak dari toko (-6.1787633, 107.0657549) ke lokasi pelanggan
+        $apiKey = 'AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc';
+        $storeLat = -6.1787633;
+        $storeLng = 107.0657549;
 
-        if (!array_key_exists($kecamatan, $kecamatan_jarak)) {
-            die("Kesalahan: Kecamatan pengiriman tidak valid.");
+        $verified_jarak = null;
+
+        // Panggil Google Maps Distance Matrix API
+        $api_url = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=" . urlencode("{$storeLat},{$storeLng}") . "&destinations=" . urlencode("{$garis_lintang},{$garis_bujur}") . "&key=" . urlencode($apiKey);
+
+        $ctx = stream_context_create([
+            'http' => [
+                'timeout' => 3
+            ]
+        ]);
+        
+        $response_json = @file_get_contents($api_url, false, $ctx);
+        if ($response_json !== false) {
+            $response = json_decode($response_json, true);
+            if (isset($response['status']) && $response['status'] === 'OK' && isset($response['rows'][0]['elements'][0]['status']) && $response['rows'][0]['elements'][0]['status'] === 'OK') {
+                $distance_meters = $response['rows'][0]['elements'][0]['distance']['value'];
+                $verified_jarak = $distance_meters / 1000;
+            }
         }
 
-        $jarak_km = $kecamatan_jarak[$kecamatan];
+        // Fallback ke Haversine (jarak garis lurus) jika API gagal/timeout
+        if ($verified_jarak === null) {
+            $earthRadius = 6371; // km
+            $dLat = deg2rad(floatval($garis_lintang) - $storeLat);
+            $dLon = deg2rad(floatval($garis_bujur) - $storeLng);
+            $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($storeLat)) * cos(deg2rad(floatval($garis_lintang))) * sin($dLon/2) * sin($dLon/2);
+            $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+            $verified_jarak = $earthRadius * $c;
+        }
+
+        $jarak_km = $verified_jarak;
 
         // Validasi jarak maksimal 20 km di backend
         if ($jarak_km > 20) {
-            die("Kesalahan: Pengiriman di luar area layanan (jarak melebihi batas maksimal 20 km).");
+            die("Kesalahan: Pengiriman di luar area layanan.");
         }
 
-        // Hitung Ongkos Kirim: Jarak * Rp 3.000
-        $ongkos_kirim = $jarak_km * 3000;
-        
-        // Lengkapkan alamat dengan nama kecamatan
-        $alamat_pengiriman .= " (Kecamatan: " . ucfirst(str_replace('_', ' ', $kecamatan)) . ")";
+        // Hitung Ongkos Kirim: Jarak * Rp 3.000 (tanpa pembulatan jarak)
+        $ongkos_kirim = round($jarak_km * 3000);
 
     } else {
         // Metode: Ambil Sendiri
@@ -122,6 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $alamat_pengiriman = 'Diambil langsung di Toko Olin\'s Cake Tambun Utara';
         $jarak_km = 0.00;
         $ongkos_kirim = 0;
+        $garis_lintang = null;
+        $garis_bujur = null;
     }
 
     // Hitung Total Bayar Final
@@ -132,8 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // 1. Masukkan ke tabel pesanan dengan status 'Menunggu Pembayaran' dan batas_pembayaran 24 jam ke depan
-        $stmt_order = $conn->prepare("INSERT INTO pesanan (id_pelanggan, nama_penerima, nomor_wa, metode_pengiriman, alamat_pengiriman, jarak_km, tanggal_pengiriman, waktu_pengiriman, catatan, ongkos_kirim, total_bayar, status_pesanan, status_pembayaran, batas_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu Pembayaran', 'Belum Bayar', DATE_ADD(NOW(), INTERVAL 1 DAY))");
-        $stmt_order->bind_param("issssssssii", $id_pelanggan, $nama_penerima, $nomor_wa, $metode_pengiriman, $alamat_pengiriman, $jarak_km, $tanggal_pengiriman, $waktu_pengiriman, $catatan, $ongkos_kirim, $total_bayar);
+        $stmt_order = $conn->prepare("INSERT INTO pesanan (id_pelanggan, nama_penerima, nomor_wa, metode_pengiriman, alamat_pengiriman, garis_lintang, garis_bujur, jarak_km, tanggal_pengiriman, waktu_pengiriman, catatan, ongkos_kirim, total_bayar, status_pesanan, status_pembayaran, batas_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu Pembayaran', 'Belum Bayar', DATE_ADD(NOW(), INTERVAL 1 DAY))");
+        $stmt_order->bind_param("isssssssdssii", $id_pelanggan, $nama_penerima, $nomor_wa, $metode_pengiriman, $alamat_pengiriman, $garis_lintang, $garis_bujur, $jarak_km, $tanggal_pengiriman, $waktu_pengiriman, $catatan, $ongkos_kirim, $total_bayar);
         
         if (!$stmt_order->execute()) {
             throw new Exception("Gagal menyimpan data transaksi utama.");

@@ -77,29 +77,26 @@ if (!function_exists('renderStars')) {
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
                     <!-- Menu Navigasi Setelah Pelanggan Login -->
                     <li class="dropdown-container">
-                        <span class="dropdown-trigger">
+                        <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
                             Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                        </span>
+                        </a>
                         <ul class="dropdown-menu-list">
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
                             <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                            <li><a href="index.php#testimoni" class="dropdown-menu-item">Testimoni</a></li>
-                            <li><a href="index.php#hubungi" class="dropdown-menu-item">Hubungi Kami</a></li>
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Produk</a></li>
-                    <li><a href="keranjang.php" class="nav-link"><i class="fa-solid fa-basket-shopping"></i> Keranjang</a></li>
+                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
                 <?php else: ?>
                     <!-- Menu Navigasi Sebelum Login -->
+                    <li><a href="index.php#home" class="nav-link">Beranda</a></li>
                     <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
                     <li><a href="index.php#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
-                    <li><a href="index.php#testimoni" class="nav-link">Testimoni</a></li>
-                    <li><a href="index.php#hubungi" class="nav-link">Hubungi Kami</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
                         <a href="daftar.php" class="btn btn-primary btn-sm">Daftar</a>

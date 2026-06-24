@@ -550,7 +550,7 @@ header.scrolled {
     border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(68, 45, 28, 0.03);
+    border: 1px solid rgba(68, 45, 28, 0.15); /* Visible elegant cocoa border */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
@@ -560,7 +560,7 @@ header.scrolled {
 .product-card:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(157, 145, 103, 0.2);
+    border-color: rgba(116, 48, 20, 0.4); /* Soft spiced wine hover border */
 }
 
 .product-img-wrapper {
@@ -667,6 +667,108 @@ header.scrolled {
 
 .product-preview-note a:hover {
     text-decoration: underline;
+}
+
+/* Product Carousel styles */
+.product-carousel-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    margin-top: 40px;
+    padding: 0 50px;
+}
+
+.product-carousel-viewport {
+    width: 100%;
+    overflow: hidden;
+}
+
+.product-carousel-track {
+    display: flex;
+    align-items: stretch;
+    gap: 30px;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 15px 0; /* Mencegah shadow terpotong */
+}
+
+.product-carousel-track .product-card {
+    flex: 0 0 calc((100% - 60px) / 3);
+    min-width: 280px;
+    height: auto;
+}
+
+.product-carousel-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--white);
+    border: 1px solid rgba(68, 45, 28, 0.1);
+    color: var(--spiced-wine);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.product-carousel-nav-btn:hover {
+    background-color: var(--spiced-wine);
+    color: var(--white);
+    border-color: var(--spiced-wine);
+    box-shadow: var(--shadow-md);
+}
+
+.product-carousel-prev {
+    left: -10px;
+}
+
+.product-carousel-next {
+    right: -10px;
+}
+
+/* Best Seller Badge */
+.best-seller-badge {
+    left: 16px;
+    right: auto !important;
+    background: linear-gradient(135deg, #FF4D4D, #FF9900) !important;
+    box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3) !important;
+}
+
+@media (max-width: 992px) {
+    .product-carousel-track .product-card {
+        flex: 0 0 calc((100% - 30px) / 2);
+    }
+}
+
+@media (max-width: 768px) {
+    .product-carousel-container {
+        padding: 0;
+    }
+    .product-carousel-viewport {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+    }
+    .product-carousel-viewport::-webkit-scrollbar {
+        display: none;
+    }
+    .product-carousel-track {
+        gap: 20px;
+    }
+    .product-carousel-track .product-card {
+        flex: 0 0 85%;
+        scroll-snap-align: center;
+    }
+    .product-carousel-nav-btn {
+        display: none !important;
+    }
 }
 
 /* Cara Pesan */
@@ -4724,79 +4826,6 @@ footer {
     border-color: var(--spiced-wine);
 }
 
-/* Home Page Testimonial Slider Styles */
-.testimonials-slider-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 30px;
-    width: 100%;
-}
-
-.testimonials-slider-viewport {
-    overflow: hidden;
-    width: 100%;
-    padding: 10px 4px;
-}
-
-.testimonials-slider-track {
-    display: flex;
-    gap: 24px;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-}
-
-.testimonials-slider-track .testi-card-premium {
-    flex: 0 0 calc((100% - 48px) / 3); /* 3 cards visible on desktop */
-    box-sizing: border-box;
-}
-
-.slider-btn {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--white);
-    border: 1px solid rgba(68, 45, 28, 0.1);
-    color: var(--cowhide-cocoa);
-    font-size: 1.15rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
-    z-index: 10;
-    flex-shrink: 0;
-}
-
-.slider-btn:hover {
-    background: var(--spiced-wine);
-    color: var(--white);
-    border-color: var(--spiced-wine);
-    box-shadow: 0 4px 12px rgba(116, 48, 20, 0.2);
-}
-
-/* Responsive Breakpoints for Slider */
-@media (max-width: 992px) {
-    .testimonials-slider-track .testi-card-premium {
-        flex: 0 0 calc((100% - 24px) / 2); /* 2 cards visible on tablet */
-    }
-}
-
-@media (max-width: 650px) {
-    .testimonials-slider-track .testi-card-premium {
-        flex: 0 0 100%; /* 1 card visible on mobile */
-    }
-    .testimonials-slider-container {
-        gap: 8px;
-    }
-    .slider-btn {
-        width: 38px;
-        height: 38px;
-        font-size: 0.95rem;
-    }
-}
 
 /* Testi Profile & Avatar (used in index.php slider and testimoni.php) */
 .testi-profile {
