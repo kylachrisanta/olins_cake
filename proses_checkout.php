@@ -90,10 +90,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Kesalahan: Titik lokasi pengiriman pada peta harus ditentukan.");
         }
 
-        // Hitung jarak dari toko (-6.1787633, 107.0657549) ke lokasi pelanggan
+        // Hitung jarak dari toko (-6.2215453, 107.0463893) ke lokasi pelanggan
         $apiKey = 'AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc';
-        $storeLat = -6.1787633;
-        $storeLng = 107.0657549;
+        $storeLat = -6.2215453;
+        $storeLng = 107.0463893;
 
         $verified_jarak = null;
 
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Metode: Ambil Sendiri
         $metode_pengiriman = 'Ambil Sendiri';
-        $alamat_pengiriman = 'Diambil langsung di Toko Olin\'s Cake Tambun Utara';
+        $alamat_pengiriman = 'Diambil langsung di Toko Olin\'s Cake – Kp. Karang Jaya Blok D No.1, Karang Satria, Tambun Utara, Bekasi';
         $jarak_km = 0.00;
         $ongkos_kirim = 0;
         $garis_lintang = null;

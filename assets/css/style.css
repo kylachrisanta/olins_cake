@@ -2611,7 +2611,8 @@ footer {
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
     border: 1px solid rgba(68, 45, 28, 0.03);
-    overflow: hidden;
+    /* overflow: hidden dihapus agar dropdown Google Places Autocomplete tidak terpotong */
+    overflow: visible;
 }
 
 .checkout-card-header {

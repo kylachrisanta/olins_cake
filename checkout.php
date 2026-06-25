@@ -70,6 +70,46 @@ if (count($checkout_items) === 0) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Global CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* ── Google Places Autocomplete Dropdown Fix ── */
+        /* Pastikan dropdown saran alamat muncul di atas semua elemen */
+        .pac-container {
+            z-index: 99999 !important;
+            border-radius: 8px !important;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15) !important;
+            border: 1px solid rgba(0,0,0,0.12) !important;
+            font-family: inherit !important;
+            margin-top: 4px !important;
+        }
+        .pac-item {
+            padding: 8px 12px !important;
+            cursor: pointer !important;
+            font-size: 0.875rem !important;
+            line-height: 1.5 !important;
+        }
+        .pac-item:hover {
+            background-color: #fdf6ee !important;
+        }
+        .pac-item-selected,
+        .pac-item-selected:hover {
+            background-color: #f5e6d0 !important;
+        }
+        .pac-matched {
+            font-weight: 700 !important;
+            color: var(--spiced-wine, #8b4513) !important;
+        }
+        /* Perbaikan radius sudut card karena overflow:visible */
+        .checkout-card-header:first-child {
+            border-radius: var(--radius-lg, 12px) var(--radius-lg, 12px) 0 0;
+        }
+        .checkout-card-body:last-child {
+            border-radius: 0 0 var(--radius-lg, 12px) var(--radius-lg, 12px);
+        }
+        /* Override body overflow agar .pac-container tidak terpotong */
+        body {
+            overflow-x: clip !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -192,6 +232,13 @@ if (count($checkout_items) === 0) {
                                     <!-- Google Maps Container -->
                                     <div class="contact-form-group" style="margin-top: 15px;">
                                         <label style="display: block; margin-bottom: 8px; font-weight: 600;">Pilih Lokasi Pengantaran di Peta <span class="text-danger">*</span></label>
+
+                                        <!-- Geolocation Status Banner -->
+                                        <div id="geo-status-banner" style="display: none; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; margin-bottom: 10px; font-size: 0.875rem; font-weight: 500; border: 1px solid;">
+                                            <i id="geo-status-icon" class="fa-solid fa-location-crosshairs"></i>
+                                            <span id="geo-status-text"></span>
+                                        </div>
+
                                         <div style="position: relative; margin-bottom: 8px;">
                                             <input type="text" id="map-search-input" class="contact-form-control" placeholder="Cari alamat atau lokasi di peta..." style="padding-right: 40px;">
                                             <i class="fa-solid fa-magnifying-glass" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888;"></i>
@@ -205,9 +252,9 @@ if (count($checkout_items) === 0) {
                                         <!-- Alamat Terdeteksi UI (Sekarang berupa Textarea yang bisa diedit) -->
                                         <div id="detected-address-box" style="margin-top: 15px;">
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--cowhide-cocoa);">Detail Alamat Pengiriman & Patokan <span class="text-danger">*</span></label>
-                                            <textarea id="input-alamat" name="alamat_pengiriman" class="contact-form-control" rows="3" placeholder="Masukkan detail alamat lengkap (contoh: No. Rumah, RT/RW, Blok, nama gang, warna pagar, atau patokan lainnya)" required></textarea>
+                                            <input type="text" id="input-alamat" name="alamat_pengiriman" class="contact-form-control" placeholder="Ketik nama jalan, kelurahan, kecamatan, atau kota..." required autocomplete="off" style="padding: 12px 14px;">
                                             <small class="text-muted" style="display: block; margin-top: 6px; line-height: 1.4;">
-                                                * Alamat di atas terisi otomatis dari peta. Anda **dapat mengedit atau menambahkan detail secara manual** agar mempermudah kurir menemukan lokasi Anda.
+                                                * Alamat terisi otomatis dari peta. Anda juga dapat <strong>mengetik</strong> untuk mencari dan memilih saran alamat, atau <strong>geser pin</strong> di peta untuk menyesuaikan lokasi secara akurat.
                                             </small>
                                         </div>
                                     </div>
@@ -229,7 +276,7 @@ if (count($checkout_items) === 0) {
                                         <i class="fa-solid fa-triangle-exclamation"></i>
                                         <div class="warning-text">
                                             <strong>Pengiriman di luar area layanan.</strong>
-                                            <p>Jarak pengiriman melebihi batas maksimal 20 km dari toko kami di Tambun Utara. Silakan pilih opsi alternatif:</p>
+                                            <p>Jarak pengiriman melebihi batas maksimal 20 km dari toko kami di Karang Satria, Tambun Utara. Silakan pilih opsi alternatif:</p>
                                             <div class="warning-actions">
                                                 <button type="button" class="btn btn-outline btn-sm" onclick="selectPickupOption()">Ambil di Toko</button>
                                                 <button type="button" class="btn btn-primary btn-sm" onclick="focusSearchInput()">Ubah Alamat Pengiriman</button>
@@ -245,7 +292,7 @@ if (count($checkout_items) === 0) {
                                         <div class="pickup-text">
                                             <strong>Lokasi Pengambilan Toko:</strong>
                                             <p class="store-name">Olin's Cake</p>
-                                            <p class="store-address">Jl. Kemandoran No. 89, RT 006/RW 022, Pekayon Jaya, Kecamatan Tambun Utara, Kabupaten Bekasi</p>
+                                            <p class="store-address">Kp. Karang Jaya Blok D No.1, RT 002/RW 026, Karang Satria, Kec. Tambun Utara, Kabupaten Bekasi 17568</p>
                                             <small class="store-note">* Anda dapat mengambil pesanan secara mandiri sesuai dengan tanggal dan waktu yang ditentukan tanpa biaya ongkos kirim.</small>
                                         </div>
                                     </div>
@@ -427,10 +474,11 @@ if (count($checkout_items) === 0) {
         let storeMarker;
         let customerMarker;
         let distanceMatrixService;
-        let searchBox;
+        let autocompleteSearch;
+        let autocompleteAddress;
         let geocoder;
 
-        const storeLatLng = { lat: -6.1787633, lng: 107.0657549 };
+        const storeLatLng = { lat: -6.2215453, lng: 107.0463893 };
 
         // Initialize Map
         function initMap() {
@@ -453,7 +501,7 @@ if (count($checkout_items) === 0) {
             });
 
             const storeInfoWindow = new google.maps.InfoWindow({
-                content: "<strong>Olin's Cake (Toko)</strong><br>Jl. Kemandoran No. 89, Pekayon Jaya, Tambun Utara"
+                content: "<strong>Olin's Cake (Toko)</strong><br>Kp. Karang Jaya Blok D No.1, Karang Satria, Tambun Utara, Bekasi"
             });
             storeMarker.addListener('click', () => {
                 storeInfoWindow.open(map, storeMarker);
@@ -474,47 +522,39 @@ if (count($checkout_items) === 0) {
             distanceMatrixService = new google.maps.DistanceMatrixService();
             geocoder = new google.maps.Geocoder();
 
-            // Search Box Integration
-            const searchInput = document.getElementById('map-search-input');
-            searchBox = new google.maps.places.SearchBox(searchInput);
-
-            // Bias search results to map bounds
-            map.addListener('bounds_changed', () => {
-                searchBox.setBounds(map.getBounds());
-            });
-
-            // Listen for manual updates to address textarea
-            document.getElementById('input-alamat').addEventListener('input', () => {
-                updateFormState(currentJarak <= 20, currentJarak > 20 ? 'Pengiriman di luar area layanan.' : '');
-            });
-
-            // Listen for search results selection
-            searchBox.addListener('places_changed', () => {
-                const places = searchBox.getPlaces();
-                if (places.length === 0) return;
-
-                const place = places[0];
+            // ── Places Autocomplete: Kolom Pencarian Peta ──────────────────────
+            autocompleteSearch = new google.maps.places.Autocomplete(
+                document.getElementById('map-search-input'), {
+                    fields: ['geometry', 'formatted_address', 'name'],
+                    componentRestrictions: { country: 'id' }
+                }
+            );
+            autocompleteSearch.bindTo('bounds', map);
+            autocompleteSearch.addListener('place_changed', () => {
+                const place = autocompleteSearch.getPlace();
                 if (!place.geometry || !place.geometry.location) {
-                    console.warn("Tempat tidak memiliki informasi koordinat.");
+                    console.warn('Tempat tidak memiliki koordinat.');
                     return;
                 }
+                handlePlaceSelected(place);
+            });
 
-                // Place pin
-                customerMarker.setPosition(place.geometry.location);
-                customerMarker.setMap(map);
-
-                if (place.geometry.viewport) {
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(place.geometry.location);
-                    map.setZoom(16);
+            // ── Places Autocomplete: Kolom Alamat Pengiriman ────────────────────
+            autocompleteAddress = new google.maps.places.Autocomplete(
+                document.getElementById('input-alamat'), {
+                    fields: ['geometry', 'formatted_address', 'name'],
+                    componentRestrictions: { country: 'id' }
                 }
-
-                const address = place.formatted_address || place.name;
-                document.getElementById('input-alamat').value = address;
-                document.getElementById('detected-address-box').style.display = 'block';
-
-                calculateDistance(place.geometry.location);
+            );
+            autocompleteAddress.bindTo('bounds', map);
+            autocompleteAddress.addListener('place_changed', () => {
+                const place = autocompleteAddress.getPlace();
+                if (!place.geometry || !place.geometry.location) {
+                    // Tidak ada place terpilih dari saran — update state saja
+                    updateFormState(currentJarak <= 20, currentJarak > 20 ? 'Pengiriman di luar area layanan.' : '');
+                    return;
+                }
+                handlePlaceSelected(place);
             });
 
             // Click Map to position pin
@@ -536,6 +576,133 @@ if (count($checkout_items) === 0) {
             
             // Initial call if delivery method requires it
             toggleDeliveryMethod(selectedMetode);
+        }
+
+        // ── Handler Terpadu: Saat Tempat Dipilih dari Autocomplete ────────────
+        // Dipanggil oleh autocompleteSearch DAN autocompleteAddress
+        function handlePlaceSelected(place) {
+            const location = place.geometry.location;
+
+            // 1. Pindahkan peta ke lokasi terpilih
+            if (place.geometry.viewport) {
+                map.fitBounds(place.geometry.viewport);
+            } else {
+                map.setCenter(location);
+                map.setZoom(16);
+            }
+
+            // 2. Pindahkan marker ke lokasi terpilih
+            customerMarker.setPosition(location);
+            customerMarker.setMap(map);
+
+            // 3. Isi alamat di kedua field sekaligus
+            const address = place.formatted_address || place.name || '';
+            document.getElementById('input-alamat').value = address;
+            document.getElementById('map-search-input').value = '';  // kosongkan search bar setelah dipilih
+            document.getElementById('detected-address-box').style.display = 'block';
+
+            // 4. Simpan koordinat ke hidden inputs
+            document.getElementById('input-lat').value = location.lat();
+            document.getElementById('input-lng').value = location.lng();
+
+            // 5. Hitung ulang jarak & ongkir
+            calculateDistance(location);
+        }
+
+        // Show geolocation status banner
+        function showGeoBanner(type, message) {
+            const banner = document.getElementById('geo-status-banner');
+            const icon = document.getElementById('geo-status-icon');
+            const text = document.getElementById('geo-status-text');
+
+            banner.style.display = 'flex';
+            text.textContent = message;
+
+            if (type === 'loading') {
+                banner.style.backgroundColor = '#eff6ff';
+                banner.style.borderColor = '#93c5fd';
+                banner.style.color = '#1d4ed8';
+                icon.className = 'fa-solid fa-spinner fa-spin';
+            } else if (type === 'success') {
+                banner.style.backgroundColor = '#f0fdf4';
+                banner.style.borderColor = '#86efac';
+                banner.style.color = '#15803d';
+                icon.className = 'fa-solid fa-circle-check';
+            } else if (type === 'warning') {
+                banner.style.backgroundColor = '#fffbeb';
+                banner.style.borderColor = '#fcd34d';
+                banner.style.color = '#92400e';
+                icon.className = 'fa-solid fa-triangle-exclamation';
+            } else if (type === 'error') {
+                banner.style.backgroundColor = '#fef2f2';
+                banner.style.borderColor = '#fca5a5';
+                banner.style.color = '#991b1b';
+                icon.className = 'fa-solid fa-circle-xmark';
+            }
+        }
+
+        function hideGeoBanner() {
+            document.getElementById('geo-status-banner').style.display = 'none';
+        }
+
+        // Auto-detect user location via browser Geolocation API
+        function detectUserLocation() {
+            if (!navigator.geolocation) {
+                showGeoBanner('warning', 'Browser Anda tidak mendukung deteksi lokasi otomatis. Silakan pilih lokasi pada peta secara manual.');
+                return;
+            }
+
+            showGeoBanner('loading', 'Mendeteksi lokasi Anda secara otomatis...');
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // Success: got user location
+                    const userLatLng = new google.maps.LatLng(
+                        position.coords.latitude,
+                        position.coords.longitude
+                    );
+
+                    // Center map on user location
+                    map.setCenter(userLatLng);
+                    map.setZoom(16);
+
+                    // Place/move customer marker to user location
+                    customerMarker.setPosition(userLatLng);
+                    customerMarker.setMap(map);
+
+                    // Save coordinates to hidden inputs
+                    document.getElementById('input-lat').value = position.coords.latitude;
+                    document.getElementById('input-lng').value = position.coords.longitude;
+
+                    showGeoBanner('success', 'Lokasi Anda berhasil terdeteksi! Pin telah ditempatkan. Geser pin jika perlu penyesuaian.');
+
+                    // Reverse geocode to fill address
+                    reverseGeocode(userLatLng);
+
+                    // Calculate distance
+                    calculateDistance(userLatLng);
+
+                    // Auto-hide banner after 5 seconds
+                    setTimeout(hideGeoBanner, 5000);
+                },
+                function(error) {
+                    // Error / permission denied
+                    let msg = 'Izin lokasi ditolak.';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        msg = 'Izin akses lokasi ditolak. Silakan pilih lokasi pada peta secara manual atau aktifkan izin lokasi di browser Anda.';
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        msg = 'Informasi lokasi tidak tersedia. Silakan pilih lokasi secara manual pada peta.';
+                    } else if (error.code === error.TIMEOUT) {
+                        msg = 'Waktu deteksi lokasi habis. Silakan pilih lokasi secara manual pada peta.';
+                    }
+                    showGeoBanner('error', msg);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
         }
 
         // Reverse Geocode coordinates to address string
@@ -645,15 +812,19 @@ if (count($checkout_items) === 0) {
                 if (map) {
                     google.maps.event.trigger(map, 'resize');
                     
-                    // If marker is set, calculate distance, else require pin placement
+                    // If marker is already set (user switched back), restore it
                     const lat = document.getElementById('input-lat').value;
                     const lng = document.getElementById('input-lng').value;
                     if (lat && lng) {
                         const latLng = new google.maps.LatLng(parseFloat(lat), parseFloat(lng));
                         customerMarker.setPosition(latLng);
                         customerMarker.setMap(map);
+                        map.setCenter(latLng);
+                        map.setZoom(16);
                         calculateDistance(latLng);
                     } else {
+                        // No location set yet — auto-detect user location
+                        detectUserLocation();
                         updateFormState(false, 'Tentukan lokasi pada peta terlebih dahulu.');
                     }
                 }
