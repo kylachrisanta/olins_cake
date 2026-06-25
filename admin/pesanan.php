@@ -21,11 +21,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'
 
     $id_pesanan = isset($_POST['id_pesanan']) ? intval($_POST['id_pesanan']) : 0;
     $status_pesanan = isset($_POST['status_pesanan']) ? trim($_POST['status_pesanan']) : '';
-    $status_pembayaran = isset($_POST['status_pembayaran']) ? trim($_POST['status_pembayaran']) : '';
 
-    if ($id_pesanan <= 0 || empty($status_pesanan) || empty($status_pembayaran)) {
+    if ($id_pesanan <= 0 || empty($status_pesanan)) {
         $msg_error = "Harap isi semua kolom status.";
     } else {
+        // Tentukan status_pembayaran secara otomatis berdasarkan status_pesanan yang dipilih
+        $status_pembayaran = 'Belum Dibayar'; // default fallback
+        if (in_array($status_pesanan, ['Diproses', 'Siap Dikirim', 'Siap Diambil', 'Selesai'])) {
+            $status_pembayaran = 'Sudah Dibayar';
+        } elseif ($status_pesanan === 'Kedaluwarsa') {
+            $status_pembayaran = 'Kedaluwarsa';
+        } elseif ($status_pesanan === 'Dibatalkan') {
+            $status_pembayaran = 'Belum Dibayar';
+        }
         // Ambil data pelanggan dan status lama sebelum update
         $stmt_check = $conn->prepare("SELECT status_pesanan, nama_penerima, nomor_wa, metode_pengiriman FROM pesanan WHERE id_pesanan = ?");
         $stmt_check->bind_param("i", $id_pesanan);
@@ -136,7 +144,7 @@ if (isset($_GET['action_payment'])) {
                 $nama_penerima = $order_info['nama_penerima'];
                 $nomor_wa = $order_info['nomor_wa'];
                 
-                $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Sudah Bayar', status_pesanan = 'Diproses' WHERE id_pesanan = ?");
+                $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Sudah Dibayar', status_pesanan = 'Diproses' WHERE id_pesanan = ?");
                 $stmt->bind_param("i", $id_pesanan);
                 if ($stmt->execute()) {
                     $msg_success = "Pembayaran untuk Pesanan OLN-" . (10000 + $id_pesanan) . " berhasil diverifikasi. Status diperbarui ke 'Diproses'.";
@@ -175,7 +183,7 @@ if (isset($_GET['action_payment'])) {
                 }
                 
                 // Reset status di database
-                $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Belum Bayar', status_pesanan = 'Menunggu Pembayaran', bukti_pembayaran = NULL, metode_pembayaran = NULL WHERE id_pesanan = ?");
+                $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Belum Dibayar', status_pesanan = 'Menunggu Pembayaran', bukti_pembayaran = NULL, metode_pembayaran = NULL WHERE id_pesanan = ?");
                 $stmt->bind_param("i", $id_pesanan);
                 if ($stmt->execute()) {
                     $msg_success = "Bukti pembayaran ditolak. Status dikembalikan ke 'Menunggu Pembayaran' agar pelanggan dapat mengunggah bukti baru.";
@@ -238,7 +246,7 @@ $list_pesanan = $conn->query($query_all);
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.1">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.2">
     <style>
         .details-grid {
             display: grid;
@@ -518,9 +526,9 @@ $list_pesanan = $conn->query($query_all);
                                 <div style="margin-top: 8px;">
                                     <?php
                                     $badge_pay_class = 'admin-badge-info';
-                                    if ($view_order['status_pembayaran'] === 'Belum Bayar') $badge_pay_class = 'admin-badge-waiting';
-                                    elseif ($view_order['status_pembayaran'] === 'Sudah Bayar') $badge_pay_class = 'admin-badge-success';
-                                    elseif ($view_order['status_pembayaran'] === 'Tidak Dibayar') $badge_pay_class = 'admin-badge-danger';
+                                    if ($view_order['status_pembayaran'] === 'Belum Dibayar') $badge_pay_class = 'admin-badge-waiting';
+                                    elseif ($view_order['status_pembayaran'] === 'Sudah Dibayar') $badge_pay_class = 'admin-badge-success';
+                                    elseif ($view_order['status_pembayaran'] === 'Kedaluwarsa') $badge_pay_class = 'admin-badge-danger';
                                     ?>
                                     <span class="admin-badge <?= $badge_pay_class ?>" style="font-size: 0.95rem; padding: 6px 12px; display: inline-block;"><?= htmlspecialchars($view_order['status_pembayaran']) ?></span>
                                 </div>
@@ -544,14 +552,10 @@ $list_pesanan = $conn->query($query_all);
                                 </div>
 
                                 <div class="admin-form-group">
-                                    <label for="status_pembayaran">Status Pembayaran</label>
-                                    <select id="status_pembayaran" name="status_pembayaran" class="admin-form-control" required>
-                                        <option value="Belum Bayar" <?= $view_order['status_pembayaran'] === 'Belum Bayar' ? 'selected' : '' ?>>Belum Bayar</option>
-                                        <option value="Menunggu Verifikasi" <?= $view_order['status_pembayaran'] === 'Menunggu Verifikasi' ? 'selected' : '' ?>>Menunggu Verifikasi</option>
-                                        <option value="Sudah Bayar" <?= $view_order['status_pembayaran'] === 'Sudah Bayar' ? 'selected' : '' ?>>Sudah Bayar</option>
-                                        <option value="Tidak Dibayar" <?= $view_order['status_pembayaran'] === 'Tidak Dibayar' ? 'selected' : '' ?>>Tidak Dibayar / Gagal</option>
-                                    </select>
-                                </div>
+                                     <label>Status Pembayaran</label>
+                                     <input type="text" class="admin-form-control" value="<?= htmlspecialchars($view_order['status_pembayaran']) ?>" disabled style="background-color: #f5f5f5; cursor: not-allowed;">
+                                     <small class="text-muted">* Status pembayaran otomatis mengikuti status pesanan.</small>
+                                 </div>
                                 
                                 <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
                                     <i class="fa-solid fa-check"></i> Perbarui Status
@@ -585,7 +589,7 @@ $list_pesanan = $conn->query($query_all);
                                             </span>
                                         </a>
                                     </div>
-                                    <?php if ($view_order['status_pembayaran'] === 'Menunggu Verifikasi'): ?>
+                                    <?php if ($view_order['status_pesanan'] === 'Menunggu Verifikasi'): ?>
                                         <div style="display: flex; gap: 10px; margin-top: 12px;">
                                             <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=verify" class="admin-btn admin-btn-success admin-btn-sm" style="flex: 1; justify-content: center; text-align: center;" onclick="return confirm('Konfirmasi bahwa dana transfer telah masuk?')">
                                                 <i class="fa-solid fa-check"></i> Setujui
@@ -645,9 +649,9 @@ $list_pesanan = $conn->query($query_all);
                                     
                                     // Klasifikasi badge status pembayaran
                                     $badge_bayar = 'admin-badge-info';
-                                    if ($status_pembayaran === 'Belum Bayar') $badge_bayar = 'admin-badge-waiting';
-                                    elseif ($status_pembayaran === 'Sudah Bayar') $badge_bayar = 'admin-badge-success';
-                                    elseif ($status_pembayaran === 'Tidak Dibayar') $badge_bayar = 'admin-badge-danger';
+                                    if ($status_pembayaran === 'Belum Dibayar') $badge_bayar = 'admin-badge-waiting';
+                                    elseif ($status_pembayaran === 'Sudah Dibayar') $badge_bayar = 'admin-badge-success';
+                                    elseif ($status_pembayaran === 'Kedaluwarsa') $badge_bayar = 'admin-badge-danger';
                                     ?>
                                     <tr>
                                         <td><strong><?= $kode_order ?></strong></td>

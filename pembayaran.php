@@ -42,7 +42,7 @@ $batas_pembayaran = $order['batas_pembayaran'];
 
 // Logika Auto-Expiration: Cek apakah batas waktu pembayaran sudah lewat
 $is_expired = false;
-if ($status_pembayaran === 'Belum Bayar' && $status_pesanan === 'Menunggu Pembayaran') {
+if ($status_pembayaran === 'Belum Dibayar' && $status_pesanan === 'Menunggu Pembayaran') {
     $now = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
     $batas = new DateTime($batas_pembayaran, new DateTimeZone('Asia/Jakarta'));
     
@@ -53,17 +53,17 @@ if ($status_pembayaran === 'Belum Bayar' && $status_pesanan === 'Menunggu Pembay
     if ($now_ts > $batas_ts) {
         $is_expired = true;
         // Update status di database secara otomatis
-        $up_stmt = $conn->prepare("UPDATE pesanan SET status_pesanan = 'Kedaluwarsa', status_pembayaran = 'Tidak Dibayar' WHERE id_pesanan = ?");
+        $up_stmt = $conn->prepare("UPDATE pesanan SET status_pesanan = 'Kedaluwarsa', status_pembayaran = 'Kedaluwarsa' WHERE id_pesanan = ?");
         $up_stmt->bind_param("i", $id_pesanan);
         $up_stmt->execute();
         $up_stmt->close();
         
         $status_pesanan = 'Kedaluwarsa';
-        $status_pembayaran = 'Tidak Dibayar';
+        $status_pembayaran = 'Kedaluwarsa';
     }
 }
 
-if ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan' || $status_pembayaran === 'Tidak Dibayar') {
+if ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan' || $status_pembayaran === 'Kedaluwarsa') {
     $is_expired = true;
 }
 
@@ -94,7 +94,7 @@ $error_upload = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_upload'])) {
     if ($is_expired) {
         $error_upload = "Batas waktu pembayaran telah berakhir. Pesanan dibatalkan secara otomatis.";
-    } elseif ($status_pembayaran !== 'Belum Bayar') {
+    } elseif ($status_pembayaran !== 'Belum Dibayar') {
         $error_upload = "Pembayaran untuk pesanan ini sudah dilakukan atau sedang dalam proses verifikasi.";
     } else {
         $metode = isset($_POST['metode_pembayaran']) ? trim($_POST['metode_pembayaran']) : '';
@@ -138,7 +138,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_upload'])) {
                 
                 if (move_uploaded_file($filetmp, $dest_path)) {
                     // Update database
-                    $stmt_update = $conn->prepare("UPDATE pesanan SET status_pesanan = 'Menunggu Verifikasi', status_pembayaran = 'Menunggu Verifikasi', metode_pembayaran = ?, bukti_pembayaran = ? WHERE id_pesanan = ?");
+                    $stmt_update = $conn->prepare("UPDATE pesanan SET status_pesanan = 'Menunggu Verifikasi', status_pembayaran = 'Belum Dibayar', metode_pembayaran = ?, bukti_pembayaran = ? WHERE id_pesanan = ?");
                     $stmt_update->bind_param("ssi", $metode, $new_filename, $id_pesanan);
                     
                     if ($stmt_update->execute()) {
@@ -180,7 +180,12 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
     <header id="header" class="scrolled">
         <div class="container navbar">
             <a href="index.php" class="logo">
-                <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                    <circle cx="9" cy="7" r="2"/>
+                    <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                    <path d="M5.1 12.8 19 12"/>
+                    <path d="M8.9 15.6 19 15"/>
+                </svg> Olin's <span>Cake</span>
             </a>
             
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
@@ -191,17 +196,15 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
 
             <ul class="nav-menu" id="nav-menu">
                 <li class="dropdown-container">
-                    <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
+                    <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
                         Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
                     </a>
                     <ul class="dropdown-menu-list">
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                        <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
                     </ul>
                 </li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                 <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                 <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                 <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
@@ -248,7 +251,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                 <div class="payment-main-col">
 
                     <!-- 1. Countdown Pembayaran (Hanya jika belum bayar & belum expired) -->
-                    <?php if ($status_pembayaran === 'Belum Bayar' && !$is_expired): ?>
+                    <?php if ($status_pembayaran === 'Belum Dibayar' && !$is_expired): ?>
                         <div class="payment-card timer-card">
                             <div class="timer-label">Sisa Waktu Pembayaran</div>
                             <div class="timer-countdown" id="timer-box">
@@ -280,9 +283,9 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                         <!-- Sudah Dibayar / Menunggu Verifikasi -->
                         <div class="payment-card success-status-card">
                             <i class="fa-solid fa-circle-check success-icon"></i>
-                            <h3><?= $status_pembayaran === 'Sudah Bayar' ? 'Pembayaran Sukses' : 'Menunggu Verifikasi Admin' ?></h3>
+                            <h3><?= $status_pembayaran === 'Sudah Dibayar' ? 'Pembayaran Sukses' : 'Menunggu Verifikasi Admin' ?></h3>
                             <p class="status-msg">
-                                <?php if ($status_pembayaran === 'Sudah Bayar'): ?>
+                                <?php if ($status_pembayaran === 'Sudah Dibayar'): ?>
                                     Pembayaran Anda telah diverifikasi oleh admin. Pesanan Anda saat ini sedang diproses.
                                 <?php else: ?>
                                     Bukti pembayaran berhasil dikirim dan sedang menunggu verifikasi admin. Kami akan segera memperbarui status pesanan Anda.
@@ -309,7 +312,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                     </div>
 
                     <!-- 3. Form & Metode Pembayaran (Hanya jika belum bayar & belum expired) -->
-                    <?php if ($status_pembayaran === 'Belum Bayar' && !$is_expired): ?>
+                    <?php if ($status_pembayaran === 'Belum Dibayar' && !$is_expired): ?>
                         <form action="pembayaran.php?id=<?= $id_pesanan ?>" method="POST" enctype="multipart/form-data" id="payment-form">
                             <input type="hidden" name="action_upload" value="1">
                             
@@ -556,7 +559,12 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
         <div class="container footer-grid">
             <div class="footer-col">
                 <div class="footer-logo">
-                    <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                        <circle cx="9" cy="7" r="2"/>
+                        <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                        <path d="M5.1 12.8 19 12"/>
+                        <path d="M8.9 15.6 19 15"/>
+                    </svg> Olin's <span>Cake</span>
                 </div>
                 <p>
                     Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
@@ -571,10 +579,10 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#home">Beranda</a></li>
+                    <li><a href="index.php">Beranda</a></li>
                     <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#produk">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>
 
@@ -713,7 +721,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
         }
 
         // Countdown Timer Real-time (1x24 Jam)
-        <?php if ($status_pembayaran === 'Belum Bayar' && !$is_expired): ?>
+        <?php if ($status_pembayaran === 'Belum Dibayar' && !$is_expired): ?>
         const targetDate = new Date("<?= date('c', strtotime($batas_pembayaran)) ?>").getTime();
         
         const countdownTimer = setInterval(function() {

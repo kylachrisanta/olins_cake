@@ -11,27 +11,6 @@ $page = 'testimoni';
 $msg_success = "";
 $msg_error = "";
 
-// 1. TAMBAH TESTIMONI
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add'])) {
-    $nama_lengkap = isset($_POST['nama_lengkap']) ? trim($_POST['nama_lengkap']) : '';
-    $pekerjaan = isset($_POST['pekerjaan']) ? trim($_POST['pekerjaan']) : '';
-    $isi_testimoni = isset($_POST['isi_testimoni']) ? trim($_POST['isi_testimoni']) : '';
-    $avatar_initial = isset($_POST['avatar_initial']) ? trim($_POST['avatar_initial']) : '';
-    
-    if (empty($nama_lengkap) || empty($pekerjaan) || empty($isi_testimoni) || empty($avatar_initial)) {
-        $msg_error = "Harap isi semua kolom.";
-    } else {
-        $stmt = $conn->prepare("INSERT INTO testimoni (nama_lengkap, pekerjaan, isi_testimoni, avatar_initial, status) VALUES (?, ?, ?, ?, 'Aktif')");
-        $stmt->bind_param("ssss", $nama_lengkap, $pekerjaan, $isi_testimoni, $avatar_initial);
-        if ($stmt->execute()) {
-            $msg_success = "Testimoni berhasil ditambahkan.";
-        } else {
-            $msg_error = "Gagal menambahkan testimoni: " . $conn->error;
-        }
-        $stmt->close();
-    }
-}
-
 
 
 // 3. TOGGLE STATUS (AKTIF / NONAKTIF)
@@ -78,7 +57,7 @@ $list_testi = $conn->query("SELECT * FROM testimoni ORDER BY dibuat_pada DESC");
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.1">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.2">
 </head>
 <body>
 
@@ -110,44 +89,8 @@ $list_testi = $conn->query("SELECT * FROM testimoni ORDER BY dibuat_pada DESC");
             </div>
         <?php endif; ?>
 
-        <!-- Grid Input & Daftar -->
-        <div class="admin-row" style="grid-template-columns: 0.7fr 1.3fr;">
-            
-            <!-- Kolom Form (Tambah) -->
-            <div class="admin-panel-card" style="height: fit-content;">
-                <!-- Form Tambah Testimoni -->
-                <div class="panel-card-header">
-                    <h3><i class="fa-solid fa-plus"></i> Tambah Testimoni</h3>
-                </div>
-                <form action="testimoni.php" method="POST">
-                    <input type="hidden" name="action_add" value="1">
-                    
-                    <div style="display: grid; grid-template-columns: 3fr 1fr; gap: 10px;">
-                        <div class="admin-form-group">
-                            <label for="nama_lengkap">Nama Lengkap *</label>
-                            <input type="text" id="nama_lengkap" name="nama_lengkap" class="admin-form-control" placeholder="Contoh: Budi Santoso" required autocomplete="off">
-                        </div>
-                        <div class="admin-form-group">
-                            <label for="avatar_initial">Avatar *</label>
-                            <input type="text" id="avatar_initial" name="avatar_initial" class="admin-form-control" placeholder="BS" maxlength="3" required>
-                        </div>
-                    </div>
-
-                    <div class="admin-form-group">
-                        <label for="pekerjaan">Pekerjaan / Jabatan *</label>
-                        <input type="text" id="pekerjaan" name="pekerjaan" class="admin-form-control" placeholder="Contoh: Karyawan Swasta" required autocomplete="off">
-                    </div>
-
-                    <div class="admin-form-group">
-                        <label for="isi_testimoni">Isi Ulasan Testimoni *</label>
-                        <textarea id="isi_testimoni" name="isi_testimoni" class="admin-form-control" rows="5" placeholder="Tuliskan ulasan jujur mengenai cita rasa kue Olin's Cake..." required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan Testimoni
-                    </button>
-                </form>
-            </div>
+        <!-- Grid Daftar -->
+        <div class="admin-row" style="grid-template-columns: 1fr;">
 
             <!-- Kolom Tabel Daftar -->
             <div class="admin-panel-card">

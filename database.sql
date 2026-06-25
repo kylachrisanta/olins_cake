@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
   `nomor_wa` VARCHAR(20) NOT NULL,
   `kata_sandi` VARCHAR(255) NOT NULL,
   `alamat` TEXT,
+  `foto_profil` VARCHAR(255) DEFAULT NULL,
   `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -83,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `pesanan` (
   `ongkos_kirim` INT DEFAULT 0,
   `total_bayar` INT NOT NULL,
   `status_pesanan` VARCHAR(50) DEFAULT 'Menunggu Pembayaran',
-  `status_pembayaran` VARCHAR(50) DEFAULT 'Belum Bayar',
+  `status_pembayaran` VARCHAR(50) DEFAULT 'Belum Dibayar',
   `metode_pembayaran` VARCHAR(50) DEFAULT NULL,
   `bukti_pembayaran` VARCHAR(255) DEFAULT NULL,
   `batas_pembayaran` DATETIME DEFAULT NULL,

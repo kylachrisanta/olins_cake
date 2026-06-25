@@ -156,7 +156,12 @@ $stmt->close();
     <header id="header" class="scrolled">
         <div class="container navbar">
             <a href="index.php" class="logo">
-                <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                    <circle cx="9" cy="7" r="2"/>
+                    <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                    <path d="M5.1 12.8 19 12"/>
+                    <path d="M8.9 15.6 19 15"/>
+                </svg> Olin's <span>Cake</span>
             </a>
             
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
@@ -167,17 +172,15 @@ $stmt->close();
 
             <ul class="nav-menu" id="nav-menu">
                 <li class="dropdown-container">
-                    <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
+                    <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
                         Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
                     </a>
                     <ul class="dropdown-menu-list">
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                        <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
                     </ul>
                 </li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                 <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                 <li><a href="profil_saya.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Profil Saya</a></li>
                 <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
@@ -312,7 +315,12 @@ $stmt->close();
         <div class="container footer-grid">
             <div class="footer-col">
                 <div class="footer-logo">
-                    <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                        <circle cx="9" cy="7" r="2"/>
+                        <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                        <path d="M5.1 12.8 19 12"/>
+                        <path d="M8.9 15.6 19 15"/>
+                    </svg> Olin's <span>Cake</span>
                 </div>
                 <p>
                     Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
@@ -327,10 +335,10 @@ $stmt->close();
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#home">Beranda</a></li>
+                    <li><a href="index.php">Beranda</a></li>
                     <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#produk">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>
 

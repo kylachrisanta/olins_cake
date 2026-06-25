@@ -232,7 +232,7 @@ body {
     right: 20px;
     top: 20px;
     font-size: 1.75rem;
-    color: rgba(210, 179, 140, 0.15);
+    color: rgba(210, 179, 140, 0.4);
 }
 
 .admin-stat-label {
@@ -250,12 +250,21 @@ body {
     margin-top: 12px;
 }
 
-/* Specific Border Accents on Cards */
+/* Specific Border & Icon Accents on Cards */
 .card-total-produk { border-left: 4px solid var(--admin-accent); }
+.card-total-produk .admin-stat-icon { color: rgba(116, 48, 20, 0.35); }
+
 .card-total-pesanan { border-left: 4px solid var(--admin-warning); }
+.card-total-pesanan .admin-stat-icon { color: rgba(180, 83, 9, 0.35); }
+
 .card-proses-pesanan { border-left: 4px solid #a21caf; }
+.card-proses-pesanan .admin-stat-icon { color: rgba(162, 28, 175, 0.35); }
+
 .card-selesai-pesanan { border-left: 4px solid var(--admin-success); }
+.card-selesai-pesanan .admin-stat-icon { color: rgba(21, 128, 61, 0.35); }
+
 .card-pendapatan { border-left: 4px solid #3b82f6; }
+.card-pendapatan .admin-stat-icon { color: rgba(59, 130, 246, 0.35); }
 
 /* Dashboard Chart and Recent Orders Row */
 .admin-row {

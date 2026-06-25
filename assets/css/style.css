@@ -596,6 +596,14 @@ header.scrolled {
     z-index: 3;
 }
 
+.best-seller-badge {
+    left: 16px;
+    right: auto !important;
+    background: linear-gradient(135deg, #FF4D4D, #FF9900) !important;
+    box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3) !important;
+    color: var(--white) !important;
+}
+
 .product-info {
     padding: 24px;
     display: flex;

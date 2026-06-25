@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // 1. Masukkan ke tabel pesanan dengan status 'Menunggu Pembayaran' dan batas_pembayaran 24 jam ke depan
-        $stmt_order = $conn->prepare("INSERT INTO pesanan (id_pelanggan, nama_penerima, nomor_wa, metode_pengiriman, alamat_pengiriman, garis_lintang, garis_bujur, jarak_km, tanggal_pengiriman, waktu_pengiriman, catatan, ongkos_kirim, total_bayar, status_pesanan, status_pembayaran, batas_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu Pembayaran', 'Belum Bayar', DATE_ADD(NOW(), INTERVAL 1 DAY))");
+        $stmt_order = $conn->prepare("INSERT INTO pesanan (id_pelanggan, nama_penerima, nomor_wa, metode_pengiriman, alamat_pengiriman, garis_lintang, garis_bujur, jarak_km, tanggal_pengiriman, waktu_pengiriman, catatan, ongkos_kirim, total_bayar, status_pesanan, status_pembayaran, batas_pembayaran) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu Pembayaran', 'Belum Dibayar', DATE_ADD(NOW(), INTERVAL 1 DAY))");
         $stmt_order->bind_param("isssssssdssii", $id_pelanggan, $nama_penerima, $nomor_wa, $metode_pengiriman, $alamat_pengiriman, $garis_lintang, $garis_bujur, $jarak_km, $tanggal_pengiriman, $waktu_pengiriman, $catatan, $ongkos_kirim, $total_bayar);
         
         if (!$stmt_order->execute()) {

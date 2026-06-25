@@ -144,8 +144,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_submit_testi']
                         $stmt_ins->close();
                         $stmt_check->close();
                         
-                        // Ambil data testimoni yang baru saja dimasukkan
-                        $get_new = $conn->prepare("SELECT * FROM testimoni WHERE id_testimoni = ?");
+                        // Ambil data testimoni yang baru saja dimasukkan beserta foto profil
+                        $get_new = $conn->prepare("SELECT t.*, p.foto_profil FROM testimoni t LEFT JOIN pelanggan p ON t.id_pelanggan = p.id_pelanggan WHERE t.id_testimoni = ?");
                         $get_new->bind_param("i", $new_id);
                         $get_new->execute();
                         $new_review = $get_new->get_result()->fetch_assoc();
@@ -174,6 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_submit_testi']
                                     'avatar_initial' => $new_review['avatar_initial'],
                                     'rating' => intval($new_review['rating']),
                                     'gambar' => $new_review['gambar'],
+                                    'foto_profil' => $new_review['foto_profil'],
                                     'dibuat_pada_formatted' => formatIndonesianDate($new_review['dibuat_pada'])
                                 ],
                                 'stats' => [
@@ -265,7 +266,7 @@ function formatIndonesianDate($dateStr) {
 }
 
 // 4. AMBIL DAFTAR TESTIMONI AKTIF KHUSUS PRODUK INI
-$testi_query = "SELECT * FROM testimoni WHERE id_produk = ? AND status = 'Aktif' ORDER BY dibuat_pada DESC";
+$testi_query = "SELECT t.*, p.foto_profil FROM testimoni t LEFT JOIN pelanggan p ON t.id_pelanggan = p.id_pelanggan WHERE t.id_produk = ? AND t.status = 'Aktif' ORDER BY t.dibuat_pada DESC";
 $stmt_testi = $conn->prepare($testi_query);
 $stmt_testi->bind_param("i", $id_produk);
 $stmt_testi->execute();
@@ -339,7 +340,12 @@ if (isset($_SESSION['pelanggan_id'])) {
     <header id="header" class="scrolled">
         <div class="container navbar">
             <a href="index.php" class="logo">
-                <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                    <circle cx="9" cy="7" r="2"/>
+                    <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                    <path d="M5.1 12.8 19 12"/>
+                    <path d="M8.9 15.6 19 15"/>
+                </svg> Olin's <span>Cake</span>
             </a>
             
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
@@ -351,25 +357,23 @@ if (isset($_SESSION['pelanggan_id'])) {
             <ul class="nav-menu" id="nav-menu">
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
                     <li class="dropdown-container">
-                        <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
+                        <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
                             Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
                         </a>
                         <ul class="dropdown-menu-list">
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                            <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
-                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
                 <?php else: ?>
-                    <li><a href="index.php#home" class="nav-link">Beranda</a></li>
+                    <li><a href="index.php" class="nav-link">Beranda</a></li>
                     <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
-                    <li><a href="index.php#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.php" class="nav-link">Produk</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
                         <a href="daftar.php" class="btn btn-primary btn-sm">Daftar</a>
@@ -386,6 +390,11 @@ if (isset($_SESSION['pelanggan_id'])) {
             <!-- Breadcrumbs -->
             <div class="detail-breadcrumb" style="margin-bottom: 24px;">
                 <a href="index.php">Beranda</a> <span>/</span> <span><?= htmlspecialchars($product['nama_produk']) ?></span> <span>/</span> <span>Ulasan Produk</span>
+            </div>
+
+            <div class="profile-title-area">
+                <h1>Testimoni Pelanggan</h1>
+                <p>Kumpulan testimoni tulus dari pelanggan setia kami untuk <?= htmlspecialchars($product['nama_produk']) ?>.</p>
             </div>
 
             <!-- Notifikasi Alert Sukses / Error -->
@@ -487,37 +496,40 @@ if (isset($_SESSION['pelanggan_id'])) {
                         <?php 
                         $rating_val = intval($t['rating']);
                         ?>
-                        <div class="testi-card-premium" data-rating="<?= $rating_val ?>" data-photo="<?= !empty($t['gambar']) ? 'true' : 'false' ?>">
-                            <div>
-                                <div class="testi-card-header">
-                                    <div class="testi-card-stars">
+                        <div class="testi-card-premium" data-rating="<?= $rating_val ?>" data-photo="<?= !empty($t['gambar']) ? 'true' : 'false' ?>" style="display: flex; flex-direction: column; align-items: stretch; text-align: left;">
+                            <!-- Header: Foto Profil & Nama & Stars -->
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                                <?php if (!empty($t['foto_profil']) && file_exists('assets/uploads/profil/' . $t['foto_profil'])): ?>
+                                    <img src="assets/uploads/profil/<?= htmlspecialchars($t['foto_profil']) ?>" alt="<?= htmlspecialchars($t['nama_lengkap']) ?>" class="testi-avatar" style="width: 48px; height: 48px; object-fit: cover; border-radius: 50%;">
+                                <?php else: ?>
+                                    <div class="testi-avatar" style="width: 48px; height: 48px; font-size: 1rem;"><?= htmlspecialchars($t['avatar_initial']) ?></div>
+                                <?php endif; ?>
+                                
+                                <div style="display: flex; flex-direction: column; gap: 2px;">
+                                    <h4 class="testi-name" style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin: 0;"><?= htmlspecialchars($t['nama_lengkap']) ?></h4>
+                                    <div class="testi-card-stars" style="font-size: 0.85rem; color: #E29547; display: flex; gap: 3px;">
                                         <?= renderStars($t['rating']) ?>
                                     </div>
-                                    <div class="testi-card-date">
-                                        <?= formatIndonesianDate($t['dibuat_pada']) ?>
-                                    </div>
                                 </div>
-
-                                <p class="testi-card-text" style="margin-top: 6px;">
-                                    "<?= htmlspecialchars($t['isi_testimoni']) ?>"
-                                </p>
-                                
-                                <?php if (!empty($t['gambar'])): ?>
-                                    <div class="testi-card-img-container" onclick="openLightbox('assets/uploads/testimoni/<?= htmlspecialchars($t['gambar']) ?>')">
-                                        <img src="assets/uploads/testimoni/<?= htmlspecialchars($t['gambar']) ?>" alt="Foto ulasan pelanggan" class="testi-card-img" loading="lazy">
-                                        <div class="testi-card-img-zoom-hint">
-                                            <i class="fa-solid fa-magnifying-glass-plus"></i> Perbesar
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
                             </div>
 
-                            <div class="testi-profile" style="margin-top: 10px; border-top: 1px solid rgba(68, 45, 28, 0.05); padding-top: 14px;">
-                                <div class="testi-avatar" style="width: 40px; height: 40px; font-size: 0.95rem;"><?= htmlspecialchars($t['avatar_initial']) ?></div>
-                                <div>
-                                    <h4 class="testi-name" style="font-size: 0.95rem;"><?= htmlspecialchars($t['nama_lengkap']) ?></h4>
-                                    <span class="testi-role" style="font-size: 0.75rem;"><?= htmlspecialchars($t['pekerjaan']) ?></span>
+                            <!-- Isi Testimoni (and optional photo) -->
+                            <p class="testi-card-text" style="font-style: italic; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; flex-grow: 1; width: 100%;">
+                                "<?= htmlspecialchars($t['isi_testimoni']) ?>"
+                            </p>
+                            
+                            <?php if (!empty($t['gambar'])): ?>
+                                <div class="testi-card-img-container" style="margin-bottom: 16px;" onclick="openLightbox('assets/uploads/testimoni/<?= htmlspecialchars($t['gambar']) ?>')">
+                                    <img src="assets/uploads/testimoni/<?= htmlspecialchars($t['gambar']) ?>" alt="Foto ulasan pelanggan" class="testi-card-img" loading="lazy">
+                                    <div class="testi-card-img-zoom-hint">
+                                        <i class="fa-solid fa-magnifying-glass-plus"></i> Perbesar
+                                    </div>
                                 </div>
+                            <?php endif; ?>
+
+                            <!-- Tanggal Testimoni -->
+                            <div class="testi-card-date" style="font-size: 0.8rem; color: var(--text-light); font-weight: 500; border-top: 1px solid rgba(68, 45, 28, 0.05); padding-top: 12px; width: 100%; margin-top: auto;">
+                                <?= formatIndonesianDate($t['dibuat_pada']) ?>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -606,7 +618,12 @@ if (isset($_SESSION['pelanggan_id'])) {
         <div class="container footer-grid">
             <div class="footer-col">
                 <div class="footer-logo">
-                    <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                        <circle cx="9" cy="7" r="2"/>
+                        <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                        <path d="M5.1 12.8 19 12"/>
+                        <path d="M8.9 15.6 19 15"/>
+                    </svg> Olin's <span>Cake</span>
                 </div>
                 <p>
                     Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
@@ -621,10 +638,10 @@ if (isset($_SESSION['pelanggan_id'])) {
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#home">Beranda</a></li>
+                    <li><a href="index.php">Beranda</a></li>
                     <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#produk">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>
 
@@ -946,33 +963,42 @@ if (isset($_SESSION['pelanggan_id'])) {
                             }
                         }
                         
+                        let avatarHtml = '';
+                        if (data.review.foto_profil) {
+                            avatarHtml = `<img src="assets/uploads/profil/${data.review.foto_profil}" alt="${escapeHtml(data.review.nama_lengkap)}" class="testi-avatar" style="width: 48px; height: 48px; object-fit: cover; border-radius: 50%;">`;
+                        } else {
+                            avatarHtml = `<div class="testi-avatar" style="width: 48px; height: 48px; font-size: 1rem;">${escapeHtml(data.review.avatar_initial)}</div>`;
+                        }
+
                         const newCard = document.createElement('div');
                         newCard.className = 'testi-card-premium';
+                        newCard.style.display = 'flex';
+                        newCard.style.flexDirection = 'column';
+                        newCard.style.alignItems = 'stretch';
+                        newCard.style.textAlign = 'left';
                         newCard.setAttribute('data-rating', data.review.rating);
                         newCard.setAttribute('data-photo', data.review.gambar ? 'true' : 'false');
                         newCard.innerHTML = `
-                            <div>
-                                <div class="testi-card-header">
-                                    <div class="testi-card-stars">
+                            <!-- Header: Foto Profil & Nama & Stars -->
+                            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                                ${avatarHtml}
+                                <div style="display: flex; flex-direction: column; gap: 2px;">
+                                    <h4 class="testi-name" style="font-size: 0.95rem; font-weight: 700; color: var(--text-main); margin: 0;">${escapeHtml(data.review.nama_lengkap)}</h4>
+                                    <div class="testi-card-stars" style="font-size: 0.85rem; color: #E29547; display: flex; gap: 3px;">
                                         ${starIconsHtml}
                                     </div>
-                                    <div class="testi-card-date">
-                                        ${data.review.dibuat_pada_formatted}
-                                    </div>
                                 </div>
-
-                                <p class="testi-card-text" style="margin-top: 6px;">
-                                    "${escapeHtml(data.review.isi_testimoni)}"
-                                </p>
-                                ${imageHtml}
                             </div>
 
-                            <div class="testi-profile" style="margin-top: 10px; border-top: 1px solid rgba(68, 45, 28, 0.05); padding-top: 14px;">
-                                <div class="testi-avatar" style="width: 40px; height: 40px; font-size: 0.95rem;">${escapeHtml(data.review.avatar_initial)}</div>
-                                <div>
-                                    <h4 class="testi-name" style="font-size: 0.95rem;">${escapeHtml(data.review.nama_lengkap)}</h4>
-                                    <span class="testi-role" style="font-size: 0.75rem;">${escapeHtml(data.review.pekerjaan)}</span>
-                                </div>
+                            <!-- Isi Testimoni (and optional photo) -->
+                            <p class="testi-card-text" style="font-style: italic; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin-bottom: 16px; flex-grow: 1; width: 100%;">
+                                "${escapeHtml(data.review.isi_testimoni)}"
+                            </p>
+                            ${imageHtml}
+
+                            <!-- Tanggal Testimoni -->
+                            <div class="testi-card-date" style="font-size: 0.8rem; color: var(--text-light); font-weight: 500; border-top: 1px solid rgba(68, 45, 28, 0.05); padding-top: 12px; width: 100%; margin-top: auto;">
+                                ${data.review.dibuat_pada_formatted}
                             </div>
                         `;
                         

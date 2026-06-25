@@ -5,6 +5,32 @@ session_start();
 // Import Koneksi Database
 require_once 'config/database.php';
 
+// Ambil 3 produk dengan penjualan terbanyak (Best Seller)
+$best_sellers = [];
+$best_query = "SELECT id_produk, SUM(jumlah) as total_terjual 
+               FROM detail_pesanan dp 
+               JOIN pesanan p ON dp.id_pesanan = p.id_pesanan 
+               WHERE p.status_pesanan NOT IN ('Dibatalkan', 'Kedaluwarsa') 
+               GROUP BY id_produk 
+               ORDER BY total_terjual DESC 
+               LIMIT 3";
+$best_res = $conn->query($best_query);
+if ($best_res && $best_res->num_rows > 0) {
+    while ($b_row = $best_res->fetch_assoc()) {
+        if ($b_row['total_terjual'] > 0) {
+            $best_sellers[] = (int)$b_row['id_produk'];
+        }
+    }
+}
+// Fallback jika belum ada data penjualan yang valid (gunakan ID: 1, 2, 3)
+$fallback_ids = [1, 2, 3];
+foreach ($fallback_ids as $fid) {
+    if (count($best_sellers) >= 3) break;
+    if (!in_array($fid, $best_sellers)) {
+        $best_sellers[] = $fid;
+    }
+}
+
 // Ambil ID Produk dari URL
 $id_produk = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -75,7 +101,12 @@ if (!function_exists('renderStars')) {
     <header id="header" class="scrolled"> <!-- Background solid untuk halaman detail -->
         <div class="container navbar">
             <a href="index.php" class="logo">
-                <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                    <circle cx="9" cy="7" r="2"/>
+                    <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                    <path d="M5.1 12.8 19 12"/>
+                    <path d="M8.9 15.6 19 15"/>
+                </svg> Olin's <span>Cake</span>
             </a>
             
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
@@ -88,26 +119,24 @@ if (!function_exists('renderStars')) {
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
                     <!-- Menu Navigasi Setelah Pelanggan Login -->
                     <li class="dropdown-container">
-                        <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
+                        <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
                             Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
                         </a>
                         <ul class="dropdown-menu-list">
                             <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                            <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                             <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Produk</a></li>
-                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
                 <?php else: ?>
                     <!-- Menu Navigasi Sebelum Login -->
-                    <li><a href="index.php#home" class="nav-link">Beranda</a></li>
+                    <li><a href="index.php" class="nav-link">Beranda</a></li>
                     <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
-                    <li><a href="index.php#produk" class="nav-link">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Produk</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
                         <a href="daftar.php" class="btn btn-primary btn-sm">Daftar</a>
@@ -140,6 +169,9 @@ if (!function_exists('renderStars')) {
                 <div class="detail-info-col">
                     <div class="detail-tag-rating" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                         <span class="detail-category-badge"><?= htmlspecialchars($product['kategori']) ?></span>
+                        <?php if (in_array($product['id_produk'], $best_sellers)): ?>
+                            <span class="detail-category-badge best-seller-badge" style="position: relative; left: auto; top: auto; right: auto; margin-left: 0; box-shadow: 0 4px 10px rgba(255, 77, 77, 0.2);"><i class="fa-solid fa-fire"></i> Best Seller</span>
+                        <?php endif; ?>
                         <div class="product-rating-container" style="display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;">
                             <div class="product-rating" style="display: inline-flex; align-items: center; gap: 4px;">
                                 <?php if ($prod_total_reviews > 0): ?>
@@ -214,11 +246,8 @@ if (!function_exists('renderStars')) {
                             </button>
                         </div>
                     <?php else: ?>
-                        <div class="detail-action-box" style="flex-direction: column; align-items: flex-start; gap: 15px;">
-                            <button type="button" class="btn btn-primary" disabled style="opacity: 0.6; cursor: not-allowed; width: auto;">
-                                <i class="fa-solid fa-basket-shopping" style="margin-right: 8px;"></i> Tambah ke Keranjang
-                            </button>
-                            <div class="preorder-notice-box" style="background-color: #fef2f2; border-color: #fca5a5; color: #991b1b; display: flex; width: 100%; margin-top: 10px; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid #fca5a5; align-items: center; gap: 10px;">
+                        <div class="detail-action-box" style="flex-direction: column; align-items: flex-start; gap: 15px; margin-top: 10px;">
+                            <div class="preorder-notice-box" style="background-color: #fef2f2; border-color: #fca5a5; color: #991b1b; display: flex; width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid #fca5a5; align-items: center; gap: 10px;">
                                 <i class="fa-solid fa-circle-exclamation" style="color: #ef4444; font-size: 1.1rem;"></i>
                                 <p style="margin: 0; font-weight: 500;">Silakan masuk terlebih dahulu untuk melakukan pemesanan.</p>
                             </div>
@@ -236,7 +265,12 @@ if (!function_exists('renderStars')) {
         <div class="container footer-grid">
             <div class="footer-col">
                 <div class="footer-logo">
-                    <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                        <circle cx="9" cy="7" r="2"/>
+                        <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                        <path d="M5.1 12.8 19 12"/>
+                        <path d="M8.9 15.6 19 15"/>
+                    </svg> Olin's <span>Cake</span>
                 </div>
                 <p>
                     Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
@@ -251,10 +285,10 @@ if (!function_exists('renderStars')) {
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#home">Beranda</a></li>
+                    <li><a href="index.php">Beranda</a></li>
                     <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#produk">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>
 

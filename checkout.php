@@ -77,7 +77,12 @@ if (count($checkout_items) === 0) {
     <header id="header" class="scrolled">
         <div class="container navbar">
             <a href="index.php" class="logo">
-                <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                    <circle cx="9" cy="7" r="2"/>
+                    <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                    <path d="M5.1 12.8 19 12"/>
+                    <path d="M8.9 15.6 19 15"/>
+                </svg> Olin's <span>Cake</span>
             </a>
             
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
@@ -88,17 +93,15 @@ if (count($checkout_items) === 0) {
 
             <ul class="nav-menu" id="nav-menu">
                 <li class="dropdown-container">
-                    <a href="index.php#home" class="dropdown-trigger" style="text-decoration: none;">
+                    <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
                         Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
                     </a>
                     <ul class="dropdown-menu-list">
                         <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                        <li><a href="index.php#produk" class="dropdown-menu-item">Produk Favorit</a></li>
                         <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
                     </ul>
                 </li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                 <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                 <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                 <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
@@ -185,8 +188,6 @@ if (count($checkout_items) === 0) {
 
                                 <!-- Bidang Input Pengiriman (Diantar ke Alamat) -->
                                 <div id="delivery-fields" class="delivery-details-box">
-                                    <input type="hidden" id="input-alamat" name="alamat_pengiriman" value="">
-
                                     <!-- Google Maps Container -->
                                     <div class="contact-form-group" style="margin-top: 15px;">
                                         <label style="display: block; margin-bottom: 8px; font-weight: 600;">Pilih Lokasi Pengantaran di Peta <span class="text-danger">*</span></label>
@@ -200,10 +201,13 @@ if (count($checkout_items) === 0) {
                                             Geser pin merah ke lokasi pengantaran atau klik pada peta untuk memindahkan pin.
                                         </small>
 
-                                        <!-- Alamat Terdeteksi UI -->
-                                        <div id="detected-address-box" style="margin-top: 12px; display: none;">
-                                            <strong style="font-size: 0.9rem; color: var(--cowhide-cocoa);">Alamat Pengiriman Terdeteksi:</strong>
-                                            <p id="display-alamat" style="margin: 6px 0 0 0; font-size: 0.95rem; color: #555; background: var(--warm-bg, #fdfaf7); padding: 12px; border-radius: 6px; border: 1px solid rgba(68, 45, 28, 0.08); line-height: 1.5;"></p>
+                                        <!-- Alamat Terdeteksi UI (Sekarang berupa Textarea yang bisa diedit) -->
+                                        <div id="detected-address-box" style="margin-top: 15px;">
+                                            <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--cowhide-cocoa);">Detail Alamat Pengiriman & Patokan <span class="text-danger">*</span></label>
+                                            <textarea id="input-alamat" name="alamat_pengiriman" class="contact-form-control" rows="3" placeholder="Masukkan detail alamat lengkap (contoh: No. Rumah, RT/RW, Blok, nama gang, warna pagar, atau patokan lainnya)" required></textarea>
+                                            <small class="text-muted" style="display: block; margin-top: 6px; line-height: 1.4;">
+                                                * Alamat di atas terisi otomatis dari peta. Anda **dapat mengedit atau menambahkan detail secara manual** agar mempermudah kurir menemukan lokasi Anda.
+                                            </small>
                                         </div>
                                     </div>
 
@@ -347,7 +351,12 @@ if (count($checkout_items) === 0) {
         <div class="container footer-grid">
             <div class="footer-col">
                 <div class="footer-logo">
-                    <i class="fa-solid fa-cake-candles"></i> Olin's <span>Cake</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 8px; margin-top: -3px;">
+                        <circle cx="9" cy="7" r="2"/>
+                        <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                        <path d="M5.1 12.8 19 12"/>
+                        <path d="M8.9 15.6 19 15"/>
+                    </svg> Olin's <span>Cake</span>
                 </div>
                 <p>
                     Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
@@ -362,10 +371,10 @@ if (count($checkout_items) === 0) {
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#home">Beranda</a></li>
+                    <li><a href="index.php">Beranda</a></li>
                     <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#produk">Produk Favorit</a></li>
                     <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>
 
@@ -473,6 +482,11 @@ if (count($checkout_items) === 0) {
                 searchBox.setBounds(map.getBounds());
             });
 
+            // Listen for manual updates to address textarea
+            document.getElementById('input-alamat').addEventListener('input', () => {
+                updateFormState(currentJarak <= 20, currentJarak > 20 ? 'Pengiriman di luar area layanan.' : '');
+            });
+
             // Listen for search results selection
             searchBox.addListener('places_changed', () => {
                 const places = searchBox.getPlaces();
@@ -497,7 +511,6 @@ if (count($checkout_items) === 0) {
 
                 const address = place.formatted_address || place.name;
                 document.getElementById('input-alamat').value = address;
-                document.getElementById('display-alamat').innerText = address;
                 document.getElementById('detected-address-box').style.display = 'block';
 
                 calculateDistance(place.geometry.location);
@@ -532,7 +545,6 @@ if (count($checkout_items) === 0) {
                     if (results[0]) {
                         const address = results[0].formatted_address;
                         document.getElementById('input-alamat').value = address;
-                        document.getElementById('display-alamat').innerText = address;
                         document.getElementById('detected-address-box').style.display = 'block';
                         
                         // Check state

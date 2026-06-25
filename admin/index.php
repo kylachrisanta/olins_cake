@@ -25,7 +25,7 @@ $res_selesai = $conn->query("SELECT COUNT(*) as total FROM pesanan WHERE status_
 $pesanan_selesai = $res_selesai ? $res_selesai->fetch_assoc()['total'] : 0;
 
 // 5. Ambil Pendapatan (Pesanan yang sudah bayar)
-$res_pendapatan = $conn->query("SELECT SUM(total_bayar) as total FROM pesanan WHERE status_pembayaran = 'Sudah Bayar'");
+$res_pendapatan = $conn->query("SELECT SUM(total_bayar) as total FROM pesanan WHERE status_pembayaran = 'Sudah Dibayar'");
 $total_pendapatan = 0;
 if ($res_pendapatan) {
     $row = $res_pendapatan->fetch_assoc();
@@ -45,7 +45,7 @@ $month_labels = [];
 $month_revenues = [];
 $query_chart_rev = "SELECT DATE_FORMAT(dibuat_pada, '%Y-%m') as ym, DATE_FORMAT(dibuat_pada, '%b %Y') as label, SUM(total_bayar) as total 
                     FROM pesanan 
-                    WHERE status_pembayaran = 'Sudah Bayar' 
+                    WHERE status_pembayaran = 'Sudah Dibayar' 
                     GROUP BY ym 
                     ORDER BY ym ASC 
                     LIMIT 6";
@@ -88,7 +88,7 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.1">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.2">
 </head>
 <body>
 
@@ -206,9 +206,9 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
                                 
                                 // Klasifikasi badge status pembayaran
                                 $badge_bayar = 'admin-badge-info';
-                                if ($status_pembayaran === 'Belum Bayar') $badge_bayar = 'admin-badge-waiting';
-                                elseif ($status_pembayaran === 'Sudah Bayar') $badge_bayar = 'admin-badge-success';
-                                elseif ($status_pembayaran === 'Tidak Dibayar') $badge_bayar = 'admin-badge-danger';
+                                if ($status_pembayaran === 'Belum Dibayar') $badge_bayar = 'admin-badge-waiting';
+                                elseif ($status_pembayaran === 'Sudah Dibayar') $badge_bayar = 'admin-badge-success';
+                                elseif ($status_pembayaran === 'Kedaluwarsa') $badge_bayar = 'admin-badge-danger';
                                 ?>
                                 <tr>
                                     <td><strong><?= $kode_order ?></strong></td>

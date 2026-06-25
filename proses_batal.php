@@ -41,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Kesalahan: Hanya pesanan dengan status 'Menunggu Pembayaran' yang dapat dibatalkan.");
     }
     
-    // Jalankan update status_pesanan dan status_pembayaran menjadi 'Dibatalkan'
-    $update_query = "UPDATE pesanan SET status_pesanan = 'Dibatalkan', status_pembayaran = 'Dibatalkan' WHERE id_pesanan = ?";
+    // Jalankan update status_pesanan menjadi 'Dibatalkan' dan status_pembayaran menjadi 'Belum Dibayar'
+    $update_query = "UPDATE pesanan SET status_pesanan = 'Dibatalkan', status_pembayaran = 'Belum Dibayar' WHERE id_pesanan = ?";
     $stmt_update = $conn->prepare($update_query);
     $stmt_update->bind_param("i", $id_pesanan);
     
