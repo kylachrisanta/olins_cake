@@ -128,6 +128,7 @@ if (!function_exists('renderStars')) {
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Produk</a></li>
+                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>

@@ -59,6 +59,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                         </ul>
                     </li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
                     <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
                     <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
                     <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
