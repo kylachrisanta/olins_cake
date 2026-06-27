@@ -135,20 +135,14 @@ $stmt->close();
             </button>
 
             <ul class="nav-menu" id="nav-menu">
-                <li class="dropdown-container">
-                    <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
-                        Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </a>
-                    <ul class="dropdown-menu-list">
-                        <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                        <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                    </ul>
-                </li>
+                <li><a href="index.php" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
                 <li><a href="keranjang.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Keranjang</a></li>
-                <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
-                <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
-                <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
+                <li><a href="pesanan_saya.php" class="nav-link">Pesanan</a></li>
+                <li><a href="profil_saya.php" class="nav-link">Profil</a></li>
+                <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Keluar</a></li>
             </ul>
         </div>
     </header>
@@ -262,7 +256,7 @@ $stmt->close();
                             </div>
 
                             <button type="button" id="btn-checkout" class="btn btn-primary btn-checkout" onclick="proceedToCheckout()" disabled>
-                                Lanjut ke Checkout <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                                Checkout <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
                             </button>
                         </div>
                     </div>
@@ -307,8 +301,8 @@ $stmt->close();
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
                     <li><a href="index.php">Beranda</a></li>
-                    <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="tentang.php">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.php">Cara Pesan</a></li>
                     <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>

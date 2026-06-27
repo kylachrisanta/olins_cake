@@ -100,20 +100,14 @@ $stmt->close();
             </button>
 
             <ul class="nav-menu" id="nav-menu">
-                <li class="dropdown-container">
-                    <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
-                        Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </a>
-                    <ul class="dropdown-menu-list">
-                        <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                        <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                    </ul>
-                </li>
+                <li><a href="index.php" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
                 <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan_saya.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Pesanan Saya</a></li>
-                <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
-                <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
+                <li><a href="pesanan_saya.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Pesanan</a></li>
+                <li><a href="profil_saya.php" class="nav-link">Profil</a></li>
+                <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Keluar</a></li>
             </ul>
         </div>
     </header>
@@ -228,36 +222,8 @@ $stmt->close();
                                 </div>
                             </div>
 
-                            <!-- Body Card: Detail Pengiriman & Jadwal -->
+                            <!-- Body Card: Rincian Kue & Status -->
                             <div class="order-card-body">
-                                <div class="order-body-grid">
-                                    
-                                    <!-- Info Pengiriman -->
-                                    <div class="order-delivery-info">
-                                        <h4><i class="fa-solid fa-truck"></i> Detail Penerimaan</h4>
-                                        <p><strong>Penerima:</strong> <?= htmlspecialchars($order['nama_penerima']) ?></p>
-                                        <p><strong>WhatsApp:</strong> <?= htmlspecialchars($order['nomor_wa']) ?></p>
-                                        <p><strong>Metode:</strong> <?= htmlspecialchars($order['metode_pengiriman']) ?></p>
-                                        <p class="address-paragraph"><strong>Alamat/Lokasi:</strong> <?= htmlspecialchars($order['alamat_pengiriman']) ?></p>
-                                    </div>
-                                    
-                                    <!-- Info Jadwal -->
-                                    <div class="order-schedule-info">
-                                        <h4><i class="fa-solid fa-calendar-check"></i> Jadwal Pre-Order</h4>
-                                        <p><strong>Tanggal Pengiriman:</strong></p>
-                                        <p class="highlight-date"><i class="fa-regular fa-calendar"></i> <?= $tgl_kirim_formatted ?></p>
-                                        <p><strong>Waktu Antar/Ambil:</strong></p>
-                                        <p class="highlight-time"><i class="fa-regular fa-clock"></i> Jam <?= htmlspecialchars($order['waktu_pengiriman']) ?> WIB</p>
-                                        
-                                        <?php if (!empty($order['catatan'])): ?>
-                                            <div class="order-card-notes">
-                                                <strong>Catatan:</strong>
-                                                <p>"<?= nl2br(htmlspecialchars($order['catatan'])) ?>"</p>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                </div>
 
                                 <!-- Rincian Kue yang Dipesan -->
                                 <div class="order-items-list-area">

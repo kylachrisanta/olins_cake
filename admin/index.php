@@ -32,13 +32,7 @@ if ($res_pendapatan) {
     $total_pendapatan = $row['total'] ? $row['total'] : 0;
 }
 
-// 6. Ambil Pesanan Terbaru (Recent Orders - Limit 5)
-$query_recent = "SELECT p.*, pl.nama_lengkap as nama_pelanggan 
-                 FROM pesanan p 
-                 JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
-                 ORDER BY p.dibuat_pada DESC 
-                 LIMIT 5";
-$recent_orders = $conn->query($query_recent);
+
 
 // 7. Data Grafik 1: Pendapatan Bulanan (6 Bulan Terakhir)
 $month_labels = [];
@@ -169,74 +163,7 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
             </div>
         </div>
 
-        <!-- Baris Pesanan Terbaru -->
-        <div class="admin-panel-card" style="margin-top: 24px;">
-            <div class="panel-card-header">
-                <h3><i class="fa-solid fa-clock-rotate-left"></i> Pesanan Terbaru Masuk</h3>
-                <a href="pesanan.php" class="admin-btn admin-btn-secondary admin-btn-sm">Lihat Semua</a>
-            </div>
 
-            <div class="admin-table-container">
-                <table class="admin-table">
-                    <thead>
-                        <tr>
-                            <th>No. Order</th>
-                            <th>Pelanggan</th>
-                            <th>Tanggal Masuk</th>
-                            <th>Pengiriman</th>
-                            <th>Total Bayar</th>
-                            <th>Status Bayar</th>
-                            <th>Status Pesanan</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($recent_orders && $recent_orders->num_rows > 0): ?>
-                            <?php while($row = $recent_orders->fetch_assoc()): ?>
-                                <?php
-                                $kode_order = "OLN-" . (10000 + $row['id_pesanan']);
-                                $status_pesanan = $row['status_pesanan'];
-                                $status_pembayaran = $row['status_pembayaran'];
-                                
-                                // Klasifikasi badge status pesanan
-                                $badge_pesanan = 'admin-badge-info';
-                                if ($status_pesanan === 'Menunggu Pembayaran') $badge_pesanan = 'admin-badge-waiting';
-                                elseif ($status_pesanan === 'Selesai') $badge_pesanan = 'admin-badge-success';
-                                elseif ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan') $badge_pesanan = 'admin-badge-danger';
-                                
-                                // Klasifikasi badge status pembayaran
-                                $badge_bayar = 'admin-badge-info';
-                                if ($status_pembayaran === 'Belum Dibayar') $badge_bayar = 'admin-badge-waiting';
-                                elseif ($status_pembayaran === 'Sudah Dibayar') $badge_bayar = 'admin-badge-success';
-                                elseif ($status_pembayaran === 'Kedaluwarsa') $badge_bayar = 'admin-badge-danger';
-                                ?>
-                                <tr>
-                                    <td><strong><?= $kode_order ?></strong></td>
-                                    <td><?= htmlspecialchars($row['nama_pelanggan']) ?></td>
-                                    <td><?= date('d/m/Y H:i', strtotime($row['dibuat_pada'])) ?> WIB</td>
-                                    <td>
-                                        <span style="font-size: 0.8rem; font-weight: 600; display: block;"><?= htmlspecialchars($row['metode_pengiriman']) ?></span>
-                                        <span style="font-size: 0.75rem; color: var(--admin-text-muted);"><?= date('d/m/Y', strtotime($row['tanggal_pengiriman'])) ?></span>
-                                    </td>
-                                    <td><strong>Rp <?= number_format($row['total_bayar'], 0, ',', '.') ?></strong></td>
-                                    <td><span class="admin-badge <?= $badge_bayar ?>"><?= htmlspecialchars($status_pembayaran) ?></span></td>
-                                    <td><span class="admin-badge <?= $badge_pesanan ?>"><?= htmlspecialchars($status_pesanan) ?></span></td>
-                                    <td>
-                                        <a href="pesanan.php?action=view&id=<?= $row['id_pesanan'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" title="Kelola">
-                                            <i class="fa-solid fa-pen-to-square"></i> Detail
-                                        </a>
-                                    </td>
-                                </tr>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="8" style="text-align: center; color: var(--admin-text-light); padding: 30px 0;">Belum ada data pesanan saat ini.</td>
-                            </tr>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
 
     </div>
 

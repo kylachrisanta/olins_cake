@@ -107,25 +107,19 @@ if (!function_exists('renderStars')) {
             <ul class="nav-menu" id="nav-menu">
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
                     <!-- Menu Navigasi Setelah Pelanggan Login -->
-                    <li class="dropdown-container">
-                        <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
-                            Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                        </a>
-                        <ul class="dropdown-menu-list">
-                            <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                            <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="index.php" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                     <li><a href="produk.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Produk</a></li>
                     <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
-                    <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
-                    <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
-                    <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
+                    <li><a href="pesanan_saya.php" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil_saya.php" class="nav-link">Profil</a></li>
+                    <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Keluar</a></li>
                 <?php else: ?>
                     <!-- Menu Navigasi Sebelum Login -->
                     <li><a href="index.php" class="nav-link">Beranda</a></li>
-                    <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
-                    <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                     <li><a href="produk.php" class="nav-link active" style="color: var(--spiced-wine); font-weight: 700;">Produk</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
@@ -158,7 +152,6 @@ if (!function_exists('renderStars')) {
             <!-- Tab Filter Kategori -->
             <div class="category-tabs-container">
                 <ul class="category-tabs" id="category-tabs">
-                    <li><button class="filter-btn active" onclick="selectCategory('Semua', this)">Semua Menu</button></li>
                     <li><button class="filter-btn" onclick="selectCategory('Bolu', this)">Bolu</button></li>
                     <li><button class="filter-btn" onclick="selectCategory('Kue Kering', this)">Kue Kering</button></li>
                     <li><button class="filter-btn" onclick="selectCategory('Kue Basah', this)">Kue Basah</button></li>
@@ -254,8 +247,8 @@ if (!function_exists('renderStars')) {
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
                     <li><a href="index.php">Beranda</a></li>
-                    <li><a href="index.php#tentang">Tentang Kami</a></li>
-                    <li><a href="index.php#cara-pesan">Cara Pesan</a></li>
+                    <li><a href="tentang.php">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.php">Cara Pesan</a></li>
                     <li><a href="produk.php">Produk</a></li>
                 </ul>
             </div>
@@ -299,14 +292,21 @@ if (!function_exists('renderStars')) {
 
         // Filter Kategori
         function selectCategory(category, element) {
+            const isActive = element.classList.contains('active');
+
             // Set active class tab
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            element.classList.add('active');
 
-            // Simpan kategori
-            selectedCategoryState = category;
+            if (isActive) {
+                // Jika sudah aktif, matikan filternya
+                selectedCategoryState = 'Semua';
+            } else {
+                // Jika belum aktif, aktifkan filternya
+                element.classList.add('active');
+                selectedCategoryState = category;
+            }
             
             // Jalankan filter gabungan
             filterProducts();

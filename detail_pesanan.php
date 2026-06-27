@@ -302,6 +302,42 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             color: var(--white);
         }
 
+        .timeline-step-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Failed timeline custom overrides */
+        .failed-timeline::before {
+            display: none !important;
+        }
+
+        .failed-progress-bar {
+            position: absolute;
+            background-color: #c93b2b;
+            z-index: 2;
+        }
+
+        @media (min-width: 768px) {
+            .failed-progress-bar {
+                top: 24px;
+                left: 25%;
+                width: 50%;
+                height: 4px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .failed-progress-bar {
+                left: 32px;
+                top: 22px;
+                width: 4px;
+                height: calc(100% - 44px);
+            }
+        }
+
         .timeline-step-label {
             font-weight: 700;
             color: var(--cowhide-cocoa);
@@ -677,13 +713,13 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
 
             .timeline-step-label {
                 margin-top: 0;
-                margin-left: 16px;
+                margin-left: 0;
                 font-size: 0.95rem;
             }
 
             .timeline-step-desc {
                 margin-top: 2px;
-                margin-left: 16px;
+                margin-left: 0;
                 padding: 0;
                 font-size: 0.8rem;
             }
@@ -691,6 +727,9 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             .timeline-step-text-container {
                 display: flex;
                 flex-direction: column;
+                align-items: flex-start;
+                margin-left: 16px;
+                width: auto;
             }
         }
 
@@ -753,20 +792,14 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             </button>
 
             <ul class="nav-menu" id="nav-menu">
-                <li class="dropdown-container">
-                    <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
-                        Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                    </a>
-                    <ul class="dropdown-menu-list">
-                        <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                        <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                    </ul>
-                </li>
+                <li><a href="index.php" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.php" class="nav-link">Produk</a></li>
                 <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
-                <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
-                <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
+                <li><a href="pesanan_saya.php" class="nav-link">Pesanan</a></li>
+                <li><a href="profil_saya.php" class="nav-link">Profil</a></li>
+                <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Keluar</a></li>
             </ul>
         </div>
     </header>
@@ -889,40 +922,40 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
 
             <!-- Status Timeline Tracker Card -->
             <div class="timeline-card">
-                <div class="timeline-title">
-                    <i class="fa-solid fa-map-location-dot" style="color: var(--spiced-wine);"></i>
-                    Status Alur Pesanan
-                </div>
-                
-                <div class="timeline-wrapper">
-                    <?php if ($failed_state): ?>
-                        <!-- Failed Timeline Layout -->
-                        <div class="timeline-steps" style="justify-content: space-around;">
-                            <!-- Step 1: Menunggu Pembayaran (Failed) -->
-                            <div class="timeline-step completed failed">
-                                <div class="timeline-icon-box">
-                                    <i class="fa-solid fa-wallet"></i>
-                                </div>
-                                <div class="timeline-step-text-container">
-                                    <span class="timeline-step-label">Menunggu Pembayaran</span>
-                                    <span class="timeline-step-desc">Tidak Terbayar</span>
-                                </div>
+            <div class="timeline-title">
+                <i class="fa-solid fa-map-location-dot" style="color: var(--spiced-wine);"></i>
+                Status Pesanan
+            </div>
+            
+            <div class="timeline-wrapper">
+                <?php if ($failed_state): ?>
+                    <!-- Failed Timeline Layout -->
+                    <div class="timeline-steps failed-timeline" style="justify-content: space-around;">
+                        <!-- Step 1: Menunggu Pembayaran (Failed) -->
+                        <div class="timeline-step completed failed">
+                            <div class="timeline-icon-box">
+                                <i class="fa-solid fa-wallet"></i>
                             </div>
-                            
-                            <!-- Connecting Line -->
-                            <div class="timeline-progress-bar" style="width: 100%; background-color: #c93b2b;"></div>
-                            
-                            <!-- Step 2: Failed State -->
-                            <div class="timeline-step completed failed">
-                                <div class="timeline-icon-box">
-                                    <i class="fa-solid fa-circle-xmark"></i>
-                                </div>
-                                <div class="timeline-step-text-container">
-                                    <span class="timeline-step-label"><?= htmlspecialchars($status_pesanan) ?></span>
-                                    <span class="timeline-step-desc">Transaksi Dibatalkan</span>
-                                </div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Menunggu Pembayaran</span>
+                                <span class="timeline-step-desc">Tidak Terbayar</span>
                             </div>
                         </div>
+                        
+                        <!-- Connecting Line -->
+                        <div class="failed-progress-bar"></div>
+                        
+                        <!-- Step 2: Failed State -->
+                        <div class="timeline-step completed failed">
+                            <div class="timeline-icon-box">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label"><?= htmlspecialchars($status_pesanan) ?></span>
+                                <span class="timeline-step-desc">Transaksi Dibatalkan</span>
+                            </div>
+                        </div>
+                    </div>
                     <?php else: ?>
                         <!-- Normal Process Timeline Layout -->
                         <?php

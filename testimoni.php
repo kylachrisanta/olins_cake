@@ -356,24 +356,18 @@ if (isset($_SESSION['pelanggan_id'])) {
 
             <ul class="nav-menu" id="nav-menu">
                 <?php if (isset($_SESSION['pelanggan_id'])): ?>
-                    <li class="dropdown-container">
-                        <a href="index.php" class="dropdown-trigger" style="text-decoration: none;">
-                            Beranda <i class="fa-solid fa-chevron-down" style="font-size: 0.75rem;"></i>
-                        </a>
-                        <ul class="dropdown-menu-list">
-                            <li><a href="index.php#tentang" class="dropdown-menu-item">Tentang Kami</a></li>
-                            <li><a href="index.php#cara-pesan" class="dropdown-menu-item">Cara Pesan</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="index.php" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
                     <li><a href="keranjang.php" class="nav-link">Keranjang</a></li>
-                    <li><a href="pesanan_saya.php" class="nav-link">Pesanan Saya</a></li>
-                    <li><a href="profil_saya.php" class="nav-link">Profil Saya</a></li>
-                    <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Logout</a></li>
+                    <li><a href="pesanan_saya.php" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil_saya.php" class="nav-link">Profil</a></li>
+                    <li><a href="index.php?action=logout" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-from-bracket" style="margin-right: 6px;"></i> Keluar</a></li>
                 <?php else: ?>
                     <li><a href="index.php" class="nav-link">Beranda</a></li>
-                    <li><a href="index.php#tentang" class="nav-link">Tentang Kami</a></li>
-                    <li><a href="index.php#cara-pesan" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="tentang.php" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.php" class="nav-link">Cara Pesan</a></li>
                     <li><a href="produk.php" class="nav-link">Produk</a></li>
                     <li class="nav-auth">
                         <a href="masuk.php" class="btn btn-outline btn-sm">Masuk</a>
