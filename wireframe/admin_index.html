@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Dashboard Admin - Olin's Cake</title>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Wireframe CSS -->
+    <link rel="stylesheet" href="wireframe.css">
+</head>
+<body>
+
+    <!-- Sidebar Admin Panel -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin's <span>Cake</span></span>
+            <span class="wireframe-indicator">WF</span>
+        </div>
+        
+        <ul class="admin-menu">
+            <li class="admin-menu-item active">
+                <a href="admin_index.html">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_produk.html">
+                    <i class="fa-solid fa-cookie-bite"></i> Kelola Produk
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pesanan.html">
+                    <i class="fa-solid fa-receipt"></i> Kelola Pesanan
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_testimoni.html">
+                    <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pengguna.html">
+                    <i class="fa-solid fa-users"></i> Kelola Pengguna
+                </a>
+            </li>
+        </ul>
+
+        <div class="admin-user-profile">
+            <div class="admin-avatar">AD</div>
+            <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
+                <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    Carolina Berliana
+                </span>
+                <span class="admin-profile-role">Administrator</span>
+            </div>
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Mobile Hamburger -->
+    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg> Olin's Cake <span class="wireframe-indicator">WF</span>
+        </div>
+        <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-header-title">
+                <h1>Dashboard Admin</h1>
+                <p>Selamat Datang Kembali, <strong>Carolina Berliana</strong>. Berikut adalah ringkasan performa toko Anda.</p>
+            </div>
+        </div>
+
+        <!-- Grid Statistik Card Modern -->
+        <div class="admin-stats-grid">
+            <!-- Card Total Produk -->
+            <div class="admin-stat-card card-total-produk">
+                <i class="fa-solid fa-cookie-bite admin-stat-icon"></i>
+                <span class="admin-stat-label">Total Produk</span>
+                <span class="admin-stat-value">4</span>
+            </div>
+
+            <!-- Card Total Pesanan -->
+            <div class="admin-stat-card card-total-pesanan">
+                <i class="fa-solid fa-receipt admin-stat-icon"></i>
+                <span class="admin-stat-label">Total Pesanan</span>
+                <span class="admin-stat-value">2</span>
+            </div>
+
+            <!-- Card Pesanan Diproses -->
+            <div class="admin-stat-card card-proses-pesanan">
+                <i class="fa-solid fa-spinner fa-spin admin-stat-icon"></i>
+                <span class="admin-stat-label">Pesanan Diproses</span>
+                <span class="admin-stat-value">0</span>
+            </div>
+
+            <!-- Card Pesanan Selesai -->
+            <div class="admin-stat-card card-selesai-pesanan">
+                <i class="fa-solid fa-circle-check admin-stat-icon"></i>
+                <span class="admin-stat-label">Pesanan Selesai</span>
+                <span class="admin-stat-value">1</span>
+            </div>
+
+            <!-- Card Pendapatan -->
+            <div class="admin-stat-card card-pendapatan">
+                <i class="fa-solid fa-wallet admin-stat-icon"></i>
+                <span class="admin-stat-label">Total Pendapatan</span>
+                <span class="admin-stat-value" style="font-size: 1.5rem;">Rp 92.271</span>
+            </div>
+        </div>
+
+        <!-- Baris Grafik Statistik -->
+        <div class="admin-row" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px;">
+            <!-- Grafik Pendapatan Bulanan -->
+            <div class="admin-panel-card" style="background-color: var(--admin-card-bg); border-radius: var(--radius-md); border: 1px solid var(--admin-border); padding: 24px;">
+                <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700;"><i class="fa-solid fa-chart-column" style="color: var(--admin-accent); margin-right: 8px;"></i> Tren Pendapatan Bulanan</h3>
+                    <span style="font-size: 0.8rem; color: var(--admin-text-light);">Berdasarkan pesanan lunas</span>
+                </div>
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Grafik Proporsi Status Pesanan -->
+            <div class="admin-panel-card" style="background-color: var(--admin-card-bg); border-radius: var(--radius-md); border: 1px solid var(--admin-border); padding: 24px;">
+                <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <h3 style="font-size: 1.15rem; font-weight: 700;"><i class="fa-solid fa-chart-pie" style="color: var(--admin-accent); margin-right: 8px;"></i> Status Pesanan</h3>
+                </div>
+                <div style="position: relative; height: 300px; width: 100%; display: flex; align-items: center; justify-content: center;">
+                    <canvas id="statusChart" style="max-height: 250px; max-width: 250px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart rendering script -->
+    <script>
+        // Setup Chart.js global defaults for Grayscale Wireframe Look
+        Chart.defaults.color = '#6c757d';
+        Chart.defaults.borderColor = '#dee2e6';
+
+        // 1. Chart Grafik Garis Pendapatan
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: ['Jan 2026', 'Feb 2026', 'Mar 2026', 'Apr 2026', 'Mei 2026', 'Jun 2026'],
+                datasets: [{
+                    label: 'Pendapatan (Rp)',
+                    data: [1200000, 1850000, 2400000, 1500000, 3100000, 4200000],
+                    backgroundColor: 'rgba(108, 117, 125, 0.1)',
+                    borderColor: '#495057',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#495057',
+                    pointBorderColor: '#FFFFFF',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // 2. Chart Grafik Donut Status Pesanan
+        const ctxStatus = document.getElementById('statusChart').getContext('2d');
+        const statusChart = new Chart(ctxStatus, {
+            type: 'doughnut',
+            data: {
+                labels: ['Menunggu Pembayaran', 'Diproses', 'Selesai', 'Dibatalkan'],
+                datasets: [{
+                    data: [1, 0, 1, 0],
+                    backgroundColor: [
+                        '#6c757d',
+                        '#adb5bd',
+                        '#343a40',
+                        '#dee2e6'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#FFFFFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 10 }
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+    </script>
+</body>
+</html>

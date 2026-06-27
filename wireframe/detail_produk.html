@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Detail Produk - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px;
+            margin: 30px 0;
+        }
+        .product-meta {
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 15px 0;
+        }
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+        }
+        .qty-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--text-main);
+            background: transparent;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .qty-input {
+            width: 50px;
+            height: 36px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link active">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="produk.html">Produk</a></li>
+            <li>Detail Produk</li>
+        </ul>
+
+        <section class="product-detail-grid">
+            <!-- Left Side: Image Placeholder -->
+            <div>
+                <div class="img-placeholder" style="height: 450px;">
+                    <div class="img-placeholder-text">Kastengel Keju Large Image</div>
+                </div>
+            </div>
+
+            <!-- Right Side: Details -->
+            <div>
+                <div class="product-meta">
+                    <span class="badge badge-outline" style="margin-bottom: 10px;">Kue Kering</span>
+                    <h1 style="font-size: 2.2rem; margin-bottom: 10px;">Kastengel Keju</h1>
+                    <p style="color: var(--text-muted);">Dipanggang Segar &amp; Menggunakan Bahan Berkualitas</p>
+                    <div class="product-price">Rp 120.000</div>
+                </div>
+
+                <div class="product-desc">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Deskripsi Kue</h3>
+                    <p style="color: var(--text-muted); text-align: justify;">
+                        Kue kering Kastengel Keju klasik premium buatan rumah. Menggunakan paduan keju edam tua impor dan cheddar berkualitas tinggi untuk menghasilkan cita rasa gurih yang kaya, asin yang pas, serta tekstur yang sangat renyah. Sempurna sebagai camilan keluarga atau hantaran hari raya.
+                    </p>
+                    <ul style="margin: 15px 0 15px 20px; color: var(--text-muted); font-size: 0.95rem;">
+                        <li>Ukuran kemasan: Toples silinder 500 gram</li>
+                        <li>Bahan utama: Premium butter, keju edam tua, cheddar, tepung pilihan</li>
+                        <li>Daya tahan: 1-2 bulan (simpan rapat di wadah kedap udara)</li>
+                    </ul>
+                </div>
+
+                <!-- Quantity Selector -->
+                <div class="qty-selector">
+                    <span class="form-label" style="margin-bottom: 0;">Jumlah Pesanan</span>
+                    <div style="display: flex; align-items: center;">
+                        <button type="button" class="qty-btn">-</button>
+                        <input type="text" class="qty-input" value="1" readonly>
+                        <button type="button" class="qty-btn">+</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <a href="keranjang.html" class="btn btn-primary" style="flex: 1; padding: 12px 20px;">
+                        Tambah ke Keranjang Belanja
+                    </a>
+                    <a href="produk.html" class="btn btn-outline">Kembali ke Katalog</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

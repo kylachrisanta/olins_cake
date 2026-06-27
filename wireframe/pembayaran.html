@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Pembayaran - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .payment-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 0.9fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .bank-details-box {
+            border: 1px solid var(--border-color);
+            background-color: var(--wireframe-light-blue);
+            padding: 20px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+        }
+        .bank-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .bank-row strong {
+            font-family: var(--font-mono);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="pesanan.html">Pesanan Saya</a></li>
+            <li>Pembayaran</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                <h2>Halaman Pembayaran</h2>
+                <p>Silakan selesaikan pembayaran pre-order kue Anda melalui rekening bank resmi kami di bawah.</p>
+            </div>
+
+            <div class="payment-grid">
+                <!-- Left Column: Bank info & upload form -->
+                <div>
+                    <div class="card">
+                        <h3 class="card-title">1. Transfer Bank</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem;">Lakukan transfer dengan nominal tepat sesuai tagihan ke rekening bank di bawah ini:</p>
+                        
+                        <div class="bank-details-box">
+                            <div class="bank-row">
+                                <span>Nama Bank</span>
+                                <strong>Bank Central Asia (BCA)</strong>
+                            </div>
+                            <div class="bank-row">
+                                <span>Nomor Rekening</span>
+                                <strong>5210967381</strong>
+                            </div>
+                            <div class="bank-row">
+                                <span>Nama Pemilik Rekening</span>
+                                <strong>Carolina Berliana</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">2. Konfirmasi Pembayaran</h3>
+                        <form action="pesanan.html">
+                            <div class="form-group">
+                                <label class="form-label">Nama Pengirim Rekening Bank *</label>
+                                <input type="text" class="form-control" placeholder="Contoh: Carolina Berliana">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Unggah Foto Bukti Transfer *</label>
+                                <div class="img-placeholder" style="height: 120px; margin-bottom: 8px;">
+                                    <div class="img-placeholder-text">Bukti Transfer JPG/PNG [Upload]</div>
+                                </div>
+                                <input type="file" style="display: block; font-size: 0.9rem;">
+                            </div>
+                            
+                            <div style="margin-top: 30px; display: flex; gap: 15px;">
+                                <button type="submit" class="btn btn-primary" style="flex: 1; padding: 12px;">Kirim Bukti Pembayaran</button>
+                                <a href="pesanan.html" class="btn btn-outline">Kembali ke Pesanan Saya</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: Detail tagihan -->
+                <div>
+                    <div class="card">
+                        <h3 class="card-title">Detail Tagihan Pesanan</h3>
+                        <div class="summary-rows" style="margin-bottom: 20px;">
+                            <div class="summary-row">
+                                <span>Kode Pesanan</span>
+                                <strong style="font-family: var(--font-mono); color: var(--wireframe-blue);">OLN-10027</strong>
+                            </div>
+                            <div class="summary-row">
+                                <span>Status Verifikasi</span>
+                                <span class="badge badge-warning">Menunggu Pembayaran</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Metode Pengiriman</span>
+                                <span>Kirim ke Alamat</span>
+                            </div>
+                            <div class="summary-row" style="border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px;">
+                                <span>Subtotal Kue</span>
+                                <span>Rp 180.000</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Ongkos Kirim (1.5 km)</span>
+                                <span>Rp 32.271</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Tagihan</span>
+                                <strong style="font-size: 1.3rem;">Rp 212.271</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

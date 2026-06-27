@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Cara Pesan - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .step-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 60px auto;
+            padding-left: 50px;
+        }
+        .step-timeline::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            bottom: 10px;
+            left: 20px;
+            width: 2px;
+            border-left: 2px dashed var(--border-color);
+        }
+        .step-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+        .step-number {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 42px;
+            height: 42px;
+            border: 2px solid var(--text-main);
+            border-radius: 50%;
+            background-color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+        .step-content {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 20px;
+        }
+        .step-content h3 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+        .step-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .warning-tag {
+            display: inline-block;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            font-size: 0.85rem;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link active">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li>Cara Pesan</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header">
+                <h2>Cara Mudah Memesan</h2>
+                <p>Ikuti langkah mudah di bawah ini untuk memesan kue lezat impian Anda.</p>
+            </div>
+            
+            <div class="step-timeline">
+                <!-- Step 1 -->
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Pilih Produk</h3>
+                        <p>Jelajahi halaman katalog produk kami, pilih jenis bolu atau kue kering favorit Anda yang ingin Anda pesan.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Masukkan ke Keranjang</h3>
+                        <p>Tentukan kuantitas atau jumlah pesanan kue, lalu masukkan ke dalam keranjang belanja belanja Anda.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Checkout</h3>
+                        <p>Lengkapi detail nama penerima, nomor WhatsApp yang dapat dihubungi, metode pengambilan, dan alamat pengantaran lengkap.</p>
+                        <div class="warning-tag">
+                            ⚠️ PENTING: Batas waktu pemesanan minimal Pre-Order H-3 sebelum jadwal pengiriman.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Pembayaran</h3>
+                        <p>Lakukan transfer bank sesuai nominal total belanja ke nomor rekening tujuan yang tertera, lalu unggah foto bukti transfer di halaman konfirmasi pembayaran.</p>
+                    </div>
+                </div>
+
+                <!-- Step 5 -->
+                <div class="step-item">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Pesanan Diproses</h3>
+                        <p>Dapur Olin's Cake akan memverifikasi pembayaran Anda, lalu memanggang dan mempersiapkan kue pesanan Anda fresh dari oven.</p>
+                    </div>
+                </div>
+
+                <!-- Step 6 -->
+                <div class="step-item">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>Pengiriman/Ambil ke Toko</h3>
+                        <p>Kue siap diantarkan langsung oleh kurir kami ke alamat Anda atau Anda dapat mengambilnya sendiri secara langsung di gerai kami sesuai jadwal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

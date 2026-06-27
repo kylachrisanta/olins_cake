@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Kelola Pesanan - Olin's Cake</title>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Wireframe CSS -->
+    <link rel="stylesheet" href="wireframe.css">
+</head>
+<body>
+
+    <!-- Sidebar Admin Panel -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin's <span>Cake</span></span>
+            <span class="wireframe-indicator">WF</span>
+        </div>
+        
+        <ul class="admin-menu">
+            <li class="admin-menu-item">
+                <a href="admin_index.html">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_produk.html">
+                    <i class="fa-solid fa-cookie-bite"></i> Kelola Produk
+                </a>
+            </li>
+            <li class="admin-menu-item active">
+                <a href="admin_pesanan.html">
+                    <i class="fa-solid fa-receipt"></i> Kelola Pesanan
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_testimoni.html">
+                    <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pengguna.html">
+                    <i class="fa-solid fa-users"></i> Kelola Pengguna
+                </a>
+            </li>
+        </ul>
+
+        <div class="admin-user-profile">
+            <div class="admin-avatar">AD</div>
+            <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
+                <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    Carolina Berliana
+                </span>
+                <span class="admin-profile-role">Administrator</span>
+            </div>
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Mobile Hamburger -->
+    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg> Olin's Cake <span class="wireframe-indicator">WF</span>
+        </div>
+        <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-header-title">
+                <h1>Kelola Pesanan</h1>
+                <p>Verifikasi bukti transfer pembayaran, kelola tahapan status produksi &amp; pengiriman pre-order pelanggan.</p>
+            </div>
+        </div>
+
+        <!-- DAFTAR TABEL PESANAN -->
+        <div class="admin-panel-card" style="background-color: var(--admin-card-bg); border-radius: var(--radius-md); border: 1px solid var(--admin-border); padding: 24px;">
+            <div class="panel-card-header" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-receipt" style="color: var(--admin-accent); margin-right: 8px;"></i> Daftar Transaksi Masuk</h3>
+                <div style="display: flex; gap: 10px;">
+                    <select class="form-control" style="width: 180px; padding: 6px 12px; font-size: 0.85rem;">
+                        <option>Semua Status</option>
+                        <option>Menunggu Pembayaran</option>
+                        <option>Menunggu Verifikasi</option>
+                        <option>Diproses</option>
+                        <option>Selesai</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="admin-table-container" style="overflow-x: auto; width: 100%;">
+                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--admin-border); background-color: var(--admin-dark-bg);">
+                            <th style="padding: 12px;">Order ID</th>
+                            <th style="padding: 12px;">Tanggal</th>
+                            <th style="padding: 12px;">Pelanggan</th>
+                            <th style="padding: 12px;">Penerimaan</th>
+                            <th style="padding: 12px;">Total</th>
+                            <th style="padding: 12px;">Status Pesanan</th>
+                            <th style="padding: 12px;">Status Bayar</th>
+                            <th style="padding: 12px; text-align: center;">Bukti</th>
+                            <th style="width: 200px; text-align: right; padding: 12px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Row 1 -->
+                        <tr style="border-bottom: 1px solid var(--admin-border);">
+                            <td style="padding: 12px;"><strong style="font-family: var(--font-mono); color: var(--wireframe-blue);">OLN-10027</strong></td>
+                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);">27 Juni 2026<br>19:47</td>
+                            <td style="padding: 12px;">
+                                <strong>Carolina Berliana</strong>
+                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-light);">WA: 6281281062985</span>
+                            </td>
+                            <td style="padding: 12px; font-size: 0.85rem;">
+                                <strong>Kirim ke Alamat</strong>
+                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-muted);">Estimasi: 30 Juni 2026</span>
+                            </td>
+                            <td style="padding: 12px;"><strong>Rp 212.271</strong></td>
+                            <td style="padding: 12px;"><span class="badge badge-warning">Menunggu Verifikasi</span></td>
+                            <td style="padding: 12px;"><span class="badge badge-warning">Belum Lunas</span></td>
+                            <td style="padding: 12px; text-align: center;">
+                                <button type="button" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.75rem;"><i class="fa-solid fa-image"></i> Lihat</button>
+                            </td>
+                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; border-color: #28a745; color: #28a745; margin-right: 4px;" title="Verifikasi Pembayaran"><i class="fa-solid fa-check"></i> Verif</button>
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; border-color: #dc3545; color: #dc3545; margin-right: 4px;" title="Tolak Pembayaran"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" title="Detail"><i class="fa-solid fa-eye"></i></button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2 -->
+                        <tr style="border-bottom: none;">
+                            <td style="padding: 12px;"><strong style="font-family: var(--font-mono); color: var(--admin-text-muted);">OLN-10012</strong></td>
+                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);">20 Juni 2026<br>10:14</td>
+                            <td style="padding: 12px;">
+                                <strong>Budi Santoso</strong>
+                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-light);">WA: 628951234567</span>
+                            </td>
+                            <td style="padding: 12px; font-size: 0.85rem;">
+                                <strong>Ambil di Toko</strong>
+                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-muted);">Estimasi: 23 Juni 2026</span>
+                            </td>
+                            <td style="padding: 12px;"><strong>Rp 92.271</strong></td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Selesai</span></td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Sudah Dibayar</span></td>
+                            <td style="padding: 12px; text-align: center; color: var(--admin-text-light); font-size: 0.8rem;">Sudah Diverif</td>
+                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" title="Detail"><i class="fa-solid fa-eye"></i> Rincian</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

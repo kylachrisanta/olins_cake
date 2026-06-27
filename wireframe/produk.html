@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Katalog Produk - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+        .filter-tab {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-main);
+        }
+        .filter-tab.active {
+            background-color: var(--text-main);
+            color: var(--bg-card);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link active">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li>Katalog Produk</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header">
+                <h2>Katalog Produk</h2>
+                <p>Pilih dari aneka resep kue pre-order lezat kami yang dipanggang segar.</p>
+            </div>
+            
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <a href="#" class="filter-tab active">Semua Kue</a>
+                <a href="#" class="filter-tab">Bolu</a>
+                <a href="#" class="filter-tab">Kue Kering</a>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid-3">
+                <!-- Produk 1 -->
+                <div class="card">
+                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
+                        <div class="img-placeholder-text">Kastengel Keju Image</div>
+                    </div>
+                    <span class="badge badge-outline" style="margin-bottom: 10px;">Kue Kering</span>
+                    <h3>Kastengel Keju</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Kue kering keju edam gurih renyah (Toples 500 gram).</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                        <strong style="font-size: 1.15rem;">Rp 120.000</strong>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
+                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produk 2 -->
+                <div class="card">
+                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
+                        <div class="img-placeholder-text">Bolu Pisang Image</div>
+                    </div>
+                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
+                    <h3>Bolu Pisang</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu pisang premium lembut beraroma harum (Diameter 20 cm).</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
+                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produk 3 -->
+                <div class="card">
+                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
+                        <div class="img-placeholder-text">Bolu Tape Image</div>
+                    </div>
+                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
+                    <h3>Bolu Tape</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
+                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Produk 4 -->
+                <div class="card">
+                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
+                        <div class="img-placeholder-text">Bolu Pandan Image</div>
+                    </div>
+                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
+                    <h3>Bolu Pandan</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu pandan wangi daun suji alami bertekstur empuk (Diameter 20 cm).</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
+                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
+                        <div style="display: flex; gap: 8px;">
+                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
+                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

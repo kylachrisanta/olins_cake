@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Detail Pesanan - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        /* Horizontal Progress Tracker */
+        .timeline-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 30px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .timeline-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        .timeline-wrapper {
+            position: relative;
+            margin: 20px 0;
+        }
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            position: relative;
+        }
+        .timeline-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background-color: var(--wireframe-gray);
+            z-index: 1;
+        }
+        .timeline-progress-bar {
+            position: absolute;
+            top: 20px;
+            left: 50px;
+            height: 4px;
+            background-color: var(--wireframe-blue);
+            z-index: 2;
+            width: calc((100% - 100px) * 0.25); /* Step index 1 (Menunggu Konfirmasi) */
+        }
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 3;
+            flex: 1;
+        }
+        .timeline-icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        .timeline-step.completed .timeline-icon-box {
+            border-color: var(--wireframe-blue);
+            background-color: var(--wireframe-blue);
+            color: white;
+        }
+        .timeline-step.active .timeline-icon-box {
+            border-color: var(--text-main);
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+        .timeline-step-text-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .timeline-step-label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+        .timeline-step-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .info-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            border-bottom: 1px dashed rgba(0,0,0,0.05);
+            padding-bottom: 8px;
+        }
+        .info-item-label {
+            color: var(--text-muted);
+        }
+        .info-item-value {
+            font-weight: 600;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link active">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="pesanan.html">Pesanan Saya</a></li>
+            <li>Rincian Pesanan</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header" style="text-align: left; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <h2>Detail Pesanan - OLN-10027</h2>
+                    <p>Status: <span class="badge badge-warning">Menunggu Verifikasi</span></p>
+                </div>
+                <a href="pesanan.html" class="btn btn-outline" style="padding: 8px 16px;">&larr; Kembali</a>
+            </div>
+
+            <!-- Status Pesanan (Timeline Tracker) -->
+            <div class="timeline-card">
+                <div class="timeline-title">
+                    📍 Status Pesanan
+                </div>
+                <div class="timeline-wrapper">
+                    <div class="timeline-steps">
+                        <div class="timeline-progress-bar"></div>
+
+                        <!-- Step 1 -->
+                        <div class="timeline-step completed">
+                            <div class="timeline-icon-box">✓</div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Menunggu Pembayaran</span>
+                                <span class="timeline-step-desc">Pembayaran Lunas</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="timeline-step active">
+                            <div class="timeline-icon-box">2</div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Menunggu Verifikasi</span>
+                                <span class="timeline-step-desc">Bukti Diunggah</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="timeline-step">
+                            <div class="timeline-icon-box">3</div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Diproses</span>
+                                <span class="timeline-step-desc">Sedang Dipanggang</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="timeline-step">
+                            <div class="timeline-icon-box">4</div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Siap Dikirim</span>
+                                <span class="timeline-step-desc">Kurir Siap</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div class="timeline-step">
+                            <div class="timeline-icon-box">5</div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Selesai</span>
+                                <span class="timeline-step-desc">Diterima Pelanggan</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Info Card -->
+            <div class="info-cards-grid">
+                <!-- 1. Informasi Pengiriman -->
+                <div class="card">
+                    <h3 class="card-title">Informasi Pengantaran / Pengambilan</h3>
+                    <div class="info-item">
+                        <span class="info-item-label">Nama Penerima</span>
+                        <span class="info-item-value">Carolina Berliana</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Nomor WhatsApp</span>
+                        <span class="info-item-value">6281281062985</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Metode Pengiriman</span>
+                        <span class="info-item-value">Kirim ke Alamat</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Alamat Pengiriman</span>
+                        <span class="info-item-value">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Jadwal Pre-Order</span>
+                        <span class="info-item-value">Selasa, 30 Juni 2026 (Siang 12:00 - 15:00)</span>
+                    </div>
+                </div>
+
+                <!-- 2. Informasi Status Pembayaran -->
+                <div class="card">
+                    <h3 class="card-title">Informasi Status Pembayaran</h3>
+                    <div class="info-item">
+                        <span class="info-item-label">Metode Pembayaran</span>
+                        <span class="info-item-value">Transfer Bank (BCA)</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Status Verifikasi</span>
+                        <span class="info-item-value">Menunggu Verifikasi Admin</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-item-label">Total Tagihan</span>
+                        <span class="info-item-value" style="color: var(--wireframe-blue); font-weight: 700; font-size: 1.1rem;">Rp 212.271</span>
+                    </div>
+                    <div class="info-item" style="border: none; margin-top: 15px;">
+                        <span class="info-item-label">Bukti Transfer</span>
+                        <span class="info-item-value">
+                            <a href="#" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem;">Lihat Gambar Bukti</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rincian Kue Dipesan -->
+            <div class="card">
+                <h3 class="card-title">Rincian Kue yang Dipesan</h3>
+                <div class="info-item" style="font-weight: 700; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
+                    <span>Kue</span>
+                    <span>Subtotal</span>
+                </div>
+                <div class="info-item">
+                    <span>Kastengel Keju x 1 <span style="font-size: 0.8rem; color: var(--text-muted); display: block; font-weight: 400;">Variant: Toples 500gr</span></span>
+                    <span class="info-item-value">Rp 120.000</span>
+                </div>
+                <div class="info-item">
+                    <span>Bolu Pisang x 1 <span style="font-size: 0.8rem; color: var(--text-muted); display: block; font-weight: 400;">Variant: Diameter 20cm</span></span>
+                    <span class="info-item-value">Rp 60.000</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-item-label">Ongkos Kirim (1.5 km)</span>
+                    <span class="info-item-value">Rp 32.271</span>
+                </div>
+                <div class="info-item" style="font-size: 1.15rem; font-weight: 700; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
+                    <span>Total Pembayaran</span>
+                    <span style="color: var(--text-main);">Rp 212.271</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

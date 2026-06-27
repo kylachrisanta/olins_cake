@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Kelola Testimoni - Olin's Cake</title>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Wireframe CSS -->
+    <link rel="stylesheet" href="wireframe.css">
+</head>
+<body>
+
+    <!-- Sidebar Admin Panel -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin's <span>Cake</span></span>
+            <span class="wireframe-indicator">WF</span>
+        </div>
+        
+        <ul class="admin-menu">
+            <li class="admin-menu-item">
+                <a href="admin_index.html">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_produk.html">
+                    <i class="fa-solid fa-cookie-bite"></i> Kelola Produk
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pesanan.html">
+                    <i class="fa-solid fa-receipt"></i> Kelola Pesanan
+                </a>
+            </li>
+            <li class="admin-menu-item active">
+                <a href="admin_testimoni.html">
+                    <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pengguna.html">
+                    <i class="fa-solid fa-users"></i> Kelola Pengguna
+                </a>
+            </li>
+        </ul>
+
+        <div class="admin-user-profile">
+            <div class="admin-avatar">AD</div>
+            <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
+                <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    Carolina Berliana
+                </span>
+                <span class="admin-profile-role">Administrator</span>
+            </div>
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Mobile Hamburger -->
+    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg> Olin's Cake <span class="wireframe-indicator">WF</span>
+        </div>
+        <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-header-title">
+                <h1>Kelola Testimoni</h1>
+                <p>Tinjau dan kelola testimoni ulasan kue dari pelanggan untuk ditampilkan di halaman utama website.</p>
+            </div>
+        </div>
+
+        <!-- DAFTAR TESTIMONI -->
+        <div class="admin-panel-card" style="background-color: var(--admin-card-bg); border-radius: var(--radius-md); border: 1px solid var(--admin-border); padding: 24px;">
+            <div class="panel-card-header" style="margin-bottom: 20px;">
+                <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-comments" style="color: var(--admin-accent); margin-right: 8px;"></i> Daftar Ulasan Testimoni</h3>
+            </div>
+
+            <div class="admin-table-container" style="overflow-x: auto; width: 100%;">
+                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--admin-border); background-color: var(--admin-dark-bg);">
+                            <th style="width: 60px; padding: 12px;">Avatar</th>
+                            <th style="padding: 12px;">Pelanggan</th>
+                            <th style="padding: 12px;">Ulasan</th>
+                            <th style="padding: 12px;">Status</th>
+                            <th style="width: 180px; text-align: right; padding: 12px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Row 1 -->
+                        <tr style="border-bottom: 1px solid var(--admin-border);">
+                            <td style="padding: 12px;">
+                                <div class="admin-avatar" style="width: 40px; height: 40px; border: 1px solid var(--admin-border);">CB</div>
+                            </td>
+                            <td style="padding: 12px;">
+                                <strong>Carolina Berliana</strong>
+                                <p style="font-size: 0.75rem; color: var(--admin-text-muted);">Bekasi</p>
+                            </td>
+                            <td style="padding: 12px;">
+                                <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.4;">
+                                    "Kastengel kejunya enak banget! Gurih keju tua-nya kerasa banget, renyah, dan ga bikin eneg. Toplesnya juga rapi dan aman pas pengiriman. Bakal langganan terus di Olin's Cake!"
+                                </p>
+                            </td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Aktif</span></td>
+                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-eye-slash"></i> Nonaktifkan</button>
+                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 2 -->
+                        <tr style="border-bottom: 1px solid var(--admin-border);">
+                            <td style="padding: 12px;">
+                                <div class="admin-avatar" style="width: 40px; height: 40px; border: 1px solid var(--admin-border);">BS</div>
+                            </td>
+                            <td style="padding: 12px;">
+                                <strong>Budi Santoso</strong>
+                                <p style="font-size: 0.75rem; color: var(--admin-text-muted);">Bekasi</p>
+                            </td>
+                            <td style="padding: 12px;">
+                                <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.4;">
+                                    "Bolunya wangi pisang banget pas dibuka kotak kardusnya, teksturnya empuk lembut. Manisnya juga pas ga over-sweet. Pengiriman cepat dan dikemas rapi."
+                                </p>
+                            </td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Aktif</span></td>
+                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-eye-slash"></i> Nonaktifkan</button>
+                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
+                            </td>
+                        </tr>
+
+                        <!-- Row 3 -->
+                        <tr style="border-bottom: none;">
+                            <td style="padding: 12px;">
+                                <div class="admin-avatar" style="width: 40px; height: 40px; border: 1px solid var(--admin-border);">SR</div>
+                            </td>
+                            <td style="padding: 12px;">
+                                <strong>Siti Rahma</strong>
+                                <p style="font-size: 0.75rem; color: var(--admin-text-muted);">Tambun</p>
+                            </td>
+                            <td style="padding: 12px;">
+                                <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.4;">
+                                    "Bolu tape tradisional terenak yang pernah saya coba di Bekasi. Teksturnya super moist dan rasa tapenya berasa banget. Recommended!"
+                                </p>
+                            </td>
+                            <td style="padding: 12px;"><span class="badge badge-success">Aktif</span></td>
+                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
+                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-eye-slash"></i> Nonaktifkan</button>
+                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Pesanan Saya - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .order-card {
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .order-details-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            border-top: 1px dashed var(--border-color);
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link active">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li>Pesanan Saya</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                <h2>Pesanan Saya</h2>
+                <p>Pantau status pre-order kue lezat Anda secara berkala.</p>
+            </div>
+
+            <!-- Order 1: Waiting Payment -->
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <span style="font-family: var(--font-mono); font-weight: 700; font-size: 1.15rem; color: var(--wireframe-blue);">OLN-10027</span>
+                        <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 15px;">27 Juni 2026 19:47</span>
+                    </div>
+                    <span class="badge badge-warning">Menunggu Pembayaran</span>
+                </div>
+                
+                <div style="font-size: 0.95rem; line-height: 1.6;">
+                    <div style="margin-bottom: 5px;"><strong>Daftar Item:</strong></div>
+                    <div style="color: var(--text-muted);">
+                        - Kastengel Keju (Toples 500gr) x 1<br>
+                        - Bolu Pisang (Diameter 20cm) x 1
+                    </div>
+                </div>
+
+                <div class="order-details-summary">
+                    <div>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Total Tagihan:</span>
+                        <strong style="font-size: 1.2rem; display: block; margin-top: 4px;">Rp 212.271</strong>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="pembayaran.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Bayar Sekarang</a>
+                        <a href="detail_pesanan.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Detail</a>
+                        <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem; border-color: #dc3545; color: #dc3545;">Batalkan</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order 2: Completed -->
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <span style="font-family: var(--font-mono); font-weight: 700; font-size: 1.15rem; color: var(--text-muted);">OLN-10012</span>
+                        <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 15px;">20 Juni 2026 10:14</span>
+                    </div>
+                    <span class="badge badge-success">Selesai</span>
+                </div>
+                
+                <div style="font-size: 0.95rem; line-height: 1.6;">
+                    <div style="margin-bottom: 5px;"><strong>Daftar Item:</strong></div>
+                    <div style="color: var(--text-muted);">
+                        - Bolu Tape (Diameter 20cm) x 1
+                    </div>
+                </div>
+
+                <div class="order-details-summary">
+                    <div>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">Total Tagihan:</span>
+                        <strong style="font-size: 1.2rem; display: block; margin-top: 4px;">Rp 92.271</strong>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a href="detail_pesanan.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Detail</a>
+                        <a href="testimoni.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;">Beri Ulasan</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

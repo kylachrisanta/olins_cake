@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Kelola Pengguna - Olin's Cake</title>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Wireframe CSS -->
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .users-row {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 24px;
+        }
+        @media (max-width: 992px) {
+            .users-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Admin Panel -->
+    <div class="admin-sidebar" id="adminSidebar">
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin's <span>Cake</span></span>
+            <span class="wireframe-indicator">WF</span>
+        </div>
+        
+        <ul class="admin-menu">
+            <li class="admin-menu-item">
+                <a href="admin_index.html">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_produk.html">
+                    <i class="fa-solid fa-cookie-bite"></i> Kelola Produk
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pesanan.html">
+                    <i class="fa-solid fa-receipt"></i> Kelola Pesanan
+                </a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_testimoni.html">
+                    <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
+                </a>
+            </li>
+            <li class="admin-menu-item active">
+                <a href="admin_pengguna.html">
+                    <i class="fa-solid fa-users"></i> Kelola Pengguna
+                </a>
+            </li>
+        </ul>
+
+        <div class="admin-user-profile">
+            <div class="admin-avatar">AD</div>
+            <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
+                <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    Carolina Berliana
+                </span>
+                <span class="admin-profile-role">Administrator</span>
+            </div>
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Header Mobile Hamburger -->
+    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+        <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: var(--admin-accent);">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg> Olin's Cake <span class="wireframe-indicator">WF</span>
+        </div>
+        <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Main Layout Container -->
+    <div class="admin-layout">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-header-title">
+                <h1>Kelola Pengguna</h1>
+                <p>Manajemen data akun Administrator toko serta daftar Pelanggan terdaftar.</p>
+            </div>
+        </div>
+
+        <div class="users-row">
+            <!-- Kolom Kiri: Kelola Admin -->
+            <div>
+                <div class="card" style="margin-bottom: 24px;">
+                    <h3 class="card-title"><i class="fa-solid fa-user-shield" style="margin-right: 8px; color: var(--admin-accent);"></i> Tambah Administrator</h3>
+                    <form action="admin_pengguna.html">
+                        <div class="form-group">
+                            <label class="form-label">Nama Lengkap *</label>
+                            <input type="text" class="form-control" placeholder="Nama Lengkap Admin" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Username *</label>
+                            <input type="text" class="form-control" placeholder="Username login" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Password *</label>
+                            <input type="password" class="form-control" placeholder="Minimal 6 karakter" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Simpan Admin Baru</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">Daftar Admin Aktif</h3>
+                    <div class="admin-table-container">
+                        <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--admin-border); background-color: var(--admin-dark-bg);">
+                                    <th style="padding: 10px;">Nama</th>
+                                    <th style="padding: 10px;">Username</th>
+                                    <th style="width: 80px; text-align: right; padding: 10px;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--admin-border);">
+                                    <td style="padding: 10px;"><strong>Carolina Berliana</strong></td>
+                                    <td style="padding: 10px;">admin</td>
+                                    <td style="text-align: right; padding: 10px;">
+                                        <span style="font-size: 0.8rem; color: var(--text-muted);">Aktif</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kolom Kanan: Daftar Pelanggan -->
+            <div>
+                <div class="card" style="height: 100%;">
+                    <h3 class="card-title"><i class="fa-solid fa-users" style="margin-right: 8px; color: var(--admin-accent);"></i> Pelanggan Terdaftar</h3>
+                    <div class="admin-table-container" style="overflow-x: auto; width: 100%;">
+                        <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid var(--admin-border); background-color: var(--admin-dark-bg);">
+                                    <th style="padding: 10px;">Nama Lengkap</th>
+                                    <th style="padding: 10px;">No. WhatsApp</th>
+                                    <th style="padding: 10px;">Email</th>
+                                    <th style="padding: 10px;">Terdaftar Pada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid var(--admin-border);">
+                                    <td style="padding: 10px;"><strong>Carolina Berliana</strong></td>
+                                    <td style="padding: 10px;">6281281062985</td>
+                                    <td style="padding: 10px;">carolinaberliana11@gmail.com</td>
+                                    <td style="padding: 10px; font-size: 0.8rem; color: var(--text-muted);">27 Juni 2026</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid var(--admin-border);">
+                                    <td style="padding: 10px;"><strong>Budi Santoso</strong></td>
+                                    <td style="padding: 10px;">628951234567</td>
+                                    <td style="padding: 10px;">budi.santoso@gmail.com</td>
+                                    <td style="padding: 10px; font-size: 0.8rem; color: var(--text-muted);">20 Juni 2026</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

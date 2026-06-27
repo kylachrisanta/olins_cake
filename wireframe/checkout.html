@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Checkout - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .method-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .method-box {
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 15px;
+            cursor: pointer;
+            position: relative;
+        }
+        .method-box.active {
+            border: 2px solid var(--wireframe-blue);
+            background-color: var(--wireframe-light-blue);
+        }
+        .method-box input[type="radio"] {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+        .warning-box {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: var(--radius);
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="keranjang.html">Keranjang</a></li>
+            <li>Checkout Pemesanan</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                <h2>Checkout Pemesanan</h2>
+                <p>Lengkapi formulir penerimaan dan jadwal pre-order untuk menyelesaikan pesanan Anda.</p>
+            </div>
+
+            <div class="checkout-grid">
+                <!-- Left Side: Forms -->
+                <div>
+                    <!-- 1. Data Penerima -->
+                    <div class="card">
+                        <h3 class="card-title">1. Data Penerima</h3>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Nama Penerima *</label>
+                                <input type="text" class="form-control" value="Carolina Berliana">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Nomor WhatsApp *</label>
+                                <input type="text" class="form-control" value="6281281062985">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Metode Penerimaan -->
+                    <div class="card">
+                        <h3 class="card-title">2. Metode Penerimaan Pesanan</h3>
+                        <div class="method-selector">
+                            <div class="method-box active">
+                                <input type="radio" name="delivery" checked>
+                                <strong>Diantar ke Alamat</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Kue diantar kurir langsung ke alamat tujuan</p>
+                            </div>
+                            <div class="method-box">
+                                <input type="radio" name="delivery">
+                                <strong>Ambil di Toko</strong>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Ambil pesanan secara mandiri ke gerai kami</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 20px;">
+                            <label class="form-label">Alamat Pengiriman Lengkap *</label>
+                            <textarea class="form-control" rows="3">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Tentukan Titik Peta Lokasi (Untuk Ongkir)</label>
+                            <div class="img-placeholder" style="height: 180px;">
+                                <div class="img-placeholder-text">Google Maps API Picker [Wireframe]</div>
+                            </div>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">Jarak Terdeteksi: 1.5 km | Ongkos Kirim: Rp 32.271</p>
+                        </div>
+                    </div>
+
+                    <!-- 3. Jadwal Pre-Order -->
+                    <div class="card">
+                        <h3 class="card-title">3. Jadwal Pengiriman / Pengambilan</h3>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label class="form-label">Tanggal Pengiriman/Ambil *</label>
+                                <input type="date" class="form-control" value="2026-06-30">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Waktu Antar/Ambil *</label>
+                                <select class="form-control">
+                                    <option>Pagi (09:00 - 12:00)</option>
+                                    <option selected>Siang (12:00 - 15:00)</option>
+                                    <option>Sore (15:00 - 18:00)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Catatan Tambahan (Opsional)</label>
+                            <textarea class="form-control" rows="2" placeholder="Contoh: Tulis ucapan ulang tahun 'Happy Birthday Carolina' di atas bolu..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side: Order Summary -->
+                <div>
+                    <div class="card">
+                        <h3 class="card-title">Ringkasan Pesanan</h3>
+                        
+                        <!-- Items list -->
+                        <div style="margin-bottom: 20px;">
+                            <div class="checkout-item">
+                                <div>
+                                    <strong>Kastengel Keju</strong>
+                                    <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">Qty: 1x | Toples 500gr</span>
+                                </div>
+                                <span>Rp 120.000</span>
+                            </div>
+                            <div class="checkout-item">
+                                <div>
+                                    <strong>Bolu Pisang</strong>
+                                    <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">Qty: 1x | Diameter 20cm</span>
+                                </div>
+                                <span>Rp 60.000</span>
+                            </div>
+                        </div>
+
+                        <div class="summary-rows" style="margin-bottom: 20px;">
+                            <div class="summary-row">
+                                <span>Subtotal Produk</span>
+                                <span>Rp 180.000</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Ongkos Kirim</span>
+                                <span>Rp 32.271</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Pembayaran</span>
+                                <span>Rp 212.271</span>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <div>⚠️</div>
+                            <div>Kue dipanggang segar (Freshly Baked). Pemesanan dilakukan min. H-3 dari jadwal pengiriman.</div>
+                        </div>
+
+                        <a href="pembayaran.html" class="btn btn-primary" style="width: 100%; padding: 12px; gap: 8px;">
+                            Pembayaran <span style="font-family: var(--font-mono);">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Keranjang Belanja - Olin's Cake</title>
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .cart-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+        }
+        .cart-table th, .cart-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .cart-table th {
+            background-color: var(--wireframe-gray);
+            font-weight: 700;
+        }
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+        .summary-row.total {
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+        .quantity-control button {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            cursor: pointer;
+        }
+        .quantity-control input {
+            width: 35px;
+            height: 28px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            border-left: none;
+            border-right: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Beranda</a></li>
+                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                <li><a href="produk.html" class="nav-link">Produk</a></li>
+                <li><a href="keranjang.html" class="nav-link active">Keranjang</a></li>
+                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                <li><a href="profil.html" class="nav-link">Profil</a></li>
+                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main class="container">
+        <ul class="breadcrumbs">
+            <li><a href="index.html">Beranda</a></li>
+            <li>Keranjang Belanja</li>
+        </ul>
+
+        <section style="margin: 40px 0;">
+            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                <h2>Keranjang Belanja</h2>
+                <p>Kelola kue pre-order lezat Anda sebelum melanjutkan ke pembayaran.</p>
+            </div>
+
+            <div class="cart-grid">
+                <!-- Left Side: Table of items -->
+                <div>
+                    <table class="cart-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;"><input type="checkbox" checked></th>
+                                <th>Kue</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                                <th style="width: 50px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" checked></td>
+                                <td>
+                                    <div class="cart-item-info">
+                                        <div class="img-placeholder" style="width: 60px; height: 60px;">
+                                            <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
+                                        </div>
+                                        <div>
+                                            <strong style="display: block;">Kastengel Keju</strong>
+                                            <span style="font-size: 0.8rem; color: var(--text-muted);">Variant: Toples 500gr</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Rp 120.000</td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <button>-</button>
+                                        <input type="text" value="1" readonly>
+                                        <button>+</button>
+                                    </div>
+                                </td>
+                                <td><strong>Rp 120.000</strong></td>
+                                <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; border-color: #dc3545; color: #dc3545;">Hapus</button></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" checked></td>
+                                <td>
+                                    <div class="cart-item-info">
+                                        <div class="img-placeholder" style="width: 60px; height: 60px;">
+                                            <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
+                                        </div>
+                                        <div>
+                                            <strong style="display: block;">Bolu Pisang</strong>
+                                            <span style="font-size: 0.8rem; color: var(--text-muted);">Variant: Diameter 20cm</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Rp 60.000</td>
+                                <td>
+                                    <div class="quantity-control">
+                                        <button>-</button>
+                                        <input type="text" value="1" readonly>
+                                        <button>+</button>
+                                    </div>
+                                </td>
+                                <td><strong>Rp 60.000</strong></td>
+                                <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; border-color: #dc3545; color: #dc3545;">Hapus</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Right Side: Order Summary Card -->
+                <div>
+                    <div class="card">
+                        <h3 class="card-title">Ringkasan Pesanan</h3>
+                        <div class="summary-rows">
+                            <div class="summary-row">
+                                <span>Total Item Terpilih</span>
+                                <strong>2 Item</strong>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Harga</span>
+                                <strong>Rp 180.000</strong>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 25px;">
+                            <a href="checkout.html" class="btn btn-primary" style="width: 100%; padding: 12px; gap: 8px;">
+                                Checkout <span style="font-family: var(--font-mono);">&rarr;</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-col">
+                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Tautan Cepat</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="tentang.html">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html">Cara Pesan</a></li>
+                    <li><a href="produk.html">Produk</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Hubungi Kami</a></li>
+                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kebijakan Privasi</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Hubungi Kami</h4>
+                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
+                    Email: carolinaberliana11@gmail.com<br>
+                    WhatsApp: +62 895-2923-6657<br>
+                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                </p>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            &copy; 2026 Olin's Cake. All Rights Reserved. Wireframe Static Prototype.
+        </div>
+    </footer>
+
+</body>
+</html>

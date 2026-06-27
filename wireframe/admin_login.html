@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Login Administrator - Olin's Cake</title>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Wireframe CSS -->
+    <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .login-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-color: var(--admin-dark-bg);
+            padding: 24px;
+        }
+        .login-card {
+            background-color: var(--admin-card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--admin-border);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow-md);
+        }
+        .login-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .login-logo-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--admin-dark-bg);
+            border: 2px solid var(--admin-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: var(--admin-accent);
+        }
+        .login-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--admin-text-main);
+        }
+        .login-logo p {
+            color: var(--admin-text-light);
+            font-size: 0.85rem;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            
+            <div class="login-logo">
+                <div class="login-logo-circle">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h1>Olin's Cake Admin <span class="wireframe-indicator">Wireframe</span></h1>
+                <p>Silakan masuk menggunakan kredensial Administrator Anda</p>
+            </div>
+
+            <form action="admin_index.html" method="GET">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Masukkan username admin" value="admin" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" value="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; justify-content: center; gap: 8px;">
+                    Masuk Panel Admin <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <div style="text-align: center; margin-top: 24px;">
+                <a href="index.html" style="color: var(--admin-text-light); font-size: 0.85rem; text-decoration: none;">
+                    <i class="fa-solid fa-globe" style="margin-right: 4px;"></i> Kembali ke Halaman Utama Toko
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
