@@ -11,7 +11,7 @@
     --admin-text-light: #A39082; /* Lighter cocoa text */
     --admin-accent: #743014; /* Spiced wine accent color */
     --admin-accent-hover: #442D1C; /* Darker cocoa hover color */
-    --admin-border: rgba(68, 45, 28, 0.08); /* Soft border */
+    --admin-border: rgba(68, 45, 28, 0.15); /* Visible elegant border */
     
     /* Support Colors */
     --admin-success: #15803d; /* Dark green text/badge style */

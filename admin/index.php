@@ -82,7 +82,7 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.2">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=<?= time(); ?>">
 </head>
 <body>
 

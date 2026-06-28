@@ -275,7 +275,7 @@ $list_produk = $conn->query("SELECT * FROM produk ORDER BY dibuat_pada DESC");
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="../assets/css/admin_style.css?v=1.2">
+    <link rel="stylesheet" href="../assets/css/admin_style.css?v=<?= time(); ?>">
     <style>
         .admin-tab-nav {
             display: flex;
