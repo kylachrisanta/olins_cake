@@ -65,12 +65,10 @@ require_once 'config/database.php';
             <div class="section-header">
                 <span class="subtitle">Tentang Kami</span>
                 <h2>Olin's Cake</h2>
-                <p>Kelezatan sejati yang lahir dari dapur rumahan dengan dedikasi cita rasa tinggi.</p>
             </div>
             
             <div class="about-grid">
                 <div class="about-text">
-                    <h3>Dibuat dengan Bahan Terbaik & Kasih Sayang</h3>
                     <p>
                         Olin's Cake didirikan atas dasar kecintaan kami dalam menghadirkan kue yang tidak hanya cantik dipandang, tetapi juga memanjakan lidah. Kami percaya bahwa setiap perayaan, kecil maupun besar, berhak mendapatkan sentuhan manis yang sempurna.
                     </p>
