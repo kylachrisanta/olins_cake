@@ -458,7 +458,7 @@ if (count($checkout_items) === 0) {
     <!-- Google Maps API and Libraries -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc&libraries=places,geometry&callback=initMap" async defer></script>
 
-    <!-- JavaScript Handl    <script>
+    <script>
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
         const navMenu = document.getElementById('nav-menu');
