@@ -1217,11 +1217,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             </div>
 
             <!-- Action Area Buttons -->
-            <div class="detail-actions-area">
-                <a href="pesanan_saya.php" class="btn btn-outline">
-                    <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Riwayat Pesanan
-                </a>
-                
+            <div class="detail-actions-area" style="justify-content: flex-end;">
                 <div class="right-actions">
                     <?php if ($status_pesanan === 'Menunggu Pembayaran'): ?>
                         <button type="button" class="btn btn-danger" onclick="openCancelModal(<?= $id_pesanan ?>, '<?= $kode_order ?>')">
