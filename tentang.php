@@ -11,7 +11,7 @@ require_once 'config/database.php';
     <meta name="description" content="Kelezatan sejati yang lahir dari dapur rumahan dengan dedikasi cita rasa tinggi.">
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/style.css?v=1.1">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?= time(); ?>">
 </head>
 <body>
 
