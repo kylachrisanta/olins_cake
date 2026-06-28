@@ -240,21 +240,25 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             content: '';
             position: absolute;
             top: 24px;
-            left: 50px;
-            right: 50px;
+            left: 25px;
+            right: 25px;
             height: 4px;
             background-color: #e9e5de;
             z-index: 1;
         }
 
-        .timeline-progress-bar {
+        #desktop-progress {
             position: absolute;
             top: 24px;
-            left: 50px;
+            left: 25px;
             height: 4px;
             background-color: var(--olive-harvest);
             z-index: 2;
             transition: width 0.4s ease;
+        }
+
+        #mobile-progress {
+            display: none;
         }
 
         .timeline-step {
@@ -679,17 +683,26 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             }
 
             .timeline-steps::before {
-                top: 25px;
+                top: 22px;
                 left: 32px;
-                bottom: 25px;
+                bottom: 22px;
                 width: 4px;
-                height: calc(100% - 50px);
+                height: calc(100% - 44px);
             }
 
-            .timeline-progress-bar {
+            #desktop-progress {
+                display: none !important;
+            }
+
+            #mobile-progress {
+                display: block !important;
+                position: absolute;
+                top: 22px;
                 left: 32px;
                 width: 4px;
-                height: 0; /* will be overridden dynamically via inline styles */
+                background-color: var(--olive-harvest);
+                z-index: 2;
+                transition: height 0.4s ease;
             }
 
             .timeline-step {
@@ -957,17 +970,15 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                         </div>
                     </div>
                     <?php else: ?>
-                        <!-- Normal Process Timeline Layout -->
                         <?php
-                        // Calculate percentage progress line for horizontal view
-                        $desktop_progress_percent = $current_step_index * 25;
-                        // Calculate percentage progress height for vertical mobile view
-                        $mobile_progress_percent = $current_step_index * 25;
+                        // Calculate precise width/height inline values using linear interpolation formulas
+                        $desktop_width_calc = "calc(" . ($current_step_index * 25) . "% - " . (12.5 * $current_step_index) . "px)";
+                        $mobile_height_calc = "calc(" . ($current_step_index * 25) . "% - " . (11 * $current_step_index) . "px)";
                         ?>
                         <div class="timeline-steps">
                             <!-- Progress Lines -->
-                            <div class="timeline-progress-bar" id="desktop-progress" style="width: <?= $desktop_progress_percent ?>%;"></div>
-                            <div class="timeline-progress-bar" id="mobile-progress" style="height: <?= $mobile_progress_percent ?>%; display: none;"></div>
+                            <div id="desktop-progress" style="width: <?= $desktop_width_calc ?>;"></div>
+                            <div id="mobile-progress" style="height: <?= $mobile_height_calc ?>;"></div>
 
                             <?php foreach ($normal_steps as $idx => $step): ?>
                                 <?php
