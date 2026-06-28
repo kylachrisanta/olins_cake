@@ -475,14 +475,14 @@ header.scrolled {
 
 /* Tentang Kami */
 .about-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 60px;
-    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: stretch;
 }
 
 .about-text {
-    padding-right: 20px;
+    padding-right: 0;
 }
 
 .about-text h3 {
@@ -498,9 +498,9 @@ header.scrolled {
 }
 
 .about-cards {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
 }
 
 .about-card {
@@ -510,12 +510,13 @@ header.scrolled {
     box-shadow: var(--shadow-sm);
     border: 1px solid rgba(68, 45, 28, 0.03);
     display: flex;
-    gap: 20px;
+    flex-direction: column;
+    gap: 16px;
     transition: all 0.3s ease;
 }
 
 .about-card:hover {
-    transform: translateX(10px);
+    transform: translateY(-8px);
     box-shadow: var(--shadow-md);
     border-color: rgba(157, 145, 103, 0.2);
 }
@@ -1330,8 +1331,7 @@ footer {
     
     /* About */
     .about-grid {
-        grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 30px;
     }
     .about-text {
         padding-right: 0;
@@ -1339,6 +1339,14 @@ footer {
     }
     .about-text p {
         text-align: center;
+    }
+    .about-cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .about-card {
+        flex-direction: row;
+        gap: 20px;
     }
     
     /* Products */
