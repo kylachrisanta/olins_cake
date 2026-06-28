@@ -251,6 +251,16 @@ if (count($checkout_items) === 0) {
                                                 * Alamat terisi otomatis dari peta. Anda juga dapat <strong>mengetik</strong> untuk mencari dan memilih saran alamat, atau <strong>geser pin</strong> di peta untuk menyesuaikan lokasi secara akurat.
                                             </small>
                                         </div>
+
+                                        <!-- Tombol Konfirmasi Lokasi & Ubah Lokasi -->
+                                        <div class="contact-form-group" style="margin-top: 15px;">
+                                            <button type="button" id="btn-konfirmasi-lokasi" class="btn btn-primary" style="width: 100%; justify-content: center; gap: 8px; font-weight: 700; height: 45px; display: inline-flex; align-items: center;">
+                                                <i class="fa-solid fa-location-dot"></i> Konfirmasi Lokasi
+                                            </button>
+                                            <button type="button" id="btn-ubah-lokasi" class="btn btn-outline" style="width: 100%; justify-content: center; gap: 8px; font-weight: 700; height: 45px; display: none; align-items: center; border-color: var(--spiced-wine); color: var(--spiced-wine);">
+                                                <i class="fa-solid fa-pen-to-square"></i> Ubah Lokasi
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!-- Informasi Hasil Ongkir & Jarak -->
@@ -448,8 +458,7 @@ if (count($checkout_items) === 0) {
     <!-- Google Maps API and Libraries -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc&libraries=places,geometry&callback=initMap" async defer></script>
 
-    <!-- JavaScript Handling -->
-    <script>
+    <!-- JavaScript Handl    <script>
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
         const navMenu = document.getElementById('nav-menu');
@@ -462,6 +471,7 @@ if (count($checkout_items) === 0) {
         let selectedMetode = 'Kirim ke Alamat';
         let currentJarak = 0;
         let currentOngkir = 0;
+        let isLocationConfirmed = false;
 
         // Google Maps Variables
         let map;
@@ -471,6 +481,7 @@ if (count($checkout_items) === 0) {
         let autocompleteSearch;
         let autocompleteAddress;
         let geocoder;
+        let mapClickListener;
 
         const storeLatLng = { lat: -6.2215453, lng: 107.0463893 };
 
@@ -544,28 +555,41 @@ if (count($checkout_items) === 0) {
             autocompleteAddress.addListener('place_changed', () => {
                 const place = autocompleteAddress.getPlace();
                 if (!place.geometry || !place.geometry.location) {
-                    // Tidak ada place terpilih dari saran — update state saja
-                    updateFormState(currentJarak <= 20, currentJarak > 20 ? 'Pengiriman di luar area layanan.' : '');
+                    updateFormState(false);
                     return;
                 }
                 handlePlaceSelected(place);
             });
 
             // Click Map to position pin
-            map.addListener('click', (event) => {
+            mapClickListener = map.addListener('click', (event) => {
                 if (selectedMetode !== 'Kirim ke Alamat') return;
+                if (isLocationConfirmed) return; // ignore if confirmed/locked
+                
                 customerMarker.setPosition(event.latLng);
                 customerMarker.setMap(map);
-                calculateDistance(event.latLng);
+                
+                // Save coords
+                document.getElementById('input-lat').value = event.latLng.lat();
+                document.getElementById('input-lng').value = event.latLng.lng();
+                
                 reverseGeocode(event.latLng);
+                updateFormState(false); // require confirmation
             });
 
             // Drag pin end
             customerMarker.addListener('dragend', () => {
                 if (selectedMetode !== 'Kirim ke Alamat') return;
+                if (isLocationConfirmed) return; // ignore if confirmed/locked
+                
                 const pos = customerMarker.getPosition();
-                calculateDistance(pos);
+                
+                // Save coords
+                document.getElementById('input-lat').value = pos.lat();
+                document.getElementById('input-lng').value = pos.lng();
+                
                 reverseGeocode(pos);
+                updateFormState(false); // require confirmation
             });
             
             // Initial call if delivery method requires it
@@ -573,7 +597,6 @@ if (count($checkout_items) === 0) {
         }
 
         // ── Handler Terpadu: Saat Tempat Dipilih dari Autocomplete ────────────
-        // Dipanggil oleh autocompleteSearch DAN autocompleteAddress
         function handlePlaceSelected(place) {
             const location = place.geometry.location;
 
@@ -599,8 +622,7 @@ if (count($checkout_items) === 0) {
             document.getElementById('input-lat').value = location.lat();
             document.getElementById('input-lng').value = location.lng();
 
-            // 5. Hitung ulang jarak & ongkir
-            calculateDistance(location);
+            updateFormState(false); // require confirmation
         }
 
         // Show geolocation status banner
@@ -650,7 +672,6 @@ if (count($checkout_items) === 0) {
 
             navigator.geolocation.getCurrentPosition(
                 function(position) {
-                    // Success: got user location
                     const userLatLng = new google.maps.LatLng(
                         position.coords.latitude,
                         position.coords.longitude
@@ -672,15 +693,12 @@ if (count($checkout_items) === 0) {
 
                     // Reverse geocode to fill address
                     reverseGeocode(userLatLng);
-
-                    // Calculate distance
-                    calculateDistance(userLatLng);
+                    updateFormState(false); // require confirmation
 
                     // Auto-hide banner after 5 seconds
                     setTimeout(hideGeoBanner, 5000);
                 },
                 function(error) {
-                    // Error / permission denied
                     let msg = 'Izin lokasi ditolak.';
                     if (error.code === error.PERMISSION_DENIED) {
                         msg = 'Izin akses lokasi ditolak. Silakan pilih lokasi pada peta secara manual atau aktifkan izin lokasi di browser Anda.';
@@ -708,9 +726,7 @@ if (count($checkout_items) === 0) {
                         const address = results[0].formatted_address;
                         document.getElementById('input-alamat').value = address;
                         document.getElementById('detected-address-box').style.display = 'block';
-                        
-                        // Check state
-                        updateFormState(currentJarak <= 20, currentJarak > 20 ? 'Pengiriman di luar area layanan.' : '');
+                        updateFormState(false);
                     }
                 } else {
                     console.error("Geocoding failed due to: " + status);
@@ -753,7 +769,11 @@ if (count($checkout_items) === 0) {
                 if (success) {
                     processDistanceAndOngkir(distanceInKm);
                 } else {
-                    console.error("Gagal menghitung jarak.");
+                    alert("Gagal menghitung jarak pengiriman dari toko. Silakan coba konfirmasi ulang.");
+                    document.getElementById('display-jarak').innerText = "-";
+                    document.getElementById('display-ongkir').innerText = "-";
+                    isLocationConfirmed = false;
+                    updateFormState(false);
                 }
             });
         }
@@ -767,11 +787,9 @@ if (count($checkout_items) === 0) {
             const dispJarak = document.getElementById('display-jarak');
             const dispOngkir = document.getElementById('display-ongkir');
 
-            // Format distance with comma separator for display (1 decimal place)
             const formattedDistance = distanceInKm.toLocaleString('id-ID', { minimumFractionDigits: 0, maximumFractionDigits: 1 }) + " km";
 
             if (distanceInKm <= 20) {
-                // Calculate ongkir using raw/exact distance * 3000 (rounded to nearest integer for DB/currency)
                 currentOngkir = Math.round(distanceInKm * 3000);
                 
                 resultsBox.style.display = 'block';
@@ -781,7 +799,6 @@ if (count($checkout_items) === 0) {
 
                 updateFormState(true, '');
             } else {
-                // Out of service area
                 currentOngkir = 0;
                 resultsBox.style.display = 'none';
                 warningBox.style.display = 'flex';
@@ -802,11 +819,9 @@ if (count($checkout_items) === 0) {
                 pickupBox.style.display = 'none';
                 if (summaryOngkirRow) summaryOngkirRow.style.display = 'flex';
                 
-                // Trigger maps search layout update (resize event helps maps load properly)
                 if (map) {
                     google.maps.event.trigger(map, 'resize');
                     
-                    // If marker is already set (user switched back), restore it
                     const lat = document.getElementById('input-lat').value;
                     const lng = document.getElementById('input-lng').value;
                     if (lat && lng) {
@@ -815,11 +830,15 @@ if (count($checkout_items) === 0) {
                         customerMarker.setMap(map);
                         map.setCenter(latLng);
                         map.setZoom(16);
-                        calculateDistance(latLng);
+                        
+                        if (isLocationConfirmed) {
+                            calculateDistance(latLng);
+                        } else {
+                            updateFormState(false);
+                        }
                     } else {
-                        // No location set yet — auto-detect user location
                         detectUserLocation();
-                        updateFormState(false, 'Tentukan lokasi pada peta terlebih dahulu.');
+                        updateFormState(false);
                     }
                 }
             } else {
@@ -860,7 +879,7 @@ if (count($checkout_items) === 0) {
                 const addressVal = document.getElementById('input-alamat').value;
                 const latVal = document.getElementById('input-lat').value;
                 const lngVal = document.getElementById('input-lng').value;
-                if (!addressVal || !latVal || !lngVal) {
+                if (!addressVal || !latVal || !lngVal || !isLocationConfirmed) {
                     finalValid = false;
                 }
             }
@@ -876,6 +895,60 @@ if (count($checkout_items) === 0) {
                 submitBtn.style.cursor = 'not-allowed';
             }
         }
+
+        // Click handler: Konfirmasi Lokasi
+        document.getElementById('btn-konfirmasi-lokasi').addEventListener('click', () => {
+            const addressVal = document.getElementById('input-alamat').value.trim();
+            const latVal = document.getElementById('input-lat').value;
+            const lngVal = document.getElementById('input-lng').value;
+
+            if (!addressVal || !latVal || !lngVal) {
+                alert("Harap pilih lokasi pada peta atau masukkan alamat terlebih dahulu.");
+                return;
+            }
+
+            isLocationConfirmed = true;
+
+            // Disable edits
+            document.getElementById('map-search-input').disabled = true;
+            document.getElementById('input-alamat').readOnly = true;
+            customerMarker.setDraggable(false);
+
+            // Toggle buttons
+            document.getElementById('btn-konfirmasi-lokasi').style.display = 'none';
+            document.getElementById('btn-ubah-lokasi').style.display = 'inline-flex';
+
+            // Show loading state
+            document.getElementById('delivery-results-box').style.display = 'block';
+            document.getElementById('display-jarak').innerText = "Menghitung...";
+            document.getElementById('display-ongkir').innerText = "Menghitung...";
+
+            // Trigger calculation
+            const location = new google.maps.LatLng(parseFloat(latVal), parseFloat(lngVal));
+            calculateDistance(location);
+        });
+
+        // Click handler: Ubah Lokasi
+        document.getElementById('btn-ubah-lokasi').addEventListener('click', () => {
+            isLocationConfirmed = false;
+
+            // Enable edits
+            document.getElementById('map-search-input').disabled = false;
+            document.getElementById('input-alamat').readOnly = false;
+            customerMarker.setDraggable(true);
+
+            // Toggle buttons
+            document.getElementById('btn-konfirmasi-lokasi').style.display = 'inline-flex';
+            document.getElementById('btn-ubah-lokasi').style.display = 'none';
+
+            // Hide calculations
+            document.getElementById('delivery-results-box').style.display = 'none';
+            document.getElementById('warning-distance-box').style.display = 'none';
+
+            currentJarak = 0;
+            currentOngkir = 0;
+            updateFormState(false);
+        });
 
         // Action choices in Warning Box
         function selectPickupOption() {
