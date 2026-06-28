@@ -132,7 +132,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Global CSS -->
-    <link rel="stylesheet" href="assets/css/style.css?v=1.0.1">
+    <link rel="stylesheet" href="assets/css/style.css?v=<?= time(); ?>">
     
     <style>
         /* Custom Styling for Detail Pesanan Page */
@@ -166,7 +166,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             border-radius: var(--radius-md);
             padding: 24px;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(68, 45, 28, 0.05);
+            border: 1.5px solid rgba(68, 45, 28, 0.25);
             margin-bottom: 24px;
             display: flex;
             justify-content: space-between;
@@ -210,7 +210,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             border-radius: var(--radius-md);
             padding: 32px 24px;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(68, 45, 28, 0.05);
+            border: 1.5px solid rgba(68, 45, 28, 0.25);
             margin-bottom: 24px;
         }
 
@@ -366,7 +366,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             border-radius: var(--radius-md);
             padding: 24px;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(68, 45, 28, 0.05);
+            border: 1.5px solid rgba(68, 45, 28, 0.25);
             height: 100%;
         }
 
@@ -427,7 +427,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             border-radius: var(--radius-md);
             padding: 24px;
             box-shadow: var(--shadow-sm);
-            border: 1px solid rgba(68, 45, 28, 0.05);
+            border: 1.5px solid rgba(68, 45, 28, 0.25);
             margin-bottom: 24px;
         }
 
@@ -1194,6 +1194,14 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                         <span>Total Pembayaran</span>
                         <span class="grand-price">Rp <?= number_format($order['total_bayar'], 0, ',', '.') ?></span>
                     </div>
+                    
+                    <?php if ($order['status_pembayaran'] === 'Sudah Dibayar'): ?>
+                        <div style="margin-top: 15px; border-top: 1px dashed rgba(68, 45, 28, 0.15); padding-top: 15px; display: flex; justify-content: flex-end;">
+                            <a href="unduh_kwitansi.php?id=<?= $id_pesanan ?>" target="_blank" class="btn btn-primary" style="background-color: var(--olive-harvest); border-color: var(--olive-harvest); color: var(--white); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 10px 20px; font-weight: 600; font-size: 0.95rem; border-radius: 30px; transition: all 0.3s ease; height: auto;">
+                                🧾 Unduh Kwitansi
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

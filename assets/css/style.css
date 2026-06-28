@@ -2254,7 +2254,7 @@ footer {
     background-color: var(--white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(68, 45, 28, 0.03);
+    border: 1.5px solid rgba(68, 45, 28, 0.25);
     overflow: hidden;
 }
 
@@ -2610,7 +2610,7 @@ footer {
     background-color: var(--white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(68, 45, 28, 0.03);
+    border: 1.5px solid rgba(68, 45, 28, 0.25);
     /* overflow: hidden dihapus agar dropdown Google Places Autocomplete tidak terpotong */
     overflow: visible;
 }
@@ -3040,7 +3040,7 @@ footer {
     background-color: var(--white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(68, 45, 28, 0.04);
+    border: 1.5px solid rgba(68, 45, 28, 0.25);
     overflow: hidden;
 }
 
@@ -3343,7 +3343,7 @@ footer {
     box-shadow: var(--shadow-sm);
     padding: 60px 40px;
     text-align: center;
-    border: 1px solid rgba(68, 45, 28, 0.03);
+    border: 1.5px solid rgba(68, 45, 28, 0.25);
 }
 
 .order-card-empty .empty-icon {
@@ -3614,7 +3614,7 @@ footer {
     background-color: var(--white);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(68, 45, 28, 0.04);
+    border: 1.5px solid rgba(68, 45, 28, 0.25);
     padding: 30px;
     margin-bottom: 24px;
     position: relative;

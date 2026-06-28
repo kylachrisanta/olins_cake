@@ -562,6 +562,14 @@ $list_pesanan = $conn->query($query_all);
                                 </button>
                             </form>
                         <?php endif; ?>
+                        
+                        <?php if ($view_order['status_pembayaran'] === 'Sudah Dibayar'): ?>
+                            <div style="margin-top: 16px; border-top: 1px dashed var(--admin-border); padding-top: 16px;">
+                                <a href="../unduh_kwitansi.php?id=<?= $view_order['id_pesanan'] ?>" target="_blank" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center; gap: 8px; text-decoration: none;">
+                                    <i class="fa-solid fa-file-invoice"></i> Unduh Kwitansi Pembayaran
+                                </a>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <!-- 4. Detail Info Pembayaran -->
@@ -664,11 +672,16 @@ $list_pesanan = $conn->query($query_all);
                                         <td><strong>Rp <?= number_format($row['total_bayar'], 0, ',', '.') ?></strong></td>
                                         <td><span class="admin-badge <?= $badge_bayar ?>"><?= htmlspecialchars($status_pembayaran) ?></span></td>
                                         <td><span class="admin-badge <?= $badge_pesanan ?>"><?= htmlspecialchars($status_pesanan) ?></span></td>
-                                        <td style="text-align: right;">
-                                            <a href="pesanan.php?action=view&id=<?= $row['id_pesanan'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" title="Kelola">
-                                                <i class="fa-solid fa-gears"></i> Kelola
-                                            </a>
-                                        </td>
+                                         <td style="text-align: right; white-space: nowrap;">
+                                             <?php if ($status_pembayaran === 'Sudah Dibayar'): ?>
+                                                 <a href="../unduh_kwitansi.php?id=<?= $row['id_pesanan'] ?>" target="_blank" class="admin-btn admin-btn-sm" style="background-color: var(--admin-accent); color: white; border-color: var(--admin-accent); display: inline-flex; align-items: center; gap: 4px; text-decoration: none;" title="Unduh Kwitansi">
+                                                     <i class="fa-solid fa-file-invoice"></i> Kwitansi
+                                                 </a>
+                                             <?php endif; ?>
+                                             <a href="pesanan.php?action=view&id=<?= $row['id_pesanan'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" title="Kelola" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
+                                                 <i class="fa-solid fa-gears"></i> Kelola
+                                             </a>
+                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
