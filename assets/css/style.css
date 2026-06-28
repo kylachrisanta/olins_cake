@@ -495,7 +495,7 @@ header.scrolled {
     color: var(--text-muted);
     margin-bottom: 24px;
     font-size: 1.05rem;
-    text-align: justify;
+    text-align: center;
 }
 
 .about-cards {
