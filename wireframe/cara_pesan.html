@@ -4,173 +4,575 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Cara Pesan - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN to render icons exactly like the real site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .step-timeline {
+        /* General High-Contrast Sketch Style matching reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        /* Solid Section Dividers */
+        
+        footer {
+            border-top: 2px solid #333 !important;
+            background-color: #f8f9fa !important;
+            color: #111111 !important;
+            padding: 50px 0 30px 0 !important;
+        }
+
+
+        /* Crossed Placeholder Box for Logo in header & footer */
+        .wireframe-img-box {
             position: relative;
-            max-width: 800px;
-            margin: 60px auto;
-            padding-left: 50px;
-        }
-        .step-timeline::before {
-            content: '';
-            position: absolute;
-            top: 10px;
-            bottom: 10px;
-            left: 20px;
-            width: 2px;
-            border-left: 2px dashed var(--border-color);
-        }
-        .step-item {
-            position: relative;
-            margin-bottom: 40px;
-        }
-        .step-item:last-child {
-            margin-bottom: 0;
-        }
-        .step-number {
-            position: absolute;
-            left: -50px;
-            top: 0;
-            width: 42px;
-            height: 42px;
-            border: 2px solid var(--text-main);
-            border-radius: 50%;
-            background-color: var(--bg-primary);
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: var(--font-mono);
-            font-weight: 700;
-            font-size: 1.1rem;
+            border-radius: 8px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wireframe-img-label {
+            position: relative;
             z-index: 2;
-        }
-        .step-content {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 20px;
-        }
-        .step-content h3 {
-            font-size: 1.15rem;
-            margin-bottom: 8px;
-        }
-        .step-content p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-        .warning-tag {
-            display: inline-block;
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
             font-size: 0.85rem;
-            padding: 6px 12px;
+            font-weight: bold;
             border-radius: 4px;
-            margin-top: 10px;
-            font-weight: 600;
+        }
+
+        /* Timeline Section & Cards */
+        .cara-pesan-section {
+            width: 100%;
+            padding: 130px 24px 80px 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 64px;
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .timeline-header h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #111111 !important;
+            margin-bottom: 16px;
+        }
+
+        .timeline-header p {
+            color: #555555 !important;
+            font-size: 1.1rem;
+        }
+
+        .timeline-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .timeline-line-mobile {
+            position: absolute;
+            top: 0;
+            bottom: 180px;
+            left: 32px;
+            width: 4px;
+            background-color: #333 !important;
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .timeline-row {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 96px;
+        }
+
+        .timeline-card {
+            width: 85%;
+            background-color: #ffffff !important;
+            border-radius: 6px !important;
+            padding: 32px;
+            border: 1.5px solid #333 !important;
+            box-shadow: none !important;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .timeline-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-card.visible:hover {
+            transform: translateY(-4px) !important;
+            border-color: #000000 !important;
+        }
+
+        .step-badge {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -32px;
+            left: -32px;
+            border: 1.5px solid #333 !important;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background-color: #fafafa !important;
+            color: #111111 !important;
+        }
+
+        .step-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .step-card-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111111 !important;
+            margin: 0;
+        }
+
+        .step-desc {
+            color: #555555 !important;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .deco-icon {
+            position: absolute;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* SVG timeline style overrides */
+        .path-line-bg {
+            stroke: #cccccc !important;
+            stroke-width: 6 !important;
+        }
+
+        .path-line-active {
+            stroke: #333333 !important;
+            stroke-width: 6 !important;
+            stroke-dasharray: 120 1000;
+            stroke-dashoffset: 1120;
+            animation: drawPath 6s linear infinite;
+        }
+
+        @keyframes drawPath {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        /* Footer Column styling */
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111111 !important;
+        }
+
+        .footer-links a, .footer-col p, .footer-col {
+            color: #111111 !important;
+        }
+        .footer-links a:hover {
+            color: #555555 !important;
+            text-decoration: underline !important;
+        }
+        
+        .footer-bottom {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 20px !important;
+            margin-top: 30px !important;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            color: #111111 !important;
+        }
+
+        /* Timeline alignment for desktop matching style.css layout */
+        @media (min-width: 768px) {
+            .timeline-card {
+                width: 384px;
+            }
+            .timeline-line-mobile {
+                display: none;
+            }
+            .timeline-row {
+                justify-content: center;
+            }
+            
+            .row-1 .timeline-card {
+                transform: translateX(230px) translateY(30px);
+            }
+            .row-1 .timeline-card.visible {
+                transform: translateX(180px) translateY(0);
+            }
+            .row-1 .timeline-card.visible:hover {
+                transform: translateX(180px) translateY(-4px) !important;
+            }
+
+            .row-2 .timeline-card {
+                transform: translateX(-230px) translateY(30px);
+            }
+            .row-2 .timeline-card.visible {
+                transform: translateX(-180px) translateY(0);
+            }
+            .row-2 .timeline-card.visible:hover {
+                transform: translateX(-180px) translateY(-4px) !important;
+            }
+            .row-2 .step-badge {
+                left: auto;
+                right: -32px;
+            }
+
+            .row-3 .timeline-card {
+                transform: translateX(190px) translateY(30px);
+            }
+            .row-3 .timeline-card.visible {
+                transform: translateX(140px) translateY(0);
+            }
+            .row-3 .timeline-card.visible:hover {
+                transform: translateX(140px) translateY(-4px) !important;
+            }
+
+            .row-4 .timeline-card {
+                transform: translateX(-190px) translateY(30px);
+            }
+            .row-4 .timeline-card.visible {
+                transform: translateX(-140px) translateY(0);
+            }
+            .row-4 .timeline-card.visible:hover {
+                transform: translateX(-140px) translateY(-4px) !important;
+            }
+            .row-4 .step-badge {
+                left: auto;
+                right: -32px;
+            }
+
+            .row-5 .timeline-card {
+                transform: translateX(130px) translateY(30px);
+            }
+            .row-5 .timeline-card.visible {
+                transform: translateX(80px) translateY(0);
+            }
+            .row-5 .timeline-card.visible:hover {
+                transform: translateX(80px) translateY(-4px) !important;
+            }
+
+            .row-6 .timeline-card {
+                transform: translateY(30px);
+            }
+            .row-6 .timeline-card.visible {
+                transform: none;
+            }
+            .row-6 .timeline-card.visible:hover {
+                transform: translateY(-4px) !important;
+            }
+            .row-6 .step-badge {
+                left: 50%;
+                transform: translateX(-50%);
+                top: -32px;
+            }
+            .row-6 .step-card-header {
+                margin-top: 16px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .timeline-svg {
+                display: none;
+            }
+            .step-badge {
+                width: 48px;
+                height: 48px;
+                top: -24px;
+                left: -24px;
+                font-size: 1.25rem;
+            }
+            .timeline-card {
+                padding: 24px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link active">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Cara Pesan</li>
-        </ul>
+    <!-- Cara Pesan Section -->
+    <section class="cara-pesan-section" id="cara-pesan">
+        <div class="timeline-header">
+            <h2>Cara Memesan</h2>
+            <p>Ikuti perjalanan seru kue impianmu dari oven kami ke meja makanmu. Cukup beberapa langkah mudah!</p>
+        </div>
 
-        <section style="margin: 40px 0;">
-            <div class="section-header">
-                <h2>Cara Mudah Memesan</h2>
-                <p>Ikuti langkah mudah di bawah ini untuk memesan kue lezat impian Anda.</p>
-            </div>
-            
-            <div class="step-timeline">
-                <!-- Step 1 -->
-                <div class="step-item">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Pilih Produk</h3>
-                        <p>Jelajahi halaman katalog produk kami, pilih jenis bolu atau kue kering favorit Anda yang ingin Anda pesan.</p>
-                    </div>
+        <div class="timeline-container">
+            <!-- Curved path linking steps on desktop -->
+            <svg class="timeline-svg hidden md:block" preserveAspectRatio="none" viewBox="0 0 1000 1200" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;">
+                <!-- Background static line -->
+                <path class="path-line-bg" d="M 500,0 C 700,50 750,120 680,200 C 600,300 250,250 320,400 C 400,550 700,480 640,620 C 550,750 300,700 360,820 C 400,950 600,900 550,1020 C 500,1035 500,1045 500,1050" fill="none" stroke="#ccc" stroke-linecap="round" stroke-width="8"></path>
+                <!-- Animated active flow line -->
+                <path class="path-line-active" d="M 500,0 C 700,50 750,120 680,200 C 600,300 250,250 320,400 C 400,550 700,480 640,620 C 550,750 300,700 360,820 C 400,950 600,900 550,1020 C 500,1035 500,1045 500,1050" fill="none" stroke="#333" stroke-linecap="round" stroke-width="8"></path>
+            </svg>
+
+            <!-- Line for mobile view -->
+            <div class="timeline-line-mobile"></div>
+
+            <!-- Step 1 -->
+            <div class="timeline-row row-1">
+                <div class="wireframe-img-box deco-icon hidden md:block" style="right: -48px; top: 48px; transform: rotate(12deg); width: 64px; height: 64px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#888" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#888" stroke-width="1.2" />
+                    </svg>
                 </div>
-
-                <!-- Step 2 -->
-                <div class="step-item">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Masukkan ke Keranjang</h3>
-                        <p>Tentukan kuantitas atau jumlah pesanan kue, lalu masukkan ke dalam keranjang belanja belanja Anda.</p>
-                    </div>
-                </div>
-
-                <!-- Step 3 -->
-                <div class="step-item">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Checkout</h3>
-                        <p>Lengkapi detail nama penerima, nomor WhatsApp yang dapat dihubungi, metode pengambilan, dan alamat pengantaran lengkap.</p>
-                        <div class="warning-tag">
-                            ⚠️ PENTING: Batas waktu pemesanan minimal Pre-Order H-3 sebelum jadwal pengiriman.
+                <div class="timeline-card">
+                    <div class="step-badge">1</div>
+                    <div class="step-card-header">
+                        <div class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 50% !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
                         </div>
+                        <h3>Pilih Produk</h3>
                     </div>
-                </div>
-
-                <!-- Step 4 -->
-                <div class="step-item">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Pembayaran</h3>
-                        <p>Lakukan transfer bank sesuai nominal total belanja ke nomor rekening tujuan yang tertera, lalu unggah foto bukti transfer di halaman konfirmasi pembayaran.</p>
-                    </div>
-                </div>
-
-                <!-- Step 5 -->
-                <div class="step-item">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>Pesanan Diproses</h3>
-                        <p>Dapur Olin's Cake akan memverifikasi pembayaran Anda, lalu memanggang dan mempersiapkan kue pesanan Anda fresh dari oven.</p>
-                    </div>
-                </div>
-
-                <!-- Step 6 -->
-                <div class="step-item">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <h3>Pengiriman/Ambil ke Toko</h3>
-                        <p>Kue siap diantarkan langsung oleh kurir kami ke alamat Anda atau Anda dapat mengambilnya sendiri secara langsung di gerai kami sesuai jadwal.</p>
-                    </div>
+                    <p class="step-desc">Jelajahi katalog dan pilih produk kue premium favorit Anda.</p>
                 </div>
             </div>
-        </section>
-    </main>
 
+            <!-- Step 2 -->
+            <div class="timeline-row row-2">
+                <div class="wireframe-img-box deco-icon hidden md:block" style="left: -48px; top: 40px; transform: rotate(-12deg); width: 64px; height: 64px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#888" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#888" stroke-width="1.2" />
+                    </svg>
+                </div>
+                <div class="timeline-card">
+                    <div class="step-badge">2</div>
+                    <div class="step-card-header">
+                        <div class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 50% !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <h3>Masukkan ke Keranjang</h3>
+                    </div>
+                    <p class="step-desc">Tambahkan kue pilihan Anda ke keranjang belanja dan tentukan jumlah pemesanan.</p>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="timeline-row row-3">
+                <div class="wireframe-img-box deco-icon hidden md:block" style="right: 40px; top: 80px; transform: rotate(45deg); width: 64px; height: 64px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#888" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#888" stroke-width="1.2" />
+                    </svg>
+                </div>
+                <div class="timeline-card">
+                    <div class="step-badge">3</div>
+                    <div class="step-card-header">
+                        <div class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 50% !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <h3>Checkout</h3>
+                    </div>
+                    <p class="step-desc">Lengkapi detail pengiriman Anda. Harap diperhatikan, minimal pre-order adalah H-3 sebelum tanggal pengiriman.</p>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="timeline-row row-4">
+                <div class="wireframe-img-box deco-icon hidden md:block" style="left: 40px; top: -40px; transform: rotate(-6deg); width: 64px; height: 64px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#888" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#888" stroke-width="1.2" />
+                    </svg>
+                </div>
+                <div class="timeline-card">
+                    <div class="step-badge">4</div>
+                    <div class="step-card-header">
+                        <div class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 50% !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <h3>Pembayaran</h3>
+                    </div>
+                    <p class="step-desc">Lakukan pembayaran melalui transfer bank dan segera unggah bukti pembayaran Anda.</p>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="timeline-row row-5">
+                <div class="wireframe-img-box deco-icon hidden md:block" style="right: 80px; top: -40px; transform: rotate(12deg); width: 64px; height: 64px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#888" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#888" stroke-width="1.2" />
+                    </svg>
+                </div>
+                <div class="timeline-card">
+                    <div class="step-badge">5</div>
+                    <div class="step-card-header">
+                        <div class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 50% !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <h3>Pesanan Diproses</h3>
+                    </div>
+                    <p class="step-desc">Kue Anda akan dipanggang segar (freshly baked) menggunakan bahan-bahan premium oleh chef kami.</p>
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="timeline-row row-6" style="margin-bottom: 32px;">
+                <div class="timeline-card">
+                    <div class="step-badge">6</div>
+                    <div class="step-card-header">
+                        <div class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 50% !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <h3>Dikirim/Ambil ke Toko</h3>
+                    </div>
+                    <p class="step-desc">Pilih pesanan Anda diantar langsung secara aman ke alamat tujuan atau diambil langsung di toko resmi kami.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -180,20 +582,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -202,5 +607,98 @@
         </div>
     </footer>
 
+    <!-- JavaScript Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Intersection Observer for timeline cards entry animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                document.querySelectorAll('.timeline-card').forEach(card => {
+                    observer.observe(card);
+                });
+            } else {
+                // Fallback for older browsers
+                document.querySelectorAll('.timeline-card').forEach(card => {
+                    card.classList.add('visible');
+                });
+            }
+        });
+
+        // Dynamic Header Actions based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link active">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link active">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>

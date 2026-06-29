@@ -4,200 +4,688 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Keranjang Belanja - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Ensure the floating header always has a solid white background in wireframes to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
+        }
+
+        /* General High-Contrast Sketch Style matching reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .cart-section {
+            padding: 120px 0 60px 0;
+        }
+
+        .cart-title-area {
+            margin-bottom: 30px;
+        }
+        .cart-title-area h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #111111 !important;
+            margin-bottom: 8px;
+        }
+        .cart-title-area p {
+            color: #555555 !important;
+            font-size: 1rem;
+        }
+
+        /* Cart grid split layout */
         .cart-grid {
             display: grid;
             grid-template-columns: 1.4fr 0.8fr;
             gap: 30px;
-            margin: 30px 0;
         }
-        .cart-table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
+
+        @media (max-width: 991px) {
+            .cart-grid {
+                grid-template-columns: 1fr;
+            }
         }
-        .cart-table th, .cart-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
+
+        .cart-card {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            padding: 24px;
+            border-radius: 8px !important;
+            box-shadow: none !important;
         }
-        .cart-table th {
-            background-color: var(--wireframe-gray);
-            font-weight: 700;
+
+        /* Header Actions */
+        .cart-header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1.5px dashed #333 !important;
+            margin-bottom: 20px;
         }
-        .cart-item-info {
+
+        .select-all-label {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #111111 !important;
+        }
+
+        .btn-delete-selected {
+            background: none;
+            border: 1.5px solid #333 !important;
+            padding: 6px 12px;
+            border-radius: 4px !important;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #333 !important;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: background-color 0.2s ease;
+        }
+        .btn-delete-selected:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        .cart-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #333;
+        }
+
+        /* Cart items list */
+        .cart-items-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1.5px solid #eee !important;
+            gap: 16px;
+        }
+        .cart-item-row:last-child {
+            border-bottom: none !important;
+        }
+
+        .cart-item-checkbox-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-item-img-col {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-item-img-wrapper {
+            width: 70px;
+            height: 70px;
+        }
+
+        /* Crossed Image Box for Wireframe */
+        .wireframe-img-box {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wireframe-img-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 1px 4px;
+            font-family: monospace;
+            font-size: 0.55rem;
+            font-weight: bold;
+            border-radius: 3px;
+        }
+
+        .cart-item-details-col {
+            flex: 1;
+            min-width: 150px;
+        }
+        .cart-item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .cart-item-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #777777 !important;
+            font-weight: bold;
+        }
+        .cart-item-name {
+            font-weight: bold;
+            color: #111111 !important;
+            font-size: 1.05rem;
+            text-decoration: none;
+        }
+        .cart-item-name:hover {
+            text-decoration: underline;
+        }
+
+        .cart-item-price-col {
+            font-weight: 600;
+            color: #111111 !important;
+            min-width: 100px;
+            font-size: 0.95rem;
+        }
+
+        /* Quantity selector */
+        .cart-qty-col {
+            display: flex;
+            align-items: center;
+        }
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid #333 !important;
+            border-radius: 4px !important;
+            height: 32px;
+            overflow: hidden;
+            background: #ffffff !important;
+        }
+        .qty-btn {
+            width: 28px;
+            height: 100%;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #111111;
+        }
+        .qty-btn:hover {
+            background-color: #f0f0f0 !important;
+        }
+        .qty-input {
+            width: 32px;
+            height: 100%;
+            border: none;
+            border-left: 1.5px solid #333 !important;
+            border-right: 1.5px solid #333 !important;
+            text-align: center;
+            font-weight: bold;
+            outline: none;
+            background: transparent;
+            color: #111111 !important;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-subtotal-col {
+            font-weight: bold;
+            color: #111111 !important;
+            min-width: 110px;
+            text-align: right;
+            font-size: 1.05rem;
+        }
+
+        .cart-remove-col {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item-remove {
+            background: none;
+            border: 1.5px solid #333 !important;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #333 !important;
+            transition: all 0.2s ease;
+        }
+        .cart-item-remove:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        /* Right Side Card */
+        .cart-summary-card h2 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            border-bottom: 2px solid #333 !important;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            color: #111111 !important;
+        }
+
+        .summary-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         .summary-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 12px;
             font-size: 0.95rem;
+            color: #555555 !important;
         }
-        .summary-row.total {
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
+        .summary-row span:last-child {
             font-weight: 700;
-            font-size: 1.15rem;
+            color: #111111 !important;
+            }
+        .summary-row.total {
+            border-top: 1.5px dashed #333 !important;
+            padding-top: 16px;
+            margin-top: 8px;
+            font-size: 1.25rem;
         }
-        .quantity-control {
+        .summary-row.total span {
+            font-weight: 800 !important;
+            color: #111111 !important;
+        }
+
+        .btn-checkout {
             display: flex;
             align-items: center;
-        }
-        .quantity-control button {
-            width: 28px;
-            height: 28px;
-            border: 1px solid var(--border-color);
-            background: transparent;
+            justify-content: center;
+            width: 100%;
+            margin-top: 24px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 700;
+            border: 2px solid #333 !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            border-radius: 6px !important;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .quantity-control input {
-            width: 35px;
-            height: 28px;
+        .btn-checkout:hover:not(:disabled) {
+            background-color: #f0f0f0 !important;
+        }
+        .btn-checkout:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #ffffff !important;
+            border-color: #888888 !important;
+            color: #777777 !important;
+        }
+
+        /* Empty Cart Box style */
+        .empty-cart-card {
             text-align: center;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            border-left: none;
-            border-right: none;
-            font-weight: 600;
+            padding: 60px 40px;
+            display: none; /* Controlled by JS */
+        }
+        .empty-cart-icon {
+            font-size: 3.5rem;
+            color: #888888;
+            margin-bottom: 20px;
+        }
+        .empty-cart-card h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #111111 !important;
+        }
+        .empty-cart-card p {
+            color: #666666;
+            margin-bottom: 24px;
+            max-width: 460px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .empty-cart-card .btn-shop {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 24px;
+            font-weight: bold;
+            text-decoration: none;
+            border: 2px solid #333 !important;
+            background-color: #cccccc !important;
+            color: #111111 !important;
+            border-radius: 6px !important;
+        }
+        .empty-cart-card .btn-shop:hover {
+            background-color: #b8b8b8 !important;
+        }
+
+        /* Footer overrides for grayscale high-contrast */
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111111 !important;
+        }
+        .footer-links a, .footer-col p, .footer-col {
+            color: #111111 !important;
+        }
+        .footer-links a:hover {
+            color: #555555 !important;
+            text-decoration: underline !important;
+        }
+        .footer-bottom {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 20px !important;
+            margin-top: 30px !important;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            color: #111111 !important;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link active">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Keranjang Belanja</li>
-        </ul>
-
-        <section style="margin: 40px 0;">
-            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
-                <h2>Keranjang Belanja</h2>
-                <p>Kelola kue pre-order lezat Anda sebelum melanjutkan ke pembayaran.</p>
+    <!-- Shopping Cart Section -->
+    <section class="cart-section">
+        <div class="container">
+            
+            <div class="cart-title-area">
+                <h1>Keranjang Belanja</h1>
+                <p>Kelola pre-order kue pilihan Anda sebelum melanjutkan ke pembayaran.</p>
             </div>
 
-            <div class="cart-grid">
-                <!-- Left Side: Table of items -->
-                <div>
-                    <table class="cart-table">
-                        <thead>
-                            <tr>
-                                <th style="width: 50px;"><input type="checkbox" checked></th>
-                                <th>Kue</th>
-                                <th>Harga</th>
-                                <th>Jumlah</th>
-                                <th>Subtotal</th>
-                                <th style="width: 50px;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox" checked></td>
-                                <td>
-                                    <div class="cart-item-info">
-                                        <div class="img-placeholder" style="width: 60px; height: 60px;">
-                                            <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
-                                        </div>
-                                        <div>
-                                            <strong style="display: block;">Kastengel Keju</strong>
-                                            <span style="font-size: 0.8rem; color: var(--text-muted);">Variant: Toples 500gr</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Rp 120.000</td>
-                                <td>
-                                    <div class="quantity-control">
-                                        <button>-</button>
-                                        <input type="text" value="1" readonly>
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td><strong>Rp 120.000</strong></td>
-                                <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; border-color: #dc3545; color: #dc3545;">Hapus</button></td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" checked></td>
-                                <td>
-                                    <div class="cart-item-info">
-                                        <div class="img-placeholder" style="width: 60px; height: 60px;">
-                                            <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
-                                        </div>
-                                        <div>
-                                            <strong style="display: block;">Bolu Pisang</strong>
-                                            <span style="font-size: 0.8rem; color: var(--text-muted);">Variant: Diameter 20cm</span>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>Rp 60.000</td>
-                                <td>
-                                    <div class="quantity-control">
-                                        <button>-</button>
-                                        <input type="text" value="1" readonly>
-                                        <button>+</button>
-                                    </div>
-                                </td>
-                                <td><strong>Rp 60.000</strong></td>
-                                <td><button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; border-color: #dc3545; color: #dc3545;">Hapus</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Right Side: Order Summary Card -->
-                <div>
-                    <div class="card">
-                        <h3 class="card-title">Ringkasan Pesanan</h3>
-                        <div class="summary-rows">
-                            <div class="summary-row">
-                                <span>Total Item Terpilih</span>
-                                <strong>2 Item</strong>
-                            </div>
-                            <div class="summary-row total">
-                                <span>Total Harga</span>
-                                <strong>Rp 180.000</strong>
-                            </div>
-                        </div>
+            <!-- Keadaan Keranjang Ada Isinya -->
+            <div class="cart-grid" id="cart-content-grid">
+                
+                <!-- Sisi Kiri: Daftar Keranjang Belanja -->
+                <div class="cart-left-col">
+                    <div class="cart-card">
                         
-                        <div style="margin-top: 25px;">
-                            <a href="checkout.html" class="btn btn-primary" style="width: 100%; padding: 12px; gap: 8px;">
-                                Checkout <span style="font-family: var(--font-mono);">&rarr;</span>
-                            </a>
+                        <!-- Header Aksi Massal -->
+                        <div class="cart-header-actions">
+                            <label class="select-all-label">
+                                <input type="checkbox" id="select-all" class="cart-checkbox" checked onchange="toggleSelectAll(this)">
+                                Pilih Semua
+                            </label>
+                            <button type="button" class="btn-delete-selected" onclick="deleteSelectedItems()">
+                                <i class="fa-solid fa-trash-can"></i> Hapus Terpilih
+                            </button>
+                        </div>
+
+                        <!-- Baris Item Kategori Belanja -->
+                        <div class="cart-items-list" id="cart-items-list">
+                            
+                            <!-- Item 1: Kastengel Keju -->
+                            <div class="cart-item-row" id="item-row-1" data-harga="120000">
+                                <!-- Checkbox -->
+                                <div class="cart-item-checkbox-col">
+                                    <input type="checkbox" name="item_select" class="cart-checkbox item-checkbox" checked onchange="updateSummary()" value="1">
+                                </div>
+                                
+                                <!-- Foto Kue Placeholder -->
+                                <div class="cart-item-img-col">
+                                    <div class="cart-item-img-wrapper">
+                                        <div class="wireframe-img-box">
+                                            <svg xmlns="http://www.w3.org/2000/svg">
+                                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            </svg>
+                                            <div class="wireframe-img-label">gambar_1.jpg</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detail Nama & Spesifikasi -->
+                                <div class="cart-item-details-col">
+                                    <div class="cart-item-details">
+                                        <span class="cart-item-category">Kue Kering</span>
+                                        <a href="detail_produk.html" class="cart-item-name">Kastengel Keju</a>
+                                        <small style="color: #777; font-weight: 500;">Ukuran: Toples 500gr</small>
+                                    </div>
+                                </div>
+
+                                <!-- Harga Satuan -->
+                                <div class="cart-item-price-col">
+                                    <div class="cart-item-price">
+                                        Rp 120.000
+                                    </div>
+                                </div>
+
+                                <!-- Pengatur Jumlah Kuantitas -->
+                                <div class="cart-qty-col">
+                                    <div class="qty-selector">
+                                        <button type="button" class="qty-btn" onclick="updateItemQty(1, -1)">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <input type="text" id="qty-1" class="qty-input" value="1" readonly>
+                                        <button type="button" class="qty-btn" onclick="updateItemQty(1, 1)">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Subtotal Item -->
+                                <div class="cart-item-subtotal-col">
+                                    <div class="cart-item-subtotal" id="subtotal-1">
+                                        Rp 120.000
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Hapus Kue -->
+                                <div class="cart-remove-col">
+                                    <button type="button" class="cart-item-remove" onclick="deleteCartItem(1)" aria-label="Hapus dari keranjang">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Item 2: Nastar Premium -->
+                            <div class="cart-item-row" id="item-row-2" data-harga="135000">
+                                <!-- Checkbox -->
+                                <div class="cart-item-checkbox-col">
+                                    <input type="checkbox" name="item_select" class="cart-checkbox item-checkbox" checked onchange="updateSummary()" value="2">
+                                </div>
+                                
+                                <!-- Foto Kue Placeholder -->
+                                <div class="cart-item-img-col">
+                                    <div class="cart-item-img-wrapper">
+                                        <div class="wireframe-img-box">
+                                            <svg xmlns="http://www.w3.org/2000/svg">
+                                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            </svg>
+                                            <div class="wireframe-img-label">gambar_2.jpg</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detail Nama & Spesifikasi -->
+                                <div class="cart-item-details-col">
+                                    <div class="cart-item-details">
+                                        <span class="cart-item-category">Kue Kering</span>
+                                        <a href="detail_produk.html" class="cart-item-name">Nastar Premium</a>
+                                        <small style="color: #777; font-weight: 500;">Ukuran: Toples 500gr</small>
+                                    </div>
+                                </div>
+
+                                <!-- Harga Satuan -->
+                                <div class="cart-item-price-col">
+                                    <div class="cart-item-price">
+                                        Rp 135.000
+                                    </div>
+                                </div>
+
+                                <!-- Pengatur Jumlah Kuantitas -->
+                                <div class="cart-qty-col">
+                                    <div class="qty-selector">
+                                        <button type="button" class="qty-btn" onclick="updateItemQty(2, -1)">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <input type="text" id="qty-2" class="qty-input" value="1" readonly>
+                                        <button type="button" class="qty-btn" onclick="updateItemQty(2, 1)">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Subtotal Item -->
+                                <div class="cart-item-subtotal-col">
+                                    <div class="cart-item-subtotal" id="subtotal-2">
+                                        Rp 135.000
+                                    </div>
+                                </div>
+
+                                <!-- Tombol Hapus Kue -->
+                                <div class="cart-remove-col">
+                                    <button type="button" class="cart-item-remove" onclick="deleteCartItem(2)" aria-label="Hapus dari keranjang">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
 
+                <!-- Sisi Kanan: Ringkasan Pesanan -->
+                <div class="cart-right-col">
+                    <div class="cart-card cart-summary-card">
+                        <h2>Ringkasan Pesanan</h2>
+                        
+                        <div class="summary-rows">
+                            <div class="summary-row">
+                                <span>Total Item Terpilih</span>
+                                <span id="summary-items">2 Item</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Harga</span>
+                                <span id="summary-total">Rp 255.000</span>
+                            </div>
+                        </div>
+
+                        <button type="button" id="btn-checkout" class="btn-checkout" onclick="window.location.href='checkout.html'">
+                            Checkout <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Keadaan Keranjang Belanja Kosong -->
+            <div class="cart-card empty-cart-card" id="empty-cart-card">
+                <div class="empty-cart-icon"><i class="fa-solid fa-basket-shopping"></i></div>
+                <h2>Keranjang Anda Kosong</h2>
+                <p>Sepertinya Anda belum menambahkan kue pre-order lezat buatan kami ke dalam daftar belanja.</p>
+                <a href="produk.html" class="btn-shop">Mulai Belanja Kue</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -207,20 +695,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -229,5 +720,170 @@
         </div>
     </footer>
 
+    <!-- Interactive Prototype JS Script -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Dynamic Header Actions based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of keranjang.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link active" style="font-weight: 700;">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+            updateSummary();
+        });
+
+        // Format Currency Helper
+        function formatRupiah(number) {
+            return 'Rp ' + number.toLocaleString('id-ID');
+        }
+
+        // Update Item Quantity (Interactive)
+        function updateItemQty(itemId, amount) {
+            const qtyInput = document.getElementById('qty-' + itemId);
+            const row = document.getElementById('item-row-' + itemId);
+            const harga = parseInt(row.getAttribute('data-harga'));
+            
+            let currentQty = parseInt(qtyInput.value);
+            let newQty = currentQty + amount;
+            
+            if (newQty >= 1 && newQty <= 99) {
+                qtyInput.value = newQty;
+                // Update Subtotal UI
+                const subtotalVal = harga * newQty;
+                document.getElementById('subtotal-' + itemId).innerText = formatRupiah(subtotalVal);
+                updateSummary();
+            }
+        }
+
+        // Update Summary Calculations
+        function updateSummary() {
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            let totalItems = 0;
+            let totalPrice = 0;
+            let anySelected = false;
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    anySelected = true;
+                    const itemId = cb.value;
+                    const qty = parseInt(document.getElementById('qty-' + itemId).value);
+                    const row = document.getElementById('item-row-' + itemId);
+                    const harga = parseInt(row.getAttribute('data-harga'));
+
+                    totalItems += qty;
+                    totalPrice += (harga * qty);
+                }
+            });
+
+            // Update DOM Elements
+            document.getElementById('summary-items').innerText = totalItems + ' Item';
+            document.getElementById('summary-total').innerText = formatRupiah(totalPrice);
+            document.getElementById('btn-checkout').disabled = !anySelected;
+            
+            // Sync Select All checkbox state
+            const selectAllCheckbox = document.getElementById('select-all');
+            const totalCheckboxes = checkboxes.length;
+            const checkedCheckboxes = document.querySelectorAll('.item-checkbox:checked').length;
+            
+            if (selectAllCheckbox && totalCheckboxes > 0) {
+                selectAllCheckbox.checked = (totalCheckboxes === checkedCheckboxes);
+            }
+        }
+
+        // Toggle Select All
+        function toggleSelectAll(selectAllCheckbox) {
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            checkboxes.forEach(cb => {
+                cb.checked = selectAllCheckbox.checked;
+            });
+            updateSummary();
+        }
+
+        // Delete Cart Item (Interactive)
+        function deleteCartItem(itemId) {
+            const row = document.getElementById('item-row-' + itemId);
+            if (row) {
+                row.remove();
+                checkEmptyCart();
+                updateSummary();
+            }
+        }
+
+        // Delete Selected Items
+        function deleteSelectedItems() {
+            const checkboxes = document.querySelectorAll('.item-checkbox:checked');
+            checkboxes.forEach(cb => {
+                const itemId = cb.value;
+                const row = document.getElementById('item-row-' + itemId);
+                if (row) {
+                    row.remove();
+                }
+            });
+            checkEmptyCart();
+            updateSummary();
+        }
+
+        // Check if Cart is Empty
+        function checkEmptyCart() {
+            const remainingRows = document.querySelectorAll('.cart-item-row');
+            if (remainingRows.length === 0) {
+                document.getElementById('cart-content-grid').style.display = 'none';
+                document.getElementById('empty-cart-card').style.display = 'block';
+            }
+        }
+    </script>
 </body>
 </html>

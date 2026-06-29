@@ -3,25 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wireframe - Kelola Produk - Olin's Cake</title>
+    <title>Wireframe - Kelola Produk &amp; Kategori - Olin's Cake</title>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Wireframe CSS -->
     <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .admin-tab-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            border-bottom: 1.5px solid #333;
+            padding-bottom: 12px;
+        }
+        .tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            color: #666;
+            background-color: #ffffff;
+            border: 1.5px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        .tab-btn:hover {
+            color: #111;
+            background-color: #f8f9fa;
+            border-color: #aaa;
+        }
+        .tab-btn.active {
+            color: #111111 !important;
+            background-color: #f8f9fa !important;
+            border: 1.5px solid #333 !important;
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar Admin Panel -->
     <div class="admin-sidebar" id="adminSidebar">
-        <div class="admin-logo">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: var(--admin-accent);">
-                <circle cx="9" cy="7" r="2"/>
-                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
-                <path d="M5.1 12.8 19 12"/>
-                <path d="M8.9 15.6 19 15"/>
-            </svg>
-            <span>Olin's <span>Cake</span></span>
-            <span class="wireframe-indicator">WF</span>
+        <div class="admin-logo" style="display: flex; align-items: center; text-decoration: none;">
+            <div class="wireframe-img-box" style="width: 45px; height: 45px; margin-right: 10px; border-radius: 6px !important;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                </svg>
+                <div class="wireframe-img-label" style="font-size: 0.55rem; padding: 1px 3px;">LOGO</div>
+            </div>
+            <span style="font-weight: 800; color: #111; font-size: 1.2rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
+            <span class="wireframe-indicator" style="margin-left: 8px;">WF</span>
         </div>
         
         <ul class="admin-menu">
@@ -60,21 +95,24 @@
                 </span>
                 <span class="admin-profile-role">Administrator</span>
             </div>
-            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
-                <i class="fa-solid fa-right-from-bracket"></i>
+            <a href="admin_login.html" id="admin-logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 6px 12px; font-size: 0.85rem; border-radius: 6px !important; background-color: #ffffff !important; color: #111111 !important;">
+                Keluar
             </a>
         </div>
     </div>
 
     <!-- Header Mobile Hamburger -->
-    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+    <div style="background-color: #ffffff; border-bottom: 2.5px solid #333; padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
         <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: var(--admin-accent);">
-                <circle cx="9" cy="7" r="2"/>
-                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
-                <path d="M5.1 12.8 19 12"/>
-                <path d="M8.9 15.6 19 15"/>
-            </svg> Olin's Cake <span class="wireframe-indicator">WF</span>
+            <div class="wireframe-img-box" style="width: 35px; height: 35px; margin-right: 4px; border-radius: 4px !important;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                </svg>
+                <div class="wireframe-img-label" style="font-size: 0.45rem; padding: 1px 2px;">LOGO</div>
+            </div>
+            <span style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.5px;">Olin's Cake</span>
+            <span class="wireframe-indicator">WF</span>
         </div>
         <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
             <i class="fa-solid fa-bars"></i>
@@ -83,133 +121,629 @@
 
     <!-- Main Layout Container -->
     <div class="admin-layout">
-        <!-- Header -->
-        <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center;">
+        
+        <!-- Header (matches produk.php L320-338) -->
+        <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <div class="admin-header-title">
                 <h1>Kelola Produk</h1>
-                <p>Tambah, ubah, atau hapus menu kue serta kategori produk toko Anda.</p>
+                <p>Manajemen menu kue terdaftar serta kategori pengelompokannya di Olin's Cake.</p>
             </div>
-            <div class="admin-header-actions">
-                <button type="button" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.9rem; gap: 8px;">
-                    <i class="fa-solid fa-plus"></i> Tambah Produk Baru
-                </button>
+            
+            <div class="admin-header-actions" id="header-action-container">
+                <!-- Dynamically filled by JS based on tab & action -->
             </div>
         </div>
 
-        <!-- Tab Navigation Bar -->
-        <div class="admin-tab-nav" style="display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid var(--admin-border); padding-bottom: 1px;">
-            <a href="#" class="tab-btn active" style="padding: 12px 20px; font-weight: 600; text-decoration: none; border-bottom: 3px solid var(--admin-accent); color: var(--admin-accent);">
+        <!-- Tab Navigation Bar (matches produk.php L342-349) -->
+        <div class="admin-tab-nav">
+            <a href="admin_produk.html?tab=produk" class="tab-btn" id="tab-produk-btn">
                 <i class="fa-solid fa-cookie-bite"></i> Menu Produk
             </a>
-            <a href="#" class="tab-btn" style="padding: 12px 20px; font-weight: 500; text-decoration: none; color: var(--admin-text-muted);">
+            <a href="admin_produk.html?tab=kategori" class="tab-btn" id="tab-kategori-btn">
                 <i class="fa-solid fa-tags"></i> Kategori Produk
             </a>
         </div>
 
-        <!-- DAFTAR TABEL PRODUK -->
-        <div class="admin-panel-card" style="background-color: var(--admin-card-bg); border-radius: var(--radius-md); border: 1px solid var(--admin-border); padding: 24px;">
+        <!-- Notifikasi (matches produk.php L352-364) -->
+        <div id="alert-banner" class="admin-banner" style="display: none; background-color: #f8f9fa; color: #111; border-left: 4px solid #333; padding: 16px; margin-bottom: 24px; align-items: center; gap: 10px; border-radius: 6px; border: 1.5px solid #333;">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="alert-message">Aksi berhasil dilakukan.</span>
+        </div>
+
+        <!-- =======================================================
+             TAB 1: MANAJEMEN PRODUK
+             ======================================================= -->
+        
+        <!-- FORM TAMBAH PRODUK (matches produk.php L371-433) -->
+        <div id="section-form-tambah-produk" class="admin-panel-card" style="max-width: 800px; margin: 0 auto; padding: 24px; display: none;">
             <div class="panel-card-header" style="margin-bottom: 20px;">
-                <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-cookie-bite" style="color: var(--admin-accent); margin-right: 8px;"></i> Daftar Menu Kue Terdaftar</h3>
+                <h3><i class="fa-solid fa-plus"></i> Isi Informasi Produk Baru</h3>
+            </div>
+            
+            <form onsubmit="handleSaveProduk(event, 'add')">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="admin-form-group">
+                        <label for="add_nama_produk">Nama Produk *</label>
+                        <input type="text" id="add_nama_produk" class="admin-form-control" placeholder="Contoh: Classic Red Velvet" required autocomplete="off">
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="add_harga">Harga (Rp) *</label>
+                        <input type="text" id="add_harga" class="admin-form-control" placeholder="Contoh: 150000" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div class="admin-form-group">
+                        <label for="add_kategori">Kategori *</label>
+                        <select id="add_kategori" class="admin-form-control" required>
+                            <!-- Filled dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="add_ukuran">Ukuran / Porsi *</label>
+                        <input type="text" id="add_ukuran" class="admin-form-control" placeholder="Contoh: Diameter 20 cm / Toples 500g" required autocomplete="off">
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="add_masa_simpan">Masa Simpan *</label>
+                        <input type="text" id="add_masa_simpan" class="admin-form-control" placeholder="Contoh: 3 Hari (Suhu Ruang)" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="add_deskripsi">Deskripsi Produk</label>
+                    <textarea id="add_deskripsi" class="admin-form-control" rows="4" placeholder="Tuliskan deskripsi lengkap mengenai produk ini..."></textarea>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="add_gambar">Gambar Produk *</label>
+                    <input type="file" id="add_gambar" class="admin-form-control" accept="image/*" required>
+                    <span style="font-size: 0.75rem; color: #666;">Disarankan dimensi 4:3 (Kotak/Lanskap) dan format JPG/PNG/WEBP (Maksimal 2 MB).</span>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 10px;">
+                    <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Produk
+                    </button>
+                    <a href="admin_produk.html?tab=produk" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- FORM EDIT PRODUK (matches produk.php L435-504) -->
+        <div id="section-form-edit-produk" class="admin-panel-card" style="max-width: 800px; margin: 0 auto; padding: 24px; display: none;">
+            <div class="panel-card-header" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Ubah Informasi Produk</h3>
+            </div>
+            
+            <form onsubmit="handleSaveProduk(event, 'edit')">
+                <input type="hidden" id="edit_id_produk">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="admin-form-group">
+                        <label for="edit_nama_produk">Nama Produk *</label>
+                        <input type="text" id="edit_nama_produk" class="admin-form-control" required autocomplete="off">
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="edit_harga">Harga (Rp) *</label>
+                        <input type="text" id="edit_harga" class="admin-form-control" required inputmode="numeric" pattern="[0-9]*" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div class="admin-form-group">
+                        <label for="edit_kategori">Kategori *</label>
+                        <select id="edit_kategori" class="admin-form-control" required>
+                            <!-- Filled dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="admin-form-group">
+                        <label for="edit_ukuran">Ukuran / Porsi *</label>
+                        <input type="text" id="edit_ukuran" class="admin-form-control" required autocomplete="off">
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label for="edit_masa_simpan">Masa Simpan *</label>
+                        <input type="text" id="edit_masa_simpan" class="admin-form-control" required autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="edit_deskripsi">Deskripsi Produk</label>
+                    <textarea id="edit_deskripsi" class="admin-form-control" rows="4"></textarea>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="edit_gambar">Gambar Produk (Biarkan kosong jika tidak ingin diubah)</label>
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+                        <div class="wireframe-img-box" style="width: 70px; height: 70px; border-radius: 6px !important; flex-shrink: 0;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.45rem; padding: 1px 3px;">IMG</div>
+                        </div>
+                        <span id="edit_gambar_name" style="font-size: 0.85rem; color: #666;">Gambar Aktif: kastengel.jpg</span>
+                    </div>
+                    <input type="file" id="edit_gambar" class="admin-form-control" accept="image/*">
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 10px;">
+                    <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                    </button>
+                    <a href="admin_produk.html?tab=produk" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- DAFTAR TABEL PRODUK (matches produk.php L506-560) -->
+        <div id="section-tabel-produk" class="admin-panel-card" style="padding: 24px; display: none;">
+            <div class="panel-card-header" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-cookie-bite"></i> Daftar Menu Kue Terdaftar</h3>
             </div>
 
-            <div class="admin-table-container" style="overflow-x: auto; width: 100%;">
-                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <div class="admin-table-container">
+                <table class="admin-table" style="width: 100%;">
                     <thead>
-                        <tr style="border-bottom: 2px solid var(--admin-border); background-color: var(--admin-dark-bg);">
-                            <th style="width: 80px; padding: 12px;">Gambar</th>
-                            <th style="padding: 12px;">Nama Kue</th>
-                            <th style="padding: 12px;">Kategori</th>
-                            <th style="padding: 12px;">Harga</th>
-                            <th style="padding: 12px;">Ukuran / Porsi</th>
-                            <th style="padding: 12px;">Masa Simpan</th>
-                            <th style="width: 180px; text-align: right; padding: 12px;">Aksi</th>
+                        <tr>
+                            <th style="width: 80px;">Gambar</th>
+                            <th>Nama Kue</th>
+                            <th>Kategori</th>
+                            <th>Harga</th>
+                            <th>Ukuran / Porsi</th>
+                            <th>Masa Simpan</th>
+                            <th style="width: 180px; text-align: right;">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Row 1 -->
-                        <tr style="border-bottom: 1px solid var(--admin-border);">
-                            <td style="padding: 12px;">
-                                <div class="img-placeholder" style="width: 55px; height: 55px;">
-                                    <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
-                                </div>
-                            </td>
-                            <td style="padding: 12px;">
-                                <strong style="font-size: 0.95rem; color: var(--admin-text-main);">Kastengel Keju</strong>
-                                <p style="font-size: 0.75rem; color: var(--admin-text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">Kue kering keju edam gurih renyah (Toples 500 gram).</p>
-                            </td>
-                            <td style="padding: 12px;"><span class="badge badge-outline">Kue Kering</span></td>
-                            <td style="padding: 12px;"><strong>Rp 120.000</strong></td>
-                            <td style="padding: 12px;">Toples 500 gram</td>
-                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);"><i class="fa-regular fa-clock"></i> 1 Bulan</td>
-                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-pen"></i> Edit</button>
-                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
-                            </td>
-                        </tr>
-                        <!-- Row 2 -->
-                        <tr style="border-bottom: 1px solid var(--admin-border);">
-                            <td style="padding: 12px;">
-                                <div class="img-placeholder" style="width: 55px; height: 55px;">
-                                    <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
-                                </div>
-                            </td>
-                            <td style="padding: 12px;">
-                                <strong style="font-size: 0.95rem; color: var(--admin-text-main);">Bolu Pisang</strong>
-                                <p style="font-size: 0.75rem; color: var(--admin-text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">Bolu pisang premium lembut beraroma harum (Diameter 20 cm).</p>
-                            </td>
-                            <td style="padding: 12px;"><span class="badge badge-outline">Bolu</span></td>
-                            <td style="padding: 12px;"><strong>Rp 60.000</strong></td>
-                            <td style="padding: 12px;">Diameter 20 cm</td>
-                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);"><i class="fa-regular fa-clock"></i> 3 Hari</td>
-                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-pen"></i> Edit</button>
-                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
-                            </td>
-                        </tr>
-                        <!-- Row 3 -->
-                        <tr style="border-bottom: 1px solid var(--admin-border);">
-                            <td style="padding: 12px;">
-                                <div class="img-placeholder" style="width: 55px; height: 55px;">
-                                    <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
-                                </div>
-                            </td>
-                            <td style="padding: 12px;">
-                                <strong style="font-size: 0.95rem; color: var(--admin-text-main);">Bolu Tape</strong>
-                                <p style="font-size: 0.75rem; color: var(--admin-text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).</p>
-                            </td>
-                            <td style="padding: 12px;"><span class="badge badge-outline">Bolu</span></td>
-                            <td style="padding: 12px;"><strong>Rp 60.000</strong></td>
-                            <td style="padding: 12px;">Diameter 20 cm</td>
-                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);"><i class="fa-regular fa-clock"></i> 3 Hari</td>
-                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-pen"></i> Edit</button>
-                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
-                            </td>
-                        </tr>
-                        <!-- Row 4 -->
-                        <tr style="border-bottom: none;">
-                            <td style="padding: 12px;">
-                                <div class="img-placeholder" style="width: 55px; height: 55px;">
-                                    <div class="img-placeholder-text" style="font-size: 0.5rem; padding: 2px;">Image</div>
-                                </div>
-                            </td>
-                            <td style="padding: 12px;">
-                                <strong style="font-size: 0.95rem; color: var(--admin-text-main);">Bolu Pandan</strong>
-                                <p style="font-size: 0.75rem; color: var(--admin-text-muted); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">Bolu pandan wangi daun suji alami bertekstur empuk (Diameter 20 cm).</p>
-                            </td>
-                            <td style="padding: 12px;"><span class="badge badge-outline">Bolu</span></td>
-                            <td style="padding: 12px;"><strong>Rp 60.000</strong></td>
-                            <td style="padding: 12px;">Diameter 20 cm</td>
-                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);"><i class="fa-regular fa-clock"></i> 3 Hari</td>
-                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; margin-right: 4px;"><i class="fa-solid fa-pen"></i> Edit</button>
-                                <button type="button" class="btn btn-danger" style="padding: 5px 10px; font-size: 0.8rem;"><i class="fa-solid fa-trash"></i> Hapus</button>
-                            </td>
-                        </tr>
+                    <tbody id="produk-table-body">
+                        <!-- Filled dynamically by JS -->
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <!-- =======================================================
+             TAB 2: MANAJEMEN KATEGORI (matches produk.php L565-649)
+             ======================================================= -->
+        <div id="section-tab-kategori" class="admin-row" style="grid-template-columns: 0.7fr 1.3fr; display: none;">
+            
+            <!-- Kolom Form (Tambah/Edit Kategori) -->
+            <div class="admin-panel-card" style="height: fit-content; padding: 24px;">
+                <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <h3 id="kategori-form-title"><i class="fa-solid fa-plus"></i> Tambah Kategori</h3>
+                </div>
+                <form onsubmit="handleSaveKategori(event)" id="kategori-form">
+                    <input type="hidden" id="kategori_id">
+                    
+                    <div class="admin-form-group" style="margin-bottom: 20px;">
+                        <label for="nama_kategori">Nama Kategori *</label>
+                        <input type="text" id="nama_kategori" class="admin-form-control" placeholder="Contoh: Bolu, Kue Kering" required autocomplete="off">
+                    </div>
+                    
+                    <div id="kategori-form-actions">
+                        <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
+                            <i class="fa-solid fa-floppy-disk"></i> Simpan Kategori
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Kolom Tabel Daftar Kategori -->
+            <div class="admin-panel-card" style="padding: 24px;">
+                <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <h3><i class="fa-solid fa-list"></i> Daftar Kategori Produk</h3>
+                </div>
+                
+                <div class="admin-table-container">
+                    <table class="admin-table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">No</th>
+                                <th>Nama Kategori</th>
+                                <th style="width: 200px; text-align: right;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="kategori-table-body">
+                            <!-- Filled dynamically by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- JS Logic Replicating produk.php dynamics -->
+    <script>
+        // Default seed data
+        const defaultCategories = [
+            { id: 1, nama_kategori: "Kue Kering" },
+            { id: 2, nama_kategori: "Bolu" },
+            { id: 3, nama_kategori: "Kue Basah" }
+        ];
+
+        const defaultProducts = [
+            {
+                id: 1,
+                nama_produk: "Kastengel Keju",
+                kategori: "Kue Kering",
+                harga: 120000,
+                ukuran: "Toples 500 gram",
+                masa_simpan: "1 Bulan",
+                deskripsi: "Kue kering keju edam gurih renyah (Toples 500 gram).",
+                gambar: "kastengel.jpg"
+            },
+            {
+                id: 2,
+                nama_produk: "Bolu Pisang",
+                kategori: "Bolu",
+                harga: 60000,
+                ukuran: "Diameter 20 cm",
+                masa_simpan: "3 Hari",
+                deskripsi: "Bolu pisang premium lembut beraroma harum (Diameter 20 cm).",
+                gambar: "bolu_pisang.jpg"
+            },
+            {
+                id: 3,
+                nama_produk: "Bolu Tape",
+                kategori: "Bolu",
+                harga: 60000,
+                ukuran: "Diameter 20 cm",
+                masa_simpan: "3 Hari",
+                deskripsi: "Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).",
+                gambar: "bolu_tape.jpg"
+            },
+            {
+                id: 4,
+                nama_produk: "Bolu Pandan",
+                kategori: "Bolu",
+                harga: 60000,
+                ukuran: "Diameter 20 cm",
+                masa_simpan: "3 Hari",
+                deskripsi: "Bolu pandan wangi daun suji alami bertekstur empuk (Diameter 20 cm).",
+                gambar: "bolu_pandan.jpg"
+            }
+        ];
+
+        // Initialize localStorage if empty
+        if (!localStorage.getItem('wf_categories')) {
+            localStorage.setItem('wf_categories', JSON.stringify(defaultCategories));
+        }
+        if (!localStorage.getItem('wf_products')) {
+            localStorage.setItem('wf_products', JSON.stringify(defaultProducts));
+        }
+
+        // Parse query params
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab') || 'produk';
+        const action = urlParams.get('action');
+        const editId = urlParams.get('id');
+        const actionKategori = urlParams.get('action_kategori');
+        const editKatId = urlParams.get('id_kategori');
+
+        // Render page views
+        document.addEventListener('DOMContentLoaded', () => {
+            // Setup active tab highlights
+            const tabProdukBtn = document.getElementById('tab-produk-btn');
+            const tabKategoriBtn = document.getElementById('tab-kategori-btn');
+            
+            if (tab === 'produk') {
+                tabProdukBtn.classList.add('active');
+                tabKategoriBtn.classList.remove('active');
+                
+                // Header action button logic (matches produk.php L326-338)
+                const headerActions = document.getElementById('header-action-container');
+                if (action === 'add' || action === 'edit') {
+                    headerActions.innerHTML = `
+                        <a href="admin_produk.html?tab=produk" class="admin-btn admin-btn-secondary">
+                            <i class="fa-solid fa-list"></i> Lihat Daftar Produk
+                        </a>
+                    `;
+                    if (action === 'add') {
+                        document.getElementById('section-form-tambah-produk').style.display = 'block';
+                        populateCategoriesSelect('add_kategori');
+                    } else if (action === 'edit' && editId) {
+                        document.getElementById('section-form-edit-produk').style.display = 'block';
+                        populateCategoriesSelect('edit_kategori');
+                        loadEditProductForm(editId);
+                    }
+                } else {
+                    headerActions.innerHTML = `
+                        <a href="admin_produk.html?tab=produk&action=add" class="admin-btn admin-btn-primary">
+                            <i class="fa-solid fa-plus"></i> Tambah Produk Baru
+                        </a>
+                    `;
+                    document.getElementById('section-tabel-produk').style.display = 'block';
+                    renderProductTable();
+                }
+            } else if (tab === 'kategori') {
+                tabKategoriBtn.classList.add('active');
+                tabProdukBtn.classList.remove('active');
+                
+                // No header action button on kategori tab (matches produk.php L326: only if tab===produk)
+                document.getElementById('header-action-container').innerHTML = '';
+                
+                // Show category section
+                document.getElementById('section-tab-kategori').style.display = 'grid';
+                renderCategoryTable();
+                
+                if (actionKategori === 'edit_kategori' && editKatId) {
+                    loadEditCategoryForm(editKatId);
+                }
+            }
+
+            // Show temp notification if available
+            const flashMsg = localStorage.getItem('wf_flash_msg');
+            if (flashMsg) {
+                const alertBanner = document.getElementById('alert-banner');
+                document.getElementById('alert-message').innerText = flashMsg;
+                alertBanner.style.display = 'flex';
+                localStorage.removeItem('wf_flash_msg');
+                setTimeout(() => { alertBanner.style.display = 'none'; }, 4000);
+            }
+        });
+
+        // Dropdown select population
+        function populateCategoriesSelect(selectId) {
+            const selectEl = document.getElementById(selectId);
+            const categories = JSON.parse(localStorage.getItem('wf_categories'));
+            selectEl.innerHTML = `<option value="">-- Pilih Kategori --</option>`;
+            categories.forEach(c => {
+                selectEl.innerHTML += `<option value="${escapeHtml(c.nama_kategori)}">${escapeHtml(c.nama_kategori)}</option>`;
+            });
+        }
+
+        // Render product table (matches produk.php L506-560)
+        function renderProductTable() {
+            const tbody = document.getElementById('produk-table-body');
+            const products = JSON.parse(localStorage.getItem('wf_products'));
+            
+            if (products.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: #777; padding: 40px 0;">Belum ada menu produk terdaftar.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            products.forEach(p => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>
+                            <div class="wireframe-img-box" style="width: 55px; height: 55px; border-radius: 6px !important;">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                </svg>
+                                <div class="wireframe-img-label" style="font-size: 0.4rem; padding: 1px 2px;">IMG</div>
+                            </div>
+                        </td>
+                        <td>
+                            <strong style="font-size: 1rem; color: #111;">${escapeHtml(p.nama_produk)}</strong>
+                            <p style="font-size: 0.75rem; color: #666; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 2px;">${escapeHtml(p.deskripsi)}</p>
+                        </td>
+                        <td><span class="admin-badge admin-badge-info">${escapeHtml(p.kategori)}</span></td>
+                        <td><strong>Rp ${formatNumber(p.harga)}</strong></td>
+                        <td>${escapeHtml(p.ukuran)}</td>
+                        <td><span style="font-size: 0.85rem; color: #666;"><i class="fa-regular fa-clock" style="margin-right: 4px;"></i> ${escapeHtml(p.masa_simpan)}</span></td>
+                        <td style="text-align: right; white-space: nowrap;">
+                            <a href="admin_produk.html?tab=produk&action=edit&id=${p.id}" class="admin-btn admin-btn-secondary admin-btn-sm" style="margin-right: 4px;" title="Ubah">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </a>
+                            <button type="button" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="handleDeleteProduct(${p.id})">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render category table (matches produk.php L614-646)
+        function renderCategoryTable() {
+            const tbody = document.getElementById('kategori-table-body');
+            const categories = JSON.parse(localStorage.getItem('wf_categories'));
+            
+            if (categories.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #777; padding: 30px 0;">Belum ada data kategori terdaftar.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            categories.forEach((c, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td><strong>${escapeHtml(c.nama_kategori)}</strong></td>
+                        <td style="text-align: right;">
+                            <a href="admin_produk.html?tab=kategori&action_kategori=edit_kategori&id_kategori=${c.id}" class="admin-btn admin-btn-secondary admin-btn-sm" style="margin-right: 4px;" title="Edit">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </a>
+                            <button type="button" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="handleDeleteCategory(${c.id})">
+                                <i class="fa-solid fa-trash"></i> Hapus
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Load Edit Product Form (matches produk.php L435-504 prefill logic)
+        function loadEditProductForm(id) {
+            const products = JSON.parse(localStorage.getItem('wf_products'));
+            const p = products.find(prod => prod.id == id);
+            if (p) {
+                document.getElementById('edit_id_produk').value = p.id;
+                document.getElementById('edit_nama_produk').value = p.nama_produk;
+                document.getElementById('edit_harga').value = p.harga;
+                document.getElementById('edit_kategori').value = p.kategori;
+                document.getElementById('edit_ukuran').value = p.ukuran;
+                document.getElementById('edit_masa_simpan').value = p.masa_simpan;
+                document.getElementById('edit_deskripsi').value = p.deskripsi;
+                document.getElementById('edit_gambar_name').innerText = `Gambar Aktif: ${p.gambar}`;
+            }
+        }
+
+        // Load Edit Category Form (matches produk.php L571-588 edit mode)
+        function loadEditCategoryForm(id) {
+            const categories = JSON.parse(localStorage.getItem('wf_categories'));
+            const c = categories.find(cat => cat.id == id);
+            if (c) {
+                document.getElementById('kategori_id').value = c.id;
+                document.getElementById('nama_kategori').value = c.nama_kategori;
+                document.getElementById('kategori-form-title').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> Edit Kategori';
+                document.getElementById('kategori-form-actions').innerHTML = `
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">Simpan</button>
+                        <a href="admin_produk.html?tab=kategori" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Save Product handler
+        function handleSaveProduk(e, mode) {
+            e.preventDefault();
+            const products = JSON.parse(localStorage.getItem('wf_products'));
+            
+            if (mode === 'add') {
+                const newProduct = {
+                    id: Date.now(),
+                    nama_produk: document.getElementById('add_nama_produk').value.trim(),
+                    harga: parseInt(document.getElementById('add_harga').value) || 0,
+                    kategori: document.getElementById('add_kategori').value,
+                    ukuran: document.getElementById('add_ukuran').value.trim(),
+                    masa_simpan: document.getElementById('add_masa_simpan').value.trim(),
+                    deskripsi: document.getElementById('add_deskripsi').value.trim(),
+                    gambar: "placeholder.jpg"
+                };
+                
+                const fileInput = document.getElementById('add_gambar');
+                if (fileInput.files && fileInput.files[0]) {
+                    newProduct.gambar = fileInput.files[0].name;
+                }
+                
+                products.unshift(newProduct);
+                localStorage.setItem('wf_products', JSON.stringify(products));
+                localStorage.setItem('wf_flash_msg', `Produk '${newProduct.nama_produk}' berhasil ditambahkan.`);
+            } else if (mode === 'edit') {
+                const editIdVal = document.getElementById('edit_id_produk').value;
+                const pIdx = products.findIndex(prod => prod.id == editIdVal);
+                if (pIdx > -1) {
+                    products[pIdx].nama_produk = document.getElementById('edit_nama_produk').value.trim();
+                    products[pIdx].harga = parseInt(document.getElementById('edit_harga').value) || 0;
+                    products[pIdx].kategori = document.getElementById('edit_kategori').value;
+                    products[pIdx].ukuran = document.getElementById('edit_ukuran').value.trim();
+                    products[pIdx].masa_simpan = document.getElementById('edit_masa_simpan').value.trim();
+                    products[pIdx].deskripsi = document.getElementById('edit_deskripsi').value.trim();
+                    
+                    const fileInput = document.getElementById('edit_gambar');
+                    if (fileInput.files && fileInput.files[0]) {
+                        products[pIdx].gambar = fileInput.files[0].name;
+                    }
+                    
+                    localStorage.setItem('wf_products', JSON.stringify(products));
+                    localStorage.setItem('wf_flash_msg', `Produk '${products[pIdx].nama_produk}' berhasil diperbarui.`);
+                }
+            }
+            
+            window.location.href = 'admin_produk.html?tab=produk';
+        }
+
+        // Save Category handler
+        function handleSaveKategori(e) {
+            e.preventDefault();
+            const categories = JSON.parse(localStorage.getItem('wf_categories'));
+            const katIdVal = document.getElementById('kategori_id').value;
+            const nameVal = document.getElementById('nama_kategori').value.trim();
+
+            if (katIdVal) {
+                // Edit mode
+                const cIdx = categories.findIndex(cat => cat.id == katIdVal);
+                if (cIdx > -1) {
+                    categories[cIdx].nama_kategori = nameVal;
+                    localStorage.setItem('wf_categories', JSON.stringify(categories));
+                    localStorage.setItem('wf_flash_msg', `Kategori berhasil diperbarui menjadi '${nameVal}'.`);
+                }
+            } else {
+                // Add mode — check duplikasi
+                const duplicate = categories.find(c => c.nama_kategori.toLowerCase() === nameVal.toLowerCase());
+                if (duplicate) {
+                    alert(`Kategori dengan nama '${nameVal}' sudah ada.`);
+                    return;
+                }
+                const newCat = {
+                    id: Date.now(),
+                    nama_kategori: nameVal
+                };
+                categories.push(newCat);
+                localStorage.setItem('wf_categories', JSON.stringify(categories));
+                localStorage.setItem('wf_flash_msg', `Kategori '${nameVal}' berhasil ditambahkan.`);
+            }
+
+            window.location.href = 'admin_produk.html?tab=kategori';
+        }
+
+        // Delete Product handler (matches produk.php L209-227)
+        function handleDeleteProduct(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus produk ini? Gambar akan dihapus permanen.')) {
+                const products = JSON.parse(localStorage.getItem('wf_products'));
+                const p = products.find(prod => prod.id == id);
+                const filtered = products.filter(prod => prod.id != id);
+                localStorage.setItem('wf_products', JSON.stringify(filtered));
+                localStorage.setItem('wf_flash_msg', `Produk '${p ? p.nama_produk : ''}' berhasil dihapus.`);
+                window.location.href = 'admin_produk.html?tab=produk';
+            }
+        }
+
+        // Delete Category handler (matches produk.php L76-99 with product-usage check)
+        function handleDeleteCategory(id) {
+            if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
+                const categories = JSON.parse(localStorage.getItem('wf_categories'));
+                const products = JSON.parse(localStorage.getItem('wf_products'));
+                const c = categories.find(cat => cat.id == id);
+                
+                if (c) {
+                    // Check if any products use this category
+                    const usedCount = products.filter(p => p.kategori === c.nama_kategori).length;
+                    if (usedCount > 0) {
+                        alert(`Gagal menghapus! Kategori '${c.nama_kategori}' sedang digunakan oleh ${usedCount} produk.`);
+                        return;
+                    }
+                }
+                
+                const filtered = categories.filter(cat => cat.id != id);
+                localStorage.setItem('wf_categories', JSON.stringify(filtered));
+                localStorage.setItem('wf_flash_msg', `Kategori '${c ? c.nama_kategori : ''}' berhasil dihapus.`);
+                window.location.href = 'admin_produk.html?tab=kategori';
+            }
+        }
+
+        // Utility functions
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+    </script>
 </body>
 </html>

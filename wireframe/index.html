@@ -4,171 +4,217 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Beranda - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN to render icons exactly like the real site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .hero {
-            display: grid;
-            grid-template-columns: 1.2fr 0.8fr;
-            gap: 40px;
-            align-items: center;
-            padding: 80px 0;
+        /* General High-Contrast Sketch Style matching the reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
         }
-        .hero-text h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
+
+        /* Solid Section Dividers */
+        
+        footer {
+            border-top: 2px solid #333 !important;
+            background-color: #f8f9fa !important;
+            color: #111111 !important;
+            padding: 50px 0 30px 0 !important;
         }
-        .hero-text p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-        }
-        .features-grid {
-            margin: 60px 0;
-        }
-        .feature-card {
-            text-align: center;
-            border: 1px dashed var(--border-color);
-            padding: 30px;
-        }
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            border: 2px solid var(--text-main);
-            border-radius: 50%;
+
+
+        /* Crossed Placeholder Box */
+        .wireframe-img-box {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px auto;
-            font-family: var(--font-mono);
+            border-radius: 8px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wireframe-img-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Hero Adjustments */
+        .hero {
+            min-height: 85vh !important;
+            padding-top: 120px !important;
+            background: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+        }
+
+        .hero-tagline {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            border: 1.5px solid #333 !important;
+            border-radius: 6px !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 600 !important;
+        }
+
+        .hero-img-backdrop {
+            border: 1.5px solid #333 !important;
+            border-radius: 8px !important;
+            background: none !important;
+        }
+
+        /* Footer Column styling */
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase;
+            font-size: 1rem;
             font-weight: 700;
+            color: #111111 !important;
+        }
+
+        .footer-links a, .footer-col p, .footer-col {
+            color: #111111 !important;
+        }
+        .footer-links a:hover {
+            color: #555555 !important;
+            text-decoration: underline !important;
+        }
+        
+        .footer-bottom {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 20px !important;
+            margin-top: 30px !important;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            color: #111111 !important;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link active">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-text">
-                <h1>Kelezatan Premium di Setiap Potong Kue</h1>
-                <p>Menyajikan pre-order kue premium buatan rumah (home bakery) dengan bahan-bahan kualitas terbaik dan fresh dari oven kami langsung ke pintu rumah Anda.</p>
-                <div style="display: flex; gap: 15px;">
-                    <a href="produk.html" class="btn btn-primary">Pesan Sekarang</a>
-                    <a href="cara_pesan.html" class="btn btn-outline">Cara Memesan</a>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-tagline">
+                    <i class="fa-solid fa-award"></i> Premium Home Bakery
+                </div>
+                <h1 style="font-weight: 800; font-size: 3.2rem;">Freshly Baked <span>with Love</span>, Made Special for You</h1>
+                <p class="hero-slogan" style="border-left: 3px solid #333;">
+                    Menghadirkan kelezatan kue rumahan premium bertekstur lembut dengan cita rasa elegan, diracik khusus untuk melengkapi momen istimewa Anda.
+                </p>
+            </div>
+            <div class="hero-img-container">
+                <div class="hero-img-backdrop"></div>
+                <div class="wireframe-img-box hero-img" style="height: 380px; width: 100%; max-width: 480px;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#333" stroke-width="1.5" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#333" stroke-width="1.5" />
+                    </svg>
+                    <div class="wireframe-img-label">hero_cake.png</div>
                 </div>
             </div>
-            <div>
-                <div class="img-placeholder" style="height: 350px;">
-                    <div class="img-placeholder-text">Hero Image [Banner Olin's Cake]</div>
-                </div>
-            </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Keunggulan Section -->
-        <section class="features-grid">
-            <div class="section-header">
-                <h2>Keunggulan Kami</h2>
-                <p>Kenapa harus memilih kue dari Olin's Cake?</p>
-            </div>
-            <div class="grid-3">
-                <div class="feature-card">
-                    <div class="feature-icon">1</div>
-                    <h3>Bahan Premium</h3>
-                    <p>Hanya menggunakan butter, cokelat, dan bahan kualitas tinggi untuk rasa terbaik.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">2</div>
-                    <h3>Freshly Baked</h3>
-                    <p>Kue dipanggang fresh sesuai pesanan Anda, bukan stok pajangan lama.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">3</div>
-                    <h3>Pengantaran Aman</h3>
-                    <p>Dikirim langsung menggunakan kurir khusus atau dapat diambil sendiri di gerai kami.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Produk Unggulan Section -->
-        <section style="margin: 80px 0;">
-            <div class="section-header">
-                <h2>Produk Terlaris</h2>
-                <p>Beberapa pilihan kue pre-order favorit pelanggan kami.</p>
-            </div>
-            <div class="grid-3">
-                <!-- Produk 1 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Kastengel Keju Image</div>
-                    </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Kue Kering</span>
-                    <h3>Kastengel Keju</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Kue kering keju edam gurih renyah (Toples 500 gram).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="font-size: 1.15rem;">Rp 120.000</strong>
-                        <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                    </div>
-                </div>
-                
-                <!-- Produk 2 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Bolu Pisang Image</div>
-                    </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
-                    <h3>Bolu Pisang</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu pisang premium lembut beraroma harum (Diameter 20 cm).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
-                        <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                    </div>
-                </div>
-
-                <!-- Produk 3 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Bolu Tape Image</div>
-                    </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
-                    <h3>Bolu Tape</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
-                        <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                    </div>
-                </div>
-            </div>
-            <div style="text-align: center; margin-top: 30px;">
-                <a href="produk.html" class="btn btn-primary">Lihat Seluruh Katalog Kue</a>
-            </div>
-        </section>
-    </main>
-
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -178,20 +224,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -200,5 +249,88 @@
         </div>
     </footer>
 
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Header Background on Scroll
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close menu when clicking nav link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Dynamic Header Actions based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of index.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link active">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link active">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>

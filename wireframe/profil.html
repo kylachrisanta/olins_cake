@@ -4,132 +4,451 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Profil Saya - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Ensure the floating header always has a solid white background in wireframes to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
+        }
+
+        /* General layout adjustments */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .profile-section {
+            padding: 120px 0 80px 0;
+            background-color: #ffffff !important;
+        }
+
+        .profile-title-area {
+            margin-bottom: 35px;
+        }
+
+        .profile-title-area h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: #111111;
+        }
+
+        .profile-title-area p {
+            font-size: 1.05rem;
+            color: #555555;
+            margin: 0;
+        }
+
         .profile-grid {
             display: grid;
-            grid-template-columns: 0.8fr 1.4fr;
+            grid-template-columns: 1fr 2fr;
             gap: 30px;
-            margin: 30px 0;
+            align-items: start;
         }
-        .profile-sidebar-card {
+
+        /* Profile Cards Styles */
+        .profile-card {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            border-radius: 8px !important;
+            padding: 24px;
+        }
+
+        .profile-left-col .info-card {
             text-align: center;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            padding: 30px 20px;
-            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        .avatar-placeholder {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px dashed var(--border-color);
+
+
+        .profile-left-col h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0 0 4px 0;
+            color: #111111;
+        }
+
+        .profile-left-col .username {
+            font-size: 0.9rem;
+            color: #666666;
+            margin: 0 0 16px 0;
+        }
+
+        .card-divider {
+            border: none;
+            border-top: 2px solid #333 !important;
+            width: 100%;
+            margin: 16px 0;
+        }
+
+        .info-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            width: 100%;
+            gap: 4px;
+            text-align: left;
+            margin-bottom: 14px;
+            font-size: 0.95rem;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-row span {
+            color: #777777;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .info-row strong {
+            color: #111111;
+            font-weight: 700;
+        }
+
+        .info-row .addr-text {
+            color: #333;
+            line-height: 1.4;
+        }
+
+        /* Right Column Form Styles */
+        .edit-card-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-family: var(--font-mono);
+            gap: 10px;
+            border-bottom: 2px solid #333 !important;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .edit-card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0;
+            color: #111111;
+        }
+
+        .edit-card-header i {
+            font-size: 1.2rem;
+            color: #111111;
+        }
+
+        /* Alerts inside profile */
+        .profile-alert {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 6px !important;
+            margin-bottom: 20px;
+            border: 2px solid #333 !important;
+            font-size: 0.95rem;
+        }
+
+        .profile-alert-success {
+            background-color: #fafafa !important;
+            color: #111111;
+        }
+
+        .profile-alert-danger {
+            background-color: #ffffff !important;
+            border-style: dashed !important;
+            color: #111111;
+        }
+
+        /* Input Controls */
+        .contact-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .contact-form-group label {
             font-size: 0.9rem;
-            margin: 0 auto 20px auto;
-            background-color: var(--wireframe-gray);
+            font-weight: 700;
+            color: #111111;
+        }
+
+        .contact-form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #333 !important;
+            border-radius: 6px !important;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: #111111;
+            background-color: #ffffff;
+            outline: none;
+        }
+
+        .contact-form-control:focus {
+            border-color: #111111 !important;
+        }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Password header */
+        .password-change-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-top: 2px solid #333 !important;
+            padding-top: 20px;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        .password-change-header h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 0;
+            color: #111111;
+        }
+
+        /* Submit Button matching outline */
+        .btn-submit-profile {
+            width: 100%;
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            color: #111111 !important;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 30px !important;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit-profile:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        /* Responsive Mobile Layout */
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link active">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Profil Saya</li>
-        </ul>
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            
+            <div class="profile-title-area">
+                <h1>Profil Saya</h1>
+                <p>Kelola detail kontak pribadi dan alamat pengiriman default Anda.</p>
+            </div>
 
-        <section class="profile-grid">
-            <!-- Left Side: Avatar & Summary -->
-            <div>
-                <div class="profile-sidebar-card">
-                    <div class="avatar-placeholder">Photo</div>
-                    <h3 style="margin-bottom: 5px;">Carolina Berliana</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Member sejak Juni 2026</p>
-                    <div style="border-top: 1px dashed var(--border-color); padding-top: 15px; text-align: left; font-size: 0.9rem; color: var(--text-muted);">
-                        <p style="margin-bottom: 8px;">📱 +62 812-8106-2985</p>
-                        <p style="margin-bottom: 0;">✉️ carolinaberliana11@gmail.com</p>
+            <div class="profile-grid">
+                
+                <!-- Left Column: Summary Card -->
+                <div class="profile-left-col">
+                    <div class="profile-card info-card">
+                        <!-- Standard wireframe image box for profile photo -->
+                        <div class="wireframe-img-box" id="lbl-left-avatar-box" style="width: 110px; height: 110px; margin-bottom: 16px; border-radius: 8px !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.5" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.5" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">FOTO</div>
+                        </div>
+                        <h3 id="lbl-left-nama">Carolina Berliana</h3>
+                        <p class="username">@carolina</p>
+                        
+                        <hr class="card-divider">
+                        
+                        <div class="info-row">
+                            <span><i class="fa-solid fa-whatsapp" style="color: #333;"></i> WhatsApp:</span>
+                            <strong id="lbl-left-wa">6289529236657</strong>
+                        </div>
+                        <div class="info-row">
+                            <span><i class="fa-solid fa-map-location-dot"></i> Alamat Default:</span>
+                            <span class="addr-text" id="lbl-left-alamat">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</span>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Right Side: Edit Form -->
-            <div>
-                <div class="card">
-                    <h3 class="card-title">Pengaturan Profil</h3>
-                    <form action="profil.html">
-                        <div class="form-group">
-                            <label class="form-label">Nama Lengkap *</label>
-                            <input type="text" class="form-control" value="Carolina Berliana">
+                <!-- Right Column: Settings Form -->
+                <div class="profile-right-col">
+                    <div class="profile-card edit-card">
+                        <div class="edit-card-header">
+                            <i class="fa-solid fa-user-pen"></i>
+                            <h2>Ubah Detail Profil</h2>
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Nomor WhatsApp *</label>
-                            <input type="text" class="form-control" value="6281281062985" readonly style="background-color: var(--wireframe-gray);">
-                            <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 4px;">Nomor WhatsApp otomatis terbaca dari akun login Anda.</span>
+                        
+                        <div class="edit-card-body">
+                            
+                            <!-- Notification Box -->
+                            <div id="alert-success" class="profile-alert profile-alert-success" style="display: none;">
+                                <i class="fa-solid fa-circle-check"></i>
+                                <span>Profil Anda berhasil diperbarui.</span>
+                            </div>
+
+                            <div id="alert-error" class="profile-alert profile-alert-danger" style="display: none;">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span id="error-text">Terjadi kesalahan saat memvalidasi profil.</span>
+                            </div>
+
+                            <form id="profile-form" onsubmit="handleProfileSubmit(event)">
+                                <div class="form-grid-2">
+                                    <div class="contact-form-group">
+                                        <label for="nama_lengkap">Nama Lengkap <span style="color: #dc3545;">*</span></label>
+                                        <input type="text" id="nama_lengkap" class="contact-form-control" value="Carolina Berliana" required>
+                                    </div>
+                                    <div class="contact-form-group">
+                                        <label for="nama_pengguna_display">Nama Pengguna (Username) <span style="font-weight: normal; color: #777;">(Tidak dapat diubah)</span></label>
+                                        <input type="text" id="nama_pengguna_display" class="contact-form-control" value="carolina" readonly style="background-color: #fafafa; cursor: not-allowed;">
+                                    </div>
+                                </div>
+
+                                <div class="contact-form-group" style="margin-top: 16px;">
+                                    <label for="nomor_wa">Nomor WhatsApp <span style="color: #dc3545;">*</span></label>
+                                    <input type="text" id="nomor_wa" class="contact-form-control" value="6289529236657" placeholder="Contoh: 6289529236657" required>
+                                </div>
+
+                                <div class="contact-form-group" style="margin-top: 16px;">
+                                    <label for="alamat">Alamat Pengiriman Default <span style="font-weight: normal; color: #777;">(Untuk mempermudah checkout)</span></label>
+                                    <textarea id="alamat" class="contact-form-control" rows="3" placeholder="Masukkan alamat lengkap rumah Anda untuk pengantaran kue">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</textarea>
+                                </div>
+
+                                <div class="contact-form-group" style="margin-top: 16px;">
+                                    <label for="foto_profil">Foto Profil <span style="font-weight: normal; color: #777;">(Format: JPG, JPEG, PNG. Maks: 2MB)</span></label>
+                                    <input type="file" id="foto_profil" class="contact-form-control" accept="image/png, image/jpeg, image/jpg" style="padding: 8px;">
+                                </div>
+
+                                <!-- Password Change Fields -->
+                                <div class="password-change-header">
+                                    <i class="fa-solid fa-key"></i>
+                                    <h4>Ganti Kata Sandi <span style="font-weight: normal; color: #777;">(Isi hanya jika ingin mengubah)</span></h4>
+                                </div>
+
+                                <div class="form-grid-2">
+                                    <div class="contact-form-group">
+                                        <label for="kata_sandi_baru">Kata Sandi Baru</label>
+                                        <input type="password" id="kata_sandi_baru" class="contact-form-control" placeholder="Kata sandi baru (min 8 karakter)" minlength="8" autocomplete="new-password">
+                                    </div>
+                                    <div class="contact-form-group">
+                                        <label for="konfirmasi_sandi">Konfirmasi Kata Sandi Baru</label>
+                                        <input type="password" id="konfirmasi_sandi" class="contact-form-control" placeholder="Ulangi kata sandi baru" autocomplete="new-password">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-submit-profile">
+                                    Simpan Perubahan Profil <i class="fa-solid fa-floppy-disk"></i>
+                                </button>
+                            </form>
+
                         </div>
-                        <div class="form-group">
-                            <label class="form-label">Alamat Email *</label>
-                            <input type="email" class="form-control" value="carolinaberliana11@gmail.com">
-                        </div>
-                        <div style="text-align: right;">
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
 
-                <div class="card">
-                    <h3 class="card-title">Ganti Kata Sandi</h3>
-                    <form action="profil.html">
-                        <div class="form-group">
-                            <label class="form-label">Kata Sandi Lama *</label>
-                            <input type="password" class="form-control" placeholder="Masukkan kata sandi saat ini">
-                        </div>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label class="form-label">Kata Sandi Baru *</label>
-                                <input type="password" class="form-control" placeholder="Kata sandi baru">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Konfirmasi Kata Sandi Baru *</label>
-                                <input type="password" class="form-control" placeholder="Ulangi kata sandi baru">
-                            </div>
-                        </div>
-                        <div style="text-align: right;">
-                            <button type="submit" class="btn btn-primary">Perbarui Kata Sandi</button>
-                        </div>
-                    </form>
-                </div>
             </div>
-        </section>
-    </main>
 
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -139,20 +458,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -161,5 +483,156 @@
         </div>
     </footer>
 
+    <!-- Form Submit and Mocking Script -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Validation and Form submission handler
+        function handleProfileSubmit(e) {
+            e.preventDefault();
+
+            const nama = document.getElementById('nama_lengkap').value.trim();
+            const wa = document.getElementById('nomor_wa').value.trim();
+            const alamat = document.getElementById('alamat').value.trim();
+            const pass = document.getElementById('kata_sandi_baru').value;
+            const confirmPass = document.getElementById('konfirmasi_sandi').value;
+
+            const errBox = document.getElementById('alert-error');
+            const errText = document.getElementById('error-text');
+            const successBox = document.getElementById('alert-success');
+
+            errBox.style.display = 'none';
+            successBox.style.display = 'none';
+
+            // Validate WA numeric only
+            if (!/^[0-9]+$/.test(wa)) {
+                errText.innerText = 'Nomor WhatsApp hanya boleh berisi angka saja.';
+                errBox.style.display = 'flex';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
+            }
+
+            // Validate passwords
+            if (pass !== '') {
+                if (pass.length < 8) {
+                    errText.innerText = 'Kata sandi baru minimal harus terdiri dari 8 karakter.';
+                    errBox.style.display = 'flex';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+                if (pass !== confirmPass) {
+                    errText.innerText = 'Konfirmasi kata sandi baru tidak cocok.';
+                    errBox.style.display = 'flex';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+            }
+
+            // Save variables to localStorage
+            localStorage.setItem('wf_user_fullname', nama);
+            localStorage.setItem('wf_user_wa', wa);
+            localStorage.setItem('wf_user_address', alamat);
+
+            // If a file is selected, mock photo avatar
+            const fileInput = document.getElementById('foto_profil');
+            if (fileInput.files && fileInput.files[0]) {
+                localStorage.setItem('wf_user_has_avatar', 'true');
+            }
+
+            // Update left column info card immediately
+            document.getElementById('lbl-left-nama').innerText = nama;
+            document.getElementById('lbl-left-wa').innerText = wa;
+            document.getElementById('lbl-left-alamat').innerText = alamat || '-';
+
+            // Trigger success banner
+            successBox.style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Clear password inputs
+            document.getElementById('kata_sandi_baru').value = '';
+            document.getElementById('konfirmasi_sandi').value = '';
+        }
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of index.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link active" style="font-weight: 700;">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Default logged out
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+
+            // Load profile data from localStorage (or set defaults if not exist)
+            const defaultNama = 'Carolina Berliana';
+            const defaultWA = '6289529236657';
+            const defaultAlamat = 'Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi';
+
+            const savedNama = localStorage.getItem('wf_user_fullname') || defaultNama;
+            const savedWA = localStorage.getItem('wf_user_wa') || defaultWA;
+            const savedAlamat = localStorage.getItem('wf_user_address') || defaultAlamat;
+
+            // Populate Form Fields
+            document.getElementById('nama_lengkap').value = savedNama;
+            document.getElementById('nomor_wa').value = savedWA;
+            document.getElementById('alamat').value = savedAlamat;
+
+            // Populate left column card
+            document.getElementById('lbl-left-nama').innerText = savedNama;
+            document.getElementById('lbl-left-wa').innerText = savedWA;
+            document.getElementById('lbl-left-alamat').innerText = savedAlamat || '-';
+            
+
+        });
+    </script>
 </body>
 </html>

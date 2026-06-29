@@ -67,3 +67,546 @@ canvas {
     vertical-align: middle;
     margin-left: 8px;
 }
+
+
+/* Crossed Image Box for Wireframe */
+.wireframe-img-box {
+    position: relative !important;
+    border: 1.5px solid #333 !important;
+    background-color: #fafafa !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px !important;
+}
+
+.wireframe-img-box svg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    pointer-events: none !important;
+}
+
+.wireframe-img-label {
+    position: relative !important;
+    z-index: 2 !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border: 1.5px solid #333 !important;
+    padding: 1px 4px !important;
+    font-family: monospace !important;
+    font-size: 0.55rem !important;
+    font-weight: bold !important;
+    border-radius: 3px !important;
+}
+
+/* Override footer background to white and text to black globally for wireframes */
+footer {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border-top: 2.5px solid #111111 !important;
+}
+
+footer .footer-logo,
+footer h4,
+footer p,
+footer .footer-bottom,
+footer .footer-col h4,
+footer .footer-col p,
+footer .footer-col span,
+footer .footer-bottom {
+    color: #111111 !important;
+}
+
+footer a,
+footer .footer-links a,
+footer .footer-col p a {
+    color: #333333 !important;
+    text-decoration: none !important;
+}
+
+footer a:hover,
+footer .footer-links a:hover,
+footer .footer-col p a:hover {
+    color: #000000 !important;
+    text-decoration: underline !important;
+}
+
+footer .footer-bottom {
+    border-top: 1.5px solid #333333 !important;
+    color: #555555 !important;
+}
+
+/* Grayscale social buttons in footer */
+footer .social-btn,
+footer .social-links a {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border: 1.5px solid #333 !important;
+}
+
+footer .social-btn:hover,
+footer .social-links a:hover {
+    background-color: #f0f0f0 !important;
+    color: #000000 !important;
+}
+
+/* Global Header & Navigation Styling for Wireframes */
+header {
+    background-color: #ffffff !important;
+    border-bottom: 2px solid #333 !important;
+    box-shadow: none !important;
+    padding: 15px 0 !important;
+}
+
+header .logo {
+    white-space: nowrap !important;
+}
+
+header .logo span {
+    white-space: nowrap !important;
+    font-weight: 800 !important;
+    color: #111 !important;
+    font-size: 1.35rem !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+}
+
+.nav-menu {
+    display: flex !important;
+    align-items: center !important;
+    gap: 20px !important;
+    list-style: none !important;
+}
+
+.nav-link {
+    font-family: 'Outfit', sans-serif !important;
+    color: #333 !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    padding: 6px 10px !important;
+    border: 1.5px solid transparent !important;
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+    border-radius: 6px !important;
+}
+
+.nav-link.active {
+    border: 1.5px solid #333 !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+
+.nav-link:hover {
+    border: 1.5px solid #ccc !important;
+    color: #111111 !important;
+}
+
+/* Actions Buttons */
+.btn-wireframe-outline {
+    border: 1.5px solid #333 !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    transition: background-color 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.btn-wireframe-outline:hover {
+    background-color: #f8f9fa !important;
+}
+
+.btn-wireframe-filled {
+    border: 1.5px solid #333 !important;
+    background-color: #cccccc !important;
+    color: #111111 !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    transition: background-color 0.2s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.btn-wireframe-filled:hover {
+    background-color: #b8b8b8 !important;
+}
+
+/* Replace illustrative icons/emoticons with square line boxes */
+i.fa-truck-fast,
+i.fa-truck-ramp-box,
+i.fa-store,
+i.fa-map-location-dot,
+i.fa-map-pin,
+i.fa-map-marker-alt,
+i.fa-phone,
+i.fa-envelope,
+i.fa-user-check,
+i.fa-user-pen,
+i.fa-key,
+i.fa-building-columns,
+i.fa-wallet,
+i.fa-credit-card,
+i.fa-qrcode,
+i.fa-receipt,
+i.fa-calendar-days,
+i.fa-calendar-check,
+i.fa-clock,
+i.fa-award,
+i.fa-hourglass-half,
+i.fa-whatsapp,
+i.fa-lock,
+i.fa-user-plus,
+i.fa-users,
+i.fa-user-shield,
+i.fa-cookie-bite,
+i.fa-comments,
+i.fa-comment-dots,
+i.fa-tags,
+i.fa-globe,
+i.fa-paper-plane,
+i.fa-cloud-arrow-up,
+i.fa-image,
+i.fa-basket-shopping,
+i.fa-circle-check,
+i.fa-circle-exclamation,
+i.fa-circle-info,
+i.fa-circle-xmark,
+i.fa-triangle-exclamation {
+    font-size: 0 !important; /* Hide original icon font glyph */
+    width: 18px !important;
+    height: 18px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1.5px solid #333 !important;
+    border-radius: 3px !important;
+    background-color: #fafafa !important;
+    background-image: 
+        linear-gradient(to top right, transparent calc(50% - 0.75px), #555 calc(50% - 0.75px), #555 calc(50% + 0.75px), transparent calc(50% + 0.75px)), 
+        linear-gradient(to bottom right, transparent calc(50% - 0.75px), #555 calc(50% - 0.75px), #555 calc(50% + 0.75px), transparent calc(50% + 0.75px)) !important;
+    position: relative !important;
+    vertical-align: middle !important;
+    margin-right: 6px !important;
+    box-sizing: border-box !important;
+}
+
+/* Ensure no pseudo-element contents are shown for replaced icons */
+i.fa-truck-fast::before,
+i.fa-truck-ramp-box::before,
+i.fa-store::before,
+i.fa-map-location-dot::before,
+i.fa-map-pin::before,
+i.fa-map-marker-alt::before,
+i.fa-phone::before,
+i.fa-envelope::before,
+i.fa-user-check::before,
+i.fa-user-pen::before,
+i.fa-key::before,
+i.fa-building-columns::before,
+i.fa-wallet::before,
+i.fa-credit-card::before,
+i.fa-qrcode::before,
+i.fa-receipt::before,
+i.fa-calendar-days::before,
+i.fa-calendar-check::before,
+i.fa-clock::before,
+i.fa-award::before,
+i.fa-hourglass-half::before,
+i.fa-whatsapp::before,
+i.fa-lock::before,
+i.fa-user-plus::before,
+i.fa-users::before,
+i.fa-user-shield::before,
+i.fa-cookie-bite::before,
+i.fa-comments::before,
+i.fa-comment-dots::before,
+i.fa-tags::before,
+i.fa-globe::before,
+i.fa-paper-plane::before,
+i.fa-cloud-arrow-up::before,
+i.fa-image::before,
+i.fa-basket-shopping::before,
+i.fa-circle-check::before,
+i.fa-circle-exclamation::before,
+i.fa-circle-info::before,
+i.fa-circle-xmark::before,
+i.fa-triangle-exclamation::before {
+    content: "" !important;
+    display: none !important;
+}
+
+/* Admin Dashboard & Panel Wireframe Aesthetics */
+.admin-sidebar {
+    background-color: #ffffff !important;
+    border-right: 2.5px solid #333 !important;
+    box-shadow: none !important;
+    padding: 24px 16px !important;
+}
+
+.admin-logo {
+    border-bottom: 2px solid #333 !important;
+    padding-bottom: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+.admin-logo span {
+    color: #111111 !important;
+    font-weight: 800 !important;
+}
+
+.admin-mobile-header-bar {
+    background-color: #ffffff !important;
+    border-bottom: 2.5px solid #333 !important;
+    box-shadow: none !important;
+}
+
+.admin-layout {
+    background-color: #ffffff !important;
+}
+
+.admin-panel-card {
+    background-color: #ffffff !important;
+    border: 2px solid #333 !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+}
+
+.admin-stat-card {
+    background-color: #ffffff !important;
+    border: 2px solid #333 !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+}
+
+/* Stat card individual indicators */
+.card-total-produk,
+.card-total-pesanan,
+.card-proses-pesanan,
+.card-selesai-pesanan,
+.card-pendapatan {
+    border-left: 2px solid #333 !important;
+}
+
+.admin-table {
+    border-collapse: collapse !important;
+}
+
+.admin-table th {
+    background-color: #f8f9fa !important;
+    color: #111111 !important;
+    font-weight: 700 !important;
+    border-bottom: 2px solid #333 !important;
+    border-top: 1.5px solid #333 !important;
+}
+
+.admin-table td {
+    border-bottom: 1.5px solid #333 !important;
+    color: #333333 !important;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f8f9fa !important;
+}
+
+/* Badges Alignment */
+.admin-badge, .badge, .badge-outline {
+    border: 1.5px solid #333 !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border-radius: 4px !important;
+    padding: 4px 8px !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+}
+
+.admin-badge-waiting, .badge-waiting { border-style: dashed !important; background-color: #ffffff !important; color: #111111 !important; }
+.admin-badge-success, .badge-success { border-style: solid !important; background-color: #cccccc !important; color: #111111 !important; }
+.admin-badge-danger, .badge-danger { border-style: dotted !important; background-color: #ffffff !important; color: #111111 !important; }
+.admin-badge-info, .badge-info { border-style: double !important; background-color: #ffffff !important; color: #111111 !important; }
+
+/* Buttons Alignment */
+.admin-btn, .btn {
+    border: 1.5px solid #333 !important;
+    border-radius: 6px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: background-color 0.2s ease !important;
+    padding: 10px 20px !important;
+    font-size: 0.9rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-decoration: none !important;
+}
+
+.admin-btn:hover, .btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.admin-btn-primary, .btn-primary {
+    background-color: #cccccc !important;
+    color: #111111 !important;
+}
+.admin-btn-primary:hover, .btn-primary:hover {
+    background-color: #b8b8b8 !important;
+}
+
+.admin-btn-secondary, .admin-btn-success, .btn-outline {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border: 1.5px solid #333 !important;
+}
+.admin-btn-secondary:hover, .admin-btn-success:hover, .btn-outline:hover {
+    background-color: #f8f9fa !important;
+    color: #111111 !important;
+}
+
+.admin-btn-danger, .btn-danger {
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border: 1.5px dashed #333 !important;
+}
+.admin-btn-danger:hover, .btn-danger:hover {
+    background-color: #fce8e6 !important;
+    color: #111111 !important;
+}
+
+/* Image Placeholders in Admin Tables */
+.img-placeholder {
+    position: relative !important;
+    border: 1.5px solid #333 !important;
+    background-color: #fafafa !important;
+    overflow: hidden !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 6px !important;
+    background-image: 
+        linear-gradient(to top right, transparent calc(50% - 0.75px), #555 calc(50% - 0.75px), #555 calc(50% + 0.75px), transparent calc(50% + 0.75px)), 
+        linear-gradient(to bottom right, transparent calc(50% - 0.75px), #555 calc(50% - 0.75px), #555 calc(50% + 0.75px), transparent calc(50% + 0.75px)) !important;
+}
+
+.img-placeholder-text {
+    position: relative !important;
+    z-index: 2 !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+    border: 1.5px solid #333 !important;
+    padding: 1px 4px !important;
+    font-family: monospace !important;
+    font-size: 0.55rem !important;
+    font-weight: bold !important;
+    border-radius: 3px !important;
+    text-transform: uppercase !important;
+}
+
+/* Inputs & Forms */
+.admin-form-group label {
+    color: #111111 !important;
+    font-weight: 700 !important;
+}
+
+.admin-form-control {
+    border: 2px solid #333 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+
+.admin-form-control:focus {
+    border-color: #111111 !important;
+    box-shadow: none !important;
+}
+
+/* Sidebar Menu Items styling matching active outline */
+.admin-menu-item a {
+    border: 1.5px solid transparent !important;
+    border-radius: 6px !important;
+    color: #333333 !important;
+}
+
+.admin-menu-item a:hover {
+    border: 1.5px solid #ccc !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+
+.admin-menu-item.active a {
+    border: 1.5px solid #333 !important;
+    background-color: #f8f9fa !important;
+    color: #111111 !important;
+    font-weight: 700 !important;
+}
+
+.admin-user-profile {
+    border: 2.5px solid #333 !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    border-radius: 8px !important;
+}
+
+.admin-avatar {
+    border: 1.5px solid #333 !important;
+    background-color: #f8f9fa !important;
+    color: #111111 !important;
+}
+
+.admin-profile-name {
+    color: #111111 !important;
+}
+
+.admin-profile-role {
+    color: #666666 !important;
+}
+
+/* Admin Login & Form Control Wireframe Overrides */
+.login-card {
+    border: 2px solid #333 !important;
+    border-radius: 8px !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+}
+
+.login-logo-circle {
+    border: 2px solid #333 !important;
+    border-radius: 8px !important;
+    background-color: #f8f9fa !important;
+    width: 55px !important;
+    height: 55px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.form-control {
+    border: 2px solid #333 !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+    background-color: #ffffff !important;
+    color: #111111 !important;
+}
+
+.form-control:focus {
+    border-color: #111111 !important;
+    box-shadow: none !important;
+}
+
+
+
+
+

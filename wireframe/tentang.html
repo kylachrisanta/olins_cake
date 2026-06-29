@@ -4,68 +4,265 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Tentang Kami - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN to render icons exactly like the real site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General High-Contrast Sketch Style matching reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        /* Solid Section Dividers */
+        
+        footer {
+            border-top: 2px solid #333 !important;
+            background-color: #f8f9fa !important;
+            color: #111111 !important;
+            padding: 50px 0 30px 0 !important;
+        }
+
+
+        /* Crossed Placeholder Box for Logo in header & footer */
+        .wireframe-img-box {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wireframe-img-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Section Spacing */
+        #tentang {
+            padding-top: 130px !important;
+            min-height: 100vh !important;
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+        }
+
+        /* Outline About Cards matching sketch style */
+        .about-card {
+            border: 1.5px solid #333 !important;
+            background-color: #ffffff !important;
+            border-radius: 6px !important;
+            box-shadow: none !important;
+            transition: none !important;
+        }
+        
+        .about-card:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            border-color: #333 !important;
+        }
+
+        .about-card-icon {
+            width: 50px !important;
+            height: 50px !important;
+            margin: 0 auto 15px auto !important;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            border-radius: 50% !important;
+            position: relative !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        /* Footer Column styling */
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111111 !important;
+        }
+
+        .footer-links a, .footer-col p, .footer-col {
+            color: #111111 !important;
+        }
+        .footer-links a:hover {
+            color: #555555 !important;
+            text-decoration: underline !important;
+        }
+        
+        .footer-bottom {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 20px !important;
+            margin-top: 30px !important;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            color: #111111 !important;
+        }
+    </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link active">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Tentang Kami</li>
-        </ul>
-
-        <section style="margin: 40px 0;">
-            <div class="section-header">
-                <h2>Tentang Kami</h2>
-                <p>Mengenal dapur Olin's Cake dan cita rasa buatan rumah kami.</p>
+    <!-- Tentang Kami Section -->
+    <section class="section section-bg" id="tentang">
+        <div class="container">
+            <div class="section-header" style="text-align: center; max-width: 600px; margin: 0 auto 60px auto;">
+                <span class="subtitle" style="display: inline-block; background: #fff; border: 1.5px solid #333; padding: 4px 10px; font-size: 0.85rem; font-weight: bold; text-transform: uppercase; border-radius: 4px; margin-bottom: 15px;">Tentang Kami</span>
+                <h2 style="font-weight: 800; font-size: 2.8rem; color: #111;">Olin's Cake</h2>
             </div>
             
-            <div class="grid-2" style="align-items: center; margin-top: 40px;">
-                <div>
-                    <div class="img-placeholder" style="height: 400px;">
-                        <div class="img-placeholder-text">About Us Image [Dapur Bakery Olin's Cake]</div>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>
+                        Olin's Cake didirikan atas dasar kecintaan kami dalam menghadirkan kue yang tidak hanya cantik dipandang, tetapi juga memanjakan lidah. Kami percaya bahwa setiap perayaan, kecil maupun besar, berhak mendapatkan sentuhan manis yang sempurna.
+                    </p>
+                    <p>
+                        Setiap resep telah kami uji secara mendalam demi mendapatkan kombinasi tekstur yang super lembut dan rasa manis yang pas, tidak membuat enek (less sweet), sehingga sangat disukai oleh anak-anak hingga orang tua.
+                    </p>
+                </div>
+                <div class="about-cards">
+                    <div class="about-card">
+                        <div class="about-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <div class="about-card-content">
+                            <h4 style="font-weight: bold;">Bahan Berkualitas</h4>
+                            <p>Menggunakan mentega premium, cokelat impor asli, serta bahan organik pilihan tanpa pengawet.</p>
+                        </div>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <div class="about-card-content">
+                            <h4 style="font-weight: bold;">Fresh Made by Order</h4>
+                            <p>Kue hanya akan dipanggang setelah pesanan terkonfirmasi untuk menjamin kesegaran yang maksimal.</p>
+                        </div>
+                    </div>
+                    <div class="about-card">
+                        <div class="about-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                        </div>
+                        <div class="about-card-content">
+                            <h4 style="font-weight: bold;">Pengiriman Tepat Waktu</h4>
+                            <p>Dikirim dengan kurir khusus kue untuk memastikan produk sampai di meja Anda dalam kondisi sempurna.</p>
+                        </div>
                     </div>
                 </div>
-                <div>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 20px;">Menyajikan Kebahagiaan Manis</h3>
-                    <p style="margin-bottom: 15px; text-align: justify; color: var(--text-muted);">
-                        Olin's Cake berdiri dengan impian sederhana: menghadirkan rasa kue rumahan yang premium, berkualitas tinggi, dan bebas pengawet ke tengah-tengah keluarga Anda. Berawal dari hobi memanggang di dapur rumah, kami terus menyempurnakan resep untuk menghasilkan kue yang tidak hanya manis di lidah, namun juga meninggalkan kenangan rasa yang mendalam.
-                    </p>
-                    <p style="margin-bottom: 15px; text-align: justify; color: var(--text-muted);">
-                        Setiap kue kering (cookies) dan bolu (cake) yang keluar dari oven kami dibuat berdasarkan pesanan (*pre-order*). Dengan sistem ini, kami menjamin kualitas kesegaran kue (*freshly baked*) tetap terjaga prima setibanya di tangan Anda. Kami percaya bahwa bahan terbaik melahirkan rasa terbaik, oleh karena itu kami tidak pernah berkompromi dalam pemilihan bahan baku.
-                    </p>
-                    <p style="margin-bottom: 15px; text-align: justify; color: var(--text-muted);">
-                        Hingga hari ini, kami bangga dapat melayani pelanggan di area Bekasi, Jakarta, dan sekitarnya dari dapur produksi resmi kami di Tambun Utara, Bekasi. Terima kasih telah mempercayakan momen-momen manis Anda bersama Olin's Cake!
-                    </p>
-                </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -75,20 +272,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -97,5 +297,69 @@
         </div>
     </footer>
 
+    <!-- JavaScript Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Dynamic Header Actions based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link active">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link active">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>

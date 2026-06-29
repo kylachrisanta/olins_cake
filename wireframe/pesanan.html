@@ -4,133 +4,695 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Pesanan Saya - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .order-card {
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            border-radius: var(--radius);
+        /* Ensure the floating header always has a solid white background in wireframes to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
+        }
+
+        /* General layout adjustments */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .orders-section {
+            padding: 120px 0 60px 0;
+        }
+
+        .orders-title-area {
+            margin-bottom: 30px;
+        }
+
+        .orders-title-area h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111111;
+            margin-bottom: 8px;
+        }
+
+        .orders-title-area p {
+            color: #555555;
+            font-size: 1.05rem;
+        }
+
+        /* Grayscale Alerts */
+        .orders-alert-success {
+            border: 2px solid #333 !important;
+            background-color: #fafafa !important;
+            border-radius: 6px !important;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .orders-alert-success i {
+            font-size: 1.5rem;
+            color: #111111;
+        }
+
+        .alert-text strong {
+            font-size: 1rem;
+            color: #111111;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .alert-text p {
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+        }
+
+        /* Order Cards Layout */
+        .order-card-wrapper {
+            border: 2px solid #333 !important;
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #333 !important;
+            padding: 16px 20px;
+            background-color: #fafafa !important;
+        }
+
+        .order-info-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .order-code {
+            font-family: monospace;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #111111;
+        }
+
+        .order-date {
+            font-size: 0.85rem;
+            color: #666666;
+        }
+
+        .order-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 1.5px solid #333 !important;
+            padding: 4px 12px;
+            border-radius: 20px !important;
+            background-color: #ffffff !important;
+        }
+
+        /* Badges status classes */
+        .status-waiting {
+            background-color: #ffffff !important;
+        }
+
+        .status-verifying {
+            background-color: #fafafa !important;
+            border-style: dashed !important;
+        }
+
+        .status-processing {
+            background-color: #fafafa !important;
+        }
+
+        .status-ready {
+            background-color: #fafafa !important;
+        }
+
+        .status-completed {
+            background-color: #ffffff !important;
+            border-width: 2px !important;
+        }
+
+        .status-cancelled {
+            background-color: #ffffff !important;
+            opacity: 0.6;
+        }
+
+        /* Body Details list */
+        .order-card-body {
             padding: 20px;
-            margin-bottom: 25px;
+            border-bottom: 2px solid #333 !important;
         }
-        .order-header {
+
+        .order-items-list-area h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #111111;
+        }
+
+        .order-item-row-detail {
+            display: grid;
+            grid-template-columns: 50px 1.5fr 1fr 1.2fr;
+            gap: 16px;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1.5px dashed #ccc !important;
+        }
+
+        .order-item-row-detail:last-child {
+            border-bottom: none !important;
+            padding-bottom: 0;
+        }
+
+        .item-img-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa;
+        }
+
+        .item-name-spec {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-name-spec .name {
+            font-weight: bold;
+            color: #111111;
+            font-size: 0.95rem;
+        }
+
+        .item-name-spec .category {
+            font-size: 0.75rem;
+            color: #666666;
+        }
+
+        .item-qty-price {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.85rem;
+            color: #555555;
+        }
+
+        .item-row-subtotal {
+            text-align: right;
+            font-weight: bold;
+            color: #111111;
+            font-size: 1rem;
+        }
+
+        /* Footer card */
+        .order-card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            background-color: #fafafa !important;
+            flex-wrap: wrap;
+            gap: 16px;
         }
-        .order-details-summary {
+
+        .footer-totals {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .total-row {
+            display: flex;
+            gap: 10px;
+            font-size: 0.9rem;
+            color: #555555;
+        }
+
+        .total-row.main-total {
+            font-size: 1.1rem;
+            border-top: 1px dashed #333 !important;
+            padding-top: 6px;
+        }
+
+        .total-row.main-total span {
+            font-weight: bold;
+            color: #111111;
+        }
+
+        .total-row.main-total .price {
+            font-weight: 800;
+            color: #111111;
+        }
+
+        /* Buttons matching outline styles */
+        .btn-action-fill {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            color: #111111 !important;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 30px !important;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
             align-items: center;
-            margin-top: 15px;
-            border-top: 1px dashed var(--border-color);
-            padding-top: 15px;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-fill:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        .btn-action-outline {
+            background-color: transparent !important;
+            border: 2px solid #333 !important;
+            color: #333 !important;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 30px !important;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-outline:hover {
+            background-color: #fafafa !important;
+            color: #111111 !important;
+        }
+
+        .btn-action-danger {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            color: #777777 !important;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 30px !important;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-danger:hover {
+            background-color: #fafafa !important;
+            border-color: #111111 !important;
+            color: #111111 !important;
+        }
+
+        /* Empty state style */
+        .order-card-empty {
+            text-align: center;
+            border: 2.5px dashed #333 !important;
+            padding: 50px 24px;
+            border-radius: 8px !important;
+            background-color: #ffffff !important;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            color: #555555;
+            margin-bottom: 20px;
+        }
+
+        .order-card-empty h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #111111;
+        }
+
+        .order-card-empty p {
+            color: #666;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+        }
+
+        /* Cancel Modal Styles */
+        .cancel-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .cancel-modal-content {
+            background-color: #ffffff !important;
+            border: 2.5px solid #333 !important;
+            border-radius: 8px !important;
+            max-width: 480px;
+            width: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cancel-modal-content h4 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0;
+            width: 100%;
+            border-bottom: 1.5px solid #333 !important;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .cancel-modal-body {
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .cancel-modal-footer {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link active">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Pesanan Saya</li>
-        </ul>
-
-        <section style="margin: 40px 0;">
-            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
-                <h2>Pesanan Saya</h2>
+    <!-- My Orders Section -->
+    <section class="orders-section">
+        <div class="container">
+            
+            <div class="orders-title-area">
+                <h1>Pesanan Saya</h1>
                 <p>Pantau status pre-order kue lezat Anda secara berkala.</p>
             </div>
 
-            <!-- Order 1: Waiting Payment -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div>
-                        <span style="font-family: var(--font-mono); font-weight: 700; font-size: 1.15rem; color: var(--wireframe-blue);">OLN-10027</span>
-                        <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 15px;">27 Juni 2026 19:47</span>
-                    </div>
-                    <span class="badge badge-warning">Menunggu Pembayaran</span>
-                </div>
-                
-                <div style="font-size: 0.95rem; line-height: 1.6;">
-                    <div style="margin-bottom: 5px;"><strong>Daftar Item:</strong></div>
-                    <div style="color: var(--text-muted);">
-                        - Kastengel Keju (Toples 500gr) x 1<br>
-                        - Bolu Pisang (Diameter 20cm) x 1
-                    </div>
-                </div>
-
-                <div class="order-details-summary">
-                    <div>
-                        <span style="color: var(--text-muted); font-size: 0.9rem;">Total Tagihan:</span>
-                        <strong style="font-size: 1.2rem; display: block; margin-top: 4px;">Rp 212.271</strong>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="pembayaran.html" class="btn btn-primary" style="padding: 8px 16px; font-size: 0.9rem;">Bayar Sekarang</a>
-                        <a href="detail_pesanan.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Detail</a>
-                        <button class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem; border-color: #dc3545; color: #dc3545;">Batalkan</button>
-                    </div>
+            <!-- Alert Box (Simulated notification) -->
+            <div id="alert-box" class="orders-alert-success" style="display: none;">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="alert-text">
+                    <strong id="alert-title">Checkout Berhasil!</strong>
+                    <p id="alert-desc">Pesanan Pre-Order Anda berhasil dibuat! Admin kami akan segera memeriksa detail pesanan Anda.</p>
                 </div>
             </div>
 
-            <!-- Order 2: Completed -->
-            <div class="order-card">
-                <div class="order-header">
-                    <div>
-                        <span style="font-family: var(--font-mono); font-weight: 700; font-size: 1.15rem; color: var(--text-muted);">OLN-10012</span>
-                        <span style="font-size: 0.85rem; color: var(--text-muted); margin-left: 15px;">20 Juni 2026 10:14</span>
-                    </div>
-                    <span class="badge badge-success">Selesai</span>
-                </div>
+            <!-- List Wrapper of Orders -->
+            <div id="orders-list-area">
                 
-                <div style="font-size: 0.95rem; line-height: 1.6;">
-                    <div style="margin-bottom: 5px;"><strong>Daftar Item:</strong></div>
-                    <div style="color: var(--text-muted);">
-                        - Bolu Tape (Diameter 20cm) x 1
+                <!-- Order 1: Simulated dynamic order OLN-10027 -->
+                <div class="order-card-wrapper" id="card-order-1">
+                    
+                    <!-- Header Card: Info Kode & Status -->
+                    <div class="order-card-header">
+                        <div class="order-info-left">
+                            <span class="order-code">OLN-10027</span>
+                            <span class="order-date" id="lbl-tgl-pesan">Tanggal Pemesanan: 29/06/2026 15:15</span>
+                        </div>
+                        <div class="order-info-right">
+                            <span class="order-status-badge status-waiting" id="badge-status-1">
+                                <i class="fa-regular fa-clock" id="badge-icon-1"></i> <span id="badge-text-1">Menunggu Pembayaran</span>
+                            </span>
+                        </div>
                     </div>
+
+                    <!-- Body Card: Rincian Kue -->
+                    <div class="order-card-body">
+                        <div class="order-items-list-area">
+                            <h5>Rincian Kue Dipesan:</h5>
+                            
+                            <div class="order-item-row-detail">
+                                <div class="item-img-circle">
+                                    <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                        </svg>
+                                        <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_1</div>
+                                    </div>
+                                </div>
+                                <div class="item-name-spec">
+                                    <span class="name">Kastengel Keju</span>
+                                    <span class="category">Kue Kering (Toples 500gr)</span>
+                                </div>
+                                <div class="item-qty-price">
+                                    <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    <span class="price">Rp 120.000 / pcs</span>
+                                </div>
+                                <div class="item-row-subtotal">
+                                    Rp 120.000
+                                </div>
+                            </div>
+                            
+                            <div class="order-item-row-detail">
+                                <div class="item-img-circle">
+                                    <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                        </svg>
+                                        <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_2</div>
+                                    </div>
+                                </div>
+                                <div class="item-name-spec">
+                                    <span class="name">Nastar Premium</span>
+                                    <span class="category">Kue Kering (Toples 500gr)</span>
+                                </div>
+                                <div class="item-qty-price">
+                                    <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    <span class="price">Rp 135.000 / pcs</span>
+                                </div>
+                                <div class="item-row-subtotal">
+                                    Rp 135.000
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Footer Card: Total & Aksi -->
+                    <div class="order-card-footer">
+                        <div class="footer-totals">
+                            <div class="total-row">
+                                <span>Ongkos Kirim:</span>
+                                <strong id="lbl-ongkir-value">Rp 15.000</strong>
+                            </div>
+                            <div class="total-row main-total">
+                                <span>Total Pembayaran:</span>
+                                <span class="price" id="lbl-total-value">Rp 270.000</span>
+                            </div>
+                        </div>
+                        <div class="footer-actions" id="actions-1">
+                            <a href="pembayaran.html" class="btn-action-fill" id="btn-pay-1">
+                                <i class="fa-solid fa-wallet"></i> Bayar Sekarang
+                            </a>
+                            <button type="button" class="btn-action-danger" id="btn-cancel-1" onclick="openCancelModal('OLN-10027')">
+                                <i class="fa-solid fa-ban"></i> Batalkan Pesanan
+                            </button>
+                            <a href="detail_pesanan.html" class="btn-action-outline">
+                                <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                            </a>
+                            <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10027." target="_blank" class="btn-action-outline">
+                                <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="order-details-summary">
-                    <div>
-                        <span style="color: var(--text-muted); font-size: 0.9rem;">Total Tagihan:</span>
-                        <strong style="font-size: 1.2rem; display: block; margin-top: 4px;">Rp 92.271</strong>
+                <!-- Order 2: Completed / Selesai -->
+                <div class="order-card-wrapper" id="card-order-2">
+                    
+                    <!-- Header Card: Info Kode & Status -->
+                    <div class="order-card-header">
+                        <div class="order-info-left">
+                            <span class="order-code">OLN-10012</span>
+                            <span class="order-date">Tanggal Pemesanan: 20/06/2026 10:14</span>
+                        </div>
+                        <div class="order-info-right">
+                            <span class="order-status-badge status-completed">
+                                <i class="fa-solid fa-circle-check"></i> Selesai
+                            </span>
+                        </div>
                     </div>
-                    <div style="display: flex; gap: 10px;">
-                        <a href="detail_pesanan.html" class="btn btn-outline" style="padding: 8px 16px; font-size: 0.9rem;">Detail</a>
-                        <a href="testimoni.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 0.9rem;">Beri Ulasan</a>
+
+                    <!-- Body Card: Rincian Kue -->
+                    <div class="order-card-body">
+                        <div class="order-items-list-area">
+                            <h5>Rincian Kue Dipesan:</h5>
+                            
+                            <div class="order-item-row-detail">
+                                <div class="item-img-circle">
+                                    <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                        </svg>
+                                        <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_3</div>
+                                    </div>
+                                </div>
+                                <div class="item-name-spec">
+                                    <span class="name">Bolu Tape</span>
+                                    <span class="category">Bolu (Diameter 20cm)</span>
+                                    
+                                    <!-- Review button if status Selesai -->
+                                    <a href="testimoni.html?id_produk=3&id_pesanan=10012" class="btn-action-fill" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px !important; display: inline-flex; width: fit-content; margin-top: 6px; height: auto;">
+                                        <i class="fa-solid fa-star" style="font-size: 0.7rem;"></i> Beri Testimoni
+                                    </a>
+                                </div>
+                                <div class="item-qty-price">
+                                    <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    <span class="price">Rp 90.000 / pcs</span>
+                                </div>
+                                <div class="item-row-subtotal">
+                                    Rp 90.000
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
+
+                    <!-- Footer Card: Total & Aksi -->
+                    <div class="order-card-footer">
+                        <div class="footer-totals">
+                            <div class="total-row">
+                                <span>Ongkos Kirim:</span>
+                                <strong>Rp 15.000</strong>
+                            </div>
+                            <div class="total-row main-total">
+                                <span>Total Pembayaran:</span>
+                                <span class="price">Rp 105.000</span>
+                            </div>
+                        </div>
+                        <div class="footer-actions">
+                            <a href="detail_pesanan.html" class="btn-action-outline">
+                                <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                            </a>
+                            <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10012." target="_blank" class="btn-action-outline">
+                                <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
+
             </div>
-        </section>
-    </main>
 
+            <!-- Empty state (hidden by default) -->
+            <div class="order-card-empty" id="empty-orders-view" style="display: none;">
+                <div class="empty-icon"><i class="fa-solid fa-receipt"></i></div>
+                <h2>Belum Ada Riwayat Pesanan</h2>
+                <p>Anda belum pernah melakukan pemesanan kue pre-order di dapur Olin's Cake.</p>
+                <a href="produk.html" class="btn-action-fill" style="text-decoration: none;">Mulai Belanja Kue</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -140,20 +702,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -162,5 +727,212 @@
         </div>
     </footer>
 
+    <!-- Cancel Order Confirmation Modal -->
+    <div id="cancelModal" class="cancel-modal">
+        <div class="cancel-modal-content">
+            <h4>
+                <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> Batalkan Pesanan
+            </h4>
+            <div class="cancel-modal-body">
+                <p style="font-weight: 700; margin-bottom: 8px;">Apakah Anda yakin ingin membatalkan pesanan <span id="cancel-order-code" style="text-decoration: underline;"></span> ini?</p>
+                <p style="font-size: 0.9rem; color: #555; line-height: 1.4; margin: 0;">
+                    <i class="fa-solid fa-circle-info" style="margin-right: 4px;"></i> Pesanan yang dibatalkan tidak dapat dilanjutkan kembali.
+                </p>
+            </div>
+            <div class="cancel-modal-footer">
+                <button type="button" onclick="closeCancelModal()" class="btn-action-outline">Kembali</button>
+                <button type="button" onclick="confirmCancelOrder()" class="btn-action-danger" style="border-color: #777 !important; color: #111 !important;">Ya, Batalkan Pesanan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prototype Handling Script -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Cancel Modal Actions
+        function openCancelModal(orderCode) {
+            document.getElementById('cancel-order-code').innerText = orderCode;
+            document.getElementById('cancelModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Handle Confirm Cancel order (Simulation)
+        function confirmCancelOrder() {
+            closeCancelModal();
+
+            // Set state in localStorage
+            localStorage.setItem('wf_order_status', 'Dibatalkan');
+            localStorage.setItem('wf_order_cancelled_notif', 'true');
+            localStorage.removeItem('wf_payment_submitted'); // Reset payment if cancelled
+
+            // Reload page to reflect cancelled status
+            window.location.reload();
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('cancelModal');
+            if (event.target === modal) {
+                closeCancelModal();
+            }
+        });
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of index.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link active" style="font-weight: 700;">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Default logged out
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+
+            // Sync delivery method info and pricing from checkout selections
+            const deliveryMethod = localStorage.getItem('wf_shipping_method') || 'Kirim ke Alamat';
+            const totalProducts = 255000;
+            let shippingCost = 15000;
+            
+            if (deliveryMethod === 'Ambil di Toko') {
+                shippingCost = 0;
+                document.getElementById('lbl-ongkir-value').innerText = 'Rp 0';
+                
+                const finalTotal = totalProducts + shippingCost;
+                document.getElementById('lbl-total-value').innerText = 'Rp ' + finalTotal.toLocaleString('id-ID');
+            } else {
+                document.getElementById('lbl-ongkir-value').innerText = 'Rp 15.000';
+            }
+
+            // Sync pre-order creation date from session
+            const creationTime = localStorage.getItem('wf_order_created_time');
+            if (creationTime) {
+                document.getElementById('lbl-tgl-pesan').innerText = 'Tanggal Pemesanan: ' + creationTime;
+            }
+
+            // Check dynamic status from simulated localStorage session
+            const status = localStorage.getItem('wf_order_status') || 'Menunggu Pembayaran';
+            const badge = document.getElementById('badge-status-1');
+            const icon = document.getElementById('badge-icon-1');
+            const text = document.getElementById('badge-text-1');
+            const actions = document.getElementById('actions-1');
+
+            if (status === 'Menunggu Verifikasi') {
+                // Change badge style and icon
+                badge.className = 'order-status-badge status-verifying';
+                icon.className = 'fa-solid fa-spinner fa-spin';
+                text.innerText = 'Menunggu Verifikasi';
+
+                // Change actions (hide "Bayar Sekarang" and "Batalkan Pesanan")
+                actions.innerHTML = `
+                    <a href="detail_pesanan.html" class="btn-action-outline">
+                        <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                    </a>
+                    <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10027." target="_blank" class="btn-action-outline">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                    </a>
+                `;
+
+                // Show payment submitted notification if just done
+                const wasSubmitted = localStorage.getItem('wf_payment_submitted') === 'true';
+                if (wasSubmitted) {
+                    const alertBox = document.getElementById('alert-box');
+                    document.getElementById('alert-title').innerText = 'Bukti Pembayaran Terkirim!';
+                    document.getElementById('alert-desc').innerText = 'Bukti pembayaran Anda berhasil diunggah dan sedang dalam proses verifikasi oleh admin.';
+                    alertBox.style.display = 'flex';
+                    localStorage.removeItem('wf_payment_submitted'); // Consume notification
+                }
+            } else if (status === 'Dibatalkan') {
+                // Change badge style and icon
+                badge.className = 'order-status-badge status-cancelled';
+                icon.className = 'fa-solid fa-circle-xmark';
+                text.innerText = 'Dibatalkan';
+
+                // Change actions (remove payment actions)
+                actions.innerHTML = `
+                    <a href="detail_pesanan.html" class="btn-action-outline">
+                        <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                    </a>
+                    <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10027." target="_blank" class="btn-action-outline">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                    </a>
+                `;
+
+                // Show cancelled notification
+                const wasCancelledNotif = localStorage.getItem('wf_order_cancelled_notif') === 'true';
+                if (wasCancelledNotif) {
+                    const alertBox = document.getElementById('alert-box');
+                    document.getElementById('alert-title').innerText = 'Pesanan Dibatalkan';
+                    document.getElementById('alert-desc').innerText = 'Pesanan Anda dengan nomor OLN-10027 telah berhasil dibatalkan.';
+                    alertBox.style.display = 'flex';
+                    localStorage.removeItem('wf_order_cancelled_notif'); // Consume notification
+                }
+            } else {
+                // Status is default "Menunggu Pembayaran"
+                // Show checkout successful notification if just completed checkout
+                const showCheckoutNotif = localStorage.getItem('wf_checkout_success_notif') === 'true';
+                if (showCheckoutNotif) {
+                    const alertBox = document.getElementById('alert-box');
+                    document.getElementById('alert-title').innerText = 'Checkout Berhasil!';
+                    document.getElementById('alert-desc').innerText = 'Pesanan Pre-Order Anda berhasil dibuat! Silakan lakukan pembayaran sesuai instruksi.';
+                    alertBox.style.display = 'flex';
+                    localStorage.removeItem('wf_checkout_success_notif'); // Consume notification
+                }
+            }
+        });
+    </script>
 </body>
 </html>

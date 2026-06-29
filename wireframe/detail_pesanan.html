@@ -4,53 +4,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Detail Pesanan - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Horizontal Progress Tracker */
-        .timeline-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 30px;
-            margin-bottom: 30px;
-            position: relative;
+        /* Ensure the floating header always has a solid white background in wireframes to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
         }
-        .timeline-title {
-            font-size: 1.1rem;
+
+        /* General layout adjustments */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .detail-section {
+            padding: 120px 0 80px 0;
+            min-height: 100vh;
+        }
+
+        .back-btn-area {
+            margin-bottom: 24px;
+        }
+
+        .back-btn-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #111111;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .back-btn-link:hover {
+            transform: translateX(-4px);
+        }
+
+        /* Banner alerts */
+        .alert-banner-detail {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 20px;
+            border-radius: 6px !important;
+            margin-bottom: 24px;
+            border: 2px solid #333 !important;
+        }
+
+        .alert-banner-expired {
+            background-color: #fafafa !important;
+            color: #111111 !important;
+        }
+
+        .alert-banner-warning {
+            background-color: #ffffff !important;
+            border-style: dashed !important;
+            color: #111111 !important;
+        }
+
+        .alert-banner-success {
+            background-color: #fafafa !important;
+            color: #111111 !important;
+        }
+
+        /* Detail Header Card */
+        .detail-header-card {
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            padding: 24px;
+            border: 2px solid #333 !important;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .detail-header-info h1 {
+            font-size: 1.75rem;
+            margin: 0 0 6px 0;
+            color: #111111;
+        }
+
+        .detail-header-info p {
+            color: #555555;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 30px !important;
             font-weight: 700;
-            margin-bottom: 25px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            border: 1.5px solid #333 !important;
+            background-color: #ffffff !important;
         }
+
+        /* Timeline Tracker Styles */
+        .timeline-card {
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            padding: 32px 24px;
+            border: 2px solid #333 !important;
+            margin-bottom: 24px;
+        }
+
+        .timeline-title {
+            font-size: 1.15rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            color: #111111;
+        }
+
         .timeline-wrapper {
             position: relative;
             margin: 20px 0;
         }
+
+        /* Desktop Horizontal Timeline */
         .timeline-steps {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             position: relative;
         }
+
         .timeline-steps::before {
             content: '';
             position: absolute;
-            top: 20px;
-            left: 50px;
-            right: 50px;
+            top: 24px;
+            left: 25px;
+            right: 25px;
             height: 4px;
-            background-color: var(--wireframe-gray);
+            background-color: #e9e5de;
             z-index: 1;
         }
+
         .timeline-progress-bar {
             position: absolute;
-            top: 20px;
-            left: 50px;
+            top: 24px;
+            left: 25px;
             height: 4px;
-            background-color: var(--wireframe-blue);
+            background-color: #111111 !important;
             z-index: 2;
-            width: calc((100% - 100px) * 0.25); /* Step index 1 (Menunggu Konfirmasi) */
+            transition: width 0.4s ease;
         }
+
         .timeline-step {
             display: flex;
             flex-direction: column;
@@ -60,247 +175,848 @@
             z-index: 3;
             flex: 1;
         }
+
         .timeline-icon-box {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            background-color: var(--bg-card);
-            border: 2px solid var(--border-color);
+            background-color: #ffffff;
+            border: 3px solid #333 !important;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            color: #777777;
             transition: all 0.3s ease;
         }
+
         .timeline-step.completed .timeline-icon-box {
-            border-color: var(--wireframe-blue);
-            background-color: var(--wireframe-blue);
-            color: white;
+            border-color: #333 !important;
+            background-color: #333 !important;
+            color: #ffffff !important;
         }
+
         .timeline-step.active .timeline-icon-box {
-            border-color: var(--text-main);
-            background-color: var(--bg-card);
-            color: var(--text-main);
-            box-shadow: 0 0 10px rgba(0,0,0,0.15);
+            border-color: #111111 !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.15) !important;
+            transform: scale(1.05);
         }
-        .timeline-step-text-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
+
+        .timeline-step.failed .timeline-icon-box {
+            border-color: #333 !important;
+            background-color: #ffffff !important;
+            color: #333 !important;
         }
+
         .timeline-step-label {
             font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--text-main);
+            color: #111111;
+            margin-top: 14px;
+            font-size: 0.9rem;
+            line-height: 1.3;
         }
+
         .timeline-step-desc {
             font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: 3px;
+            color: #555555;
+            margin-top: 4px;
+            padding: 0 8px;
         }
+
+        /* Two-Column Grid Info */
         .info-cards-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
+            gap: 24px;
+            margin-bottom: 24px;
         }
+
+        .info-card {
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            padding: 24px;
+            border: 2px solid #333 !important;
+            height: 100%;
+        }
+
+        .info-card-header {
+            border-bottom: 2px solid #333 !important;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card-header h3 {
+            font-size: 1.15rem;
+            margin: 0;
+            color: #111111;
+        }
+
+        .info-card-header i {
+            color: #111111;
+            font-size: 1.1rem;
+        }
+
+        .info-details {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
         .info-item {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            border-bottom: 1px dashed rgba(0,0,0,0.05);
-            padding-bottom: 8px;
+            flex-direction: column;
         }
+
         .info-item-label {
-            color: var(--text-muted);
-        }
-        .info-item-value {
+            color: #777777;
+            font-size: 0.8rem;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-item-value {
+            color: #111111;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .info-item-value.highlight-price {
+            color: #111111;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        /* Payment Proof Badge */
+        .payment-method-box {
+            background-color: #fafafa !important;
+            border-radius: 4px !important;
+            padding: 10px 14px;
+            border: 1.5px dashed #333 !important;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-proof-badge-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #111111;
+            font-weight: 700;
+            text-decoration: underline;
+            font-size: 0.9rem;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+
+        /* Products Table Card */
+        .products-card {
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            padding: 24px;
+            border: 2px solid #333 !important;
+            margin-bottom: 24px;
+        }
+
+        .products-table-header {
+            font-weight: 700;
+            color: #111111;
+            border-bottom: 2px solid #333 !important;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .product-item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1.5px dashed #ccc !important;
+        }
+
+        .product-item-row:last-child {
+            border-bottom: none !important;
+        }
+
+        .product-meta-col {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 2;
+        }
+
+        .product-img-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 1.5px solid #333 !important;
+        }
+
+        .product-text-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name-title {
+            font-weight: 700;
+            color: #111111;
+            font-size: 1rem;
+        }
+
+        .product-spec-badge {
+            font-size: 0.8rem;
+            color: #666666;
+            margin-top: 2px;
+        }
+
+        .product-qty-col {
+            flex: 1;
+            text-align: center;
+            color: #111111;
+            font-weight: 600;
+        }
+
+        .product-price-col {
+            flex: 1;
             text-align: right;
+            font-weight: 700;
+            color: #111111;
+        }
+
+        .product-subtotal-col {
+            flex: 1;
+            text-align: right;
+            font-weight: 700;
+            color: #111111;
+        }
+
+        /* Breakdown cost */
+        .order-totals-card {
+            background-color: #fafafa !important;
+            border-radius: 4px !important;
+            padding: 20px;
+            border: 1.5px solid #333 !important;
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .total-breakdown-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: #555555;
+        }
+
+        .total-breakdown-row.grand-total {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 12px;
+            font-weight: 800;
+            color: #111111;
+            font-size: 1.15rem;
+        }
+
+        .total-breakdown-row.grand-total .grand-price {
+            color: #111111;
+            font-size: 1.3rem;
+        }
+
+        /* Action Buttons */
+        .detail-actions-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .right-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-action-fill {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            color: #111111 !important;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 30px !important;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action-fill:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        .btn-action-outline {
+            background-color: transparent !important;
+            border: 2px solid #333 !important;
+            color: #333 !important;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 30px !important;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action-outline:hover {
+            background-color: #fafafa !important;
+        }
+
+        .btn-action-danger {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            color: #777777 !important;
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            border-radius: 30px !important;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-action-danger:hover {
+            background-color: #fafafa !important;
+            border-color: #111111 !important;
+            color: #111111 !important;
+        }
+
+        /* Modal styling */
+        .proof-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .proof-modal-content {
+            background-color: #ffffff !important;
+            border: 2.5px solid #333 !important;
+            border-radius: 8px !important;
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .proof-modal-content h4 {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+            width: 100%;
+            border-bottom: 1.5px solid #333 !important;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        /* Cancel modal */
+        .cancel-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .cancel-modal-content {
+            background-color: #ffffff !important;
+            border: 2.5px solid #333 !important;
+            border-radius: 8px !important;
+            max-width: 480px;
+            width: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cancel-modal-content h4 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: 0;
+            width: 100%;
+            border-bottom: 1.5px solid #333 !important;
+            padding-bottom: 10px;
+            text-align: left;
+        }
+
+        .cancel-modal-body {
+            width: 100%;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .cancel-modal-footer {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        /* Media Queries vertical timeline */
+        @media (max-width: 768px) {
+            .info-cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-steps {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 10px;
+            }
+
+            .timeline-steps::before {
+                display: none;
+            }
+
+            .timeline-step {
+                flex-direction: row;
+                text-align: left;
+                align-items: center;
+                width: 100%;
+                margin-bottom: 24px;
+            }
+
+            .timeline-step:last-child {
+                margin-bottom: 0;
+            }
+
+            .timeline-icon-box {
+                width: 44px;
+                height: 44px;
+                font-size: 1.1rem;
+                flex-shrink: 0;
+            }
+
+            .timeline-step-label {
+                margin-top: 0;
+                font-size: 0.95rem;
+            }
+
+            .timeline-step-desc {
+                margin-top: 2px;
+                padding: 0;
+                font-size: 0.8rem;
+            }
+            
+            .timeline-step-text-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                margin-left: 16px;
+                width: auto;
+            }
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link active">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="pesanan.html">Pesanan Saya</a></li>
-            <li>Rincian Pesanan</li>
-        </ul>
-
-        <section style="margin: 40px 0;">
-            <div class="section-header" style="text-align: left; margin-bottom: 35px; display: flex; justify-content: space-between; align-items: flex-end;">
-                <div>
-                    <h2>Detail Pesanan - OLN-10027</h2>
-                    <p>Status: <span class="badge badge-warning">Menunggu Verifikasi</span></p>
-                </div>
-                <a href="pesanan.html" class="btn btn-outline" style="padding: 8px 16px;">&larr; Kembali</a>
+    <!-- Main Detail Section -->
+    <section class="detail-section">
+        <div class="container detail-container">
+            
+            <!-- Back Button Link -->
+            <div class="back-btn-area">
+                <a href="pesanan.html" class="back-btn-link">
+                    <i class="fa-solid fa-chevron-left"></i> Kembali ke Riwayat Pesanan
+                </a>
             </div>
 
-            <!-- Status Pesanan (Timeline Tracker) -->
-            <div class="timeline-card">
+            <!-- Expiration / Status Alert Banners -->
+            <div id="banner-waiting-payment" class="alert-banner-detail alert-banner-warning" style="display: none;">
+                <i class="fa-regular fa-clock"></i>
+                <div>
+                    <strong>Menunggu Pembayaran</strong>
+                    <p>Segera lakukan pembayaran sebelum batas waktu berakhir pada <span class="lbl-batas-bayar">30 Jun 2026, 15:15 WIB</span>.</p>
+                </div>
+            </div>
+
+            <div id="banner-verifying-payment" class="alert-banner-detail alert-banner-warning" style="display: none;">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <div>
+                    <strong>Bukti Pembayaran Sedang Diverifikasi</strong>
+                    <p>Terima kasih. Admin kami sedang meninjau bukti pembayaran yang Anda kirimkan.</p>
+                </div>
+            </div>
+
+            <div id="banner-cancelled" class="alert-banner-detail alert-banner-expired" style="display: none;">
+                <i class="fa-solid fa-circle-xmark"></i>
+                <div>
+                    <strong>Pesanan Dibatalkan</strong>
+                    <p>Pesanan ini telah dibatalkan atas permintaan Anda atau kebijakan toko.</p>
+                </div>
+            </div>
+
+            <!-- Header Card Detail -->
+            <div class="detail-header-card">
+                <div class="detail-header-info">
+                    <h1>Detail Pesanan OLN-10027</h1>
+                    <p>Dibuat pada: <strong id="lbl-tgl-pesan">29/06/2026, 15:15 WIB</strong></p>
+                </div>
+                <div>
+                    <span class="badge-status badge-waiting" id="badge-status-detail">
+                        <i class="fa-regular fa-clock" id="badge-icon-detail"></i> <span id="badge-text-detail">Menunggu Pembayaran</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Status Timeline Tracker Card -->
+            <div class="timeline-card" id="normal-timeline-card">
                 <div class="timeline-title">
-                    📍 Status Pesanan
+                    <i class="fa-solid fa-map-location-dot"></i> Status Pesanan
                 </div>
                 <div class="timeline-wrapper">
                     <div class="timeline-steps">
-                        <div class="timeline-progress-bar"></div>
+                        <div class="timeline-progress-bar" id="desktop-progress" style="width: 0%;"></div>
 
                         <!-- Step 1 -->
-                        <div class="timeline-step completed">
-                            <div class="timeline-icon-box">✓</div>
+                        <div class="timeline-step" id="step-0">
+                            <div class="timeline-icon-box">1</div>
                             <div class="timeline-step-text-container">
                                 <span class="timeline-step-label">Menunggu Pembayaran</span>
-                                <span class="timeline-step-desc">Pembayaran Lunas</span>
+                                <span class="timeline-step-desc">Transfer dari Anda</span>
                             </div>
                         </div>
 
                         <!-- Step 2 -->
-                        <div class="timeline-step active">
+                        <div class="timeline-step" id="step-1">
                             <div class="timeline-icon-box">2</div>
                             <div class="timeline-step-text-container">
-                                <span class="timeline-step-label">Menunggu Verifikasi</span>
-                                <span class="timeline-step-desc">Bukti Diunggah</span>
+                                <span class="timeline-step-label">Verifikasi</span>
+                                <span class="timeline-step-desc">Tinjau oleh admin</span>
                             </div>
                         </div>
 
                         <!-- Step 3 -->
-                        <div class="timeline-step">
+                        <div class="timeline-step" id="step-2">
                             <div class="timeline-icon-box">3</div>
                             <div class="timeline-step-text-container">
                                 <span class="timeline-step-label">Diproses</span>
-                                <span class="timeline-step-desc">Sedang Dipanggang</span>
+                                <span class="timeline-step-desc">Kue dibuat fresh</span>
                             </div>
                         </div>
 
                         <!-- Step 4 -->
-                        <div class="timeline-step">
+                        <div class="timeline-step" id="step-3">
                             <div class="timeline-icon-box">4</div>
                             <div class="timeline-step-text-container">
-                                <span class="timeline-step-label">Siap Dikirim</span>
-                                <span class="timeline-step-desc">Kurir Siap</span>
+                                <span class="timeline-step-label">Siap Dikirim / Ambil</span>
+                                <span class="timeline-step-desc">Kue siap diantar</span>
                             </div>
                         </div>
 
                         <!-- Step 5 -->
-                        <div class="timeline-step">
+                        <div class="timeline-step" id="step-4">
                             <div class="timeline-icon-box">5</div>
                             <div class="timeline-step-text-container">
                                 <span class="timeline-step-label">Selesai</span>
-                                <span class="timeline-step-desc">Diterima Pelanggan</span>
+                                <span class="timeline-step-desc">Pesanan diterima</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Grid Info Card -->
+            <!-- Status Timeline Failed Tracker Card -->
+            <div class="timeline-card" id="failed-timeline-card" style="display: none;">
+                <div class="timeline-title">
+                    <i class="fa-solid fa-map-location-dot"></i> Status Pesanan (Dibatalkan)
+                </div>
+                <div class="timeline-wrapper">
+                    <div class="timeline-steps" style="justify-content: space-around;">
+                        <div class="timeline-step completed">
+                            <div class="timeline-icon-box">1</div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Menunggu Pembayaran</span>
+                                <span class="timeline-step-desc">Belum terbayar</span>
+                            </div>
+                        </div>
+                        <div class="timeline-step failed">
+                            <div class="timeline-icon-box"><i class="fa-solid fa-ban"></i></div>
+                            <div class="timeline-step-text-container">
+                                <span class="timeline-step-label">Dibatalkan</span>
+                                <span class="timeline-step-desc">Pesanan batal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-Column Info Cards Grid -->
             <div class="info-cards-grid">
-                <!-- 1. Informasi Pengiriman -->
-                <div class="card">
-                    <h3 class="card-title">Informasi Pengantaran / Pengambilan</h3>
-                    <div class="info-item">
-                        <span class="info-item-label">Nama Penerima</span>
-                        <span class="info-item-value">Carolina Berliana</span>
+                
+                <!-- Card 1: Informasi Pengantaran / Pengambilan -->
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <h3>Informasi Pengantaran</h3>
                     </div>
-                    <div class="info-item">
-                        <span class="info-item-label">Nomor WhatsApp</span>
-                        <span class="info-item-value">6281281062985</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item-label">Metode Pengiriman</span>
-                        <span class="info-item-value">Kirim ke Alamat</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item-label">Alamat Pengiriman</span>
-                        <span class="info-item-value">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-item-label">Jadwal Pre-Order</span>
-                        <span class="info-item-value">Selasa, 30 Juni 2026 (Siang 12:00 - 15:00)</span>
+                    <div class="info-details">
+                        <div class="info-item">
+                            <span class="info-item-label">Metode Penerimaan</span>
+                            <span class="info-item-value" id="lbl-info-metode">Kirim ke Alamat</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item-label">Nama Penerima</span>
+                            <span class="info-item-value">Carolina Berliana</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item-label">Nomor WhatsApp</span>
+                            <span class="info-item-value">6289529236657</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item-label">Jadwal Pre-Order</span>
+                            <span class="info-item-value" id="lbl-info-jadwal">Jumat, 02 Juli 2026 (Pagi 10:00 - 12:00 WIB)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item-label" id="lbl-info-alamat-title">Alamat Pengantaran</span>
+                            <span class="info-item-value" id="lbl-info-alamat">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- 2. Informasi Status Pembayaran -->
-                <div class="card">
-                    <h3 class="card-title">Informasi Status Pembayaran</h3>
-                    <div class="info-item">
-                        <span class="info-item-label">Metode Pembayaran</span>
-                        <span class="info-item-value">Transfer Bank (BCA)</span>
+                <!-- Card 2: Informasi Status Pembayaran -->
+                <div class="info-card">
+                    <div class="info-card-header">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <h3>Informasi Pembayaran</h3>
                     </div>
-                    <div class="info-item">
-                        <span class="info-item-label">Status Verifikasi</span>
-                        <span class="info-item-value">Menunggu Verifikasi Admin</span>
+                    <div class="info-details">
+                        <div class="info-item">
+                            <span class="info-item-label">Total Pembayaran</span>
+                            <span class="info-item-value highlight-price" id="lbl-info-total-bayar">Rp 270.000</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item-label">Status Pembayaran</span>
+                            <span class="info-item-value" id="lbl-info-status-bayar">Belum Dibayar</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-item-label">Metode Pembayaran</span>
+                            <span class="info-item-value" id="lbl-info-metode-bayar">Transfer Bank / QRIS</span>
+                        </div>
+                        <div class="info-item" id="info-row-batas">
+                            <span class="info-item-label">Batas Waktu Pembayaran</span>
+                            <span class="info-item-value" style="color: #777;" id="lbl-info-batas-bayar">30 Jun 2026, 15:15 WIB</span>
+                        </div>
+                        <div class="info-item" id="info-row-bukti" style="display: none;">
+                            <span class="info-item-label">Bukti Pembayaran</span>
+                            <span class="info-item-value">
+                                <a class="payment-proof-badge-link" onclick="openProofModal()">
+                                    <i class="fa-solid fa-image"></i> Lihat Gambar Bukti
+                                </a>
+                            </span>
+                        </div>
                     </div>
-                    <div class="info-item">
-                        <span class="info-item-label">Total Tagihan</span>
-                        <span class="info-item-value" style="color: var(--wireframe-blue); font-weight: 700; font-size: 1.1rem;">Rp 212.271</span>
+                </div>
+
+            </div>
+
+            <!-- Rincian Kue yang Dipesan Card -->
+            <div class="products-card">
+                <div class="info-card-header" style="border: none; margin-bottom: 0;">
+                    <i class="fa-solid fa-basket-shopping"></i>
+                    <h3>Rincian Kue Dipesan</h3>
+                </div>
+                
+                <div class="products-table-header"></div>
+
+                <div class="product-item-row">
+                    <div class="product-meta-col">
+                        <div class="item-img-circle">
+                            <div class="wireframe-img-box" style="width: 100%; height: 100%; border: none !important;">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="product-text-details">
+                            <span class="product-name-title">Kastengel Keju</span>
+                            <span class="product-spec-badge">Kue Kering (Toples 500gr)</span>
+                        </div>
                     </div>
-                    <div class="info-item" style="border: none; margin-top: 15px;">
-                        <span class="info-item-label">Bukti Transfer</span>
-                        <span class="info-item-value">
-                            <a href="#" class="btn btn-outline" style="padding: 4px 10px; font-size: 0.8rem;">Lihat Gambar Bukti</a>
-                        </span>
+                    <div class="product-qty-col">1x</div>
+                    <div class="product-price-col">Rp 120.000</div>
+                    <div class="product-subtotal-col">Rp 120.000</div>
+                </div>
+
+                <div class="product-item-row">
+                    <div class="product-meta-col">
+                        <div class="item-img-circle">
+                            <div class="wireframe-img-box" style="width: 100%; height: 100%; border: none !important;">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="product-text-details">
+                            <span class="product-name-title">Nastar Premium</span>
+                            <span class="product-spec-badge">Kue Kering (Toples 500gr)</span>
+                        </div>
+                    </div>
+                    <div class="product-qty-col">1x</div>
+                    <div class="product-price-col">Rp 135.000</div>
+                    <div class="product-subtotal-col">Rp 135.000</div>
+                </div>
+
+                <!-- Order Totals Breakdown Box -->
+                <div class="order-totals-card">
+                    <div class="total-breakdown-row">
+                        <span>Subtotal Kue</span>
+                        <span id="lbl-breakdown-subtotal">Rp 255.000</span>
+                    </div>
+                    <div class="total-breakdown-row">
+                        <span>Ongkos Kirim</span>
+                        <span id="lbl-breakdown-ongkir">Rp 15.000</span>
+                    </div>
+                    <div class="total-breakdown-row grand-total">
+                        <span>Total Pembayaran</span>
+                        <span class="grand-price" id="lbl-breakdown-grand">Rp 270.000</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Rincian Kue Dipesan -->
-            <div class="card">
-                <h3 class="card-title">Rincian Kue yang Dipesan</h3>
-                <div class="info-item" style="font-weight: 700; border-bottom: 2px solid var(--border-color); padding-bottom: 10px;">
-                    <span>Kue</span>
-                    <span>Subtotal</span>
-                </div>
-                <div class="info-item">
-                    <span>Kastengel Keju x 1 <span style="font-size: 0.8rem; color: var(--text-muted); display: block; font-weight: 400;">Variant: Toples 500gr</span></span>
-                    <span class="info-item-value">Rp 120.000</span>
-                </div>
-                <div class="info-item">
-                    <span>Bolu Pisang x 1 <span style="font-size: 0.8rem; color: var(--text-muted); display: block; font-weight: 400;">Variant: Diameter 20cm</span></span>
-                    <span class="info-item-value">Rp 60.000</span>
-                </div>
-                <div class="info-item">
-                    <span class="info-item-label">Ongkos Kirim (1.5 km)</span>
-                    <span class="info-item-value">Rp 32.271</span>
-                </div>
-                <div class="info-item" style="font-size: 1.15rem; font-weight: 700; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
-                    <span>Total Pembayaran</span>
-                    <span style="color: var(--text-main);">Rp 212.271</span>
+            <!-- Action Buttons Area -->
+            <div class="detail-actions-area">
+                <a href="pesanan.html" class="btn-action-outline">
+                    <i class="fa-solid fa-chevron-left"></i> Kembali ke Riwayat Pesanan
+                </a>
+                
+                <div class="right-actions" id="right-actions-area">
+                    <!-- Dynamic actions injected here -->
+                    <a href="pembayaran.html" class="btn-action-fill" id="btn-pay-action">
+                        <i class="fa-solid fa-wallet"></i> Bayar Sekarang
+                    </a>
+                    <button type="button" class="btn-action-danger" id="btn-cancel-action" onclick="openCancelModal()">
+                        <i class="fa-solid fa-ban"></i> Batalkan Pesanan
+                    </button>
                 </div>
             </div>
-        </section>
-    </main>
 
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -310,20 +1026,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -332,5 +1051,277 @@
         </div>
     </footer>
 
+    <!-- Proof of Payment Preview Modal -->
+    <div id="proofModal" class="proof-modal">
+        <div class="proof-modal-content">
+            <h4>
+                <i class="fa-regular fa-image" style="margin-right: 6px;"></i> Bukti Pembayaran Diunggah
+            </h4>
+            
+            <!-- Mockup image frame representation -->
+            <div class="wireframe-img-box" style="width: 100%; height: 260px; border-radius: 6px !important;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.5" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.5" />
+                </svg>
+                <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 3px 6px;">BUKTI_PEMBAYARAN_PREVIEW</div>
+            </div>
+
+            <p style="font-size: 0.85rem; color: #555; text-align: center; margin: 0; font-family: monospace;">bukti_bayar_oln10027.png (1.2 MB)</p>
+
+            <button type="button" onclick="closeProofModal()" class="btn-action-fill" style="width: 100%; justify-content: center; margin-top: 8px;">
+                Tutup Pratinjau
+            </button>
+        </div>
+    </div>
+
+    <!-- Cancel Order Confirmation Modal -->
+    <div id="cancelModal" class="cancel-modal">
+        <div class="cancel-modal-content">
+            <h4>
+                <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> Batalkan Pesanan
+            </h4>
+            <div class="cancel-modal-body">
+                <p style="font-weight: 700; margin-bottom: 8px;">Apakah Anda yakin ingin membatalkan pesanan <span style="text-decoration: underline;">OLN-10027</span> ini?</p>
+                <p style="font-size: 0.9rem; color: #555; line-height: 1.4; margin: 0;">
+                    <i class="fa-solid fa-circle-info" style="margin-right: 4px;"></i> Pesanan yang dibatalkan tidak dapat dilanjutkan kembali.
+                </p>
+            </div>
+            <div class="cancel-modal-footer">
+                <button type="button" onclick="closeCancelModal()" class="btn-action-outline">Kembali</button>
+                <button type="button" onclick="confirmCancelOrder()" class="btn-action-danger" style="border-color: #777 !important; color: #111 !important;">Ya, Batalkan Pesanan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prototype Handling Script -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Modals Action Handlers
+        function openProofModal() {
+            document.getElementById('proofModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProofModal() {
+            document.getElementById('proofModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function openCancelModal() {
+            document.getElementById('cancelModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Handle Confirm Cancel Order (Simulation)
+        function confirmCancelOrder() {
+            closeCancelModal();
+
+            // Set state in localStorage
+            localStorage.setItem('wf_order_status', 'Dibatalkan');
+            localStorage.setItem('wf_order_cancelled_notif', 'true');
+            localStorage.removeItem('wf_payment_submitted');
+
+            // Reload page to show updated cancelled state
+            window.location.reload();
+        }
+
+        // Close modals when clicking outside
+        window.addEventListener('click', function(event) {
+            const pModal = document.getElementById('proofModal');
+            const cModal = document.getElementById('cancelModal');
+            if (event.target === pModal) closeProofModal();
+            if (event.target === cModal) closeCancelModal();
+        });
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of index.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link active" style="font-weight: 700;">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Default logged out
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+
+            // Sync delivery method info and pricing from checkout selections
+            const deliveryMethod = localStorage.getItem('wf_shipping_method') || 'Kirim ke Alamat';
+            const totalProducts = 255000;
+            let shippingCost = 15000;
+            
+            if (deliveryMethod === 'Ambil di Toko') {
+                shippingCost = 0;
+                document.getElementById('lbl-info-metode').innerText = 'Ambil di Toko';
+                document.getElementById('lbl-info-alamat-title').innerText = 'Alamat Pengambilan';
+                document.getElementById('lbl-info-alamat').innerText = 'Ambil di Toko - Gerai Resmi Olin\'s Cake';
+                document.getElementById('lbl-info-total-bayar').innerText = 'Rp 255.000';
+                
+                document.getElementById('lbl-breakdown-ongkir').innerText = 'Rp 0';
+                document.getElementById('lbl-breakdown-grand').innerText = 'Rp 255.000';
+            } else {
+                document.getElementById('lbl-info-metode').innerText = 'Kirim ke Alamat';
+                document.getElementById('lbl-info-alamat-title').innerText = 'Alamat Pengantaran';
+                document.getElementById('lbl-info-alamat').innerText = 'Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi';
+                document.getElementById('lbl-info-total-bayar').innerText = 'Rp 270.000';
+                
+                document.getElementById('lbl-breakdown-ongkir').innerText = 'Rp 15.000';
+                document.getElementById('lbl-breakdown-grand').innerText = 'Rp 270.000';
+            }
+
+            // Sync pre-order creation date from session
+            const creationTime = localStorage.getItem('wf_order_created_time');
+            if (creationTime) {
+                document.getElementById('lbl-tgl-pesan').innerText = creationTime + ' WIB';
+            }
+
+            // Set simulated pre-order delivery date (H+3 from checkout page)
+            const today = new Date();
+            today.setDate(today.getDate() + 3);
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const formattedDate = days[today.getDay()] + ', ' + String(today.getDate()).padStart(2, '0') + ' ' + months[today.getMonth()] + ' ' + today.getFullYear();
+            
+            // Sync shipping time
+            const shippingTime = localStorage.getItem('wf_shipping_time') || 'Pagi 10:00 - 12:00';
+            document.getElementById('lbl-info-jadwal').innerText = formattedDate + ' (' + shippingTime + ' WIB)';
+
+            // Set timer expiration label dynamically (H+1 from today)
+            const expDate = new Date();
+            expDate.setDate(expDate.getDate() + 1);
+            const expMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const formattedExp = String(expDate.getDate()).padStart(2, '0') + ' ' + expMonths[expDate.getMonth()] + ' ' + expDate.getFullYear() + ', ' + String(expDate.getHours()).padStart(2, '0') + ':' + String(expDate.getMinutes()).padStart(2, '0') + ' WIB';
+            
+            const expLabels = document.querySelectorAll('.lbl-batas-bayar');
+            expLabels.forEach(el => { el.innerText = formattedExp; });
+            document.getElementById('lbl-info-batas-bayar').innerText = formattedExp;
+
+            // Load status and configure timelines/banners
+            const status = localStorage.getItem('wf_order_status') || 'Menunggu Pembayaran';
+            const badge = document.getElementById('badge-status-detail');
+            const icon = document.getElementById('badge-icon-detail');
+            const text = document.getElementById('badge-text-detail');
+            const rightActions = document.getElementById('right-actions-area');
+            const defaultTimeline = document.getElementById('normal-timeline-card');
+            const failedTimeline = document.getElementById('failed-timeline-card');
+
+            if (status === 'Menunggu Verifikasi') {
+                // Show verif banner
+                document.getElementById('banner-verifying-payment').style.display = 'flex';
+                
+                // Set badge
+                badge.className = 'badge-status badge-verifying';
+                icon.className = 'fa-solid fa-spinner fa-spin';
+                text.innerText = 'Menunggu Verifikasi';
+
+                // Set normal timeline steps progress (Step 1 complete, Step 2 active)
+                document.getElementById('desktop-progress').style.width = '25%';
+                document.getElementById('step-0').className = 'timeline-step completed';
+                document.getElementById('step-1').className = 'timeline-step active';
+
+                // Update Pembayaran Info panel to show proof badge
+                document.getElementById('lbl-info-status-bayar').innerText = 'Belum Dibayar';
+                document.getElementById('lbl-info-metode-bayar').innerText = localStorage.getItem('wf_payment_method') || 'Transfer Bank';
+                document.getElementById('info-row-batas').style.display = 'none';
+                document.getElementById('info-row-bukti').style.display = 'flex';
+
+                // Update actions (only back and WhatsApp)
+                rightActions.innerHTML = `
+                    <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20saya%20dengan%20nomor%20OLN-10027." target="_blank" class="btn-action-outline">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                    </a>
+                `;
+            } else if (status === 'Dibatalkan') {
+                // Show cancelled banner
+                document.getElementById('banner-cancelled').style.display = 'flex';
+                
+                // Set badge
+                badge.className = 'badge-status badge-cancelled';
+                icon.className = 'fa-solid fa-circle-xmark';
+                text.innerText = 'Dibatalkan';
+
+                // Toggle failed timeline
+                defaultTimeline.style.display = 'none';
+                failedTimeline.style.display = 'block';
+
+                // Update Info panel
+                document.getElementById('lbl-info-status-bayar').innerText = 'Dibatalkan';
+                document.getElementById('info-row-batas').style.display = 'none';
+
+                // Actions area (no payment buttons)
+                rightActions.innerHTML = `
+                    <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20saya%20dengan%20nomor%20OLN-10027." target="_blank" class="btn-action-outline">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                    </a>
+                `;
+            } else {
+                // Default: Menunggu Pembayaran
+                document.getElementById('banner-waiting-payment').style.display = 'flex';
+                
+                // Set badge
+                badge.className = 'badge-status badge-waiting';
+                icon.className = 'fa-regular fa-clock';
+                text.innerText = 'Menunggu Pembayaran';
+
+                // Set timeline progress (Step 1 active)
+                document.getElementById('desktop-progress').style.width = '0%';
+                document.getElementById('step-0').className = 'timeline-step active';
+            }
+        });
+    </script>
 </body>
 </html>

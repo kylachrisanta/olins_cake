@@ -3,155 +3,1132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wireframe - Pembayaran - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <title>Wireframe - Pembayaran Pesanan - Olin's Cake</title>
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Ensure the floating header always has a solid white background in wireframes to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
+        }
+
+        /* General layout adjustments */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .payment-section {
+            padding: 120px 0 60px 0;
+        }
+
+        .payment-title-area {
+            margin-bottom: 30px;
+        }
+
+        .payment-title-area h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111111;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        .payment-title-area p {
+            color: #555555;
+            font-size: 1.05rem;
+        }
+
+        .back-link {
+            text-decoration: none;
+            color: #111111;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            transform: translateX(-4px);
+        }
+
+        /* Payment Grid Layout */
         .payment-grid {
             display: grid;
             grid-template-columns: 1.3fr 0.9fr;
             gap: 30px;
-            margin: 30px 0;
+            align-items: start;
         }
-        .bank-details-box {
-            border: 1px solid var(--border-color);
-            background-color: var(--wireframe-light-blue);
+
+        /* Grayscale Wireframe Cards */
+        .payment-card {
+            border: 2px solid #333 !important;
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: none !important;
+        }
+
+        .payment-card.timer-card {
+            background-color: #fafafa !important;
+            text-align: center;
             padding: 20px;
-            border-radius: var(--radius);
-            margin: 20px 0;
         }
-        .bank-row {
+
+        .timer-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .timer-countdown {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .timer-segment {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .timer-number {
+            font-family: monospace;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111111;
+            border: 2px solid #333 !important;
+            background: #ffffff !important;
+            padding: 4px 12px;
+            border-radius: 6px !important;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .timer-unit {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #555555;
+            margin-top: 6px;
+        }
+
+        .timer-divider {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-top: -24px;
+        }
+
+        .timer-subtext {
+            font-size: 0.9rem;
+            color: #555555;
+            margin-top: 8px;
+        }
+
+        /* Success Card status */
+        .success-status-card {
+            background-color: #fafafa !important;
+            border: 2px dashed #333 !important;
+            text-align: center;
+            padding: 30px 24px;
+        }
+
+        .success-icon {
+            font-size: 3rem;
+            color: #111111;
+            margin-bottom: 16px;
+        }
+
+        .status-msg {
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .uploaded-proof-preview {
+            background: #ffffff !important;
+            border: 1.5px solid #333 !important;
+            padding: 12px 16px;
+            border-radius: 6px !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-view-proof {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #111111;
+            border: 1.5px solid #333 !important;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            background-color: #ffffff;
+            border-radius: 4px !important;
+        }
+
+        .btn-view-proof:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Total Pembayaran Card */
+        .payment-card.total-card {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .total-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555555;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .total-amount {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #111111;
+            margin: 6px 0;
+        }
+
+        .total-note {
+            font-size: 0.85rem;
+            color: #777777;
+        }
+
+        /* Header of Card */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #333 !important;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card-header i {
+            font-size: 1.25rem;
+            color: #111111;
+        }
+
+        .card-header h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0;
+            color: #111111 !important;
+        }
+
+        /* Methods Grid */
+        .methods-selection-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .pay-method-card {
+            border: 2px solid #333 !important;
+            border-radius: 6px !important;
+            padding: 16px;
+            cursor: pointer;
+            display: block;
+            position: relative;
+            background-color: #ffffff !important;
+            transition: all 0.2s ease;
+        }
+
+        .pay-method-card.active {
+            background-color: #fafafa !important;
+            box-shadow: inset 0 0 0 2px #111111 !important;
+        }
+
+        .pay-radio {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            accent-color: #111111;
+        }
+
+        .method-card-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .method-card-content i {
+            font-size: 1.5rem;
+            color: #111111;
+            margin-bottom: 4px;
+        }
+
+        .method-card-content .title {
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #111111;
+        }
+
+        .method-card-content .desc {
+            font-size: 0.8rem;
+            color: #666666;
+            line-height: 1.4;
+        }
+
+        /* Details Pane info */
+        .details-pane h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: #111111;
+        }
+
+        .pane-intro {
+            font-size: 0.95rem;
+            color: #555555;
+            margin-bottom: 20px;
+        }
+
+        /* Bank account Card styles */
+        .bank-account-card {
+            border: 2px solid #333 !important;
+            background: #fafafa !important;
+            padding: 20px;
+            border-radius: 6px !important;
+        }
+
+        .bank-brand {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: #111111;
+        }
+
+        .account-number-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1.5px solid #333 !important;
+            background: #ffffff !important;
+            padding: 10px 16px;
+            border-radius: 4px !important;
+            margin-bottom: 12px;
+        }
+
+        .account-number-row .number {
+            font-family: monospace;
+            font-size: 1.35rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #111111;
+        }
+
+        .btn-copy-account {
+            background: transparent;
+            border: 1.5px solid #333 !important;
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-account:hover {
+            background-color: #f0f0f0;
+        }
+
+        .account-holder {
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        /* QRIS Styles */
+        .qris-code-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #333 !important;
+            background: #ffffff !important;
+            padding: 20px;
+            border-radius: 6px !important;
+            max-width: 260px;
+            margin: 0 auto 20px auto;
+        }
+
+        .qris-svg {
+            width: 180px;
+            height: 180px;
+            border: 1px solid #ccc;
+            margin-bottom: 12px;
+        }
+
+        .qris-amount-badge {
+            font-size: 0.9rem;
+            border: 1.5px solid #333 !important;
+            padding: 4px 12px;
+            border-radius: 20px !important;
+            background-color: #fafafa !important;
+            text-align: center;
+        }
+
+        .qris-instructions ol {
+            padding-left: 20px;
+            font-size: 0.9rem;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .qris-instructions li {
+            margin-bottom: 6px;
+        }
+
+        /* Upload Area */
+        .upload-area-wrapper {
+            margin: 10px 0;
+        }
+
+        .upload-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #333 !important;
+            border-radius: 6px !important;
+            padding: 30px 20px;
+            cursor: pointer;
+            background: #fafafa !important;
+            text-align: center;
+            transition: background 0.2s ease;
+        }
+
+        .upload-dropzone:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: #555555;
+            margin-bottom: 12px;
+        }
+
+        .upload-text {
+            font-weight: bold;
+            font-size: 1.05rem;
+            color: #111111;
+            margin-bottom: 4px;
+        }
+
+        .upload-desc {
+            font-size: 0.8rem;
+            color: #777777;
+        }
+
+        /* Image Preview style */
+        .image-preview-container {
+            border: 2px solid #333 !important;
+            padding: 16px;
+            border-radius: 6px !important;
+            background: #ffffff !important;
+        }
+
+        .preview-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            color: #111111;
+        }
+
+        .img-frame {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background: #fafafa !important;
+            border-radius: 4px !important;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .img-frame img {
+            max-width: 100%;
+            max-height: 180px;
+            object-fit: contain;
+            border: 1px solid #888;
+        }
+
+        .btn-remove-preview {
+            background-color: #ffffff !important;
+            border: 1.5px solid #333 !important;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #333 !important;
+            cursor: pointer;
+            border-radius: 4px !important;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-remove-preview:hover {
+            background-color: #f0f0f0 !important;
+        }
+
+        .file-info {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .btn-submit-payment-proof {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: 2px solid #333 !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            border-radius: 6px !important;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit-payment-proof:hover:not(:disabled) {
+            background-color: #f0f0f0 !important;
+        }
+
+        /* Important Information card */
+        .info-important-card h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #111111;
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .info-list li {
+            font-size: 0.875rem;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* Right column ringkasan card */
+        .summary-order-card h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            border-bottom: 2px solid #333 !important;
+            padding-bottom: 10px;
+            margin-bottom: 16px;
+            color: #111111 !important;
+        }
+
+        .summary-meta-rows {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-bottom: 1.5px solid #333 !important;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+
+        .meta-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 1rem;
+            font-size: 0.9rem;
+            color: #555555;
         }
-        .bank-row strong {
-            font-family: var(--font-mono);
-            font-size: 1.1rem;
+
+        .meta-row strong, .meta-row span:last-child {
+            color: #111111 !important;
+            font-weight: 700;
+        }
+
+        /* Side Products */
+        .side-product-list {
+            margin-bottom: 16px;
+            border-bottom: 1.5px solid #333 !important;
+            padding-bottom: 16px;
+        }
+
+        .side-product-list h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #111111;
+        }
+
+        .side-product-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .side-product-row .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-product-row .name {
+            font-weight: 600;
+            color: #111111;
+        }
+
+        .side-product-row .spec {
+            font-size: 0.75rem;
+            color: #666666;
+        }
+
+        .side-product-row .product-price {
+            font-weight: 700;
+            color: #111111;
+        }
+
+        /* Breakdown costs */
+        .side-costs-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #555555;
+        }
+
+        .cost-row span:last-child {
+            font-weight: 600;
+            color: #111111;
+        }
+
+        .cost-row.grand-total-row {
+            border-top: 1.5px dashed #333 !important;
+            padding-top: 16px;
+            margin-top: 6px;
+            font-size: 1.15rem;
+        }
+
+        .cost-row.grand-total-row span:first-child {
+            font-weight: bold;
+            color: #111111;
+        }
+
+        .cost-row.grand-total-row .price-val {
+            font-weight: 800 !important;
+            color: #111111;
+            font-size: 1.25rem;
+        }
+
+        /* Alerts Success/Danger */
+        .payment-alert-success {
+            border: 2px solid #333 !important;
+            background-color: #fafafa !important;
+            border-radius: 6px !important;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .payment-alert-success i {
+            font-size: 1.35rem;
+            color: #111111;
+            margin-top: 2px;
+        }
+
+        .alert-text strong {
+            font-size: 1rem;
+            color: #111111;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .alert-text p {
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .payment-alert-danger {
+            border: 2px solid #333 !important;
+            background-color: #fafafa !important;
+            border-radius: 6px !important;
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .payment-alert-danger i {
+            font-size: 1.35rem;
+            color: #111111;
+            margin-top: 2px;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="pesanan.html">Pesanan Saya</a></li>
-            <li>Pembayaran</li>
-        </ul>
+    <!-- Halaman Pembayaran Section -->
+    <section class="payment-section">
+        <div class="container">
+            
+            <div class="payment-title-area">
+                <a href="pesanan.html" class="back-link">
+                    <i class="fa-solid fa-chevron-left"></i> Riwayat Pesanan Saya
+                </a>
+                <h1>Selesaikan Pembayaran Anda</h1>
+                <p>Silakan selesaikan transaksi untuk pesanan <strong id="lbl-kode-order">OLN-10001</strong> sebelum batas waktu berakhir.</p>
+            </div>
 
-        <section style="margin: 40px 0;">
-            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
-                <h2>Halaman Pembayaran</h2>
-                <p>Silakan selesaikan pembayaran pre-order kue Anda melalui rekening bank resmi kami di bawah.</p>
+            <!-- Dynamic Alert Notifications -->
+            <div id="alert-success-box" class="payment-alert-success" style="display: none;">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="alert-text">
+                    <strong>Kirim Bukti Sukses!</strong>
+                    <p id="alert-success-text">Bukti pembayaran berhasil dikirim dan sedang menunggu verifikasi admin.</p>
+                </div>
+            </div>
+
+            <div id="alert-danger-box" class="payment-alert-danger" style="display: none;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <div class="alert-text">
+                    <strong>Terjadi Kesalahan</strong>
+                    <p id="alert-danger-text">Format berkas tidak valid atau data kurang lengkap.</p>
+                </div>
             </div>
 
             <div class="payment-grid">
-                <!-- Left Column: Bank info & upload form -->
-                <div>
-                    <div class="card">
-                        <h3 class="card-title">1. Transfer Bank</h3>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">Lakukan transfer dengan nominal tepat sesuai tagihan ke rekening bank di bawah ini:</p>
-                        
-                        <div class="bank-details-box">
-                            <div class="bank-row">
-                                <span>Nama Bank</span>
-                                <strong>Bank Central Asia (BCA)</strong>
+                
+                <!-- Kolom Kiri: Alur Pembayaran & Upload -->
+                <div class="payment-main-col">
+
+                    <!-- State 1: Active Countdown Timer (Simulated) -->
+                    <div class="payment-card timer-card" id="timer-active-card">
+                        <div class="timer-label">Sisa Waktu Pembayaran</div>
+                        <div class="timer-countdown" id="timer-box">
+                            <div class="timer-segment">
+                                <span id="hours" class="timer-number">23</span>
+                                <span class="timer-unit">Jam</span>
                             </div>
-                            <div class="bank-row">
-                                <span>Nomor Rekening</span>
-                                <strong>5210967381</strong>
+                            <div class="timer-divider">:</div>
+                            <div class="timer-segment">
+                                <span id="minutes" class="timer-number">59</span>
+                                <span class="timer-unit">Menit</span>
                             </div>
-                            <div class="bank-row">
-                                <span>Nama Pemilik Rekening</span>
-                                <strong>Carolina Berliana</strong>
+                            <div class="timer-divider">:</div>
+                            <div class="timer-segment">
+                                <span id="seconds" class="timer-number">59</span>
+                                <span class="timer-unit">Detik</span>
                             </div>
+                        </div>
+                        <p class="timer-subtext">Segera bayar sebelum tanggal <strong id="lbl-batas-bayar">30 Jun 2026, 15:15 WIB</strong></p>
+                    </div>
+
+                    <!-- State 2: Success status card (Hidden by default, shown after upload) -->
+                    <div class="payment-card success-status-card" id="timer-success-card" style="display: none;">
+                        <i class="fa-solid fa-circle-check success-icon"></i>
+                        <h3>Menunggu Verifikasi Admin</h3>
+                        <p class="status-msg">
+                            Bukti pembayaran berhasil dikirim dan sedang menunggu verifikasi admin. Kami akan segera memperbarui status pesanan Anda.
+                        </p>
+                        <div class="uploaded-proof-preview">
+                            <span>Bukti Pembayaran Diunggah:</span>
+                            <a href="#" class="btn-view-proof" onclick="alert('Membuka file bukti pembayaran...'); return false;">
+                                <i class="fa-solid fa-image"></i> Lihat Bukti Pembayaran
+                            </a>
                         </div>
                     </div>
 
-                    <div class="card">
-                        <h3 class="card-title">2. Konfirmasi Pembayaran</h3>
-                        <form action="pesanan.html">
-                            <div class="form-group">
-                                <label class="form-label">Nama Pengirim Rekening Bank *</label>
-                                <input type="text" class="form-control" placeholder="Contoh: Carolina Berliana">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Unggah Foto Bukti Transfer *</label>
-                                <div class="img-placeholder" style="height: 120px; margin-bottom: 8px;">
-                                    <div class="img-placeholder-text">Bukti Transfer JPG/PNG [Upload]</div>
-                                </div>
-                                <input type="file" style="display: block; font-size: 0.9rem;">
-                            </div>
+                    <!-- 2. Total Pembayaran Card -->
+                    <div class="payment-card total-card">
+                        <span class="total-label">Total Pembayaran</span>
+                        <div class="total-amount" id="lbl-total-amount">
+                            Rp 270.000
+                        </div>
+                        <span class="total-note">Sudah termasuk ongkos kirim</span>
+                    </div>
+
+                    <!-- 3. Form & Metode Pembayaran -->
+                    <div id="payment-form-area">
+                        <form id="payment-form" onsubmit="handlePaymentSubmit(event)">
                             
-                            <div style="margin-top: 30px; display: flex; gap: 15px;">
-                                <button type="submit" class="btn btn-primary" style="flex: 1; padding: 12px;">Kirim Bukti Pembayaran</button>
-                                <a href="pesanan.html" class="btn btn-outline">Kembali ke Pesanan Saya</a>
+                            <!-- Card Pilihan Metode Pembayaran -->
+                            <div class="payment-card">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-credit-card"></i>
+                                    <h2>Pilih Metode Pembayaran</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="methods-selection-grid">
+                                        <!-- Metode Transfer Bank -->
+                                        <label class="pay-method-card active" id="method-bank-label">
+                                            <input type="radio" name="metode_pembayaran" value="Transfer Bank" checked class="pay-radio" onchange="togglePaymentMethod(this.value)">
+                                            <div class="method-card-content">
+                                                <i class="fa-solid fa-building-columns"></i>
+                                                <span class="title">Transfer Bank</span>
+                                                <span class="desc">Transfer manual melalui ATM/M-Banking</span>
+                                            </div>
+                                        </label>
+
+                                        <!-- Metode QRIS -->
+                                        <label class="pay-method-card" id="method-qris-label">
+                                            <input type="radio" name="metode_pembayaran" value="QRIS" class="pay-radio" onchange="togglePaymentMethod(this.value)">
+                                            <div class="method-card-content">
+                                                <i class="fa-solid fa-qrcode"></i>
+                                                <span class="title">QRIS E-Wallet</span>
+                                                <span class="desc">Scan kode QR menggunakan e-wallet Anda</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4. Area Detail Rekening Bank / QRIS -->
+                            <div class="payment-card" id="payment-details-card">
+                                
+                                <!-- Detail Transfer Bank -->
+                                <div id="bank-transfer-details" class="details-pane">
+                                    <h3>Informasi Rekening Transfer</h3>
+                                    <p class="pane-intro">Silakan transfer nominal pembayaran ke rekening resmi Olin's Cake berikut:</p>
+                                    
+                                    <div class="bank-account-card">
+                                        <div class="bank-brand">
+                                            <i class="fa-solid fa-building-columns"></i> Bank BCA
+                                        </div>
+                                        <div class="account-number-row">
+                                            <span id="rekening-number" class="number">1234567890</span>
+                                            <button type="button" class="btn-copy-account" onclick="copyAccountNo()">
+                                                <i class="fa-regular fa-copy"></i> <span id="copy-btn-text">Salin</span>
+                                            </button>
+                                        </div>
+                                        <div class="account-holder">
+                                            a.n. <strong>Olin's Cake</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Detail QRIS -->
+                                <div id="qris-details" class="details-pane" style="display: none;">
+                                    <h3>Scan QRIS Olin's Cake</h3>
+                                    <p class="pane-intro">Pindai kode QRIS di bawah menggunakan GoPay, OVO, Dana, LinkAja, atau Mobile Banking Anda.</p>
+                                    
+                                    <div class="qris-code-container">
+                                        <!-- Sharp vector placeholder QR code -->
+                                        <svg class="qris-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="100" height="100" fill="#ffffff" rx="4" stroke="#333" stroke-width="1"/>
+                                            <!-- QR Border blocks -->
+                                            <rect x="5" y="5" width="25" height="25" fill="#111111" />
+                                            <rect x="9" y="9" width="17" height="17" fill="#ffffff" />
+                                            <rect x="13" y="13" width="9" height="9" fill="#111111" />
+                                            
+                                            <rect x="70" y="5" width="25" height="25" fill="#111111" />
+                                            <rect x="74" y="9" width="17" height="17" fill="#ffffff" />
+                                            <rect x="78" y="13" width="9" height="9" fill="#111111" />
+
+                                            <rect x="5" y="70" width="25" height="25" fill="#111111" />
+                                            <rect x="9" y="74" width="17" height="17" fill="#ffffff" />
+                                            <rect x="13" y="78" width="9" height="9" fill="#111111" />
+
+                                            <!-- Random QR Blocks to simulate a QR code -->
+                                            <rect x="35" y="5" width="5" height="15" fill="#111111"/>
+                                            <rect x="45" y="10" width="10" height="5" fill="#111111"/>
+                                            <rect x="60" y="5" width="5" height="5" fill="#111111"/>
+                                            <rect x="35" y="25" width="15" height="5" fill="#111111"/>
+                                            <rect x="55" y="20" width="10" height="10" fill="#111111"/>
+                                            <rect x="40" y="35" width="5" height="15" fill="#111111"/>
+                                            <rect x="10" y="35" width="15" height="5" fill="#111111"/>
+                                            <rect x="20" y="45" width="10" height="10" fill="#111111"/>
+                                            <rect x="5" y="60" width="20" height="5" fill="#111111"/>
+                                            
+                                            <rect x="35" y="70" width="5" height="25" fill="#111111"/>
+                                            <rect x="45" y="75" width="15" height="5" fill="#111111"/>
+                                            <rect x="50" y="85" width="10" height="10" fill="#111111"/>
+                                            <rect x="70" y="35" width="15" height="5" fill="#111111"/>
+                                            <rect x="75" y="45" width="20" height="5" fill="#111111"/>
+                                            <rect x="85" y="55" width="10" height="10" fill="#111111"/>
+                                            <rect x="65" y="70" width="5" height="15" fill="#111111"/>
+                                            <rect x="80" y="75" width="15" height="15" fill="#111111"/>
+                                            <rect x="75" y="90" width="5" height="5" fill="#111111"/>
+
+                                            <!-- Center logo block -->
+                                            <rect x="42" y="42" width="16" height="16" fill="#111111" rx="2"/>
+                                            <text x="50" y="52" font-size="8" font-weight="bold" fill="#ffffff" text-anchor="middle">QRIS</text>
+                                        </svg>
+                                        <div class="qris-amount-badge">
+                                            Nominal: <strong id="lbl-qris-total">Rp 270.000</strong>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="qris-instructions">
+                                        <h4>Cara Pembayaran QRIS:</h4>
+                                        <ol>
+                                            <li>Buka aplikasi dompet digital (GoPay, OVO, Dana, LinkAja) atau Mobile Banking Anda.</li>
+                                            <li>Pilih menu <strong>Pindai / Scan QRIS</strong>.</li>
+                                            <li>Arahkan kamera ke kode QRIS di atas atau upload tangkapan layar kode ini.</li>
+                                            <li>Pastikan nama merchant yang muncul adalah <strong>Olin's Cake</strong>.</li>
+                                            <li>Masukkan nominal bayar persis <strong class="lbl-raw-total">Rp 270.000</strong>.</li>
+                                            <li>Selesaikan transaksi dan ambil bukti pembayarannya.</li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 5. Upload Bukti Pembayaran -->
+                            <div class="payment-card" id="upload-proof-card">
+                                <div class="card-header">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    <h2>Unggah Bukti Pembayaran</h2>
+                                </div>
+                                <div class="card-body">
+                                    <div class="upload-area-wrapper">
+                                        <label for="bukti_pembayaran" class="upload-dropzone" id="dropzone">
+                                            <i class="fa-regular fa-image upload-icon"></i>
+                                            <span class="upload-text">Pilih Gambar Bukti Bayar</span>
+                                            <span class="upload-desc">Format: JPG, JPEG, PNG (Maksimal 2 MB)</span>
+                                            <input type="file" id="bukti_pembayaran" accept="image/png, image/jpeg, image/jpg" style="display: none;" onchange="previewImage(this)">
+                                        </label>
+                                        
+                                        <!-- Preview Box -->
+                                        <div class="image-preview-container" id="preview-box" style="display: none;">
+                                            <h4 class="preview-title">Pratinjau Gambar:</h4>
+                                            <div class="img-frame">
+                                                <!-- Simulated Wireframe Image preview representation -->
+                                                <div class="wireframe-img-box" style="width: 150px; height: 150px; border-radius: 4px;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg">
+                                                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                                    </svg>
+                                                    <div class="wireframe-img-label" style="font-size: 0.55rem; padding: 2px 4px;">BUKTI_BAYAR</div>
+                                                </div>
+                                                <button type="button" class="btn-remove-preview" onclick="removePreview()">
+                                                    <i class="fa-solid fa-trash-can"></i> Hapus Gambar
+                                                </button>
+                                            </div>
+                                            <div class="file-info" id="file-info-text">nama_file.png (1.2 MB)</div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" id="btn-submit-payment" class="btn-submit-payment-proof" style="width: 100%; margin-top: 24px;" disabled>
+                                        Kirim Bukti Pembayaran <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
+                                    </button>
+                                </div>
                             </div>
                         </form>
                     </div>
+
+                    <!-- 6. Card Informasi Penting -->
+                    <div class="payment-card info-important-card">
+                        <h3><i class="fa-solid fa-circle-info"></i> Informasi Penting</h3>
+                        <ul class="info-list">
+                            <li>📌 Pembayaran harus dilakukan dalam waktu 1×24 jam setelah pesanan dibuat.</li>
+                            <li>📌 Bukti pembayaran wajib diunggah untuk memproses pesanan.</li>
+                            <li>📌 Pesanan akan mulai diproses setelah pembayaran diverifikasi oleh admin.</li>
+                            <li>📌 Pesanan yang tidak dibayar dalam batas waktu akan otomatis dibatalkan oleh sistem.</li>
+                        </ul>
+                    </div>
+
                 </div>
 
-                <!-- Right Column: Detail tagihan -->
-                <div>
-                    <div class="card">
-                        <h3 class="card-title">Detail Tagihan Pesanan</h3>
-                        <div class="summary-rows" style="margin-bottom: 20px;">
-                            <div class="summary-row">
-                                <span>Kode Pesanan</span>
-                                <strong style="font-family: var(--font-mono); color: var(--wireframe-blue);">OLN-10027</strong>
+                <!-- Kolom Kanan: Ringkasan Pesanan -->
+                <div class="payment-side-col">
+                    <div class="payment-card summary-order-card">
+                        <h3>Ringkasan Pesanan</h3>
+                        <div class="summary-meta-rows">
+                            <div class="meta-row">
+                                <span>No. Pesanan:</span>
+                                <strong id="lbl-side-kode">OLN-10001</strong>
                             </div>
-                            <div class="summary-row">
-                                <span>Status Verifikasi</span>
-                                <span class="badge badge-warning">Menunggu Pembayaran</span>
+                            <div class="meta-row">
+                                <span>Tanggal Pesan:</span>
+                                <span id="lbl-side-tgl-pesan">29/06/2026 15:15</span>
                             </div>
-                            <div class="summary-row">
-                                <span>Metode Pengiriman</span>
-                                <span>Kirim ke Alamat</span>
+                            <div class="meta-row">
+                                <span>Penerima:</span>
+                                <strong id="lbl-side-penerima">Carolina Berliana</strong>
                             </div>
-                            <div class="summary-row" style="border-top: 1px dashed var(--border-color); padding-top: 10px; margin-top: 10px;">
-                                <span>Subtotal Kue</span>
-                                <span>Rp 180.000</span>
+                            <div class="meta-row">
+                                <span>Metode:</span>
+                                <span id="lbl-side-metode">Kirim ke Alamat</span>
                             </div>
-                            <div class="summary-row">
-                                <span>Ongkos Kirim (1.5 km)</span>
-                                <span>Rp 32.271</span>
+                            <div class="meta-row">
+                                <span>Tgl. Pengiriman:</span>
+                                <strong id="lbl-side-tgl-kirim">02/07/2026</strong>
                             </div>
-                            <div class="summary-row total">
-                                <span>Total Tagihan</span>
-                                <strong style="font-size: 1.3rem;">Rp 212.271</strong>
+                            <div class="meta-row">
+                                <span>Jam Pengiriman:</span>
+                                <span id="lbl-side-jam-kirim">Jam 10:00 - 12:00 WIB</span>
+                            </div>
+                        </div>
+
+                        <div class="side-product-list">
+                            <h4>Produk yang Dipesan:</h4>
+                            
+                            <div class="side-product-row">
+                                <div class="product-info">
+                                    <span class="name">Kastengel Keju</span>
+                                    <span class="spec">Toples 500gr &times; 1</span>
+                                </div>
+                                <div class="product-price">
+                                    Rp 120.000
+                                </div>
+                            </div>
+                            
+                            <div class="side-product-row">
+                                <div class="product-info">
+                                    <span class="name">Nastar Premium</span>
+                                    <span class="spec">Toples 500gr &times; 1</span>
+                                </div>
+                                <div class="product-price">
+                                    Rp 135.000
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="side-costs-breakdown">
+                            <div class="cost-row">
+                                <span>Total Produk</span>
+                                <span id="lbl-side-total-produk">Rp 255.000</span>
+                            </div>
+                            <div class="cost-row">
+                                <span>Ongkos Kirim</span>
+                                <span id="lbl-side-ongkir">Rp 15.000</span>
+                            </div>
+                            <div class="cost-row grand-total-row">
+                                <span>Total Pembayaran</span>
+                                <span class="price-val" id="lbl-side-grand-total">Rp 270.000</span>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
 
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -161,20 +1138,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -183,5 +1163,240 @@
         </div>
     </footer>
 
+    <!-- Prototype Handling Script -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Toggle Payment Method Tampilan
+        function togglePaymentMethod(val) {
+            const bankDetails = document.getElementById('bank-transfer-details');
+            const qrisDetails = document.getElementById('qris-details');
+            
+            const bankLabel = document.getElementById('method-bank-label');
+            const qrisLabel = document.getElementById('method-qris-label');
+
+            if (val === 'Transfer Bank') {
+                bankDetails.style.display = 'block';
+                qrisDetails.style.display = 'none';
+                bankLabel.classList.add('active');
+                qrisLabel.classList.remove('active');
+            } else {
+                bankDetails.style.display = 'none';
+                qrisDetails.style.display = 'block';
+                bankLabel.classList.remove('active');
+                qrisLabel.classList.add('active');
+            }
+        }
+
+        // Salin Rekening BCA ke Clipboard
+        function copyAccountNo() {
+            const rekeningNum = document.getElementById('rekening-number').innerText;
+            navigator.clipboard.writeText(rekeningNum).then(() => {
+                const copyBtnText = document.getElementById('copy-btn-text');
+                copyBtnText.innerText = "Tersalin!";
+                
+                setTimeout(() => {
+                    copyBtnText.innerText = "Salin";
+                }, 2000);
+            }).catch(err => {
+                console.error("Gagal menyalin text: ", err);
+            });
+        }
+
+        // Preview File Gambar Bukti Pembayaran
+        function previewImage(input) {
+            const file = input.files[0];
+            const dropzone = document.getElementById('dropzone');
+            const previewBox = document.getElementById('preview-box');
+            const fileInfoText = document.getElementById('file-info-text');
+            const submitBtn = document.getElementById('btn-submit-payment');
+
+            if (file) {
+                if (file.size > 2 * 1024 * 1024) {
+                    alert("Ukuran berkas melebihi batas maksimal 2 MB.");
+                    removePreview();
+                    return;
+                }
+
+                // Show mockup wireframe image representation and name
+                previewBox.style.display = 'block';
+                dropzone.style.display = 'none';
+                
+                const sizeInMb = (file.size / (1024 * 1024)).toFixed(2);
+                fileInfoText.innerText = `${file.name} (${sizeInMb} MB)`;
+                
+                // Enable button
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = '1';
+                submitBtn.style.cursor = 'pointer';
+            }
+        }
+
+        // Remove Preview Image
+        function removePreview() {
+            const input = document.getElementById('bukti_pembayaran');
+            const dropzone = document.getElementById('dropzone');
+            const previewBox = document.getElementById('preview-box');
+            const submitBtn = document.getElementById('btn-submit-payment');
+
+            input.value = ""; // Reset input file
+            previewBox.style.display = 'none';
+            dropzone.style.display = 'flex';
+            
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+            submitBtn.style.cursor = 'not-allowed';
+        }
+
+        // Handle Form Submission (Simulation)
+        function handlePaymentSubmit(event) {
+            event.preventDefault();
+
+            // Hide form and active timer card
+            document.getElementById('payment-form-area').style.display = 'none';
+            document.getElementById('timer-active-card').style.display = 'none';
+
+            // Show success status card
+            document.getElementById('timer-success-card').style.display = 'block';
+
+            // Show success alert box
+            const alertBox = document.getElementById('alert-success-box');
+            alertBox.style.display = 'flex';
+            
+            // Save state in localStorage so the prototype remembers that payment was submitted!
+            localStorage.setItem('wf_payment_submitted', 'true');
+            
+            // Also notify the parent order list page (pesanan.html) to show "Menunggu Verifikasi"
+            localStorage.setItem('wf_order_status', 'Menunggu Verifikasi');
+
+            // Scroll to top of section
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Countdown Timer Real-time (Simulated 23:59:59)
+        let totalSeconds = 24 * 60 * 60 - 5; // 24 hours
+        const timerInterval = setInterval(() => {
+            if (totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                return;
+            }
+            totalSeconds--;
+
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }, 1000);
+
+        // Initialize Page based on Simulated Session State
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of index.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link active" style="font-weight: 700;">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Default logged out
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+
+            // Sync delivery method info and pricing from checkout selections
+            const deliveryMethod = localStorage.getItem('wf_shipping_method') || 'Kirim ke Alamat';
+            const totalProducts = 255000;
+            let shippingCost = 15000;
+            
+            if (deliveryMethod === 'Ambil di Toko') {
+                shippingCost = 0;
+                document.getElementById('lbl-side-metode').innerText = 'Ambil di Toko';
+                document.getElementById('lbl-side-ongkir').innerText = 'Rp 0';
+                
+                const finalTotal = totalProducts + shippingCost;
+                document.getElementById('lbl-total-amount').innerText = 'Rp ' + finalTotal.toLocaleString('id-ID');
+                document.getElementById('lbl-qris-total').innerText = 'Rp ' + finalTotal.toLocaleString('id-ID');
+                document.getElementById('lbl-side-grand-total').innerText = 'Rp ' + finalTotal.toLocaleString('id-ID');
+                
+                const rawTotalLabels = document.querySelectorAll('.lbl-raw-total');
+                rawTotalLabels.forEach(el => {
+                    el.innerText = 'Rp ' + finalTotal.toLocaleString('id-ID');
+                });
+            } else {
+                document.getElementById('lbl-side-metode').innerText = 'Kirim ke Alamat';
+                document.getElementById('lbl-side-ongkir').innerText = 'Rp 15.000';
+            }
+
+            // Set simulated pre-order delivery date (H+3 from checkout page)
+            const today = new Date();
+            today.setDate(today.getDate() + 3);
+            const formattedDate = String(today.getDate()).padStart(2, '0') + '/' + String(today.getMonth() + 1).padStart(2, '0') + '/' + today.getFullYear();
+            document.getElementById('lbl-side-tgl-kirim').innerText = formattedDate;
+
+            // Set timer expiration label dynamically (H+1 from today)
+            const expDate = new Date();
+            expDate.setDate(expDate.getDate() + 1);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const formattedExp = String(expDate.getDate()).padStart(2, '0') + ' ' + months[expDate.getMonth()] + ' ' + expDate.getFullYear() + ', ' + String(expDate.getHours()).padStart(2, '0') + ':' + String(expDate.getMinutes()).padStart(2, '0') + ' WIB';
+            document.getElementById('lbl-batas-bayar').innerText = formattedExp;
+
+            // Load previously submitted state if any
+            const isSubmitted = localStorage.getItem('wf_payment_submitted') === 'true';
+            if (isSubmitted) {
+                document.getElementById('payment-form-area').style.display = 'none';
+                document.getElementById('timer-active-card').style.display = 'none';
+                document.getElementById('timer-success-card').style.display = 'block';
+                document.getElementById('alert-success-box').style.display = 'flex';
+            }
+        });
+    </script>
 </body>
 </html>

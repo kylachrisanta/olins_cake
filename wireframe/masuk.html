@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Masuk - Olin's Cake</title>
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN to render icons exactly like the real site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* General High-Contrast Sketch Style matching reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .auth-page-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #ffffff !important;
+        }
+
+        /* Left side: Sketch wireframe panel */
+        .auth-side-img {
+            flex: 1.1;
+            background: #f8f9fa !important;
+            border-right: 2px solid #333 !important;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px;
+            color: #111111 !important;
+            position: relative;
+        }
+        .auth-side-img::before {
+            display: none !important; /* Hide real site overlays */
+        }
+
+        /* Crossed Placeholder Box */
+        .wireframe-img-box {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wireframe-img-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Right side: Form panel */
+        .auth-side-form {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
+            background-color: #ffffff !important;
+        }
+
+        .auth-form-wrapper {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        .auth-back-link {
+            color: #555555 !important;
+            font-weight: 600 !important;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .auth-back-link:hover {
+            color: #111111 !important;
+            text-decoration: underline;
+        }
+
+        .auth-form-header h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #111111 !important;
+            margin-bottom: 8px;
+        }
+        .auth-form-header p {
+            color: #555555 !important;
+            font-size: 1rem;
+        }
+
+        .contact-form-group {
+            margin-bottom: 20px;
+        }
+        .contact-form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #111111 !important;
+            margin-bottom: 8px;
+        }
+
+        .contact-form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #333 !important;
+            border-radius: 6px !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        .contact-form-control:focus {
+            border-color: #000000 !important;
+        }
+
+        .auth-checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        .auth-checkbox-group input {
+            width: 18px;
+            height: 18px;
+            accent-color: #333333;
+            cursor: pointer;
+        }
+        .auth-checkbox-group label {
+            font-size: 0.95rem;
+            color: #111111 !important;
+            cursor: pointer;
+        }
+
+        .btn-wireframe-filled {
+            border: 1.5px solid #333 !important;
+            background-color: #cccccc !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-weight: 600 !important;
+            border-radius: 6px !important;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 20px;
+            font-size: 1rem;
+            width: 100%;
+            cursor: pointer;
+        }
+        .btn-wireframe-filled:hover {
+            background-color: #b8b8b8 !important;
+        }
+
+        .modal-footer-text {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.95rem;
+            color: #555555 !important;
+        }
+        .modal-footer-text a {
+            color: #111111 !important;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="auth-body">
+
+    <div class="auth-page-container">
+        <!-- Panel Ilustrasi (Desktop) -->
+        <div class="auth-side-img">
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none; color: #111;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; font-size: 1.5rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
+            </a>
+            
+            <div class="wireframe-img-box" style="width: 100%; height: 260px; margin: 40px 0;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#888" stroke-width="1" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#888" stroke-width="1" />
+                </svg>
+                <div class="wireframe-img-label">auth_illustration.png</div>
+            </div>
+            
+            <div class="auth-quote">
+                <p>"Kue lembut premium buatan rumahan dengan bahan kualitas terbaik untuk melengkapi kebahagiaan setiap momen spesial Anda."</p>
+                <span>Freshly Baked with Love</span>
+            </div>
+            
+            <div class="auth-footer-tag" style="font-family: monospace; font-weight: bold; color: #777;">
+                &copy; 2026 Olin's Cake
+            </div>
+        </div>
+        
+        <!-- Panel Form Masuk -->
+        <div class="auth-side-form">
+            <div class="auth-form-wrapper">
+                <a href="index.html" class="auth-back-link">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+                </a>
+                
+                <div class="auth-form-header">
+                    <h1>Selamat Datang</h1>
+                    <p>Silakan masuk untuk melakukan pre-order kue favorit Anda.</p>
+                </div>
+                
+                <form id="login-form">
+                    <div class="contact-form-group">
+                        <label for="nama_pengguna">Nama Pengguna (Username)</label>
+                        <input type="text" id="nama_pengguna" name="nama_pengguna" class="contact-form-control" placeholder="Masukkan nama pengguna Anda" required>
+                    </div>
+                    
+                    <div class="contact-form-group">
+                        <label for="kata_sandi">Kata Sandi</label>
+                        <input type="password" id="kata_sandi" name="kata_sandi" class="contact-form-control" placeholder="Masukkan kata sandi Anda" required>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 8px;">
+                        <div class="auth-checkbox-group" style="margin-bottom: 0;">
+                            <input type="checkbox" id="ingat_saya" name="ingat_saya">
+                            <label for="ingat_saya">Ingat Saya</label>
+                        </div>
+                        <a href="#" style="color: #111111; font-size: 0.95rem; font-weight: 600; text-decoration: none;">Lupa Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="btn-wireframe-filled">
+                        Masuk <i class="fa-solid fa-right-to-bracket" style="margin-left: 8px;"></i>
+                    </button>
+                </form>
+                
+                <div class="modal-footer-text">
+                    Belum memiliki akun? <a href="daftar.html">Daftar Akun Baru</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Prototypes Script -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            localStorage.setItem('wf_logged_in', 'true');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

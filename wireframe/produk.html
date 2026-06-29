@@ -4,148 +4,416 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Katalog Produk - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN to render icons exactly like the real site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .filter-bar {
+        /* General High-Contrast Sketch Style matching reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        /* Solid Section Dividers */
+        
+        footer {
+            border-top: 2px solid #333 !important;
+            background-color: #f8f9fa !important;
+            color: #111111 !important;
+            padding: 50px 0 30px 0 !important;
+        }
+
+
+        /* Crossed Placeholder Box for Logo in header & footer */
+        .wireframe-img-box {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden;
             display: flex;
-            gap: 15px;
-            margin-bottom: 40px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px !important;
         }
-        .filter-tab {
-            padding: 8px 16px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            cursor: pointer;
-            font-weight: 600;
-            text-decoration: none;
-            color: var(--text-main);
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
-        .filter-tab.active {
-            background-color: var(--text-main);
-            color: var(--bg-card);
+
+        .wireframe-img-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Catalog Section overrides */
+        .catalog-section {
+            padding: 130px 0 80px 0 !important;
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+        }
+
+        .search-control {
+            border: 1.5px solid #333 !important;
+            border-radius: 30px !important;
+            box-shadow: none !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+        }
+        .search-control:focus {
+            box-shadow: none !important;
+            border-color: #000000 !important;
+        }
+
+        .category-tabs-container {
+            border-bottom: 1.5px solid #333 !important;
+        }
+
+        .filter-btn {
+            border: 1.5px solid #333 !important;
+            border-radius: 30px !important;
+            background-color: #ffffff !important;
+            color: #333 !important;
+            padding: 8px 20px !important;
+        }
+
+        .filter-btn.active {
+            background-color: #e9ecef !important;
+            border-color: #333 !important;
+            color: #000 !important;
+            box-shadow: none !important;
+        }
+
+        /* Outline Product Cards matching sketch style */
+        .product-card {
+            border: 1.5px solid #333 !important;
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            transition: none !important;
+        }
+
+        .product-card:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            border-color: #000000 !important;
+        }
+
+        .product-badge {
+            background-color: #e9ecef !important;
+            color: #111111 !important;
+            border: 1.5px solid #333 !important;
+            box-shadow: none !important;
+            border-radius: 4px !important;
+            font-weight: bold !important;
+            padding: 4px 10px !important;
+        }
+
+        .best-seller-badge {
+            background: #777777 !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+            border: 1.5px solid #333 !important;
+        }
+
+        .product-price {
+            color: #111111 !important;
+        }
+
+        .product-rating {
+            color: #555555 !important;
+        }
+        
+        .product-rating .fa-star, .product-rating .fa-star-half-stroke {
+            color: #333333 !important;
+        }
+
+        /* Footer Column styling */
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #111111 !important;
+        }
+
+        .footer-links a, .footer-col p, .footer-col {
+            color: #111111 !important;
+        }
+        .footer-links a:hover {
+            color: #555555 !important;
+            text-decoration: underline !important;
+        }
+        
+        .footer-bottom {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 20px !important;
+            margin-top: 30px !important;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            color: #111111 !important;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link active">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Katalog Produk</li>
-        </ul>
-
-        <section style="margin: 40px 0;">
-            <div class="section-header">
-                <h2>Katalog Produk</h2>
-                <p>Pilih dari aneka resep kue pre-order lezat kami yang dipanggang segar.</p>
-            </div>
+    <!-- Catalog Main Section -->
+    <section class="catalog-section">
+        <div class="container">
             
-            <!-- Filter Bar -->
-            <div class="filter-bar">
-                <a href="#" class="filter-tab active">Semua Kue</a>
-                <a href="#" class="filter-tab">Bolu</a>
-                <a href="#" class="filter-tab">Kue Kering</a>
+            <!-- Header Pencarian & Judul -->
+            <div class="catalog-header">
+                <div class="catalog-title">
+                    <h1>Katalog Produk</h1>
+                    <p>Temukan kue premium berkualitas terbaik untuk melengkapi kebahagiaan Anda.</p>
+                </div>
+                
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <input type="text" id="search-input" class="search-control" placeholder="Cari nama kue pilihan Anda...">
+                        <i class="fa-solid fa-magnifying-glass" style="position: absolute; top: 50%; left: 18px; transform: translateY(-50%); color: #888;"></i>
+                    </div>
+                </div>
             </div>
 
-            <!-- Product Grid -->
-            <div class="grid-3">
+            <!-- Tab Filter Kategori -->
+            <div class="category-tabs-container">
+                <ul class="category-tabs" id="category-tabs">
+                    <li><button class="filter-btn active">Bolu</button></li>
+                    <li><button class="filter-btn">Kue Kering</button></li>
+                    <li><button class="filter-btn">Kue Basah</button></li>
+                </ul>
+            </div>
+
+            <!-- Grid Produk -->
+            <div class="products-grid" id="products-grid">
+                
                 <!-- Produk 1 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Kastengel Keju Image</div>
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <span class="product-badge">Kue Kering</span>
+                        <span class="product-badge best-seller-badge"><i class="fa-solid fa-fire"></i> Best Seller</span>
+                        <div class="wireframe-img-box product-img" style="height: 100%; width: 100%; border-radius: 0px !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.7rem; padding: 2px 4px;">kastengel_keju.png</div>
+                        </div>
                     </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Kue Kering</span>
-                    <h3>Kastengel Keju</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Kue kering keju edam gurih renyah (Toples 500 gram).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                        <strong style="font-size: 1.15rem;">Rp 120.000</strong>
-                        <div style="display: flex; gap: 8px;">
-                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-title">Kastengel Keju</h3>
+                            <span class="product-price">Rp 120.000</span>
+                        </div>
+                        <p class="product-desc">Kue kering keju edam gurih renyah (Toples 500 gram).</p>
+                        <div class="product-footer">
+                            <div class="product-rating" style="display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                                <span style="font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">4,8 (12)</span>
+                            </div>
+                            <a href="detail_produk.html" class="btn-wireframe-outline" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none;">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Produk 2 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Bolu Pisang Image</div>
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <span class="product-badge">Bolu</span>
+                        <span class="product-badge best-seller-badge"><i class="fa-solid fa-fire"></i> Best Seller</span>
+                        <div class="wireframe-img-box product-img" style="height: 100%; width: 100%; border-radius: 0px !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.7rem; padding: 2px 4px;">bolu_pisang.png</div>
+                        </div>
                     </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
-                    <h3>Bolu Pisang</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu pisang premium lembut beraroma harum (Diameter 20 cm).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
-                        <div style="display: flex; gap: 8px;">
-                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-title">Bolu Pisang</h3>
+                            <span class="product-price">Rp 60.000</span>
+                        </div>
+                        <p class="product-desc">Bolu pisang premium lembut beraroma harum (Diameter 20 cm).</p>
+                        <div class="product-footer">
+                            <div class="product-rating" style="display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <span style="font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">5,0 (8)</span>
+                            </div>
+                            <a href="detail_produk.html" class="btn-wireframe-outline" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none;">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Produk 3 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Bolu Tape Image</div>
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <span class="product-badge">Bolu</span>
+                        <div class="wireframe-img-box product-img" style="height: 100%; width: 100%; border-radius: 0px !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.7rem; padding: 2px 4px;">bolu_tape.png</div>
+                        </div>
                     </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
-                    <h3>Bolu Tape</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
-                        <div style="display: flex; gap: 8px;">
-                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-title">Bolu Tape</h3>
+                            <span class="product-price">Rp 60.000</span>
+                        </div>
+                        <p class="product-desc">Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).</p>
+                        <div class="product-footer">
+                            <div class="product-rating" style="display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <span style="font-size: 0.8rem; margin-left: 4px; text-decoration: underline;">4,0 (5)</span>
+                            </div>
+                            <a href="detail_produk.html" class="btn-wireframe-outline" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none;">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Produk 4 -->
-                <div class="card">
-                    <div class="img-placeholder" style="height: 180px; margin-bottom: 15px;">
-                        <div class="img-placeholder-text">Bolu Pandan Image</div>
+                <div class="product-card">
+                    <div class="product-img-wrapper">
+                        <span class="product-badge">Bolu</span>
+                        <div class="wireframe-img-box product-img" style="height: 100%; width: 100%; border-radius: 0px !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.7rem; padding: 2px 4px;">bolu_pandan.png</div>
+                        </div>
                     </div>
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Bolu</span>
-                    <h3>Bolu Pandan</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 15px;">Bolu pandan wangi daun suji alami bertekstur empuk (Diameter 20 cm).</p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto;">
-                        <strong style="font-size: 1.15rem;">Rp 60.000</strong>
-                        <div style="display: flex; gap: 8px;">
-                            <a href="detail_produk.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Detail</a>
-                            <a href="keranjang.html" class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;">+ Keranjang</a>
+                    <div class="product-info">
+                        <div class="product-header">
+                            <h3 class="product-title">Bolu Pandan</h3>
+                            <span class="product-price">Rp 60.000</span>
+                        </div>
+                        <p class="product-desc">Bolu pandan wangi daun suji alami bertekstur empuk (Diameter 20 cm).</p>
+                        <div class="product-footer">
+                            <div class="product-rating" style="display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                                <span style="font-size: 0.8rem; margin-left: 4px;">(0)</span>
+                            </div>
+                            <a href="detail_produk.html" class="btn-wireframe-outline" style="padding: 6px 12px; font-size: 0.85rem; text-decoration: none;">Lihat Detail</a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </main>
 
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -155,20 +423,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -177,5 +448,69 @@
         </div>
     </footer>
 
+    <!-- JavaScript Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Dynamic Header Actions based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link active">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link active">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>

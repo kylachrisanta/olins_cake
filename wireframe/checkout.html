@@ -3,224 +3,759 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wireframe - Checkout - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <title>Wireframe - Checkout Pemesanan - Olin's Cake</title>
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .checkout-grid {
-            display: grid;
-            grid-template-columns: 1.4fr 0.8fr;
-            gap: 30px;
-            margin: 30px 0;
+        /* Ensure the floating header always has a solid white background in wireframes to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
         }
-        .method-selector {
+
+        /* Crossed Image Box for Wireframe */
+        .wireframe-img-box {
+            position: relative !important;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            border-radius: 6px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+        }
+
+        .wireframe-img-label {
+            position: relative !important;
+            z-index: 2 !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            border: 1.5px solid #333 !important;
+            padding: 1px 4px !important;
+            font-family: monospace !important;
+            font-size: 0.55rem !important;
+            font-weight: bold !important;
+            border-radius: 3px !important;
+        }
+
+        /* General styling alignment with grayscale wireframe specs */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        .checkout-section {
+            padding: 120px 0 60px 0;
+        }
+
+        .checkout-title-area {
+            margin-bottom: 30px;
+        }
+        .checkout-title-area h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #111111 !important;
+            margin-bottom: 8px;
+        }
+        .checkout-title-area p {
+            color: #555555 !important;
+            font-size: 1rem;
+        }
+
+        .back-to-cart-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #555555 !important;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            transition: color 0.2s ease;
+        }
+        .back-to-cart-link:hover {
+            color: #111111 !important;
+            text-decoration: underline !important;
+        }
+
+        /* Forms cards */
+        .checkout-card {
+            background-color: #ffffff !important;
+            border: 2px solid #333 !important;
+            border-radius: 8px !important;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .checkout-card-header {
+            background-color: #f0f0f0 !important;
+            border-bottom: 2px solid #333 !important;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #111111 !important;
+        }
+        .checkout-card-header i {
+            font-size: 1.25rem;
+        }
+        .checkout-card-header h2 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .checkout-card-body {
+            padding: 20px;
+        }
+
+        /* Form elements styles */
+        .contact-form-group {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .contact-form-group label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #111111 !important;
+        }
+        .contact-form-control {
+            border: 1.5px solid #333 !important;
+            border-radius: 6px !important;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .contact-form-control:focus {
+            border-color: #666666 !important;
+        }
+        .contact-form-control[readonly] {
+            background-color: #f5f5f5 !important;
+            cursor: not-allowed;
+            color: #666666 !important;
+        }
+
+        /* Interactive Map placeholder for wireframe */
+        .wireframe-map-box {
+            position: relative;
+            border: 2px dashed #555 !important;
+            background-color: #fafafa !important;
+            height: 250px;
+            width: 100%;
+            border-radius: 8px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            overflow: hidden;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+        .wireframe-map-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .wireframe-map-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 6px 12px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        /* Method cards selector grid */
+        .method-selector-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin: 15px 0;
+            gap: 16px;
+            margin-bottom: 20px;
         }
-        .method-box {
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius);
-            padding: 15px;
+        .method-card {
+            border: 2px solid #333 !important;
+            border-radius: 6px !important;
+            padding: 16px;
             cursor: pointer;
             position: relative;
+            display: block;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
         }
-        .method-box.active {
-            border: 2px solid var(--wireframe-blue);
-            background-color: var(--wireframe-light-blue);
+        .method-card:hover {
+            background-color: #fcfcfc;
         }
-        .method-box input[type="radio"] {
+        .method-radio {
             position: absolute;
-            right: 15px;
-            top: 15px;
+            right: 16px;
+            top: 16px;
+            width: 18px;
+            height: 18px;
+            accent-color: #333;
+            cursor: pointer;
         }
-        .warning-box {
-            background-color: #fff3cd;
-            color: #856404;
-            border: 1px solid #ffeeba;
-            border-radius: var(--radius);
-            padding: 15px;
-            margin-bottom: 20px;
+        .method-card-content {
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 0.9rem;
-            font-weight: 500;
+            flex-direction: column;
+            gap: 4px;
+            color: #111111 !important;
         }
-        .checkout-item {
+        .method-card-content i {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            color: #333 !important;
+        }
+        .method-card-content .title {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        .method-card-content .desc {
+            font-size: 0.8rem;
+            color: #666666 !important;
+            line-height: 1.3;
+        }
+
+        /* Delivery calculated results */
+        .delivery-calc-results {
+            border: 1.5px dashed #333 !important;
+            background-color: #fafafa !important;
+            border-radius: 6px !important;
+            padding: 12px 16px;
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .calc-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            font-size: 0.95rem;
+            color: #111111 !important;
+        }
+        .calc-row strong {
+            font-weight: 800;
+        }
+
+        /* Pickup details info card */
+        .pickup-info-card {
+            display: flex;
+            gap: 16px;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            border-radius: 6px !important;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .pickup-info-card i {
+            font-size: 1.75rem;
+            color: #333;
+        }
+        .pickup-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
             font-size: 0.9rem;
-            margin-bottom: 12px;
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 8px;
+            color: #111111 !important;
+        }
+        .pickup-text strong {
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .pickup-text .store-name {
+            font-weight: bold;
+        }
+        .pickup-text .store-address {
+            color: #555555;
+        }
+        .pickup-text .store-note {
+            color: #777777;
+            font-size: 0.8rem;
+            line-height: 1.3;
+            margin-top: 4px;
+        }
+
+        /* Order Summary Card style alignments */
+        .summary-card {
+            position: sticky;
+            top: 120px;
+        }
+        .summary-header {
+            padding: 16px 20px;
+            border-bottom: 2px solid #333 !important;
+            color: #111111 !important;
+        }
+        .summary-header h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .summary-checkout-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 20px;
+            border-bottom: 1.5px dashed #333 !important;
+        }
+        .summary-item-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .summary-item-row .item-pic {
+            width: 50px;
+            height: 50px;
+            border: 1.5px solid #333 !important;
+            border-radius: 4px !important;
+            overflow: hidden;
+        }
+        .summary-item-row .item-name-qty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .summary-item-row .item-name-qty .name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #111111 !important;
+        }
+        .summary-item-row .item-name-qty .spec {
+            font-size: 0.75rem;
+            color: #666666 !important;
+        }
+        .summary-item-row .item-name-qty .qty {
+            font-size: 0.8rem;
+            color: #333 !important;
+        }
+        .summary-item-row .item-sub {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #111111 !important;
+        }
+
+        .summary-price-breakdown {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border-bottom: 1.5px dashed #333 !important;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            color: #555555 !important;
+        }
+        .price-row span:last-child {
+            font-weight: 700;
+            color: #111111 !important;
+        }
+        .total-row {
+            font-size: 1.25rem;
+            color: #111111 !important;
+            font-weight: bold;
+        }
+        .total-row .total-price-text {
+            font-weight: 800 !important;
+            color: #111111 !important;
+        }
+
+        /* Warning calendar box */
+        .checkout-warning-box-inline {
+            background-color: #fafafa !important;
+            border: 1.5px solid #333 !important;
+            border-radius: 6px !important;
+            padding: 12px;
+            margin: 20px;
+            display: flex;
+            gap: 10px;
+            font-size: 0.85rem;
+            color: #111111 !important;
+            line-height: 1.4;
+        }
+        .checkout-warning-box-inline i {
+            font-size: 1.1rem;
+            color: #333;
+            margin-top: 2px;
+        }
+
+        .btn-submit-checkout {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: calc(100% - 40px);
+            margin: 0 20px 20px 20px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 700;
+            border: 2px solid #333 !important;
+            background-color: #cccccc !important;
+            color: #111111 !important;
+            border-radius: 6px !important;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-submit-checkout:hover {
+            background-color: #b8b8b8 !important;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="keranjang.html">Keranjang</a></li>
-            <li>Checkout Pemesanan</li>
-        </ul>
-
-        <section style="margin: 40px 0;">
-            <div class="section-header" style="text-align: left; margin-bottom: 30px;">
-                <h2>Checkout Pemesanan</h2>
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            
+            <div class="checkout-title-area">
+                <a href="keranjang.html" class="back-to-cart-link">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Keranjang
+                </a>
+                <h1>Checkout Pemesanan</h1>
                 <p>Lengkapi formulir penerimaan dan jadwal pre-order untuk menyelesaikan pesanan Anda.</p>
             </div>
 
-            <div class="checkout-grid">
-                <!-- Left Side: Forms -->
-                <div>
-                    <!-- 1. Data Penerima -->
-                    <div class="card">
-                        <h3 class="card-title">1. Data Penerima</h3>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label class="form-label">Nama Penerima *</label>
-                                <input type="text" class="form-control" value="Carolina Berliana">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Nomor WhatsApp *</label>
-                                <input type="text" class="form-control" value="6281281062985">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 2. Metode Penerimaan -->
-                    <div class="card">
-                        <h3 class="card-title">2. Metode Penerimaan Pesanan</h3>
-                        <div class="method-selector">
-                            <div class="method-box active">
-                                <input type="radio" name="delivery" checked>
-                                <strong>Diantar ke Alamat</strong>
-                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Kue diantar kurir langsung ke alamat tujuan</p>
-                            </div>
-                            <div class="method-box">
-                                <input type="radio" name="delivery">
-                                <strong>Ambil di Toko</strong>
-                                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Ambil pesanan secara mandiri ke gerai kami</p>
-                            </div>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 20px;">
-                            <label class="form-label">Alamat Pengiriman Lengkap *</label>
-                            <textarea class="form-control" rows="3">Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Tentukan Titik Peta Lokasi (Untuk Ongkir)</label>
-                            <div class="img-placeholder" style="height: 180px;">
-                                <div class="img-placeholder-text">Google Maps API Picker [Wireframe]</div>
-                            </div>
-                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 6px;">Jarak Terdeteksi: 1.5 km | Ongkos Kirim: Rp 32.271</p>
-                        </div>
-                    </div>
-
-                    <!-- 3. Jadwal Pre-Order -->
-                    <div class="card">
-                        <h3 class="card-title">3. Jadwal Pengiriman / Pengambilan</h3>
-                        <div class="grid-2">
-                            <div class="form-group">
-                                <label class="form-label">Tanggal Pengiriman/Ambil *</label>
-                                <input type="date" class="form-control" value="2026-06-30">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Waktu Antar/Ambil *</label>
-                                <select class="form-control">
-                                    <option>Pagi (09:00 - 12:00)</option>
-                                    <option selected>Siang (12:00 - 15:00)</option>
-                                    <option>Sore (15:00 - 18:00)</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Catatan Tambahan (Opsional)</label>
-                            <textarea class="form-control" rows="2" placeholder="Contoh: Tulis ucapan ulang tahun 'Happy Birthday Carolina' di atas bolu..."></textarea>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Right Side: Order Summary -->
-                <div>
-                    <div class="card">
-                        <h3 class="card-title">Ringkasan Pesanan</h3>
+            <!-- Form Action -->
+            <form action="pembayaran.html" method="GET" id="checkout-form">
+                
+                <div class="checkout-grid">
+                    
+                    <!-- Kolom Kiri: Formulir Informasi -->
+                    <div class="checkout-left-col">
                         
-                        <!-- Items list -->
-                        <div style="margin-bottom: 20px;">
-                            <div class="checkout-item">
-                                <div>
-                                    <strong>Kastengel Keju</strong>
-                                    <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">Qty: 1x | Toples 500gr</span>
+                        <!-- Card 1: Data Penerima -->
+                        <div class="checkout-card">
+                            <div class="checkout-card-header">
+                                <i class="fa-solid fa-user-check"></i>
+                                <h2>Data Penerima</h2>
+                            </div>
+                            <div class="checkout-card-body">
+                                <div class="form-grid-2">
+                                    <div class="contact-form-group">
+                                        <label for="nama_penerima">Nama Penerima <span style="color:red;">*</span></label>
+                                        <input type="text" id="nama_penerima" class="contact-form-control" placeholder="Masukkan nama lengkap penerima" value="Carolina Berliana" required>
+                                    </div>
+                                    <div class="contact-form-group">
+                                        <label for="nomor_wa">Nomor WhatsApp <span style="color:#777; font-weight: 500;">(Otomatis Terbaca)</span></label>
+                                        <input type="text" id="nomor_wa" class="contact-form-control" value="6289529236657" readonly>
+                                    </div>
                                 </div>
-                                <span>Rp 120.000</span>
                             </div>
-                            <div class="checkout-item">
-                                <div>
-                                    <strong>Bolu Pisang</strong>
-                                    <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">Qty: 1x | Diameter 20cm</span>
+                        </div>
+
+                        <!-- Card 2: Metode Penerimaan Pesanan -->
+                        <div class="checkout-card">
+                            <div class="checkout-card-header">
+                                <i class="fa-solid fa-truck-ramp-box"></i>
+                                <h2>Metode Penerimaan Pesanan</h2>
+                            </div>
+                            <div class="checkout-card-body">
+                                <div class="method-selector-grid">
+                                    <!-- Radio Diantar ke Alamat -->
+                                    <label class="method-card" id="label-kirim">
+                                        <input type="radio" name="metode_pengiriman" value="Kirim ke Alamat" class="method-radio" checked onchange="toggleDeliveryMethod(this.value)">
+                                        <div class="method-card-content">
+                                            <i class="fa-solid fa-truck-fast"></i>
+                                            <span class="title">Diantar ke Alamat</span>
+                                            <span class="desc">Kue diantar kurir langsung ke alamat tujuan</span>
+                                        </div>
+                                    </label>
+                                    
+                                    <!-- Radio Ambil di Toko -->
+                                    <label class="method-card" id="label-ambil">
+                                        <input type="radio" name="metode_pengiriman" value="Ambil Sendiri" class="method-radio" onchange="toggleDeliveryMethod(this.value)">
+                                        <div class="method-card-content">
+                                            <i class="fa-solid fa-store"></i>
+                                            <span class="title">Ambil di Toko</span>
+                                            <span class="desc">Ambil pesanan secara mandiri ke gerai kami</span>
+                                        </div>
+                                    </label>
                                 </div>
-                                <span>Rp 60.000</span>
+
+                                <!-- Bidang Input Pengiriman (Diantar ke Alamat) -->
+                                <div id="delivery-fields">
+                                    <div class="contact-form-group" style="margin-top: 15px;">
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Pilih Lokasi Pengantaran di Peta <span style="color:red;">*</span></label>
+                                        
+                                        <!-- Mock Map Box Placeholder for Wireframe -->
+                                        <div class="wireframe-map-box" onclick="simulateMapPinMove()">
+                                            <svg xmlns="http://www.w3.org/2000/svg">
+                                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#ccc" stroke-width="1.5" />
+                                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#ccc" stroke-width="1.5" />
+                                            </svg>
+                                            <div class="wireframe-map-label">
+                                                <i class="fa-solid fa-map-location-dot"></i> Google Maps Picker [Simulasi Wireframe]
+                                            </div>
+                                            <small style="color: #666; font-size: 0.75rem; margin-top: 8px; z-index: 2; font-family: monospace;">Klik untuk mensimulasikan pemindahan PIN lokasi peta</small>
+                                        </div>
+
+                                        <small class="text-muted" style="display: block; line-height: 1.4; margin-bottom: 15px;">
+                                            <i class="fa-solid fa-map-pin" style="color: #555; margin-right: 4px;"></i>
+                                            [Simulasi] Geser pin atau klik pada area peta di atas untuk memindahkan titik lokasi.
+                                        </small>
+
+                                        <!-- Alamat Textbox -->
+                                        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Detail Alamat Pengiriman & Patokan <span style="color:red;">*</span></label>
+                                        <textarea id="input-alamat" rows="3" class="contact-form-control" placeholder="Ketik nama jalan, kelurahan, kecamatan, atau kota secara lengkap..." required>Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi</textarea>
+                                    </div>
+
+                                    <!-- Informasi Hasil Jarak & Ongkir -->
+                                    <div class="delivery-calc-results" id="delivery-results-box">
+                                        <div class="calc-row">
+                                            <span>Jarak Pengiriman:</span>
+                                            <strong id="display-jarak">1.5 km</strong>
+                                        </div>
+                                        <div class="calc-row">
+                                            <span>Ongkos Kirim:</span>
+                                            <strong id="display-ongkir">Rp 15.000</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bidang Info Toko (Ambil di Toko) -->
+                                <div id="pickup-fields" style="display: none;">
+                                    <div class="pickup-info-card">
+                                        <i class="fa-solid fa-map-location-dot"></i>
+                                        <div class="pickup-text">
+                                            <strong>Lokasi Pengambilan Toko:</strong>
+                                            <span class="store-name">Olin's Cake</span>
+                                            <span class="store-address">Kp. Karang Jaya Blok D No.1, RT 002/RW 026, Karang Satria, Kec. Tambun Utara, Kabupaten Bekasi 17568</span>
+                                            <small class="store-note">* Anda dapat mengambil pesanan secara mandiri sesuai dengan tanggal dan waktu yang ditentukan tanpa biaya ongkos kirim.</small>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="summary-rows" style="margin-bottom: 20px;">
-                            <div class="summary-row">
-                                <span>Subtotal Produk</span>
-                                <span>Rp 180.000</span>
+                        <!-- Card 3: Jadwal Pengiriman & Catatan -->
+                        <div class="checkout-card">
+                            <div class="checkout-card-header">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <h2>Jadwal & Catatan Tambahan</h2>
                             </div>
-                            <div class="summary-row">
-                                <span>Ongkos Kirim</span>
-                                <span>Rp 32.271</span>
-                            </div>
-                            <div class="summary-row total">
-                                <span>Total Pembayaran</span>
-                                <span>Rp 212.271</span>
+                            <div class="checkout-card-body">
+                                <div class="form-grid-2">
+                                    <div class="contact-form-group">
+                                        <label for="tanggal_pengiriman">Tanggal Pengiriman/Pengambilan <span style="color:red;">*</span></label>
+                                        <input type="date" id="tanggal_pengiriman" class="contact-form-control" required>
+                                        <small class="text-muted"><i class="fa-solid fa-clock"></i> Minimal pre-order adalah H-3 sebelum tanggal pengiriman.</small>
+                                    </div>
+                                    <div class="contact-form-group">
+                                        <label for="waktu_pengiriman">Waktu Pengiriman/Pengambilan <span style="color:red;">*</span></label>
+                                        <select id="waktu_pengiriman" class="contact-form-control" required>
+                                            <option value="">-- Pilih Jam Pengiriman --</option>
+                                            <option value="08.00 - 12.00" selected>Pagi (08.00 - 12.00)</option>
+                                            <option value="12.00 - 16.00">Siang (12.00 - 16.00)</option>
+                                            <option value="16.00 - 20.00">Sore/Malam (16.00 - 20.00)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="contact-form-group" style="margin-top: 16px;">
+                                    <label for="catatan">Catatan Tambahan untuk Pembuat Kue <span style="color:#777; font-weight: 500;">(Opsional)</span></label>
+                                    <textarea id="catatan" class="contact-form-control" rows="3" placeholder="Tuliskan catatan khusus Anda (Contoh: Tulisan di kue: 'Selamat Ulang Tahun Ibu', kurangi rasa manis, dll)"></textarea>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="warning-box">
-                            <div>⚠️</div>
-                            <div>Kue dipanggang segar (Freshly Baked). Pemesanan dilakukan min. H-3 dari jadwal pengiriman.</div>
-                        </div>
-
-                        <a href="pembayaran.html" class="btn btn-primary" style="width: 100%; padding: 12px; gap: 8px;">
-                            Pembayaran <span style="font-family: var(--font-mono);">&rarr;</span>
-                        </a>
                     </div>
-                </div>
-            </div>
-        </section>
-    </main>
 
+                    <!-- Kolom Kanan: Ringkasan Belanja -->
+                    <div class="checkout-right-col">
+                        <div class="checkout-card summary-card">
+                            <div class="summary-header">
+                                <h2>Ringkasan Pesanan</h2>
+                            </div>
+                            
+                            <!-- Daftar Item Kue -->
+                            <div class="summary-checkout-items">
+                                
+                                <!-- Item 1 -->
+                                <div class="summary-item-row">
+                                    <div class="item-pic">
+                                        <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                            <svg xmlns="http://www.w3.org/2000/svg">
+                                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            </svg>
+                                            <div class="wireframe-img-label" style="font-size: 0.5rem; padding: 1px 2px;">gambar_1</div>
+                                        </div>
+                                    </div>
+                                    <div class="item-name-qty">
+                                        <span class="name">Kastengel Keju</span>
+                                        <span class="spec">Ukuran: Toples 500gr</span>
+                                        <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    </div>
+                                    <div class="item-sub">
+                                        Rp 120.000
+                                    </div>
+                                </div>
+
+                                <!-- Item 2 -->
+                                <div class="summary-item-row">
+                                    <div class="item-pic">
+                                        <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                            <svg xmlns="http://www.w3.org/2000/svg">
+                                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            </svg>
+                                            <div class="wireframe-img-label" style="font-size: 0.5rem; padding: 1px 2px;">gambar_2</div>
+                                        </div>
+                                    </div>
+                                    <div class="item-name-qty">
+                                        <span class="name">Nastar Premium</span>
+                                        <span class="spec">Ukuran: Toples 500gr</span>
+                                        <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    </div>
+                                    <div class="item-sub">
+                                        Rp 135.000
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Perincian Harga & Ongkir -->
+                            <div class="summary-price-breakdown">
+                                <div class="price-row">
+                                    <span>Subtotal Produk</span>
+                                    <span>Rp 255.000</span>
+                                </div>
+                                <div class="price-row">
+                                    <span>Ongkos Kirim</span>
+                                    <span id="summary-ongkir">Rp 15.000</span>
+                                </div>
+                                <div class="price-row total-row">
+                                    <span>Total Pembayaran</span>
+                                    <span id="summary-total" class="total-price-text">Rp 270.000</span>
+                                </div>
+                            </div>
+
+                            <!-- Peringatan Batas H-3 Pesan -->
+                            <div class="checkout-warning-box-inline">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <span>Kue dipanggang segar (Freshly Baked). Pemesanan dilakukan min. H-3 dari jadwal pengiriman.</span>
+                            </div>
+
+                            <!-- Tombol Final Checkout -->
+                            <button type="submit" id="btn-submit-checkout" class="btn-submit-checkout">
+                                Pembayaran <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -230,20 +765,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -252,5 +790,143 @@
         </div>
     </footer>
 
+    <!-- Script Handling -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Set date minimum pre-order date (H+3)
+        const dateInput = document.getElementById('tanggal_pengiriman');
+        if (dateInput) {
+            const today = new Date();
+            today.setDate(today.getDate() + 3);
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            dateInput.min = `${year}-${month}-${day}`;
+            dateInput.value = `${year}-${month}-${day}`;
+        }
+
+        // Toggle Delivery Method
+        function toggleDeliveryMethod(method) {
+            const deliveryFields = document.getElementById('delivery-fields');
+            const pickupFields = document.getElementById('pickup-fields');
+            const summaryOngkir = document.getElementById('summary-ongkir');
+            const summaryTotal = document.getElementById('summary-total');
+            const labelKirim = document.getElementById('label-kirim');
+            const labelAmbil = document.getElementById('label-ambil');
+
+            if (method === 'Kirim ke Alamat') {
+                deliveryFields.style.display = 'block';
+                pickupFields.style.display = 'none';
+                labelKirim.style.border = '2px solid #111111';
+                labelAmbil.style.border = '2px solid #333';
+                labelKirim.style.backgroundColor = '#fafafa';
+                labelAmbil.style.backgroundColor = '#ffffff';
+
+                // Restore shipping fee
+                summaryOngkir.innerText = 'Rp 15.000';
+                summaryTotal.innerText = 'Rp 270.000';
+            } else {
+                deliveryFields.style.display = 'none';
+                pickupFields.style.display = 'block';
+                labelAmbil.style.border = '2px solid #111111';
+                labelKirim.style.border = '2px solid #333';
+                labelAmbil.style.backgroundColor = '#fafafa';
+                labelKirim.style.backgroundColor = '#ffffff';
+
+                // Set shipping to free
+                summaryOngkir.innerText = 'Rp 0';
+                summaryTotal.innerText = 'Rp 255.000';
+            }
+        }
+
+        // Simulate Map PIN drag/move event
+        let simulatedMapToggle = false;
+        function simulateMapPinMove() {
+            const jarakEl = document.getElementById('display-jarak');
+            const ongkirEl = document.getElementById('display-ongkir');
+            const summaryOngkir = document.getElementById('summary-ongkir');
+            const summaryTotal = document.getElementById('summary-total');
+
+            simulatedMapToggle = !simulatedMapToggle;
+
+            if (simulatedMapToggle) {
+                jarakEl.innerText = '3.8 km';
+                ongkirEl.innerText = 'Rp 25.000';
+                summaryOngkir.innerText = 'Rp 25.000';
+                summaryTotal.innerText = 'Rp 280.000';
+                alert("[SIMULASI MAPS] Pin dipindahkan ke lokasi baru: Jarak terhitung 3.8 km, Ongkir disesuaikan menjadi Rp 25.000.");
+            } else {
+                jarakEl.innerText = '1.5 km';
+                ongkirEl.innerText = 'Rp 15.000';
+                summaryOngkir.innerText = 'Rp 15.000';
+                summaryTotal.innerText = 'Rp 270.000';
+                alert("[SIMULASI MAPS] Pin dikembalikan ke lokasi awal: Jarak terhitung 1.5 km, Ongkir disesuaikan menjadi Rp 15.000.");
+            }
+        }
+
+        // Initialize header nav links based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state of index.php
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+
+            // Sync radio button borders initially
+            toggleDeliveryMethod('Kirim ke Alamat');
+        });
+    </script>
 </body>
 </html>

@@ -8,169 +8,713 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Wireframe CSS -->
     <link rel="stylesheet" href="wireframe.css">
+    <style>
+        .details-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        @media (max-width: 992px) {
+            .details-grid { grid-template-columns: 1fr; }
+        }
+        .detail-row-item {
+            margin-bottom: 16px;
+        }
+        .detail-row-item label {
+            display: block;
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .detail-row-item span {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .detail-row-item blockquote {
+            background-color: #f8f9fa;
+            border-left: 3px solid #333;
+            padding: 10px 14px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-style: italic;
+            margin-top: 4px;
+        }
+        .item-list-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1.5px solid #333;
+        }
+        .item-list-row:last-child { border-bottom: none; }
+        .total-summary-box {
+            background-color: #f8f9fa;
+            border: 1.5px solid #333;
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Modal Bukti Pembayaran Admin */
+        .admin-proof-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.65);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .admin-proof-modal.active { display: flex; }
+        .admin-proof-modal-content {
+            background-color: #ffffff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Sidebar Admin Panel -->
     <div class="admin-sidebar" id="adminSidebar">
-        <div class="admin-logo">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: var(--admin-accent);">
-                <circle cx="9" cy="7" r="2"/>
-                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
-                <path d="M5.1 12.8 19 12"/>
-                <path d="M8.9 15.6 19 15"/>
-            </svg>
-            <span>Olin's <span>Cake</span></span>
-            <span class="wireframe-indicator">WF</span>
+        <div class="admin-logo" style="display: flex; align-items: center; text-decoration: none;">
+            <div class="wireframe-img-box" style="width: 45px; height: 45px; margin-right: 10px; border-radius: 6px !important;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                </svg>
+                <div class="wireframe-img-label" style="font-size: 0.55rem; padding: 1px 3px;">LOGO</div>
+            </div>
+            <span style="font-weight: 800; color: #111; font-size: 1.2rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
+            <span class="wireframe-indicator" style="margin-left: 8px;">WF</span>
         </div>
         
         <ul class="admin-menu">
             <li class="admin-menu-item">
-                <a href="admin_index.html">
-                    <i class="fa-solid fa-chart-line"></i> Dashboard
-                </a>
+                <a href="admin_index.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
             </li>
             <li class="admin-menu-item">
-                <a href="admin_produk.html">
-                    <i class="fa-solid fa-cookie-bite"></i> Kelola Produk
-                </a>
+                <a href="admin_produk.html"><i class="fa-solid fa-cookie-bite"></i> Kelola Produk</a>
             </li>
             <li class="admin-menu-item active">
-                <a href="admin_pesanan.html">
-                    <i class="fa-solid fa-receipt"></i> Kelola Pesanan
-                </a>
+                <a href="admin_pesanan.html"><i class="fa-solid fa-receipt"></i> Kelola Pesanan</a>
             </li>
             <li class="admin-menu-item">
-                <a href="admin_testimoni.html">
-                    <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
-                </a>
+                <a href="admin_testimoni.html"><i class="fa-solid fa-comment-dots"></i> Kelola Testimoni</a>
             </li>
             <li class="admin-menu-item">
-                <a href="admin_pengguna.html">
-                    <i class="fa-solid fa-users"></i> Kelola Pengguna
-                </a>
+                <a href="admin_pengguna.html"><i class="fa-solid fa-users"></i> Kelola Pengguna</a>
             </li>
         </ul>
 
         <div class="admin-user-profile">
             <div class="admin-avatar">AD</div>
             <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
-                <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                    Carolina Berliana
-                </span>
+                <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Carolina Berliana</span>
                 <span class="admin-profile-role">Administrator</span>
             </div>
-            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
-                <i class="fa-solid fa-right-from-bracket"></i>
+            <a href="admin_login.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 6px 12px; font-size: 0.85rem; border-radius: 6px !important; background-color: #ffffff !important; color: #111111 !important;">
+                Keluar
             </a>
         </div>
     </div>
 
     <!-- Header Mobile Hamburger -->
-    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+    <div style="background-color: #ffffff; border-bottom: 2.5px solid #333; padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
         <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: var(--admin-accent);">
-                <circle cx="9" cy="7" r="2"/>
-                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
-                <path d="M5.1 12.8 19 12"/>
-                <path d="M8.9 15.6 19 15"/>
-            </svg> Olin's Cake <span class="wireframe-indicator">WF</span>
+            <div class="wireframe-img-box" style="width: 35px; height: 35px; margin-right: 4px; border-radius: 4px !important;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                </svg>
+                <div class="wireframe-img-label" style="font-size: 0.45rem; padding: 1px 2px;">LOGO</div>
+            </div>
+            <span style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.5px;">Olin's Cake</span>
+            <span class="wireframe-indicator">WF</span>
         </div>
-        <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
+        <button class="admin-mobile-nav-toggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
             <i class="fa-solid fa-bars"></i>
         </button>
     </div>
 
-    <!-- Main Layout Container -->
+    <!-- Main Layout -->
     <div class="admin-layout">
-        <!-- Header -->
-        <div class="admin-header">
+
+        <!-- Header (matches pesanan.php L352-364) -->
+        <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <div class="admin-header-title">
                 <h1>Kelola Pesanan</h1>
-                <p>Verifikasi bukti transfer pembayaran, kelola tahapan status produksi &amp; pengiriman pre-order pelanggan.</p>
+                <p>Pantau detail transaksi masuk dan perbarui status pesanan serta pengiriman.</p>
             </div>
+            <div class="admin-header-actions" id="header-action-container"></div>
         </div>
 
-        <!-- DAFTAR TABEL PESANAN -->
-        <div class="admin-panel-card" style="background-color: var(--admin-card-bg); border-radius: var(--radius-md); border: 1px solid var(--admin-border); padding: 24px;">
-            <div class="panel-card-header" style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 1.1rem; font-weight: 700;"><i class="fa-solid fa-receipt" style="color: var(--admin-accent); margin-right: 8px;"></i> Daftar Transaksi Masuk</h3>
-                <div style="display: flex; gap: 10px;">
-                    <select class="form-control" style="width: 180px; padding: 6px 12px; font-size: 0.85rem;">
-                        <option>Semua Status</option>
-                        <option>Menunggu Pembayaran</option>
-                        <option>Menunggu Verifikasi</option>
-                        <option>Diproses</option>
-                        <option>Selesai</option>
-                    </select>
-                </div>
+        <!-- Notifikasi (matches pesanan.php L366-379) -->
+        <div id="alert-banner" style="display: none; padding: 16px; margin-bottom: 24px; align-items: center; gap: 10px; border-radius: 6px; border: 1.5px solid #333; background-color: #f8f9fa;">
+            <i class="fa-solid fa-circle-check"></i>
+            <span id="alert-message">Aksi berhasil dilakukan.</span>
+        </div>
+
+        <!-- ================================================
+             VIEW 1: DAFTAR SEMUA PESANAN (matches pesanan.php L624-696)
+             ================================================ -->
+        <div id="section-list-pesanan" class="admin-panel-card" style="padding: 24px; display: none;">
+            <div class="panel-card-header" style="margin-bottom: 20px;">
+                <h3><i class="fa-solid fa-receipt"></i> Daftar Pesanan Pre-Order</h3>
             </div>
 
-            <div class="admin-table-container" style="overflow-x: auto; width: 100%;">
-                <table class="admin-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <div class="admin-table-container">
+                <table class="admin-table" style="width: 100%;">
                     <thead>
-                        <tr style="border-bottom: 2px solid var(--admin-border); background-color: var(--admin-dark-bg);">
-                            <th style="padding: 12px;">Order ID</th>
-                            <th style="padding: 12px;">Tanggal</th>
-                            <th style="padding: 12px;">Pelanggan</th>
-                            <th style="padding: 12px;">Penerimaan</th>
-                            <th style="padding: 12px;">Total</th>
-                            <th style="padding: 12px;">Status Pesanan</th>
+                        <tr>
+                            <th style="padding: 12px;">No. Order</th>
+                            <th style="padding: 12px;">Nama Pelanggan</th>
+                            <th style="padding: 12px;">Tanggal Pemesanan</th>
+                            <th style="padding: 12px;">Tanggal Pengiriman</th>
+                            <th style="padding: 12px;">Total Bayar</th>
                             <th style="padding: 12px;">Status Bayar</th>
-                            <th style="padding: 12px; text-align: center;">Bukti</th>
-                            <th style="width: 200px; text-align: right; padding: 12px;">Aksi</th>
+                            <th style="padding: 12px;">Status Pesanan</th>
+                            <th style="padding: 12px; text-align: right;">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Row 1 -->
-                        <tr style="border-bottom: 1px solid var(--admin-border);">
-                            <td style="padding: 12px;"><strong style="font-family: var(--font-mono); color: var(--wireframe-blue);">OLN-10027</strong></td>
-                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);">27 Juni 2026<br>19:47</td>
-                            <td style="padding: 12px;">
-                                <strong>Carolina Berliana</strong>
-                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-light);">WA: 6281281062985</span>
-                            </td>
-                            <td style="padding: 12px; font-size: 0.85rem;">
-                                <strong>Kirim ke Alamat</strong>
-                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-muted);">Estimasi: 30 Juni 2026</span>
-                            </td>
-                            <td style="padding: 12px;"><strong>Rp 212.271</strong></td>
-                            <td style="padding: 12px;"><span class="badge badge-warning">Menunggu Verifikasi</span></td>
-                            <td style="padding: 12px;"><span class="badge badge-warning">Belum Lunas</span></td>
-                            <td style="padding: 12px; text-align: center;">
-                                <button type="button" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.75rem;"><i class="fa-solid fa-image"></i> Lihat</button>
-                            </td>
-                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; border-color: #28a745; color: #28a745; margin-right: 4px;" title="Verifikasi Pembayaran"><i class="fa-solid fa-check"></i> Verif</button>
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem; border-color: #dc3545; color: #dc3545; margin-right: 4px;" title="Tolak Pembayaran"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" title="Detail"><i class="fa-solid fa-eye"></i></button>
-                            </td>
-                        </tr>
-
-                        <!-- Row 2 -->
-                        <tr style="border-bottom: none;">
-                            <td style="padding: 12px;"><strong style="font-family: var(--font-mono); color: var(--admin-text-muted);">OLN-10012</strong></td>
-                            <td style="padding: 12px; font-size: 0.85rem; color: var(--admin-text-muted);">20 Juni 2026<br>10:14</td>
-                            <td style="padding: 12px;">
-                                <strong>Budi Santoso</strong>
-                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-light);">WA: 628951234567</span>
-                            </td>
-                            <td style="padding: 12px; font-size: 0.85rem;">
-                                <strong>Ambil di Toko</strong>
-                                <span style="display: block; font-size: 0.75rem; color: var(--admin-text-muted);">Estimasi: 23 Juni 2026</span>
-                            </td>
-                            <td style="padding: 12px;"><strong>Rp 92.271</strong></td>
-                            <td style="padding: 12px;"><span class="badge badge-success">Selesai</span></td>
-                            <td style="padding: 12px;"><span class="badge badge-success">Sudah Dibayar</span></td>
-                            <td style="padding: 12px; text-align: center; color: var(--admin-text-light); font-size: 0.8rem;">Sudah Diverif</td>
-                            <td style="text-align: right; padding: 12px; white-space: nowrap;">
-                                <button type="button" class="btn btn-outline" style="padding: 5px 10px; font-size: 0.8rem;" title="Detail"><i class="fa-solid fa-eye"></i> Rincian</button>
-                            </td>
-                        </tr>
+                    <tbody id="pesanan-table-body">
+                        <!-- Rendered by JS -->
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <!-- ================================================
+             VIEW 2: DETAIL PESANAN (matches pesanan.php L381-621)
+             ================================================ -->
+        <div id="section-detail-pesanan" style="display: none;">
+            <div class="details-grid">
+
+                <!-- Kolom Kiri: Rincian Produk, Pengiriman, dan Pembayaran -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+
+                    <!-- 1. Ringkasan Pengantaran (matches pesanan.php L396-453) -->
+                    <div class="admin-panel-card" style="padding: 24px;">
+                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                            <h3><i class="fa-solid fa-truck"></i> Informasi Pengantaran / Pengambilan</h3>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" id="detail-delivery-grid">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- 2. Rincian Kue Dipesan (matches pesanan.php L456-493) -->
+                    <div class="admin-panel-card" style="padding: 24px;">
+                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                            <h3><i class="fa-solid fa-basket-shopping"></i> Rincian Produk Kue</h3>
+                        </div>
+                        <div id="detail-items-list" style="display: flex; flex-direction: column; gap: 4px;">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div class="total-summary-box" id="detail-total-box">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Kolom Kanan: Pengaturan Status & Info Pembayaran -->
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+
+                    <!-- 3. Panel Update Status (matches pesanan.php L500-573) -->
+                    <div class="admin-panel-card" style="height: fit-content; padding: 24px;">
+                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                            <h3><i class="fa-solid fa-gears"></i> Kelola Status Pesanan</h3>
+                        </div>
+                        <div id="detail-status-panel">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                    <!-- 4. Detail Info Pembayaran (matches pesanan.php L576-618) -->
+                    <div class="admin-panel-card" style="height: fit-content; padding: 24px;">
+                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                            <h3><i class="fa-solid fa-wallet"></i> Bukti &amp; Metode Pembayaran</h3>
+                        </div>
+                        <div id="detail-payment-panel" style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Rendered by JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Modal Bukti Pembayaran Admin (matches pesanan.php L721-733) -->
+    <div class="admin-proof-modal" id="adminProofModal">
+        <div class="admin-proof-modal-content">
+            <h4 style="color: #111; font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1.5px solid #333; padding-bottom: 12px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fa-solid fa-receipt" style="margin-right: 6px;"></i> Bukti Transfer Pembayaran</span>
+                <button onclick="closeProofModal()" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #333; line-height: 1;">&times;</button>
+            </h4>
+            
+            <div class="wireframe-img-box" style="width: 100%; height: 250px; border-radius: 6px !important;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                </svg>
+                <div class="wireframe-img-label" style="font-size: 0.75rem; padding: 4px 8px;">BUKTI TRANSFER</div>
+            </div>
+            
+            <div style="width: 100%; display: flex; justify-content: center; margin-top: 8px;">
+                <button onclick="closeProofModal()" class="admin-btn admin-btn-secondary" style="min-width: 120px; justify-content: center; cursor: pointer;">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================
+        // SEED DATA
+        // ============================
+        const defaultOrders = [
+            {
+                id: 1,
+                kode: "OLN-10001",
+                nama_pelanggan: "Siti Rahmawati",
+                nama_penerima: "Siti Rahmawati",
+                nomor_wa: "08123456789",
+                metode_pengiriman: "Kirim ke Alamat",
+                alamat_pengiriman: "Jl. Melati No. 12, Bandung, Jawa Barat",
+                jarak_km: 4.2,
+                tanggal_pemesanan: "15/07/2026 09:30",
+                tanggal_pengiriman: "20 Jul 2026",
+                waktu_pengiriman: "09:00 - 11:00",
+                total_bayar: 250000,
+                ongkos_kirim: 20000,
+                status_pembayaran: "Sudah Dibayar",
+                status_pesanan: "Diproses",
+                catatan: "Tolong jangan terlalu manis ya",
+                metode_pembayaran: "Transfer Bank BCA",
+                batas_pembayaran: "16 Jul 2026, 09:30",
+                bukti_tersedia: true,
+                items: [
+                    { nama_produk: "Kastengel Keju", ukuran: "Toples 500 gram", jumlah: 1, harga_satuan: 120000 },
+                    { nama_produk: "Bolu Pisang", ukuran: "Diameter 20 cm", jumlah: 1, harga_satuan: 110000 }
+                ]
+            },
+            {
+                id: 2,
+                kode: "OLN-10002",
+                nama_pelanggan: "Budi Santoso",
+                nama_penerima: "Budi Santoso",
+                nomor_wa: "08198765432",
+                metode_pengiriman: "Ambil di Toko",
+                alamat_pengiriman: "Jl. Mawar No. 5, Bandung",
+                jarak_km: 0,
+                tanggal_pemesanan: "16/07/2026 14:20",
+                tanggal_pengiriman: "22 Jul 2026",
+                waktu_pengiriman: "13:00 - 15:00",
+                total_bayar: 120000,
+                ongkos_kirim: 0,
+                status_pembayaran: "Belum Dibayar",
+                status_pesanan: "Menunggu Pembayaran",
+                catatan: "",
+                metode_pembayaran: "",
+                batas_pembayaran: "17 Jul 2026, 14:20",
+                bukti_tersedia: false,
+                items: [
+                    { nama_produk: "Kastengel Keju", ukuran: "Toples 500 gram", jumlah: 1, harga_satuan: 120000 }
+                ]
+            },
+            {
+                id: 3,
+                kode: "OLN-10003",
+                nama_pelanggan: "Dewi Permata",
+                nama_penerima: "Dewi Permata",
+                nomor_wa: "08112349876",
+                metode_pengiriman: "Kirim ke Alamat",
+                alamat_pengiriman: "Jl. Dahlia Blok C No. 3, Cimahi",
+                jarak_km: 7.1,
+                tanggal_pemesanan: "14/07/2026 10:00",
+                tanggal_pengiriman: "18 Jul 2026",
+                waktu_pengiriman: "10:00 - 12:00",
+                total_bayar: 350000,
+                ongkos_kirim: 30000,
+                status_pembayaran: "Sudah Dibayar",
+                status_pesanan: "Selesai",
+                catatan: "",
+                metode_pembayaran: "Transfer Bank Mandiri",
+                batas_pembayaran: "15 Jul 2026, 10:00",
+                bukti_tersedia: true,
+                items: [
+                    { nama_produk: "Bolu Pandan", ukuran: "Diameter 20 cm", jumlah: 2, harga_satuan: 60000 },
+                    { nama_produk: "Kastengel Keju", ukuran: "Toples 500 gram", jumlah: 2, harga_satuan: 115000 }
+                ]
+            },
+            {
+                id: 4,
+                kode: "OLN-10004",
+                nama_pelanggan: "Ahmad Fauzan",
+                nama_penerima: "Ahmad Fauzan",
+                nomor_wa: "08234561234",
+                metode_pengiriman: "Ambil di Toko",
+                alamat_pengiriman: "Jl. Anggrek No. 8, Bandung",
+                jarak_km: 0,
+                tanggal_pemesanan: "17/07/2026 08:15",
+                tanggal_pengiriman: "19 Jul 2026",
+                waktu_pengiriman: "08:00 - 10:00",
+                total_bayar: 180000,
+                ongkos_kirim: 0,
+                status_pembayaran: "Belum Dibayar",
+                status_pesanan: "Kedaluwarsa",
+                catatan: "",
+                metode_pembayaran: "",
+                batas_pembayaran: "18 Jul 2026, 08:15",
+                bukti_tersedia: false,
+                items: [
+                    { nama_produk: "Bolu Tape", ukuran: "Diameter 20 cm", jumlah: 3, harga_satuan: 60000 }
+                ]
+            }
+        ];
+
+        // Badge helper (matches pesanan.php L652-663)
+        function badgePesanan(status) {
+            const map = {
+                'Menunggu Pembayaran': 'admin-badge-waiting',
+                'Menunggu Verifikasi': 'admin-badge-info',
+                'Diproses': 'admin-badge-info',
+                'Siap Dikirim': 'admin-badge-info',
+                'Siap Diambil': 'admin-badge-info',
+                'Selesai': 'admin-badge-success',
+                'Dibatalkan': 'admin-badge-danger',
+                'Kedaluwarsa': 'admin-badge-danger'
+            };
+            return `<span class="admin-badge ${map[status] || 'admin-badge-info'}">${status}</span>`;
+        }
+
+        function badgeBayar(status) {
+            const map = {
+                'Belum Dibayar': 'admin-badge-waiting',
+                'Sudah Dibayar': 'admin-badge-success',
+                'Kedaluwarsa': 'admin-badge-danger'
+            };
+            return `<span class="admin-badge ${map[status] || 'admin-badge-info'}">${status}</span>`;
+        }
+
+        function formatRp(num) {
+            return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+        // Parse URL param
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+        const viewId = parseInt(urlParams.get('id')) || null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Handle flash messages
+            const flashMsg = localStorage.getItem('wf_pesanan_flash');
+            if (flashMsg) {
+                const banner = document.getElementById('alert-banner');
+                document.getElementById('alert-message').innerText = flashMsg;
+                banner.style.display = 'flex';
+                localStorage.removeItem('wf_pesanan_flash');
+                setTimeout(() => { banner.style.display = 'none'; }, 4000);
+            }
+
+            if (action === 'view' && viewId) {
+                renderDetailView(viewId);
+            } else {
+                renderListView();
+            }
+        });
+
+        // Render orders list table (matches pesanan.php L624-696)
+        function renderListView() {
+            document.getElementById('header-action-container').innerHTML = '';
+            document.getElementById('section-list-pesanan').style.display = 'block';
+            const tbody = document.getElementById('pesanan-table-body');
+            if (defaultOrders.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#777;padding:40px 0;">Belum ada pesanan masuk.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
+            defaultOrders.forEach(o => {
+                const kwitansiBtn = o.status_pembayaran === 'Sudah Dibayar'
+                    ? `<a href="#" class="admin-btn admin-btn-primary admin-btn-sm" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;margin-right:4px;" title="Unduh Kwitansi"><i class="fa-solid fa-file-invoice"></i> Kwitansi</a>`
+                    : '';
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="padding:12px;"><strong>${o.kode}</strong></td>
+                        <td style="padding:12px;">${o.nama_pelanggan}</td>
+                        <td style="padding:12px;">${o.tanggal_pemesanan} WIB</td>
+                        <td style="padding:12px;">
+                            <span style="font-size:0.85rem;font-weight:600;display:block;">${o.tanggal_pengiriman}</span>
+                            <span style="font-size:0.75rem;color:#666;">Jam ${o.waktu_pengiriman} WIB</span>
+                        </td>
+                        <td style="padding:12px;"><strong>${formatRp(o.total_bayar)}</strong></td>
+                        <td style="padding:12px;">${badgeBayar(o.status_pembayaran)}</td>
+                        <td style="padding:12px;">${badgePesanan(o.status_pesanan)}</td>
+                        <td style="padding:12px;text-align:right;white-space:nowrap;">
+                            ${kwitansiBtn}
+                            <a href="admin_pesanan.html?action=view&id=${o.id}" class="admin-btn admin-btn-secondary admin-btn-sm" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;" title="Kelola"><i class="fa-solid fa-gears"></i> Kelola</a>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Render order detail view (matches pesanan.php L381-621)
+        function renderDetailView(id) {
+            const o = defaultOrders.find(x => x.id === id);
+            if (!o) { renderListView(); return; }
+
+            // Set back button in header (matches pesanan.php L358-362)
+            document.getElementById('header-action-container').innerHTML = `
+                <a href="admin_pesanan.html" class="admin-btn admin-btn-secondary"><i class="fa-solid fa-chevron-left"></i> Kembali ke Daftar Pesanan</a>
+            `;
+            document.getElementById('section-detail-pesanan').style.display = 'block';
+
+            // Delivery grid (matches pesanan.php L400-452)
+            const delivGrid = document.getElementById('detail-delivery-grid');
+            let delivHTML = `
+                <div class="detail-row-item">
+                    <label>Penerima</label><span>${o.nama_penerima}</span>
+                </div>
+                <div class="detail-row-item">
+                    <label>No. WhatsApp</label>
+                    <span>${o.nomor_wa} <a href="#" style="color:#333;margin-left:8px;" title="Chat WhatsApp"><i class="fa-brands fa-whatsapp"></i> Chat WhatsApp</a></span>
+                </div>
+                <div class="detail-row-item">
+                    <label>Metode Pengiriman</label><span>${o.metode_pengiriman}</span>
+                </div>
+            `;
+            if (o.metode_pengiriman === 'Kirim ke Alamat') {
+                delivHTML += `<div class="detail-row-item"><label>Jarak Pengiriman</label><span>${o.jarak_km} km</span></div>`;
+            }
+            delivHTML += `
+                <div class="detail-row-item" style="grid-column: 1 / -1;">
+                    <label>Alamat Pengiriman</label><span>${o.alamat_pengiriman}</span>
+                </div>
+            `;
+            if (o.metode_pengiriman === 'Kirim ke Alamat') {
+                delivHTML += `
+                    <div class="detail-row-item">
+                        <label>Koordinat Pelanggan</label>
+                        <span><a href="#" style="color:#333;font-weight:bold;text-decoration:underline;"><i class="fa-solid fa-map-location-dot" style="margin-right:4px;"></i>Buka di Google Maps</a></span>
+                    </div>
+                `;
+            }
+            delivHTML += `
+                <div class="detail-row-item">
+                    <label>Tanggal Pengiriman</label><span>${o.tanggal_pengiriman}</span>
+                </div>
+                <div class="detail-row-item">
+                    <label>Waktu Pengiriman</label><span>Jam ${o.waktu_pengiriman} WIB</span>
+                </div>
+            `;
+            if (o.catatan) {
+                delivHTML += `
+                    <div class="detail-row-item" style="grid-column: 1 / -1;">
+                        <label>Catatan Tambahan</label>
+                        <blockquote>"${o.catatan}"</blockquote>
+                    </div>
+                `;
+            }
+            delivGrid.innerHTML = delivHTML;
+
+            // Order Items list (matches pesanan.php L462-477)
+            const itemsList = document.getElementById('detail-items-list');
+            let itemsHTML = '';
+            o.items.forEach(it => {
+                const total_item = it.jumlah * it.harga_satuan;
+                itemsHTML += `
+                    <div class="item-list-row">
+                        <div style="display:flex;align-items:center;gap:14px;">
+                            <div class="wireframe-img-box" style="width:50px;height:50px;border-radius:6px !important;flex-shrink:0;">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                </svg>
+                                <div class="wireframe-img-label" style="font-size:0.4rem;padding:1px 2px;">KUE</div>
+                            </div>
+                            <div>
+                                <strong style="color:#111;font-size:0.95rem;">${it.nama_produk}</strong>
+                                <span style="display:block;font-size:0.75rem;color:#666;">${it.ukuran}</span>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="font-size:0.85rem;color:#666;margin-right:20px;">${it.jumlah} &times; ${formatRp(it.harga_satuan)}</span>
+                            <strong style="color:#111;">${formatRp(total_item)}</strong>
+                        </div>
+                    </div>
+                `;
+            });
+            itemsList.innerHTML = itemsHTML;
+
+            // Total Summary box (matches pesanan.php L479-492)
+            document.getElementById('detail-total-box').innerHTML = `
+                <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#666;margin-bottom:6px;">
+                    <span>Total Belanja</span><span>${formatRp(o.total_bayar - o.ongkos_kirim)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#666;margin-bottom:8px;">
+                    <span>Ongkos Kirim</span><span>${formatRp(o.ongkos_kirim)}</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.1rem;border-top:1.5px solid #333;padding-top:8px;margin-top:4px;">
+                    <span>Total Bayar</span><span style="color:#111;">${formatRp(o.total_bayar)}</span>
+                </div>
+            `;
+
+            // Status Panel (matches pesanan.php L500-573)
+            const autoStatuses = ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dibatalkan', 'Kedaluwarsa'];
+            const isAuto = autoStatuses.includes(o.status_pesanan);
+            const statusPanel = document.getElementById('detail-status-panel');
+
+            if (isAuto) {
+                statusPanel.innerHTML = `
+                    <div class="admin-form-group" style="margin-bottom:16px;">
+                        <label style="display:block;font-size:0.8rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;">Status Pesanan</label>
+                        <div style="margin-top:4px;">${badgePesanan(o.status_pesanan)}</div>
+                        <small style="display:block;margin-top:8px;font-style:italic;color:#666;">Status ini dikelola otomatis oleh sistem/aksi pelanggan dan tidak dapat diubah secara manual.</small>
+                    </div>
+                    <div class="admin-form-group">
+                        <label style="display:block;font-size:0.8rem;font-weight:700;margin-bottom:8px;text-transform:uppercase;">Status Pembayaran</label>
+                        <div style="margin-top:4px;">${badgeBayar(o.status_pembayaran)}</div>
+                    </div>
+                `;
+            } else {
+                const isKirim = o.metode_pengiriman === 'Kirim ke Alamat';
+                const statusOptions = `
+                    <option value="Diproses" ${o.status_pesanan === 'Diproses' ? 'selected' : ''}>Diproses</option>
+                    ${isKirim
+                        ? `<option value="Siap Dikirim" ${o.status_pesanan === 'Siap Dikirim' ? 'selected' : ''}>Siap Dikirim</option>`
+                        : `<option value="Siap Diambil" ${o.status_pesanan === 'Siap Diambil' ? 'selected' : ''}>Siap Diambil</option>`
+                    }
+                    <option value="Selesai" ${o.status_pesanan === 'Selesai' ? 'selected' : ''}>Selesai</option>
+                `;
+                statusPanel.innerHTML = `
+                    <form onsubmit="handleUpdateStatus(event, ${o.id})">
+                        <div class="admin-form-group" style="margin-bottom:16px;">
+                            <label for="status_pesanan" style="display:block;font-size:0.8rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Status Pesanan</label>
+                            <select id="status_pesanan" name="status_pesanan" class="admin-form-control" required>${statusOptions}</select>
+                        </div>
+                        <div class="admin-form-group" style="margin-bottom:20px;">
+                            <label style="display:block;font-size:0.8rem;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Status Pembayaran</label>
+                            <input type="text" class="admin-form-control" value="${o.status_pembayaran}" disabled style="background-color:#f8f9fa;cursor:not-allowed;">
+                            <small style="color:#666;display:block;margin-top:4px;">* Status pembayaran otomatis mengikuti status pesanan.</small>
+                        </div>
+                        <button type="submit" class="admin-btn admin-btn-primary" style="width:100%;justify-content:center;"><i class="fa-solid fa-check"></i> Perbarui Status</button>
+                    </form>
+                `;
+                if (o.status_pembayaran === 'Sudah Dibayar') {
+                    statusPanel.innerHTML += `
+                        <div style="margin-top:16px;border-top:1px dashed #aaa;padding-top:16px;">
+                            <a href="#" class="admin-btn admin-btn-primary" style="width:100%;justify-content:center;gap:8px;text-decoration:none;"><i class="fa-solid fa-file-invoice"></i> Unduh Kwitansi Pembayaran</a>
+                        </div>
+                    `;
+                }
+            }
+
+            // Payment Panel (matches pesanan.php L576-618)
+            const payPanel = document.getElementById('detail-payment-panel');
+            let payHTML = `
+                <div class="detail-row-item">
+                    <label>Metode Pembayaran</label>
+                    <span>${o.metode_pembayaran || 'Belum Memilih'}</span>
+                </div>
+                <div class="detail-row-item">
+                    <label>Batas Waktu</label>
+                    <span style="font-size:0.85rem;color:#555;"><i class="fa-regular fa-clock" style="margin-right:4px;"></i>${o.batas_pembayaran} WIB</span>
+                </div>
+            `;
+            if (o.bukti_tersedia) {
+                payHTML += `
+                    <div class="detail-row-item">
+                        <label>Bukti Transfer</label>
+                        <div style="margin-top:8px;">
+                            <a href="javascript:void(0);" onclick="openProofModal()" style="display:block;width:100%;text-align:center;border:1.5px solid #333;border-radius:6px;overflow:hidden;text-decoration:none;">
+                                <div class="wireframe-img-box" style="width:100%;height:160px;border-radius:0 !important;">
+                                    <svg xmlns="http://www.w3.org/2000/svg">
+                                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                    </svg>
+                                    <div class="wireframe-img-label" style="font-size:0.65rem;padding:2px 6px;">BUKTI TRANSFER</div>
+                                </div>
+                                <span style="display:block;background:#f8f9fa;padding:8px;font-size:0.8rem;color:#333;font-weight:700;border-top:1.5px solid #333;">
+                                    <i class="fa-solid fa-magnifying-glass"></i> Lihat Gambar Penuh
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                if (o.status_pesanan === 'Menunggu Verifikasi') {
+                    payHTML += `
+                        <div style="display:flex;gap:10px;margin-top:12px;">
+                            <button class="admin-btn admin-btn-success admin-btn-sm" style="flex:1;justify-content:center;" onclick="handleVerify(${o.id},'approve')"><i class="fa-solid fa-check"></i> Setujui</button>
+                            <button class="admin-btn admin-btn-danger admin-btn-sm" style="flex:1;justify-content:center;" onclick="handleVerify(${o.id},'reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                        </div>
+                    `;
+                }
+            } else {
+                payHTML += `
+                    <div style="display:flex;align-items:center;gap:8px;padding:12px;border:1.5px dashed #333;border-radius:6px;font-size:0.85rem;color:#555;">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        <span>Belum mengunggah bukti pembayaran.</span>
+                    </div>
+                `;
+            }
+            payPanel.innerHTML = payHTML;
+        }
+
+        function handleUpdateStatus(e, id) {
+            e.preventDefault();
+            const newStatus = document.getElementById('status_pesanan').value;
+            const o = defaultOrders.find(x => x.id === id);
+            if (o) {
+                o.status_pesanan = newStatus;
+                if (['Diproses','Siap Dikirim','Siap Diambil','Selesai'].includes(newStatus)) {
+                    o.status_pembayaran = 'Sudah Dibayar';
+                }
+                localStorage.setItem('wf_pesanan_flash', `Status pesanan ${o.kode} berhasil diperbarui menjadi "${newStatus}".`);
+                window.location.href = 'admin_pesanan.html?action=view&id=' + id;
+            }
+        }
+
+        function handleVerify(id, type) {
+            const o = defaultOrders.find(x => x.id === id);
+            if (type === 'approve' && confirm('Konfirmasi bahwa dana transfer telah masuk?')) {
+                if (o) { o.status_pesanan = 'Diproses'; o.status_pembayaran = 'Sudah Dibayar'; }
+                localStorage.setItem('wf_pesanan_flash', 'Pembayaran berhasil dikonfirmasi. Status diubah ke Diproses.');
+                window.location.href = 'admin_pesanan.html?action=view&id=' + id;
+            } else if (type === 'reject' && confirm('Tolak bukti pembayaran ini? Pelanggan harus mengunggah ulang.')) {
+                if (o) { o.status_pesanan = 'Menunggu Pembayaran'; o.status_pembayaran = 'Belum Dibayar'; o.bukti_tersedia = false; }
+                localStorage.setItem('wf_pesanan_flash', 'Bukti pembayaran ditolak. Status dikembalikan ke Menunggu Pembayaran.');
+                window.location.href = 'admin_pesanan.html?action=view&id=' + id;
+            }
+        }
+
+        function openProofModal() {
+            document.getElementById('adminProofModal').classList.add('active');
+        }
+        function closeProofModal() {
+            document.getElementById('adminProofModal').classList.remove('active');
+        }
+        // Close on backdrop click
+        document.getElementById('adminProofModal').addEventListener('click', function(e) {
+            if (e.target === this) closeProofModal();
+        });
+    </script>
 </body>
 </html>

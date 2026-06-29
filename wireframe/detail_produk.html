@@ -4,135 +4,482 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Detail Produk - Olin's Cake</title>
+    <!-- CSS imports are handled by wireframe.css -->
     <link rel="stylesheet" href="wireframe.css">
+    <!-- FontAwesome CDN to render icons exactly like the real site -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .product-detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 40px;
-            margin: 30px 0;
+        /* General High-Contrast Sketch Style matching reference images */
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
         }
-        .product-meta {
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
+
+        /* Solid Section Dividers */
+        
+        footer {
+            border-top: 2px solid #333 !important;
+            background-color: #f8f9fa !important;
+            color: #111111 !important;
+            padding: 50px 0 30px 0 !important;
         }
-        .product-price {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-main);
-            margin: 15px 0;
-        }
-        .qty-selector {
+
+
+        /* Crossed Placeholder Box for Logo in header & footer */
+        .wireframe-img-box {
+            position: relative;
+            border: 1.5px solid #333 !important;
+            background-color: #fafafa !important;
+            overflow: hidden;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin: 25px 0;
+            justify-content: center;
+            border-radius: 8px !important;
+        }
+        
+        .wireframe-img-box svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .wireframe-img-label {
+            position: relative;
+            z-index: 2;
+            background-color: #ffffff;
+            color: #111111;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        /* Detail Section Styles */
+        .detail-section {
+            padding: 130px 0 80px 0 !important;
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+        }
+
+        .detail-breadcrumb {
+            margin-bottom: 24px;
+            font-size: 0.95rem;
+            color: #555555 !important;
+        }
+        .detail-breadcrumb a {
+            color: #111111 !important;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .detail-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .profile-title-area {
+            margin-bottom: 40px;
+        }
+        .profile-title-area h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: #111111 !important;
+        }
+        .profile-title-area p {
+            color: #555555 !important;
+            font-size: 1.05rem;
+        }
+
+        /* Detail Grid Layout */
+        .detail-grid {
+            border: 1.5px solid #333 !important;
+            background-color: #ffffff !important;
+            border-radius: 8px !important;
+            box-shadow: none !important;
+            padding: 40px !important;
+        }
+
+        .detail-img-card {
+            border: 1.5px solid #333 !important;
+            border-radius: 6px !important;
+            box-shadow: none !important;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+
+        .detail-category-badge {
+            background-color: #e9ecef !important;
+            color: #111111 !important;
+            border: 1.5px solid #333 !important;
+            border-radius: 4px !important;
+            padding: 4px 10px !important;
+            font-weight: bold !important;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .best-seller-badge {
+            background: #777777 !important;
+            color: #ffffff !important;
+            border: 1.5px solid #333 !important;
+            border-radius: 4px !important;
+            padding: 4px 10px !important;
+            font-weight: bold !important;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            box-shadow: none !important;
+        }
+
+        .product-rating {
+            color: #555555 !important;
+        }
+        .product-rating .fa-star, .product-rating .fa-star-half-stroke {
+            color: #333333 !important;
+        }
+
+        .detail-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #111111 !important;
+            margin: 15px 0 10px 0;
+        }
+
+        .detail-price-box {
+            font-size: 1.85rem;
+            font-weight: 800;
+            color: #111111 !important;
+            border-bottom: 1.5px solid #333 !important;
+            padding-bottom: 12px;
+        }
+
+        .detail-spec-list {
+            background-color: #f8f9fa !important;
+            border: 1.5px solid #333 !important;
+            border-radius: 6px !important;
+            padding: 18px 24px !important;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .detail-spec-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: #111111 !important;
+        }
+        .detail-spec-item i {
+            color: #333333 !important;
+            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        .detail-spec-item strong {
+            color: #111111 !important;
+            font-weight: 600;
+        }
+
+        .detail-desc-box h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #111111 !important;
+        }
+        .detail-desc-box p {
+            color: #444444 !important;
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+
+        .preorder-notice-box {
+            background-color: #fafafa !important;
+            border: 1.5px solid #333 !important;
+            border-left: 5px solid #333 !important;
+            border-radius: 0 4px 4px 0 !important;
+            padding: 16px 20px !important;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .preorder-notice-box i {
+            color: #333333 !important;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .preorder-notice-box p {
+            color: #111111 !important;
+            font-weight: bold !important;
+            font-size: 0.92rem;
+            margin-bottom: 0;
+            line-height: 1.4;
+        }
+
+        /* Qty Selector styles */
+        .qty-selector {
+            border: 1.5px solid #333 !important;
+            border-radius: 30px !important;
+            background-color: #ffffff !important;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            overflow: hidden;
         }
         .qty-btn {
-            width: 36px;
-            height: 36px;
-            border: 1px solid var(--text-main);
-            background: transparent;
+            border: none;
+            background-color: transparent;
+            color: #111111 !important;
+            font-weight: bold;
+            width: 44px;
+            height: 100%;
             cursor: pointer;
-            font-weight: 700;
-            font-size: 1.1rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
+        .qty-btn:hover {
+            background-color: #e9ecef !important;
+        }
         .qty-input {
             width: 50px;
-            height: 36px;
+            height: 100%;
+            border: none;
+            border-left: 1.5px solid #333 !important;
+            border-right: 1.5px solid #333 !important;
             text-align: center;
-            border: 1px solid var(--border-color);
+            font-size: 1.05rem;
+            font-weight: bold;
+            color: #111111 !important;
+            outline: none;
+            background-color: transparent;
+        }
+
+        /* Detail Grid override for desktop to match style.css layout */
+        @media (min-width: 768px) {
+            .detail-grid {
+                display: grid;
+                grid-template-columns: 1.1fr 0.9fr;
+                gap: 48px;
+                align-items: start;
+            }
+        }
+
+        /* Footer Column styling */
+        .footer-col h4 {
+            font-family: 'Outfit', sans-serif !important;
+            text-transform: uppercase;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 700;
+            color: #111111 !important;
+        }
+
+        .footer-links a, .footer-col p, .footer-col {
+            color: #111111 !important;
+        }
+        .footer-links a:hover {
+            color: #555555 !important;
+            text-decoration: underline !important;
+        }
+        
+        .footer-bottom {
+            border-top: 1.5px solid #333 !important;
+            padding-top: 20px !important;
+            margin-top: 30px !important;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            color: #111111 !important;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
                 <li><a href="index.html" class="nav-link">Beranda</a></li>
                 <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
                 <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
                 <li><a href="produk.html" class="nav-link active">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link">Testimoni</a></li>
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Masuk
+                </a>
+                <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                    Daftar
+                </a>
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="produk.html">Produk</a></li>
-            <li>Detail Produk</li>
-        </ul>
-
-        <section class="product-detail-grid">
-            <!-- Left Side: Image Placeholder -->
-            <div>
-                <div class="img-placeholder" style="height: 450px;">
-                    <div class="img-placeholder-text">Kastengel Keju Large Image</div>
-                </div>
+    <!-- Detail Product Section -->
+    <section class="detail-section">
+        <div class="container">
+            
+            <!-- Breadcrumbs -->
+            <div class="detail-breadcrumb">
+                <a href="index.html">Beranda</a> <span>/</span> <a href="produk.html">Produk</a> <span>/</span> <span>Kastengel Keju</span>
             </div>
 
-            <!-- Right Side: Details -->
-            <div>
-                <div class="product-meta">
-                    <span class="badge badge-outline" style="margin-bottom: 10px;">Kue Kering</span>
-                    <h1 style="font-size: 2.2rem; margin-bottom: 10px;">Kastengel Keju</h1>
-                    <p style="color: var(--text-muted);">Dipanggang Segar &amp; Menggunakan Bahan Berkualitas</p>
-                    <div class="product-price">Rp 120.000</div>
-                </div>
+            <div class="profile-title-area">
+                <h1>Detail Produk</h1>
+                <p>Informasi detail dan spesifikasi dari Kastengel Keju.</p>
+            </div>
 
-                <div class="product-desc">
-                    <h3 style="font-size: 1.1rem; margin-bottom: 8px;">Deskripsi Kue</h3>
-                    <p style="color: var(--text-muted); text-align: justify;">
-                        Kue kering Kastengel Keju klasik premium buatan rumah. Menggunakan paduan keju edam tua impor dan cheddar berkualitas tinggi untuk menghasilkan cita rasa gurih yang kaya, asin yang pas, serta tekstur yang sangat renyah. Sempurna sebagai camilan keluarga atau hantaran hari raya.
-                    </p>
-                    <ul style="margin: 15px 0 15px 20px; color: var(--text-muted); font-size: 0.95rem;">
-                        <li>Ukuran kemasan: Toples silinder 500 gram</li>
-                        <li>Bahan utama: Premium butter, keju edam tua, cheddar, tepung pilihan</li>
-                        <li>Daya tahan: 1-2 bulan (simpan rapat di wadah kedap udara)</li>
-                    </ul>
-                </div>
-
-                <!-- Quantity Selector -->
-                <div class="qty-selector">
-                    <span class="form-label" style="margin-bottom: 0;">Jumlah Pesanan</span>
-                    <div style="display: flex; align-items: center;">
-                        <button type="button" class="qty-btn">-</button>
-                        <input type="text" class="qty-input" value="1" readonly>
-                        <button type="button" class="qty-btn">+</button>
+            <!-- Detail Grid Layout -->
+            <div class="detail-grid">
+                
+                <!-- Sisi Kiri: Foto Besar -->
+                <div class="detail-img-col">
+                    <div class="detail-img-card">
+                        <div class="wireframe-img-box" style="height: 100%; width: 100%; border-radius: 0px !important;">
+                            <svg xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                            </svg>
+                            <div class="wireframe-img-label" style="font-size: 0.85rem; padding: 4px 10px;">kastengel_keju.png</div>
+                        </div>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 15px;">
-                    <a href="keranjang.html" class="btn btn-primary" style="flex: 1; padding: 12px 20px;">
-                        Tambah ke Keranjang Belanja
-                    </a>
-                    <a href="produk.html" class="btn btn-outline">Kembali ke Katalog</a>
-                </div>
-            </div>
-        </section>
-    </main>
+                <!-- Sisi Kanan: Detail Informasi -->
+                <div class="detail-info-col">
+                    <div class="detail-tag-rating" style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <span class="detail-category-badge">Kue Kering</span>
+                        <span class="detail-category-badge best-seller-badge"><i class="fa-solid fa-fire"></i> Best Seller</span>
+                        <div class="product-rating-container" style="display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                            <div class="product-rating" style="display: inline-flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                                <span style="color: #111; font-size: 0.95rem; font-weight: 700; margin-left: 4px;">
+                                    4,8/5
+                                </span>
+                            </div>
+                            <span style="color: #ccc;">|</span>
+                            <a href="testimoni.html" style="color: #111; font-size: 0.9rem; font-weight: 600; text-decoration: underline; display: inline-flex; align-items: center; gap: 4px;">
+                                Lihat 12 Testimoni →
+                            </a>
+                        </div>
+                    </div>
 
+                    <h1 class="detail-title">Kastengel Keju</h1>
+                    
+                    <div class="detail-price-box">
+                        Rp 120.000
+                    </div>
+
+                    <!-- Spesifikasi Ukuran & Masa Simpan -->
+                    <ul class="detail-spec-list">
+                        <li class="detail-spec-item">
+                            <i class="fa-solid fa-ruler-combined"></i>
+                            <div><strong>Ukuran:</strong> Toples silinder 500 gram</div>
+                        </li>
+                        <li class="detail-spec-item">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            <div><strong>Masa Simpan:</strong> 1-2 Bulan (simpan rapat di wadah kedap udara)</div>
+                        </li>
+                    </ul>
+
+                    <div class="detail-desc-box">
+                        <h4>Deskripsi Produk:</h4>
+                        <p>Kue kering Kastengel Keju klasik premium buatan rumah. Menggunakan paduan keju edam tua impor dan cheddar berkualitas tinggi untuk menghasilkan cita rasa gurih yang kaya, asin yang pas, serta tekstur yang sangat renyah. Sempurna sebagai camilan keluarga atau hantaran hari raya.</p>
+                    </div>
+
+                    <!-- Peringatan Batas Pre-order H-3 -->
+                    <div class="preorder-notice-box">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <p>Informasi: Minimal pre-order H-3 sebelum tanggal pengiriman.</p>
+                    </div>
+
+                    <!-- Jumlah Pemesanan & Tambah Ke Keranjang -->
+                    <div class="detail-action-box">
+                        <div class="qty-selector">
+                            <button type="button" class="qty-btn" onclick="adjustQty(-1)" aria-label="Kurang Jumlah">
+                                <i class="fa-solid fa-minus"></i>
+                            </button>
+                            <input type="text" id="qty-input" name="jumlah" class="qty-input" value="1" readonly>
+                            <button type="button" class="qty-btn" onclick="adjustQty(1)" aria-label="Tambah Jumlah">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                        
+                        <a href="keranjang.html" class="btn-wireframe-filled" style="padding: 12px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                            <i class="fa-solid fa-basket-shopping" style="margin-right: 8px;"></i> Tambah ke Keranjang
+                        </a>
+                    </div>
+                </div>
+            </div> <!-- Close detail-grid -->
+        </div> <!-- Close container -->
+    </section>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.25rem; text-transform: uppercase;">
+                    <div class="wireframe-img-box" style="width: 50px; height: 50px; margin-right: 4px; border-radius: 6px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.6rem; padding: 2px 4px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p style="font-size: 0.9rem; color: #555; margin-top: 15px;">
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 10px; margin-top: 15px;">
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                    <a href="#" class="wireframe-img-box" style="width: 32px; height: 32px; border-radius: 6px !important; text-decoration: none;" aria-label="Social Link">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1" />
+                        </svg>
+                    </a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -142,20 +489,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i> carolinaberliana11@gmail.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i> Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
                 </p>
             </div>
         </div>
@@ -164,5 +514,91 @@
         </div>
     </footer>
 
+    <!-- JavaScript Interactions -->
+    <script>
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Quantity Handler
+        function adjustQty(amount) {
+            const qtyInput = document.getElementById('qty-input');
+            let currentVal = parseInt(qtyInput.value);
+            
+            if (isNaN(currentVal)) {
+                currentVal = 1;
+            }
+
+            let newVal = currentVal + amount;
+            
+            if (newVal < 1) {
+                newVal = 1;
+            }
+            
+            if (newVal > 99) {
+                newVal = 99;
+            }
+
+            qtyInput.value = newVal;
+        }
+
+        // Dynamic Header Actions based on simulated login state
+        document.addEventListener('DOMContentLoaded', () => {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+            
+            if (isLoggedIn) {
+                // Update nav-menu to match logged-in state
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link active">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                // Update actions to only show Logout button matching the real site's "Keluar" button (removing duplicate cart/dashboard)
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.setItem('wf_logged_in', 'false');
+                        window.location.href = 'index.html';
+                    });
+                }
+            } else {
+                // Logged out default
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link active">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>
