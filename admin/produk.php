@@ -11,8 +11,10 @@ $page = 'produk';
 // Ambil tab aktif (default: produk)
 $tab = isset($_GET['tab']) ? $_GET['tab'] : 'produk';
 
-$msg_success = "";
-$msg_error = "";
+$msg_success = isset($_SESSION['msg_success']) ? $_SESSION['msg_success'] : "";
+$msg_error = isset($_SESSION['msg_error']) ? $_SESSION['msg_error'] : "";
+unset($_SESSION['msg_success']);
+unset($_SESSION['msg_error']);
 
 // ==========================================
 // 1. LOGIKA CRUD KATEGORI
@@ -23,26 +25,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_kategori']
     $nama_kategori = isset($_POST['nama_kategori']) ? trim($_POST['nama_kategori']) : '';
     
     if (empty($nama_kategori)) {
-        $msg_error = "Nama kategori tidak boleh kosong.";
+        $_SESSION['msg_error'] = "Nama kategori tidak boleh kosong.";
     } else {
         // Cek duplikasi
         $check = $conn->prepare("SELECT id_kategori FROM kategori WHERE nama_kategori = ?");
         $check->bind_param("s", $nama_kategori);
         $check->execute();
         if ($check->get_result()->num_rows > 0) {
-            $msg_error = "Kategori dengan nama '$nama_kategori' sudah ada.";
+            $_SESSION['msg_error'] = "Kategori dengan nama '$nama_kategori' sudah ada.";
         } else {
             $stmt = $conn->prepare("INSERT INTO kategori (nama_kategori) VALUES (?)");
             $stmt->bind_param("s", $nama_kategori);
             if ($stmt->execute()) {
-                $msg_success = "Kategori '$nama_kategori' berhasil ditambahkan.";
+                $_SESSION['msg_success'] = "Kategori '$nama_kategori' berhasil ditambahkan.";
             } else {
-                $msg_error = "Gagal menambahkan kategori: " . $conn->error;
+                $_SESSION['msg_error'] = "Gagal menambahkan kategori: " . $conn->error;
             }
             $stmt->close();
         }
         $check->close();
     }
+    header("Location: produk.php?tab=kategori");
+    exit;
 }
 
 // B. EDIT KATEGORI
@@ -51,26 +55,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_kategori'
     $nama_kategori = isset($_POST['nama_kategori']) ? trim($_POST['nama_kategori']) : '';
     
     if ($id_kategori <= 0 || empty($nama_kategori)) {
-        $msg_error = "Data kategori tidak valid.";
+        $_SESSION['msg_error'] = "Data kategori tidak valid.";
     } else {
         // Cek duplikasi nama lain
         $check = $conn->prepare("SELECT id_kategori FROM kategori WHERE nama_kategori = ? AND id_kategori != ?");
         $check->bind_param("si", $nama_kategori, $id_kategori);
         $check->execute();
         if ($check->get_result()->num_rows > 0) {
-            $msg_error = "Kategori dengan nama '$nama_kategori' sudah ada.";
+            $_SESSION['msg_error'] = "Kategori dengan nama '$nama_kategori' sudah ada.";
         } else {
             $stmt = $conn->prepare("UPDATE kategori SET nama_kategori = ? WHERE id_kategori = ?");
             $stmt->bind_param("si", $nama_kategori, $id_kategori);
             if ($stmt->execute()) {
-                $msg_success = "Kategori berhasil diperbarui.";
+                $_SESSION['msg_success'] = "Kategori berhasil diperbarui.";
             } else {
-                $msg_error = "Gagal memperbarui kategori: " . $conn->error;
+                $_SESSION['msg_error'] = "Gagal memperbarui kategori: " . $conn->error;
             }
             $stmt->close();
         }
         $check->close();
     }
+    header("Location: produk.php?tab=kategori");
+    exit;
 }
 
 // C. HAPUS KATEGORI
@@ -89,13 +95,15 @@ if (isset($_GET['action_kategori']) && $_GET['action_kategori'] === 'delete_kate
             $prod_check->close();
             
             if ($p_count > 0) {
-                $msg_error = "Gagal menghapus! Kategori '$nama_kat' sedang digunakan oleh $p_count produk.";
+                $_SESSION['msg_error'] = "Gagal menghapus! Kategori '$nama_kat' sedang digunakan oleh $p_count produk.";
             } else {
                 $conn->query("DELETE FROM kategori WHERE id_kategori = $id_del");
-                $msg_success = "Kategori berhasil dihapus.";
+                $_SESSION['msg_success'] = "Kategori berhasil dihapus.";
             }
         }
     }
+    header("Location: produk.php?tab=kategori");
+    exit;
 }
 
 // ==========================================
@@ -111,10 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_produk']))
     $ukuran = isset($_POST['ukuran']) ? trim($_POST['ukuran']) : '';
     $masa_simpan = isset($_POST['masa_simpan']) ? trim($_POST['masa_simpan']) : '';
     
+    $redirect_url = "produk.php?tab=produk";
+    
     if (empty($nama_produk) || empty($kategori) || $harga <= 0 || empty($ukuran) || empty($masa_simpan)) {
-        $msg_error = "Harap isi semua kolom wajib.";
+        $_SESSION['msg_error'] = "Harap isi semua kolom wajib.";
+        $redirect_url = "produk.php?tab=produk&action=add";
     } elseif (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] === UPLOAD_ERR_NO_FILE) {
-        $msg_error = "Gambar produk wajib diunggah.";
+        $_SESSION['msg_error'] = "Gambar produk wajib diunggah.";
+        $redirect_url = "produk.php?tab=produk&action=add";
     } else {
         $file = $_FILES['gambar'];
         $filename = $file['name'];
@@ -123,7 +135,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_produk']))
         
         $allowed_exts = ['jpg', 'jpeg', 'png', 'webp'];
         if (!in_array($ext, $allowed_exts)) {
-            $msg_error = "Format gambar tidak valid. Hanya JPG, JPEG, PNG, dan WEBP yang diperbolehkan.";
+            $_SESSION['msg_error'] = "Format gambar tidak valid. Hanya JPG, JPEG, PNG, dan WEBP yang diperbolehkan.";
+            $redirect_url = "produk.php?tab=produk&action=add";
         } else {
             $new_filename = 'produk_' . time() . '_' . rand(100, 999) . '.' . $ext;
             $dest_path = '../assets/images/' . $new_filename;
@@ -137,17 +150,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_produk']))
                 $stmt->bind_param("ssissss", $nama_produk, $deskripsi, $harga, $new_filename, $kategori, $ukuran, $masa_simpan);
                 
                 if ($stmt->execute()) {
-                    $msg_success = "Produk '$nama_produk' berhasil ditambahkan.";
+                    $_SESSION['msg_success'] = "Produk '$nama_produk' berhasil ditambahkan.";
+                    $redirect_url = "produk.php?tab=produk";
                 } else {
-                    $msg_error = "Gagal menyimpan ke database: " . $conn->error;
+                    $_SESSION['msg_error'] = "Gagal menyimpan ke database: " . $conn->error;
                     unlink($dest_path);
+                    $redirect_url = "produk.php?tab=produk&action=add";
                 }
                 $stmt->close();
             } else {
-                $msg_error = "Gagal mengunggah gambar ke server.";
+                $_SESSION['msg_error'] = "Gagal mengunggah gambar ke server.";
+                $redirect_url = "produk.php?tab=produk&action=add";
             }
         }
     }
+    header("Location: " . $redirect_url);
+    exit;
 }
 
 // B. EDIT PRODUK
@@ -161,8 +179,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
     $masa_simpan = isset($_POST['masa_simpan']) ? trim($_POST['masa_simpan']) : '';
     $old_gambar = isset($_POST['old_gambar']) ? trim($_POST['old_gambar']) : '';
     
+    $redirect_url = "produk.php?tab=produk";
+    
     if ($id_produk <= 0 || empty($nama_produk) || empty($kategori) || $harga <= 0 || empty($ukuran) || empty($masa_simpan)) {
-        $msg_error = "Harap isi semua kolom wajib.";
+        $_SESSION['msg_error'] = "Harap isi semua kolom wajib.";
+        $redirect_url = "produk.php?tab=produk&action=edit&id=" . $id_produk;
     } else {
         $new_filename = $old_gambar;
         $upload_ok = true;
@@ -175,8 +196,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
             
             $allowed_exts = ['jpg', 'jpeg', 'png', 'webp'];
             if (!in_array($ext, $allowed_exts)) {
-                $msg_error = "Format gambar tidak valid. Hanya JPG, JPEG, PNG, dan WEBP yang diperbolehkan.";
+                $_SESSION['msg_error'] = "Format gambar tidak valid. Hanya JPG, JPEG, PNG, dan WEBP yang diperbolehkan.";
                 $upload_ok = false;
+                $redirect_url = "produk.php?tab=produk&action=edit&id=" . $id_produk;
             } else {
                 $new_filename = 'produk_' . time() . '_' . rand(100, 999) . '.' . $ext;
                 $dest_path = '../assets/images/' . $new_filename;
@@ -186,8 +208,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
                         unlink('../assets/images/' . $old_gambar);
                     }
                 } else {
-                    $msg_error = "Gagal mengunggah gambar baru ke server.";
+                    $_SESSION['msg_error'] = "Gagal mengunggah gambar baru ke server.";
                     $upload_ok = false;
+                    $redirect_url = "produk.php?tab=produk&action=edit&id=" . $id_produk;
                 }
             }
         }
@@ -197,13 +220,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
             $stmt->bind_param("ssissssi", $nama_produk, $deskripsi, $harga, $new_filename, $kategori, $ukuran, $masa_simpan, $id_produk);
             
             if ($stmt->execute()) {
-                $msg_success = "Produk berhasil diperbarui.";
+                $_SESSION['msg_success'] = "Produk berhasil diperbarui.";
+                $redirect_url = "produk.php?tab=produk";
             } else {
-                $msg_error = "Gagal memperbarui database: " . $conn->error;
+                $_SESSION['msg_error'] = "Gagal memperbarui database: " . $conn->error;
+                $redirect_url = "produk.php?tab=produk&action=edit&id=" . $id_produk;
             }
             $stmt->close();
         }
     }
+    header("Location: " . $redirect_url);
+    exit;
 }
 
 // C. HAPUS PRODUK
@@ -215,15 +242,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
             $gambar_del = $res->fetch_assoc()['gambar'];
             
             if ($conn->query("DELETE FROM produk WHERE id_produk = $id_del")) {
-                $msg_success = "Produk berhasil dihapus.";
+                $_SESSION['msg_success'] = "Produk berhasil dihapus.";
                 if (!empty($gambar_del) && file_exists('../assets/images/' . $gambar_del)) {
                     unlink('../assets/images/' . $gambar_del);
                 }
             } else {
-                $msg_error = "Gagal menghapus produk: " . $conn->error;
+                $_SESSION['msg_error'] = "Gagal menghapus produk: " . $conn->error;
             }
         }
     }
+    header("Location: produk.php?tab=produk");
+    exit;
 }
 
 // ==========================================

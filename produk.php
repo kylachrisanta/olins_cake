@@ -41,6 +41,16 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
+// Ambil daftar kategori secara dinamis dari database
+$categories = [];
+$cat_query = "SELECT DISTINCT kategori FROM produk WHERE kategori IS NOT NULL AND kategori != '' ORDER BY kategori ASC";
+$cat_result = $conn->query($cat_query);
+if ($cat_result && $cat_result->num_rows > 0) {
+    while ($cat_row = $cat_result->fetch_assoc()) {
+        $categories[] = $cat_row['kategori'];
+    }
+}
+
 // Ambil data rating rata-rata & jumlah ulasan per produk
 $product_ratings = [];
 $ratings_res = $conn->query("SELECT id_produk, AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM testimoni WHERE status = 'Aktif' AND id_produk IS NOT NULL GROUP BY id_produk");
@@ -149,12 +159,12 @@ if (!function_exists('renderStars')) {
                 </div>
             </div>
 
-            <!-- Tab Filter Kategori -->
+            <!-- Tab Filter Kategori (Dinamis dari Database) -->
             <div class="category-tabs-container">
                 <ul class="category-tabs" id="category-tabs">
-                    <li><button class="filter-btn" onclick="selectCategory('Bolu', this)">Bolu</button></li>
-                    <li><button class="filter-btn" onclick="selectCategory('Kue Kering', this)">Kue Kering</button></li>
-                    <li><button class="filter-btn" onclick="selectCategory('Kue Basah', this)">Kue Basah</button></li>
+                    <?php foreach ($categories as $cat): ?>
+                        <li><button class="filter-btn" onclick="selectCategory('<?= htmlspecialchars($cat, ENT_QUOTES) ?>', this)"><?= htmlspecialchars($cat) ?></button></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
 

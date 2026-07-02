@@ -12,37 +12,7 @@ $msg_success = "";
 $msg_error = "";
 $current_admin_id = $_SESSION['admin_id'];
 
-// 1. TAMBAH ADMINISTRATOR BARU
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_admin'])) {
-    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
-    $nama_lengkap = isset($_POST['nama_lengkap']) ? trim($_POST['nama_lengkap']) : '';
-    
-    if (empty($username) || empty($password) || empty($nama_lengkap)) {
-        $msg_error = "Semua kolom wajib diisi.";
-    } else {
-        // Cek duplikasi username
-        $check = $conn->prepare("SELECT id_admin FROM admin WHERE username = ?");
-        $check->bind_param("s", $username);
-        $check->execute();
-        if ($check->get_result()->num_rows > 0) {
-            $msg_error = "Username '$username' sudah terdaftar.";
-        } else {
-            // Hash password
-            $hashed = password_hash($password, PASSWORD_BCRYPT);
-            
-            $stmt = $conn->prepare("INSERT INTO admin (username, password, nama_lengkap) VALUES (?, ?, ?)");
-            $stmt->bind_param("sss", $username, $hashed, $nama_lengkap);
-            if ($stmt->execute()) {
-                $msg_success = "Admin '$nama_lengkap' berhasil ditambahkan.";
-            } else {
-                $msg_error = "Gagal menambahkan admin: " . $conn->error;
-            }
-            $stmt->close();
-        }
-        $check->close();
-    }
-}
+// Fitur Tambah Administrator Baru telah dihapus
 
 // 2. EDIT ADMINISTRATOR (Ubah nama / password jika diisi)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_admin'])) {
@@ -143,6 +113,17 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                 grid-template-columns: 1fr;
             }
         }
+        /* Kolom Alamat: word-wrap dan lebar fleksibel */
+        .pelanggan-table .col-alamat {
+            min-width: 220px;
+            white-space: normal;
+            word-break: break-word;
+            line-height: 1.5;
+        }
+        .pelanggan-table .col-nama   { width: 160px; white-space: nowrap; }
+        .pelanggan-table .col-user   { width: 130px; white-space: nowrap; }
+        .pelanggan-table .col-wa     { width: 160px; white-space: nowrap; }
+        .pelanggan-table .col-tgl    { width: 110px; white-space: nowrap; }
     </style>
 </head>
 <body>
@@ -175,14 +156,15 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
             </div>
         <?php endif; ?>
 
+        <!-- Baris atas: Kelola Akun Admin -->
         <div class="users-row">
             
-            <!-- Kolom Kiri: Kelola Akun Admin (CRUD) -->
+            <!-- Kolom Kiri: Form Edit Admin -->
             <div style="display: flex; flex-direction: column; gap: 24px;">
                 
-                <!-- Form input -->
-                <div class="admin-panel-card">
-                    <?php if ($edit_admin): ?>
+                <!-- Form Edit -->
+                <?php if ($edit_admin): ?>
+                    <div class="admin-panel-card">
                         <div class="panel-card-header">
                             <h3><i class="fa-solid fa-user-pen"></i> Edit Akun Admin</h3>
                         </div>
@@ -210,34 +192,8 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                                 <a href="pengguna.php" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
                             </div>
                         </form>
-                    <?php else: ?>
-                        <div class="panel-card-header">
-                            <h3><i class="fa-solid fa-user-plus"></i> Tambah Akun Admin</h3>
-                        </div>
-                        <form action="pengguna.php" method="POST">
-                            <input type="hidden" name="action_add_admin" value="1">
-                            
-                            <div class="admin-form-group">
-                                <label for="nama_lengkap">Nama Lengkap *</label>
-                                <input type="text" id="nama_lengkap" name="nama_lengkap" class="admin-form-control" placeholder="Contoh: Admin Baru" required autocomplete="off">
-                            </div>
-                            
-                            <div class="admin-form-group">
-                                <label for="username">Username *</label>
-                                <input type="text" id="username" name="username" class="admin-form-control" placeholder="Masukkan username" required autocomplete="off">
-                            </div>
-                            
-                            <div class="admin-form-group">
-                                <label for="password">Password *</label>
-                                <input type="password" id="password" name="password" class="admin-form-control" placeholder="Masukkan password" required>
-                            </div>
-                            
-                            <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
-                                <i class="fa-solid fa-floppy-disk"></i> Simpan Admin
-                            </button>
-                        </form>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
 
                 <!-- Tabel daftar admin -->
                 <div class="admin-panel-card">
@@ -285,60 +241,64 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
 
             </div>
 
-            <!-- Kolom Kanan: Lihat Daftar Pelanggan (Registered Customers) -->
-            <div class="admin-panel-card" style="height: fit-content;">
-                <div class="panel-card-header">
-                    <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan Terdaftar</h3>
-                </div>
-                
-                <div class="admin-table-container">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Nama Lengkap</th>
-                                <th>Username</th>
-                                <th>No. WhatsApp</th>
-                                <th>Alamat Lengkap</th>
-                                <th>Tgl Terdaftar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($list_pelanggan && $list_pelanggan->num_rows > 0): ?>
-                                <?php while($row = $list_pelanggan->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><strong><?= htmlspecialchars($row['nama_lengkap']) ?></strong></td>
-                                        <td><code><?= htmlspecialchars($row['nama_pengguna']) ?></code></td>
-                                        <td>
-                                            <?= htmlspecialchars($row['nomor_wa']) ?>
-                                            <?php
-                                            $wa_msg = "Halo " . htmlspecialchars($row['nama_lengkap']) . ", ini dari Olin's Cake.";
-                                            $wa_url = "https://wa.me/" . preg_replace('/[^0-9]/', '', $row['nomor_wa']) . "?text=" . urlencode($wa_msg);
-                                            ?>
-                                            <a href="<?= $wa_url ?>" target="_blank" style="color: var(--admin-success); margin-left: 4px;" title="Hubungi">
-                                                <i class="fa-brands fa-whatsapp"></i>
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.4; max-width: 200px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" title="<?= htmlspecialchars($row['alamat']) ?>">
-                                                <?= htmlspecialchars($row['alamat']) ?>
-                                            </p>
-                                        </td>
-                                        <td style="font-size: 0.8rem; color: var(--admin-text-muted);"><?= date('d/m/Y', strtotime($row['dibuat_pada'])) ?></td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="5" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">Belum ada pelanggan terdaftar saat ini.</td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Kolom Kanan: kosong / bisa dipakai ke depannya -->
+            <div></div>
+
+        </div>
+
+        <!-- Tabel Daftar Pelanggan (Full Width) -->
+        <div class="admin-panel-card" style="margin-top: 24px;">
+            <div class="panel-card-header">
+                <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan Terdaftar</h3>
             </div>
 
+            <div class="admin-table-container">
+                <table class="admin-table pelanggan-table">
+                    <thead>
+                        <tr>
+                            <th class="col-nama">Nama Lengkap</th>
+                            <th class="col-user">Username</th>
+                            <th class="col-wa">No. WhatsApp</th>
+                            <th class="col-alamat">Alamat Lengkap</th>
+                            <th class="col-tgl">Tgl Terdaftar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if ($list_pelanggan && $list_pelanggan->num_rows > 0): ?>
+                            <?php while($row = $list_pelanggan->fetch_assoc()): ?>
+                                <tr>
+                                    <td class="col-nama"><strong><?= htmlspecialchars($row['nama_lengkap']) ?></strong></td>
+                                    <td class="col-user"><code><?= htmlspecialchars($row['nama_pengguna']) ?></code></td>
+                                    <td class="col-wa">
+                                        <?= htmlspecialchars($row['nomor_wa']) ?>
+                                        <?php
+                                        $wa_msg = "Halo " . htmlspecialchars($row['nama_lengkap']) . ", ini dari Olin's Cake.";
+                                        $wa_url = "https://wa.me/" . preg_replace('/[^0-9]/', '', $row['nomor_wa']) . "?text=" . urlencode($wa_msg);
+                                        ?>
+                                        <a href="<?= $wa_url ?>" target="_blank" style="color: var(--admin-success); margin-left: 4px;" title="Hubungi">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </a>
+                                    </td>
+                                    <td class="col-alamat">
+                                        <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.5; margin: 0;">
+                                            <?= !empty($row['alamat']) ? nl2br(htmlspecialchars($row['alamat'])) : '<span style="color: var(--admin-text-light); font-style: italic;">-</span>' ?>
+                                        </p>
+                                    </td>
+                                    <td class="col-tgl" style="font-size: 0.8rem; color: var(--admin-text-muted);"><?= date('d/m/Y', strtotime($row['dibuat_pada'])) ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">Belum ada pelanggan terdaftar saat ini.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
 
 </body>
 </html>
+

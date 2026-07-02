@@ -354,10 +354,13 @@ if (count($checkout_items) === 0) {
                                         <div class="item-name-qty">
                                             <span class="name"><?= htmlspecialchars($item['nama_produk']) ?></span>
                                             <span class="spec">Ukuran: <?= htmlspecialchars($item['ukuran']) ?></span>
-                                            <span class="qty">Jumlah: <strong><?= $item['jumlah'] ?>x</strong></span>
+                                            <span class="qty" style="font-size: 0.85rem; color: var(--text-muted); display: block; margin-top: 4px;">
+                                                Rp <?= number_format($item['harga'], 0, ',', '.') ?> &times; <?= $item['jumlah'] ?>
+                                            </span>
                                         </div>
-                                        <div class="item-sub">
-                                            Rp <?= number_format($item['harga'] * $item['jumlah'], 0, ',', '.') ?>
+                                        <div class="item-sub" style="text-align: right; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;">
+                                            <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal; margin-bottom: 2px;">Subtotal</span>
+                                            <strong style="font-weight: 700; color: var(--spiced-wine);">Rp <?= number_format($item['harga'] * $item['jumlah'], 0, ',', '.') ?></strong>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -455,9 +458,6 @@ if (count($checkout_items) === 0) {
     </footer>
 
     <!-- JavaScript Handling -->
-    <!-- Google Maps API and Libraries -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc&libraries=places,geometry&callback=initMap" async defer></script>
-
     <script>
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menu-toggle');
@@ -474,6 +474,7 @@ if (count($checkout_items) === 0) {
         let isLocationConfirmed = false;
 
         // Google Maps Variables
+        let mapLoaded = false;
         let map;
         let storeMarker;
         let customerMarker;
@@ -487,13 +488,15 @@ if (count($checkout_items) === 0) {
 
         // Initialize Map
         function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: storeLatLng,
-                zoom: 13,
-                mapTypeControl: false,
-                streetViewControl: false,
-                fullscreenControl: true
-            });
+            try {
+                mapLoaded = true;
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: storeLatLng,
+                    zoom: 13,
+                    mapTypeControl: false,
+                    streetViewControl: false,
+                    fullscreenControl: true
+                });
 
             // Store Marker
             storeMarker = new google.maps.Marker({
@@ -594,7 +597,11 @@ if (count($checkout_items) === 0) {
             
             // Initial call if delivery method requires it
             toggleDeliveryMethod(selectedMetode);
+        } catch (e) {
+            console.error("Gagal menginisialisasi peta:", e);
+            handleMapLoadError();
         }
+    }
 
         // ── Handler Terpadu: Saat Tempat Dipilih dari Autocomplete ────────────
         function handlePlaceSelected(place) {
@@ -983,6 +990,54 @@ if (count($checkout_items) === 0) {
                 alert("Minimal pemesanan adalah H-3 sebelum tanggal pengiriman. Silakan pilih tanggal lain.");
                 document.getElementById('tanggal_pengiriman').value = '';
             }
+        }
+
+        // Penanganan error jika Google Maps gagal dimuat
+        function handleMapLoadError() {
+            const mapDiv = document.getElementById('map');
+            if (mapDiv) {
+                mapDiv.innerHTML = `
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; text-align: center; background: #fff5f5; color: #c53030; border-radius: 8px; border: 1px solid #feb2b2; box-sizing: border-box;">
+                        <i class="fa-solid fa-circle-exclamation" style="font-size: 2.2rem; margin-bottom: 12px; color: #e53e3e;"></i>
+                        <strong style="font-size: 1.05rem; margin-bottom: 6px;">Gagal Memuat Peta</strong>
+                        <p style="font-size: 0.85rem; margin: 0 0 14px 0; color: #9b2c2c; line-height: 1.4;">Koneksi lambat atau terputus. Google Maps tidak dapat dimuat secara sempurna.</p>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="location.reload()" style="font-weight: bold; font-size: 0.8rem; padding: 8px 16px; border-radius: 6px; background-color: var(--spiced-wine); border-color: var(--spiced-wine); color: white; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; border: none; outline: none;">
+                            <i class="fa-solid fa-rotate-right"></i> Coba Lagi
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Memuat Google Maps secara dinamis untuk mencegah race condition
+        function loadGoogleMaps() {
+            // Set timeout 10 detik. Jika dalam 10 detik mapLoaded masih false, tampilkan error.
+            setTimeout(() => {
+                if (!mapLoaded) {
+                    handleMapLoadError();
+                }
+            }, 10000);
+
+            if (window.google && window.google.maps) {
+                initMap();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBnSaMaGbbQGbP_JB78HYxlxi9P1pPXwbc&libraries=places,geometry&callback=initMap";
+            script.async = true;
+            script.defer = true;
+            script.onerror = function() {
+                handleMapLoadError();
+            };
+            document.body.appendChild(script);
+        }
+
+        // Jalankan inisialisasi peta setelah seluruh elemen halaman selesai dimuat
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadGoogleMaps);
+        } else {
+            loadGoogleMaps();
         }
     </script>
 </body>

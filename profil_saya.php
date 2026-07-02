@@ -19,7 +19,6 @@ $pesan_error = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_lengkap = trim($_POST['nama_lengkap']);
     $nomor_wa = trim($_POST['nomor_wa']);
-    $alamat = trim($_POST['alamat']);
     $kata_sandi_baru = $_POST['kata_sandi_baru'];
     $konfirmasi_sandi = $_POST['konfirmasi_sandi'];
     $hapus_foto = isset($_POST['hapus_foto']) ? (int)$_POST['hapus_foto'] : 0;
@@ -110,12 +109,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($pesan_error)) {
                 if ($update_password) {
                     // Update dengan kata sandi baru
-                    $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, alamat = ?, kata_sandi = ?, foto_profil = ? WHERE id_pelanggan = ?");
-                    $stmt->bind_param("sssssi", $nama_lengkap, $nomor_wa, $alamat, $hashed_password, $foto_profil_new, $id_pelanggan);
+                    $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, kata_sandi = ?, foto_profil = ? WHERE id_pelanggan = ?");
+                    $stmt->bind_param("ssssi", $nama_lengkap, $nomor_wa, $hashed_password, $foto_profil_new, $id_pelanggan);
                 } else {
                     // Update tanpa ganti kata sandi
-                    $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, alamat = ?, foto_profil = ? WHERE id_pelanggan = ?");
-                    $stmt->bind_param("ssssi", $nama_lengkap, $nomor_wa, $alamat, $foto_profil_new, $id_pelanggan);
+                    $stmt = $conn->prepare("UPDATE pelanggan SET nama_lengkap = ?, nomor_wa = ?, foto_profil = ? WHERE id_pelanggan = ?");
+                    $stmt->bind_param("sssi", $nama_lengkap, $nomor_wa, $foto_profil_new, $id_pelanggan);
                 }
 
                 if ($stmt->execute()) {
@@ -189,7 +188,7 @@ $stmt->close();
             
             <div class="profile-title-area">
                 <h1>Profil Saya</h1>
-                <p>Kelola detail kontak pribadi dan alamat pengiriman default Anda.</p>
+                <p>Kelola detail kontak pribadi Anda.</p>
             </div>
 
             <div class="profile-grid">
@@ -210,10 +209,6 @@ $stmt->close();
                         <div class="info-row">
                             <span><i class="fa-solid fa-whatsapp text-success"></i> WhatsApp:</span>
                             <strong><?= htmlspecialchars($user['nomor_wa']) ?></strong>
-                        </div>
-                        <div class="info-row">
-                            <span><i class="fa-solid fa-map-location-dot"></i> Alamat Default:</span>
-                            <span class="addr-text"><?= !empty($user['alamat']) ? htmlspecialchars($user['alamat']) : '-' ?></span>
                         </div>
                     </div>
                 </div>
@@ -259,10 +254,6 @@ $stmt->close();
                                     <input type="text" id="nomor_wa" name="nomor_wa" class="contact-form-control" value="<?= htmlspecialchars($user['nomor_wa']) ?>" placeholder="Contoh: 6281234567890" required>
                                 </div>
 
-                                <div class="contact-form-group" style="margin-top: 16px;">
-                                    <label for="alamat">Alamat Pengiriman Default <span class="text-muted">(Untuk mempermudah checkout)</span></label>
-                                    <textarea id="alamat" name="alamat" class="contact-form-control" rows="3" placeholder="Masukkan alamat lengkap rumah Anda untuk pengantaran kue"><?= htmlspecialchars($user['alamat']) ?></textarea>
-                                </div>
 
                                 <div class="contact-form-group" style="margin-top: 16px;">
                                     <label for="foto_profil">Foto Profil <span class="text-muted">(Format: JPG, JPEG, PNG. Maks: 2MB)</span></label>

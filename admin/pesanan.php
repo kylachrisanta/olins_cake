@@ -242,7 +242,7 @@ $list_pesanan = $conn->query($query_all);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelola Pesanan - Olin's Cake</title>
+    <title><?= $view_order ? 'Detail Pesanan' : 'Kelola Pesanan' ?> - Olin's Cake</title>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
@@ -351,7 +351,7 @@ $list_pesanan = $conn->query($query_all);
         <!-- Header -->
         <div class="admin-header">
             <div class="admin-header-title">
-                <h1>Kelola Pesanan</h1>
+                <h1><?= $view_order ? 'Detail Pesanan' : 'Kelola Pesanan' ?></h1>
                 <p>Pantau detail transaksi masuk dan perbarui status pesanan serta pengiriman.</p>
             </div>
             <div class="admin-header-actions">
