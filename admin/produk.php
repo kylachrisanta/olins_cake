@@ -292,6 +292,43 @@ if (isset($_GET['action']) && $_GET['action'] === 'pulihkan') {
 }
 
 // ==========================================
+// 3. LOGIKA KELOLA TESTIMONI
+// ==========================================
+
+// E. TOGGLE STATUS TESTIMONI (Aktif / Nonaktif)
+if (isset($_GET['action']) && $_GET['action'] === 'toggle_testi') {
+    $id_toggle = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    if ($id_toggle > 0) {
+        $res = $conn->query("SELECT status FROM testimoni WHERE id_testimoni = $id_toggle");
+        if ($res && $res->num_rows > 0) {
+            $curr_status = $res->fetch_assoc()['status'];
+            $new_status = ($curr_status === 'Aktif') ? 'Nonaktif' : 'Aktif';
+            if ($conn->query("UPDATE testimoni SET status = '$new_status' WHERE id_testimoni = $id_toggle")) {
+                $_SESSION['msg_success'] = "Status testimoni berhasil diubah menjadi '$new_status'.";
+            } else {
+                $_SESSION['msg_error'] = "Gagal mengubah status: " . $conn->error;
+            }
+        }
+    }
+    header("Location: produk.php?tab=testimoni");
+    exit;
+}
+
+// F. HAPUS TESTIMONI
+if (isset($_GET['action']) && $_GET['action'] === 'delete_testi') {
+    $id_del_testi = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    if ($id_del_testi > 0) {
+        if ($conn->query("DELETE FROM testimoni WHERE id_testimoni = $id_del_testi")) {
+            $_SESSION['msg_success'] = "Testimoni berhasil dihapus.";
+        } else {
+            $_SESSION['msg_error'] = "Gagal menghapus testimoni: " . $conn->error;
+        }
+    }
+    header("Location: produk.php?tab=testimoni");
+    exit;
+}
+
+// ==========================================
 // 3. AMBIL DATA DARI DATABASE
 // ==========================================
 
@@ -335,6 +372,38 @@ $list_produk = $conn->query("
     FROM produk p
     ORDER BY p.status_produk ASC, p.dibuat_pada DESC
 ");
+
+// ==========================================
+// 4. AMBIL DATA TESTIMONI (dikelompokkan per produk)
+// ==========================================
+$grouped_testi = [];
+if ($tab === 'testimoni') {
+    $query_testi = "SELECT t.*, p.nama_produk, p.gambar AS gambar_produk, p.kategori, pl.foto_profil 
+                    FROM testimoni t 
+                    LEFT JOIN produk p ON t.id_produk = p.id_produk 
+                    LEFT JOIN pelanggan pl ON t.id_pelanggan = pl.id_pelanggan 
+                    ORDER BY (p.id_produk IS NULL) ASC, p.nama_produk ASC, t.dibuat_pada DESC";
+    $list_testi = $conn->query($query_testi);
+    if ($list_testi) {
+        while ($row = $list_testi->fetch_assoc()) {
+            $prod_key = $row['id_produk'] ?? 0;
+            if (!isset($grouped_testi[$prod_key])) {
+                $grouped_testi[$prod_key] = [
+                    'id_produk'     => $prod_key,
+                    'nama_produk'   => $row['nama_produk'] ?? 'Testimoni Umum',
+                    'gambar_produk' => $row['gambar_produk'] ?? '',
+                    'kategori'      => $row['kategori'] ?? 'Lainnya',
+                    'testimoni'     => [],
+                    'total_rating'  => 0,
+                    'count_testimoni' => 0
+                ];
+            }
+            $grouped_testi[$prod_key]['testimoni'][] = $row;
+            $grouped_testi[$prod_key]['total_rating'] += $row['rating'];
+            $grouped_testi[$prod_key]['count_testimoni']++;
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -480,6 +549,9 @@ $list_produk = $conn->query("
             </a>
             <a href="produk.php?tab=kategori" class="tab-btn <?= $tab === 'kategori' ? 'active' : '' ?>">
                 <i class="fa-solid fa-tags"></i> Kategori Produk
+            </a>
+            <a href="produk.php?tab=testimoni" class="tab-btn <?= $tab === 'testimoni' ? 'active' : '' ?>">
+                <i class="fa-solid fa-comment-dots"></i> Ulasan & Testimoni
             </a>
         </div>
 
@@ -809,6 +881,126 @@ $list_produk = $conn->query("
                 </div>
 
             </div>
+
+
+        <!-- ======================================================= -->
+        <!-- TAB 3: KELOLA TESTIMONI -->
+        <!-- ======================================================= -->
+        <?php elseif ($tab === 'testimoni'): ?>
+
+            <?php if (!empty($grouped_testi)): ?>
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <?php foreach ($grouped_testi as $group): ?>
+                        <div class="admin-panel-card">
+                            <!-- Header per Produk -->
+                            <div class="panel-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; padding: 15px 20px;">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <?php if (!empty($group['gambar_produk']) && file_exists('../assets/images/' . $group['gambar_produk'])): ?>
+                                        <img src="../assets/images/<?= htmlspecialchars($group['gambar_produk']) ?>" alt="<?= htmlspecialchars($group['nama_produk']) ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--admin-border);">
+                                    <?php else: ?>
+                                        <div style="width: 50px; height: 50px; background-color: rgba(210,179,140,0.1); color: var(--admin-accent); display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); border: 1px solid var(--admin-border);">
+                                            <i class="fa-solid fa-cookie-bite" style="font-size: 1.4rem;"></i>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div>
+                                        <h3 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: var(--admin-accent);"><?= htmlspecialchars($group['nama_produk']) ?></h3>
+                                        <span class="admin-badge admin-badge-info" style="margin-top: 5px; font-size: 0.7rem;"><?= htmlspecialchars($group['kategori']) ?></span>
+                                    </div>
+                                </div>
+                                <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                    <span style="font-size: 0.85rem; color: var(--admin-text-muted);">Ulasan: <strong><?= $group['count_testimoni'] ?></strong></span>
+                                    <?php if ($group['count_testimoni'] > 0): ?>
+                                        <?php $avg = $group['total_rating'] / $group['count_testimoni']; ?>
+                                        <div style="color: #ffc107; font-size: 0.85rem; display: flex; align-items: center; gap: 4px;">
+                                            <?php for ($i = 1; $i <= 5; $i++) echo $i <= round($avg) ? '<i class="fa-solid fa-star"></i>' : '<i class="fa-regular fa-star"></i>'; ?>
+                                            <strong style="color: var(--admin-text-main); margin-left: 2px;"><?= number_format($avg, 1) ?></strong>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <!-- Tabel Ulasan -->
+                            <div class="admin-table-container">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 55px;">Foto</th>
+                                            <th style="width: 180px;">Pelanggan</th>
+                                            <th style="width: 110px;">Rating</th>
+                                            <th>Ulasan</th>
+                                            <th style="width: 140px;">Tanggal</th>
+                                            <th style="width: 95px;">Status</th>
+                                            <th style="width: 210px; text-align: right;">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($group['testimoni'] as $testi): ?>
+                                            <tr>
+                                                <td>
+                                                    <?php if (!empty($testi['foto_profil']) && file_exists('../assets/uploads/profil/' . $testi['foto_profil'])): ?>
+                                                        <img src="../assets/uploads/profil/<?= htmlspecialchars($testi['foto_profil']) ?>" alt="" style="width: 38px; height: 38px; object-fit: cover; border-radius: 50%; border: 1px solid var(--admin-border);">
+                                                    <?php else: ?>
+                                                        <div style="width: 38px; height: 38px; background-color: var(--admin-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; color: var(--admin-text-main);">
+                                                            <?= strtoupper(substr($testi['nama_lengkap'] ?? 'U', 0, 1)) ?>
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <strong><?= htmlspecialchars($testi['nama_lengkap']) ?></strong>
+                                                    <?php if (!empty($testi['pekerjaan'])): ?>
+                                                        <p style="font-size: 0.75rem; color: var(--admin-text-muted); margin: 2px 0 0;"><?= htmlspecialchars($testi['pekerjaan']) ?></p>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <div style="color: #ffc107; font-size: 0.8rem;">
+                                                        <?php for ($i = 1; $i <= 5; $i++) echo '<i class="' . ($i <= $testi['rating'] ? 'fa-solid' : 'fa-regular') . ' fa-star"></i>'; ?>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.45; margin: 0;">
+                                                        "<?= htmlspecialchars($testi['isi_testimoni']) ?>"
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <span style="font-size: 0.8rem; color: var(--admin-text-muted);">
+                                                        <?= date('d/m/Y H:i', strtotime($testi['dibuat_pada'])) ?> WIB
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="admin-badge <?= $testi['status'] === 'Aktif' ? 'admin-badge-success' : 'admin-badge-danger' ?>">
+                                                        <?= htmlspecialchars($testi['status']) ?>
+                                                    </span>
+                                                </td>
+                                                <td style="white-space: nowrap;">
+                                                    <div style="display: flex; gap: 6px; justify-content: flex-end;">
+                                                        <?php if ($testi['status'] === 'Aktif'): ?>
+                                                            <a href="produk.php?tab=testimoni&action=toggle_testi&id=<?= $testi['id_testimoni'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" title="Nonaktifkan">
+                                                                <i class="fa-solid fa-ban"></i> Nonaktifkan
+                                                            </a>
+                                                        <?php else: ?>
+                                                            <a href="produk.php?tab=testimoni&action=toggle_testi&id=<?= $testi['id_testimoni'] ?>" class="admin-btn admin-btn-restore admin-btn-sm" title="Aktifkan">
+                                                                <i class="fa-solid fa-check"></i> Aktifkan
+                                                            </a>
+                                                        <?php endif; ?>
+                                                        <a href="produk.php?tab=testimoni&action=delete_testi&id=<?= $testi['id_testimoni'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="return confirm('Hapus ulasan ini secara permanen?')">
+                                                            <i class="fa-solid fa-trash"></i> Hapus
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="admin-panel-card" style="padding: 50px; text-align: center; color: var(--admin-text-light);">
+                    <i class="fa-solid fa-comments-slash" style="font-size: 3rem; margin-bottom: 16px; color: var(--admin-border); display: block;"></i>
+                    <p>Belum ada ulasan testimoni dari pelanggan.</p>
+                </div>
+            <?php endif; ?>
 
         <?php endif; ?>
 

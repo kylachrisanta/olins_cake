@@ -37,14 +37,9 @@ $current_page = isset($page) ? $page : 'dashboard';
             </a>
         </li>
 
-        <li class="admin-menu-item <?= $current_page === 'testimoni' ? 'active' : '' ?>">
-            <a href="testimoni.php">
-                <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
-            </a>
-        </li>
         <li class="admin-menu-item <?= $current_page === 'pengguna' ? 'active' : '' ?>">
             <a href="pengguna.php">
-                <i class="fa-solid fa-users"></i> Kelola Pengguna
+                <i class="fa-solid fa-users"></i> Daftar Pengguna
             </a>
         </li>
     </ul>

@@ -41,13 +41,17 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Ambil daftar kategori secara dinamis dari database (hanya produk Aktif)
+// Ambil daftar kategori dari tabel kategori yang memiliki minimal 1 produk Aktif
 $categories = [];
-$cat_query = "SELECT DISTINCT kategori FROM produk WHERE status_produk = 'Aktif' AND kategori IS NOT NULL AND kategori != '' ORDER BY kategori ASC";
+$cat_query = "SELECT k.nama_kategori 
+              FROM kategori k
+              INNER JOIN produk p ON p.kategori = k.nama_kategori AND p.status_produk = 'Aktif'
+              GROUP BY k.nama_kategori
+              ORDER BY k.nama_kategori ASC";
 $cat_result = $conn->query($cat_query);
 if ($cat_result && $cat_result->num_rows > 0) {
     while ($cat_row = $cat_result->fetch_assoc()) {
-        $categories[] = $cat_row['kategori'];
+        $categories[] = $cat_row['nama_kategori'];
     }
 }
 

@@ -117,7 +117,7 @@ $stmt->close();
         <div class="container">
             
             <div class="orders-title-area">
-                <h1>Pesanan Saya</h1>
+                <h1>Riwayat Pesanan</h1>
                 <p>Pantau status pre-order kue lezat Anda secara berkala.</p>
             </div>
 

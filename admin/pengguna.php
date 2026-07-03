@@ -198,7 +198,7 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                 <!-- Tabel daftar admin -->
                 <div class="admin-panel-card">
                     <div class="panel-card-header">
-                        <h3><i class="fa-solid fa-user-shield"></i> Daftar Administrator</h3>
+                        <h3><i class="fa-solid fa-user-shield"></i> Daftar Admin</h3>
                     </div>
                     
                     <div class="admin-table-container">
@@ -249,7 +249,7 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
         <!-- Tabel Daftar Pelanggan (Full Width) -->
         <div class="admin-panel-card" style="margin-top: 24px;">
             <div class="panel-card-header">
-                <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan Terdaftar</h3>
+                <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan</h3>
             </div>
 
             <div class="admin-table-container">
