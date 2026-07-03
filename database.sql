@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `produk` (
   `kategori` ENUM('Bolu', 'Kue Kering', 'Kue Basah') NOT NULL,
   `ukuran` VARCHAR(50) NOT NULL,
   `masa_simpan` VARCHAR(100) NOT NULL,
+  `status_produk` ENUM('Aktif', 'Diarsipkan') NOT NULL DEFAULT 'Aktif',
   `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -103,3 +104,7 @@ CREATE TABLE IF NOT EXISTS `detail_pesanan` (
   FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- Migrasi: Tambahkan kolom status_produk pada tabel produk (jalankan sekali pada database yang sudah ada)
+ALTER TABLE `produk` 
+  ADD COLUMN IF NOT EXISTS `status_produk` ENUM('Aktif','Diarsipkan') NOT NULL DEFAULT 'Aktif'
+  AFTER `masa_simpan`;

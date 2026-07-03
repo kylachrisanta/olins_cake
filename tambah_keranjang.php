@@ -22,6 +22,23 @@ if ($id_produk <= 0 || $jumlah <= 0) {
     exit;
 }
 
+// Validasi: pastikan produk masih aktif (belum diarsipkan)
+$cek_status = $conn->prepare("SELECT status_produk FROM produk WHERE id_produk = ?");
+$cek_status->bind_param("i", $id_produk);
+$cek_status->execute();
+$res_status = $cek_status->get_result();
+if ($res_status->num_rows === 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Produk tidak ditemukan.']);
+    $cek_status->close();
+    exit;
+}
+$status_produk = $res_status->fetch_assoc()['status_produk'];
+$cek_status->close();
+if ($status_produk !== 'Aktif') {
+    echo json_encode(['status' => 'error', 'message' => 'Produk ini sudah tidak tersedia dan tidak dapat ditambahkan ke keranjang.']);
+    exit;
+}
+
 // Cek apakah produk sudah ada di keranjang belanja pelanggan tersebut
 $stmt = $conn->prepare("SELECT id_keranjang, jumlah FROM keranjang WHERE id_pelanggan = ? AND id_produk = ?");
 $stmt->bind_param("ii", $id_pelanggan, $id_produk);

@@ -31,8 +31,8 @@ foreach ($fallback_ids as $fid) {
     }
 }
 
-// Ambil semua produk dari database
-$query = "SELECT * FROM produk ORDER BY kategori ASC, nama_produk ASC";
+// Ambil semua produk dari database (hanya yang Aktif)
+$query = "SELECT * FROM produk WHERE status_produk = 'Aktif' ORDER BY kategori ASC, nama_produk ASC";
 $result = $conn->query($query);
 $products = [];
 if ($result && $result->num_rows > 0) {
@@ -41,9 +41,9 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Ambil daftar kategori secara dinamis dari database
+// Ambil daftar kategori secara dinamis dari database (hanya produk Aktif)
 $categories = [];
-$cat_query = "SELECT DISTINCT kategori FROM produk WHERE kategori IS NOT NULL AND kategori != '' ORDER BY kategori ASC";
+$cat_query = "SELECT DISTINCT kategori FROM produk WHERE status_produk = 'Aktif' AND kategori IS NOT NULL AND kategori != '' ORDER BY kategori ASC";
 $cat_result = $conn->query($cat_query);
 if ($cat_result && $cat_result->num_rows > 0) {
     while ($cat_row = $cat_result->fetch_assoc()) {

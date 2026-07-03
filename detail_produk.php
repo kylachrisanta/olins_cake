@@ -34,10 +34,10 @@ foreach ($fallback_ids as $fid) {
 // Ambil ID Produk dari URL
 $id_produk = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
-// Ambil data produk detail
+// Ambil data produk detail (hanya yang Aktif)
 $product = null;
 if ($id_produk > 0) {
-    $stmt = $conn->prepare("SELECT * FROM produk WHERE id_produk = ?");
+    $stmt = $conn->prepare("SELECT * FROM produk WHERE id_produk = ? AND status_produk = 'Aktif'");
     $stmt->bind_param("i", $id_produk);
     $stmt->execute();
     $result = $stmt->get_result();
