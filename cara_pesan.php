@@ -413,7 +413,7 @@ require_once 'config/database.php';
                         <span class="material-symbols-outlined icon" style="font-variation-settings: 'FILL' 1;">pin_drop</span>
                         <h3>Checkout</h3>
                     </div>
-                    <p class="step-desc">Lengkapi detail pengiriman Anda. Harap diperhatikan, minimal pre-order adalah H-3 sebelum tanggal pengiriman.</p>
+                    <p class="step-desc">Lengkapi detail pengiriman Anda. Harap diperhatikan, minimal pre-order adalah H-3 sebelum tanggal pengiriman dan batas kuantitas kue tiap hari adalah 5 pcs.</p>
                 </div>
             </div>
 
@@ -455,7 +455,7 @@ require_once 'config/database.php';
                         <span class="material-symbols-outlined icon" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
                         <h3>Dikirim/Ambil ke Toko</h3>
                     </div>
-                    <p class="step-desc">Pilih pesanan Anda diantar langsung secara aman ke alamat tujuan atau diambil langsung di toko resmi kami.</p>
+                    <p class="step-desc">Pilih pesanan Anda diantar langsung secara aman ke alamat tujuan atau diambil langsung di toko resmi kami. Jangan lupa untuk tunjukkan kwitansi pembayaran.</p>
                 </div>
             </div>
         </div>

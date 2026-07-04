@@ -109,6 +109,90 @@ if (count($checkout_items) === 0) {
         body {
             overflow-x: clip !important;
         }
+
+        /* ── Custom Confirm Modal Styling ── */
+        .confirm-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(68, 45, 28, 0.45);
+            backdrop-filter: blur(4px);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .confirm-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .confirm-modal-content {
+            background-color: #ffffff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 480px;
+            padding: 24px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(139, 69, 19, 0.1);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            box-sizing: border-box;
+        }
+        .confirm-modal-overlay.active .confirm-modal-content {
+            transform: translateY(0);
+        }
+        .confirm-modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .confirm-modal-header h2 {
+            font-size: 1.3rem;
+            color: var(--cowhide-cocoa, #4e2e1e);
+            margin: 10px 0 0 0;
+            font-weight: 700;
+        }
+        .confirm-summary-box {
+            background-color: var(--warm-bg, #fdf8f4);
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid #f2dfcc;
+            box-sizing: border-box;
+        }
+        .confirm-summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .confirm-summary-row:last-child {
+            margin-bottom: 0;
+        }
+        .confirm-summary-row .label {
+            color: var(--text-muted, #7c7c7c);
+            flex-shrink: 0;
+            margin-right: 15px;
+        }
+        .confirm-summary-row strong {
+            color: var(--cowhide-cocoa, #4e2e1e);
+            text-align: right;
+            word-break: break-word;
+        }
+        .confirm-modal-footer {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .confirm-modal-footer button {
+            cursor: pointer;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -474,6 +558,7 @@ if (count($checkout_items) === 0) {
         let currentOngkir = 0;
         let isLocationConfirmed = false;
         let isCapacityValid = false;
+        let userConfirmed = false;
         const itemsStr = "<?= htmlspecialchars($items_str) ?>";
 
         // Google Maps Variables
@@ -963,13 +1048,84 @@ if (count($checkout_items) === 0) {
             updateFormState(false);
         });
 
-        // Form submit handler to double check capacity validation
+        // Form submit handler to double check capacity validation & show confirm modal
         document.getElementById('checkout-form').addEventListener('submit', (e) => {
             if (!isCapacityValid) {
                 e.preventDefault();
                 alert("Maaf, kapasitas pesanan untuk tanggal pengiriman yang dipilih telah penuh. Silakan pilih tanggal pengiriman lain atau kurangi jumlah produk yang dipesan.");
+                return;
+            }
+
+            if (!userConfirmed) {
+                e.preventDefault();
+
+                // Isi data ke modal secara dinamis
+                document.getElementById('confirm-penerima').innerText = document.getElementById('nama_penerima').value.trim();
+                document.getElementById('confirm-wa').innerText = document.getElementById('nomor_wa').value.trim();
+                
+                const metodeRadio = document.querySelector('input[name="metode_pengiriman"]:checked');
+                const metode = metodeRadio ? metodeRadio.value : '';
+                document.getElementById('confirm-metode').innerText = metode;
+                
+                const alamatRow = document.getElementById('confirm-alamat-row');
+                if (metode === 'Kirim ke Alamat') {
+                    document.getElementById('confirm-alamat').innerText = document.getElementById('input-alamat').value.trim();
+                    alamatRow.style.display = 'flex';
+                } else {
+                    alamatRow.style.display = 'none';
+                }
+
+                // Format Tanggal Pengiriman
+                const tglVal = document.getElementById('tanggal_pengiriman').value;
+                const jamVal = document.getElementById('waktu_pengiriman').value;
+                
+                // Format tglVal ke format d-m-Y yang lebih readable
+                let displayTgl = tglVal;
+                if (tglVal) {
+                    const parts = tglVal.split('-');
+                    if (parts.length === 3) {
+                        displayTgl = parts[2] + '/' + parts[1] + '/' + parts[0];
+                    }
+                }
+                document.getElementById('confirm-jadwal').innerText = displayTgl + ' (Jam ' + jamVal + ')';
+                
+                // Total Pembayaran
+                document.getElementById('confirm-total').innerText = document.getElementById('summary-total').innerText;
+
+                // Tampilkan Modal
+                const modal = document.getElementById('confirmCheckoutModal');
+                if (modal) {
+                    modal.style.display = 'flex';
+                    modal.offsetHeight; // force reflow
+                    modal.classList.add('active');
+                }
             }
         });
+
+        // Close Modal
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmCheckoutModal');
+            if (modal) {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+        }
+
+        const btnCancel = document.getElementById('btn-modal-cancel');
+        if (btnCancel) {
+            btnCancel.addEventListener('click', closeConfirmModal);
+        }
+        
+        // Submit Form setelah dikonfirmasi di Modal
+        const btnSubmit = document.getElementById('btn-modal-submit');
+        if (btnSubmit) {
+            btnSubmit.addEventListener('click', () => {
+                userConfirmed = true;
+                document.getElementById('checkout-form').submit();
+            });
+        }
 
         // Action choices in Warning Box
         function selectPickupOption() {
@@ -1124,5 +1280,50 @@ if (count($checkout_items) === 0) {
             loadGoogleMaps();
         }
     </script>
+    <!-- Jendela Modal Konfirmasi Checkout -->
+    <div id="confirmCheckoutModal" class="confirm-modal-overlay" style="display: none;">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-header">
+                <i class="fa-solid fa-circle-question" style="font-size: 2.2rem; color: var(--spiced-wine);"></i>
+                <h2>Konfirmasi Pesanan Anda</h2>
+            </div>
+            <div class="confirm-modal-body">
+                <p style="margin: 0 0 16px 0; color: var(--text-muted); font-size: 0.9rem; text-align: center;">Harap periksa kembali detail pesanan Anda sebelum membuat pesanan:</p>
+                <div class="confirm-summary-box">
+                    <div class="confirm-summary-row">
+                        <span class="label">Penerima:</span>
+                        <strong id="confirm-penerima">-</strong>
+                    </div>
+                    <div class="confirm-summary-row">
+                        <span class="label">No. WhatsApp:</span>
+                        <strong id="confirm-wa">-</strong>
+                    </div>
+                    <div class="confirm-summary-row">
+                        <span class="label">Metode:</span>
+                        <strong id="confirm-metode">-</strong>
+                    </div>
+                    <div class="confirm-summary-row" id="confirm-alamat-row">
+                        <span class="label">Alamat:</span>
+                        <strong id="confirm-alamat">-</strong>
+                    </div>
+                    <div class="confirm-summary-row">
+                        <span class="label">Jadwal Kirim:</span>
+                        <strong id="confirm-jadwal" style="color: var(--spiced-wine); font-weight: 700;">-</strong>
+                    </div>
+                    <div class="confirm-summary-row total-row" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(139, 69, 19, 0.25); font-size: 1rem;">
+                        <span class="label" style="font-weight: 700;">Total Pembayaran:</span>
+                        <strong id="confirm-total" style="font-size: 1.1rem; color: var(--spiced-wine); font-weight: 800;">-</strong>
+                    </div>
+                </div>
+                <p style="margin: 16px 0 0 0; font-size: 0.8rem; color: #9b2c2c; background: #fff5f5; padding: 10px 12px; border-radius: 8px; border: 1px solid #feb2b2; text-align: center; line-height: 1.4;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Pesanan yang telah dikirim tidak dapat diubah secara mandiri.
+                </p>
+            </div>
+            <div class="confirm-modal-footer">
+                <button type="button" class="btn btn-outline" id="btn-modal-cancel" style="padding: 10px 14px; font-size: 0.85rem; font-weight: 600;">Periksa Kembali</button>
+                <button type="button" class="btn btn-primary" id="btn-modal-submit" style="padding: 10px 14px; font-size: 0.85rem; font-weight: 600; background-color: var(--spiced-wine); border-color: var(--spiced-wine); color: white;">Ya, Buat Pesanan</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
