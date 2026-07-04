@@ -675,9 +675,15 @@ if ($tab === 'testimoni') {
                                                         <i class="fa-solid fa-pen"></i> Edit
                                                     </a>
                                                     <!-- Tombol Hapus -->
-                                                    <a href="produk.php?tab=produk&action=delete&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\'? Tindakan ini tidak dapat dibatalkan.')">
-                                                        <i class="fa-solid fa-trash"></i> Hapus
-                                                    </a>
+                                                    <?php if ($row['total_transaksi'] > 0): ?>
+                                                        <a href="produk.php?tab=produk&action=delete&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus terblokir (ada transaksi)" onclick="alert('Produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\' tidak dapat dihapus karena sudah memiliki riwayat transaksi pelanggan.'); return false;">
+                                                            <i class="fa-solid fa-trash"></i> Hapus
+                                                        </a>
+                                                    <?php else: ?>
+                                                        <a href="produk.php?tab=produk&action=delete&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus permanen" onclick="return confirm('Apakah Anda yakin ingin menghapus produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\' secara permanen? Tindakan ini tidak dapat dibatalkan.')">
+                                                            <i class="fa-solid fa-trash"></i> Hapus
+                                                        </a>
+                                                    <?php endif; ?>
                                                 </div>
                                             </td>
                                         </tr>
