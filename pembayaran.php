@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_upload'])) {
                 
                 if (move_uploaded_file($filetmp, $dest_path)) {
                     // Update database
-                    $stmt_update = $conn->prepare("UPDATE pesanan SET status_pesanan = 'Menunggu Verifikasi', status_pembayaran = 'Belum Dibayar', metode_pembayaran = ?, bukti_pembayaran = ? WHERE id_pesanan = ?");
+                    $stmt_update = $conn->prepare("UPDATE pesanan SET status_pesanan = 'Menunggu Verifikasi', status_pembayaran = 'Menunggu Verifikasi', metode_pembayaran = ?, bukti_pembayaran = ? WHERE id_pesanan = ?");
                     $stmt_update->bind_param("ssi", $metode, $new_filename, $id_pesanan);
                     
                     if ($stmt_update->execute()) {
