@@ -245,36 +245,15 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                 <!-- Kolom Kiri: Alur Pembayaran & Upload -->
                 <div class="payment-main-col">
 
-                    <!-- 1. Countdown Pembayaran (Hanya jika belum bayar & belum expired) -->
-                    <?php if ($status_pembayaran === 'Belum Dibayar' && !$is_expired): ?>
-                        <div class="payment-card timer-card">
-                            <div class="timer-label">Sisa Waktu Pembayaran</div>
-                            <div class="timer-countdown" id="timer-box">
-                                <div class="timer-segment">
-                                    <span id="hours" class="timer-number">23</span>
-                                    <span class="timer-unit">Jam</span>
-                                </div>
-                                <div class="timer-divider">:</div>
-                                <div class="timer-segment">
-                                    <span id="minutes" class="timer-number">59</span>
-                                    <span class="timer-unit">Menit</span>
-                                </div>
-                                <div class="timer-divider">:</div>
-                                <div class="timer-segment">
-                                    <span id="seconds" class="timer-number">59</span>
-                                    <span class="timer-unit">Detik</span>
-                                </div>
-                            </div>
-                            <p class="timer-subtext">Segera bayar sebelum tanggal <strong><?= date('d M Y, H:i', strtotime($batas_pembayaran)) ?> WIB</strong></p>
-                        </div>
-                    <?php elseif ($is_expired): ?>
+                    <!-- 1. Status Pembayaran / Timer -->
+                    <?php if ($is_expired): ?>
                         <!-- Keadaan Kedaluwarsa -->
                         <div class="payment-card timer-card expired-card">
                             <i class="fa-solid fa-circle-xmark expired-icon"></i>
                             <h3>Waktu Pembayaran Habis</h3>
                             <p class="expired-msg">Batas waktu pembayaran telah berakhir. Pesanan dibatalkan secara otomatis.</p>
                         </div>
-                    <?php else: ?>
+                    <?php elseif (!empty($order['bukti_pembayaran']) || $status_pembayaran === 'Sudah Dibayar'): ?>
                         <!-- Sudah Dibayar / Menunggu Verifikasi -->
                         <div class="payment-card success-status-card">
                             <i class="fa-solid fa-circle-check success-icon"></i>
@@ -295,6 +274,28 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                                 </div>
                             <?php endif; ?>
                         </div>
+                    <?php elseif ($status_pembayaran === 'Belum Dibayar'): ?>
+                        <!-- Countdown Pembayaran (Hanya jika belum bayar & belum expired & belum upload bukti) -->
+                        <div class="payment-card timer-card">
+                            <div class="timer-label">Sisa Waktu Pembayaran</div>
+                            <div class="timer-countdown" id="timer-box">
+                                <div class="timer-segment">
+                                    <span id="hours" class="timer-number">23</span>
+                                    <span class="timer-unit">Jam</span>
+                                </div>
+                                <div class="timer-divider">:</div>
+                                <div class="timer-segment">
+                                    <span id="minutes" class="timer-number">59</span>
+                                    <span class="timer-unit">Menit</span>
+                                </div>
+                                <div class="timer-divider">:</div>
+                                <div class="timer-segment">
+                                    <span id="seconds" class="timer-number">59</span>
+                                    <span class="timer-unit">Detik</span>
+                                </div>
+                            </div>
+                            <p class="timer-subtext">Segera bayar sebelum tanggal <strong><?= date('d M Y, H:i', strtotime($batas_pembayaran)) ?> WIB</strong></p>
+                        </div>
                     <?php endif; ?>
 
                     <!-- 2. Total Pembayaran Card -->
@@ -306,8 +307,8 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                         <span class="total-note">Sudah termasuk ongkos kirim (jika diantar)</span>
                     </div>
 
-                    <!-- 3. Form & Metode Pembayaran (Hanya jika belum bayar & belum expired) -->
-                    <?php if ($status_pembayaran === 'Belum Dibayar' && !$is_expired): ?>
+                    <!-- 3. Form & Metode Pembayaran (Hanya jika belum bayar & belum expired & belum upload bukti) -->
+                    <?php if ($status_pembayaran === 'Belum Dibayar' && !$is_expired && empty($order['bukti_pembayaran'])): ?>
                         <form action="pembayaran.php?id=<?= $id_pesanan ?>" method="POST" enctype="multipart/form-data" id="payment-form">
                             <input type="hidden" name="action_upload" value="1">
                             
