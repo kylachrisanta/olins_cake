@@ -70,6 +70,44 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
     $status_labels = ['Menunggu Pembayaran', 'Diproses', 'Selesai', 'Kedaluwarsa'];
     $status_counts = [3, 5, 12, 2];
 }
+
+// 9. Pesanan per Tanggal Pengiriman (untuk Perencanaan Produksi)
+$filter_kurun = isset($_GET['filter']) ? trim($_GET['filter']) : 'minggu';
+if (!in_array($filter_kurun, ['hari', 'minggu', 'bulan'])) {
+    $filter_kurun = 'minggu';
+}
+
+$cond_filter = "";
+if ($filter_kurun === 'hari') {
+    $cond_filter = "p.tanggal_pengiriman = CURDATE()";
+} elseif ($filter_kurun === 'minggu') {
+    $cond_filter = "p.tanggal_pengiriman BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 6 DAY)";
+} else {
+    $cond_filter = "p.tanggal_pengiriman BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 29 DAY)";
+}
+
+$query_produksi = "SELECT p.tanggal_pengiriman, COUNT(DISTINCT p.id_pesanan) AS jumlah_pesanan, COALESCE(SUM(dp.jumlah), 0) AS total_produk
+                   FROM pesanan p
+                   LEFT JOIN detail_pesanan dp ON p.id_pesanan = dp.id_pesanan
+                   WHERE p.status_pesanan NOT IN ('Dibatalkan', 'Kedaluwarsa')
+                     AND $cond_filter
+                   GROUP BY p.tanggal_pengiriman
+                   ORDER BY p.tanggal_pengiriman ASC";
+
+$res_produksi = $conn->query($query_produksi);
+$data_produksi = [];
+$max_pcs = 0;
+
+if ($res_produksi && $res_produksi->num_rows > 0) {
+    while ($row = $res_produksi->fetch_assoc()) {
+        $row['jumlah_pesanan'] = intval($row['jumlah_pesanan']);
+        $row['total_produk'] = intval($row['total_produk']);
+        $data_produksi[] = $row;
+        if ($row['total_produk'] > $max_pcs) {
+            $max_pcs = $row['total_produk'];
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -160,6 +198,73 @@ if ($res_chart_status && $res_chart_status->num_rows > 0) {
                 <div style="position: relative; height: 300px; width: 100%; display: flex; align-items: center; justify-content: center;">
                     <canvas id="statusChart" style="max-height: 280px; max-width: 280px;"></canvas>
                 </div>
+            </div>
+        </div>
+
+        <!-- Baris Perencanaan Produksi (Pesanan per Tanggal Pengiriman) -->
+        <div class="admin-panel-card" style="margin-top: 24px;">
+            <div class="panel-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h3><i class="fa-solid fa-calendar-check"></i> Pesanan per Tanggal Pengiriman</h3>
+                </div>
+                <!-- Filter Hari | Minggu | Bulan -->
+                <div class="admin-btn-group" style="display: flex; gap: 5px;">
+                    <a href="index.php?filter=hari" class="admin-btn <?= $filter_kurun === 'hari' ? 'admin-btn-primary' : 'admin-btn-secondary' ?> admin-btn-sm" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Hari Ini</a>
+                    <a href="index.php?filter=minggu" class="admin-btn <?= $filter_kurun === 'minggu' ? 'admin-btn-primary' : 'admin-btn-secondary' ?> admin-btn-sm" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Minggu Ini</a>
+                    <a href="index.php?filter=bulan" class="admin-btn <?= $filter_kurun === 'bulan' ? 'admin-btn-primary' : 'admin-btn-secondary' ?> admin-btn-sm" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Bulan Ini</a>
+                </div>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal Pengiriman</th>
+                            <th style="text-align: center; width: 150px;">Jumlah Pesanan</th>
+                            <th style="text-align: center; width: 180px;">Total Produk (pcs)</th>
+                            <th style="text-align: center; width: 200px;">Status Produksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (count($data_produksi) > 0): ?>
+                            <?php foreach ($data_produksi as $prod_row): ?>
+                                <?php 
+                                    $is_max = ($max_pcs > 0 && $prod_row['total_produk'] === $max_pcs);
+                                    $tgl_formatted = date('d F Y', strtotime($prod_row['tanggal_pengiriman']));
+                                ?>
+                                <tr <?= $is_max ? 'style="background-color: rgba(234, 179, 8, 0.05);"' : '' ?>>
+                                    <td>
+                                        <strong><?= $tgl_formatted ?></strong>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <span class="admin-badge admin-badge-info"><?= $prod_row['jumlah_pesanan'] ?> Pesanan</span>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <strong><?= $prod_row['total_produk'] ?> pcs</strong>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <?php if ($is_max): ?>
+                                            <span class="admin-badge" style="background-color: rgba(239, 68, 68, 0.15); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); font-weight: 700;">
+                                                <i class="fa-solid fa-fire"></i> Beban Tertinggi
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="admin-badge" style="background-color: rgba(46, 196, 182, 0.15); color: var(--admin-success); border: 1px solid rgba(46, 196, 182, 0.35); font-weight: 700;">
+                                                Normal
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">
+                                    <i class="fa-solid fa-calendar-minus" style="font-size: 2.5rem; margin-bottom: 12px; color: var(--admin-border); display: block; margin: 0 auto 12px;"></i>
+                                    <p>Tidak ada jadwal pengiriman pesanan dalam periode ini.</p>
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
         </div>
 

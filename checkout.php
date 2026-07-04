@@ -317,6 +317,7 @@ if (count($checkout_items) === 0) {
                                         <!-- Batasi minimal H+3 di frontend -->
                                         <input type="date" id="tanggal_pengiriman" name="tanggal_pengiriman" class="contact-form-control" min="<?= date('Y-m-d', strtotime('+3 days')) ?>" required onchange="validateDeliveryDate(this.value)">
                                         <small class="text-muted"><i class="fa-solid fa-clock"></i> Minimal pre-order adalah H-3 sebelum tanggal pengiriman.</small>
+                                        <div id="info-kapasitas" style="margin-top: 8px; font-size: 0.85rem; font-weight: 600; padding: 10px 12px; border-radius: 6px; display: none;"></div>
                                     </div>
                                     <div class="contact-form-group">
                                         <label for="waktu_pengiriman">Waktu Pengiriman/Pengambilan <span class="text-danger">*</span></label>
@@ -472,6 +473,8 @@ if (count($checkout_items) === 0) {
         let currentJarak = 0;
         let currentOngkir = 0;
         let isLocationConfirmed = false;
+        let isCapacityValid = false;
+        const itemsStr = "<?= htmlspecialchars($items_str) ?>";
 
         // Google Maps Variables
         let mapLoaded = false;
@@ -882,6 +885,9 @@ if (count($checkout_items) === 0) {
             summaryTotal.innerText = "Rp " + totalBayar.toLocaleString('id-ID');
 
             let finalValid = isValid;
+            if (!isCapacityValid) {
+                finalValid = false;
+            }
             if (selectedMetode === 'Kirim ke Alamat') {
                 const addressVal = document.getElementById('input-alamat').value;
                 const latVal = document.getElementById('input-lat').value;
@@ -957,6 +963,14 @@ if (count($checkout_items) === 0) {
             updateFormState(false);
         });
 
+        // Form submit handler to double check capacity validation
+        document.getElementById('checkout-form').addEventListener('submit', (e) => {
+            if (!isCapacityValid) {
+                e.preventDefault();
+                alert("Maaf, kapasitas pesanan untuk tanggal pengiriman yang dipilih telah penuh. Silakan pilih tanggal pengiriman lain atau kurangi jumlah produk yang dipesan.");
+            }
+        });
+
         // Action choices in Warning Box
         function selectPickupOption() {
             const radioAmbil = document.querySelector('input[name="metode_pengiriman"][value="Ambil Sendiri"]');
@@ -975,9 +989,15 @@ if (count($checkout_items) === 0) {
             }
         }
 
-        // Pre-order date validation (min H+3)
+        // Pre-order date validation (min H+3) & Kapasitas Harian (max 5 pcs)
         function validateDeliveryDate(selectedDateStr) {
-            if (!selectedDateStr) return;
+            const infoDiv = document.getElementById('info-kapasitas');
+            if (!selectedDateStr) {
+                isCapacityValid = false;
+                if (infoDiv) infoDiv.style.display = 'none';
+                updateFormState(false);
+                return;
+            }
 
             const selectedDate = new Date(selectedDateStr + 'T00:00:00');
             const today = new Date();
@@ -989,7 +1009,71 @@ if (count($checkout_items) === 0) {
             if (selectedDate < minDate) {
                 alert("Minimal pemesanan adalah H-3 sebelum tanggal pengiriman. Silakan pilih tanggal lain.");
                 document.getElementById('tanggal_pengiriman').value = '';
+                isCapacityValid = false;
+                if (infoDiv) infoDiv.style.display = 'none';
+                updateFormState(false);
+                return;
             }
+
+            // AJAX Cek Kapasitas
+            if (infoDiv) {
+                infoDiv.style.display = 'block';
+                infoDiv.style.backgroundColor = '#f3f4f6';
+                infoDiv.style.color = '#374151';
+                infoDiv.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memeriksa kapasitas tanggal pengiriman...';
+            }
+
+            fetch(`cek_kapasitas.php?tanggal=${selectedDateStr}&items=${encodeURIComponent(itemsStr)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const totalTerpakai = data.terpakai;
+                        const sisa = data.sisa;
+                        const totalCheckout = data.total_checkout;
+                        const batas = data.batas;
+                        
+                        if (data.penuh) {
+                            if (infoDiv) {
+                                infoDiv.style.backgroundColor = '#fee2e2';
+                                infoDiv.style.color = '#b91c1c';
+                                infoDiv.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Maaf, kapasitas pesanan untuk tanggal pengiriman yang dipilih telah penuh. Silakan pilih tanggal pengiriman lain atau kurangi jumlah produk yang dipesan.`;
+                            }
+                            isCapacityValid = false;
+                        } else if (data.melebihi) {
+                            if (infoDiv) {
+                                infoDiv.style.backgroundColor = '#fee2e2';
+                                infoDiv.style.color = '#b91c1c';
+                                infoDiv.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Maaf, kapasitas pesanan untuk tanggal pengiriman yang dipilih telah penuh. Silakan pilih tanggal pengiriman lain atau kurangi jumlah produk yang dipesan. <br><small style="font-weight:normal;">Sisa kapasitas: ${sisa} pcs, Pesanan Anda: ${totalCheckout} pcs.</small>`;
+                            }
+                            isCapacityValid = false;
+                        } else {
+                            if (infoDiv) {
+                                infoDiv.style.backgroundColor = '#ecfdf5';
+                                infoDiv.style.color = '#047857';
+                                infoDiv.innerHTML = `<i class="fa-solid fa-circle-check"></i> Jadwal tersedia! Kapasitas terpakai: ${totalTerpakai}/${batas} pcs (Sisa kapasitas: ${sisa} pcs).`;
+                            }
+                            isCapacityValid = true;
+                        }
+                    } else {
+                        if (infoDiv) {
+                            infoDiv.style.backgroundColor = '#fee2e2';
+                            infoDiv.style.color = '#b91c1c';
+                            infoDiv.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Gagal memeriksa kapasitas: ${data.message}`;
+                        }
+                        isCapacityValid = false;
+                    }
+                    updateFormState(isLocationConfirmed || selectedMetode === 'Ambil Sendiri');
+                })
+                .catch(err => {
+                    console.error(err);
+                    if (infoDiv) {
+                        infoDiv.style.backgroundColor = '#fee2e2';
+                        infoDiv.style.color = '#b91c1c';
+                        infoDiv.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Terjadi kesalahan koneksi saat memeriksa kapasitas.';
+                    }
+                    isCapacityValid = false;
+                    updateFormState(isLocationConfirmed || selectedMetode === 'Ambil Sendiri');
+                });
         }
 
         // Penanganan error jika Google Maps gagal dimuat

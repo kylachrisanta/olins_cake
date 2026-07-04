@@ -233,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
     exit;
 }
 
-// C. NON-AKTIFKAN / HAPUS PRODUK
+// C. HAPUS PRODUK
 if (isset($_GET['action']) && $_GET['action'] === 'delete') {
     $id_del = isset($_GET['id']) ? intval($_GET['id']) : 0;
     if ($id_del > 0) {
@@ -245,15 +245,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
         $cek_trans->close();
 
         if ($total_trans > 0) {
-            // Produk pernah digunakan dalam transaksi → Non-aktifkan (soft delete)
-            $stmt_arsip = $conn->prepare("UPDATE produk SET status_produk = 'Diarsipkan' WHERE id_produk = ?");
-            $stmt_arsip->bind_param("i", $id_del);
-            if ($stmt_arsip->execute()) {
-                $_SESSION['msg_success'] = "Produk tidak dapat dihapus karena memiliki riwayat transaksi. Produk telah dinonaktifkan dan tidak akan muncul di katalog pelanggan.";
-            } else {
-                $_SESSION['msg_error'] = "Gagal menonaktifkan produk: " . $conn->error;
-            }
-            $stmt_arsip->close();
+            // Produk pernah digunakan dalam transaksi → Blokir penghapusan
+            $_SESSION['msg_error'] = "Produk tidak dapat dihapus karena sudah memiliki riwayat transaksi pelanggan.";
         } else {
             // Belum pernah bertransaksi → Hapus permanen
             $res = $conn->query("SELECT gambar FROM produk WHERE id_produk = $id_del");
@@ -269,23 +262,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete') {
                 }
             }
         }
-    }
-    header("Location: produk.php?tab=produk");
-    exit;
-}
-
-// D. AKTIFKAN PRODUK (Diarsipkan → Aktif)
-if (isset($_GET['action']) && $_GET['action'] === 'pulihkan') {
-    $id_pulih = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    if ($id_pulih > 0) {
-        $stmt_pulih = $conn->prepare("UPDATE produk SET status_produk = 'Aktif' WHERE id_produk = ?");
-        $stmt_pulih->bind_param("i", $id_pulih);
-        if ($stmt_pulih->execute()) {
-            $_SESSION['msg_success'] = "Produk berhasil diaktifkan kembali dan kini muncul di katalog pelanggan.";
-        } else {
-            $_SESSION['msg_error'] = "Gagal mengaktifkan produk: " . $conn->error;
-        }
-        $stmt_pulih->close();
     }
     header("Location: produk.php?tab=produk");
     exit;
@@ -446,52 +422,6 @@ if ($tab === 'testimoni') {
             background-color: var(--admin-accent);
             border-color: var(--admin-accent);
         }
-        /* Badge Status Produk */
-        .badge-status-aktif {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            background-color: rgba(46, 196, 182, 0.15);
-            color: var(--admin-success);
-            border: 1px solid rgba(46, 196, 182, 0.35);
-        }
-        .badge-status-arsip {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            background-color: rgba(180, 180, 180, 0.12);
-            color: var(--admin-text-muted);
-            border: 1px solid rgba(180, 180, 180, 0.3);
-        }
-        /* Tombol Non-aktifkan (kuning/amber) */
-        .admin-btn-archive {
-            background-color: rgba(234, 179, 8, 0.12);
-            color: #ca8a04;
-            border: 1px solid rgba(234, 179, 8, 0.35);
-        }
-        .admin-btn-archive:hover {
-            background-color: rgba(234, 179, 8, 0.22);
-            color: #92400e;
-        }
-        /* Tombol Aktifkan (hijau) */
-        .admin-btn-restore {
-            background-color: rgba(46, 196, 182, 0.12);
-            color: var(--admin-success);
-            border: 1px solid rgba(46, 196, 182, 0.35);
-        }
-        .admin-btn-restore:hover {
-            background-color: rgba(46, 196, 182, 0.22);
-        }
         /* Tombol Hapus - outline merah agar konsisten dengan tombol lain */
         .admin-btn-danger.admin-btn-sm {
             background-color: rgba(220, 38, 38, 0.09);
@@ -503,13 +433,6 @@ if ($tab === 'testimoni') {
             background-color: rgba(220, 38, 38, 0.18);
             color: #991b1b;
             border-color: rgba(220, 38, 38, 0.55);
-        }
-        /* Baris produk non-aktif redup */
-        .row-archived {
-            opacity: 0.55;
-        }
-        .row-archived:hover {
-            opacity: 1;
         }
     </style>
 </head>
@@ -727,15 +650,13 @@ if ($tab === 'testimoni') {
                                     <th>Harga</th>
                                     <th>Ukuran / Porsi</th>
                                     <th>Masa Simpan</th>
-                                    <th style="width: 90px; text-align: center;">Status</th>
                                     <th style="width: 200px; text-align: right;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php if ($list_produk && $list_produk->num_rows > 0): ?>
                                     <?php while($row = $list_produk->fetch_assoc()): ?>
-                                        <?php $is_archived = ($row['status_produk'] === 'Diarsipkan'); ?>
-                                        <tr class="<?= $is_archived ? 'row-archived' : '' ?>">
+                                        <tr>
                                             <td>
                                                 <img src="../assets/images/<?= htmlspecialchars($row['gambar']) ?>" alt="Kue" style="width: 55px; height: 55px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--admin-border);">
                                             </td>
@@ -747,37 +668,16 @@ if ($tab === 'testimoni') {
                                             <td><strong>Rp <?= number_format($row['harga'], 0, ',', '.') ?></strong></td>
                                             <td><?= htmlspecialchars($row['ukuran']) ?></td>
                                             <td><span style="font-size: 0.85rem; color: var(--admin-text-muted);"><i class="fa-regular fa-clock" style="margin-right: 4px;"></i> <?= htmlspecialchars($row['masa_simpan']) ?></span></td>
-                                            <td style="text-align: center;">
-                                                <?php if ($is_archived): ?>
-                                                    <span class="badge-status-arsip"><i class="fa-solid fa-circle-xmark"></i> Non-aktif</span>
-                                                <?php else: ?>
-                                                    <span class="badge-status-aktif"><i class="fa-solid fa-circle-check"></i> Aktif</span>
-                                                <?php endif; ?>
-                                            </td>
                                             <td style="white-space: nowrap;">
                                                 <div style="display: flex; gap: 6px; justify-content: flex-end; flex-wrap: nowrap;">
-                                                <?php if ($is_archived): ?>
-                                                    <!-- Produk non-aktif: tampilkan Aktifkan saja -->
-                                                    <a href="produk.php?tab=produk&action=pulihkan&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-restore admin-btn-sm" title="Aktifkan produk ini ke katalog" onclick="return confirm('Aktifkan produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\' agar aktif kembali di katalog?')">
-                                                        <i class="fa-solid fa-check"></i> Aktifkan
-                                                    </a>
-                                                <?php else: ?>
-                                                    <!-- Produk aktif: tampilkan Edit + (Hapus atau Non-aktifkan) -->
+                                                    <!-- Tombol Edit -->
                                                     <a href="produk.php?tab=produk&action=edit&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" title="Ubah">
                                                         <i class="fa-solid fa-pen"></i> Edit
                                                     </a>
-                                                    <?php if ($row['total_transaksi'] > 0): ?>
-                                                        <!-- Sudah ada transaksi → Non-aktifkan (soft delete) -->
-                                                        <a href="produk.php?tab=produk&action=delete&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-archive admin-btn-sm" title="Non-aktifkan produk (punya riwayat transaksi)" onclick="return confirm('Produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\' memiliki riwayat transaksi dan tidak dapat dihapus permanen.\nProduk akan dinonaktifkan dan disembunyikan dari katalog. Lanjutkan?')">
-                                                            <i class="fa-solid fa-ban"></i> Non-aktifkan
-                                                        </a>
-                                                    <?php else: ?>
-                                                        <!-- Belum ada transaksi → Hapus permanen -->
-                                                        <a href="produk.php?tab=produk&action=delete&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus permanen" onclick="return confirm('Hapus permanen produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\' beserta gambarnya? Tindakan ini tidak dapat dibatalkan.')">
-                                                            <i class="fa-solid fa-trash"></i> Hapus
-                                                        </a>
-                                                    <?php endif; ?>
-                                                <?php endif; ?>
+                                                    <!-- Tombol Hapus -->
+                                                    <a href="produk.php?tab=produk&action=delete&id=<?= $row['id_produk'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus produk \'<?= htmlspecialchars(addslashes($row['nama_produk'])) ?>\'? Tindakan ini tidak dapat dibatalkan.')">
+                                                        <i class="fa-solid fa-trash"></i> Hapus
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>

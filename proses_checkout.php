@@ -71,6 +71,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Kesalahan: Minimal pemesanan adalah H-3 sebelum tanggal pengiriman.");
     }
 
+    // Validasi Kapasitas Harian (Maks 5 Pcs) di Backend
+    $total_pcs_checkout = 0;
+    foreach ($checkout_items as $item) {
+        $total_pcs_checkout += $item['jumlah'];
+    }
+
+    $stmt_cap = $conn->prepare("
+        SELECT COALESCE(SUM(dp.jumlah), 0) AS total_pcs
+        FROM detail_pesanan dp
+        JOIN pesanan p ON dp.id_pesanan = p.id_pesanan
+        WHERE p.tanggal_pengiriman = ?
+          AND p.status_pesanan NOT IN ('Dibatalkan', 'Kedaluwarsa')
+    ");
+    $stmt_cap->bind_param("s", $tanggal_pengiriman);
+    $stmt_cap->execute();
+    $res_cap = $stmt_cap->get_result()->fetch_assoc();
+    $total_pcs_terpakai = (int)$res_cap['total_pcs'];
+    $stmt_cap->close();
+
+    $batas_kapasitas = 5;
+    if (($total_pcs_terpakai + $total_pcs_checkout) > $batas_kapasitas) {
+        die("Maaf, kapasitas pesanan untuk tanggal pengiriman yang dipilih telah penuh. Silakan pilih tanggal pengiriman lain atau kurangi jumlah produk yang dipesan.");
+    }
+
     // Penanganan Metode Pengiriman & Ongkos Kirim di Backend
     $alamat_pengiriman = null;
     $jarak_km = 0.00;

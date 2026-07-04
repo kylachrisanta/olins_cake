@@ -31,8 +31,8 @@ foreach ($fallback_ids as $fid) {
     }
 }
 
-// Ambil semua produk dari database (hanya yang Aktif)
-$query = "SELECT * FROM produk WHERE status_produk = 'Aktif' ORDER BY kategori ASC, nama_produk ASC";
+// Ambil semua produk dari database
+$query = "SELECT * FROM produk ORDER BY kategori ASC, nama_produk ASC";
 $result = $conn->query($query);
 $products = [];
 if ($result && $result->num_rows > 0) {
@@ -41,11 +41,11 @@ if ($result && $result->num_rows > 0) {
     }
 }
 
-// Ambil daftar kategori dari tabel kategori yang memiliki minimal 1 produk Aktif
+// Ambil daftar kategori dari tabel kategori yang memiliki minimal 1 produk
 $categories = [];
 $cat_query = "SELECT k.nama_kategori 
               FROM kategori k
-              INNER JOIN produk p ON p.kategori = k.nama_kategori AND p.status_produk = 'Aktif'
+              INNER JOIN produk p ON p.kategori = k.nama_kategori
               GROUP BY k.nama_kategori
               ORDER BY k.nama_kategori ASC";
 $cat_result = $conn->query($cat_query);
