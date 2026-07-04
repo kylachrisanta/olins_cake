@@ -68,7 +68,7 @@ if ($status_pembayaran === 'Belum Dibayar' && $status_pesanan === 'Menunggu Pemb
     }
 }
 
-if ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan' || $status_pembayaran === 'Kedaluwarsa') {
+if ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan' || $status_pembayaran === 'Kedaluwarsa' || $status_pembayaran === 'Dibatalkan') {
     $is_expired = true;
 }
 
