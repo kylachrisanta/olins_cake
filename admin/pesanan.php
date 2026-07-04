@@ -2,6 +2,11 @@
 // Start Session
 session_start();
 
+// Prevent browser caching for order detail and management actions
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 // Include Database
 require_once '../config/database.php';
 
