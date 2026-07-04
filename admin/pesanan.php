@@ -13,8 +13,38 @@ require_once '../config/database.php';
 // Set page identification
 $page = 'pesanan';
 
+// AJAX Check Status (Polling)
+if (isset($_GET['action']) && $_GET['action'] === 'check_status_ajax') {
+    if (!isset($_SESSION['admin_id'])) {
+        header('HTTP/1.1 403 Forbidden');
+        exit;
+    }
+    header('Content-Type: application/json');
+    $id_view = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    if ($id_view > 0) {
+        $stmt = $conn->prepare("SELECT status_pesanan, status_pembayaran, bukti_pembayaran FROM pesanan WHERE id_pesanan = ?");
+        $stmt->bind_param("i", $id_view);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
+        echo json_encode($res);
+    } else {
+        echo json_encode(null);
+    }
+    exit;
+}
+
 $msg_success = "";
 $msg_error = "";
+
+if (isset($_SESSION['msg_success'])) {
+    $msg_success = $_SESSION['msg_success'];
+    unset($_SESSION['msg_success']);
+}
+if (isset($_SESSION['msg_error'])) {
+    $msg_error = $_SESSION['msg_error'];
+    unset($_SESSION['msg_error']);
+}
 
 // 1. UPDATE STATUS PESANAN (POST)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'])) {
@@ -28,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'
     $status_pesanan = isset($_POST['status_pesanan']) ? trim($_POST['status_pesanan']) : '';
 
     if ($id_pesanan <= 0 || empty($status_pesanan)) {
-        $msg_error = "Harap isi semua kolom status.";
+        $_SESSION['msg_error'] = "Harap isi semua kolom status.";
+        header("Location: pesanan.php");
+        exit;
     } else {
         // Tentukan status_pembayaran secara otomatis berdasarkan status_pesanan yang dipilih
         $status_pembayaran = 'Belum Dibayar'; // default fallback
@@ -62,23 +94,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'
 
             // Tolak jika status bukan whitelist untuk metode ini
             if (!in_array($status_pesanan, $allowed_admin_statuses)) {
-                $msg_error = "Status '{$status_pesanan}' tidak sesuai dengan metode pengiriman pesanan ini.";
+                $_SESSION['msg_error'] = "Status '{$status_pesanan}' tidak sesuai dengan metode pengiriman pesanan ini.";
             }
 
             // Validasi tambahan: pastikan status lama bukan status otomatis
             $auto_statuses = ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dibatalkan', 'Kedaluwarsa'];
-            if (empty($msg_error) && in_array($old_status, $auto_statuses)) {
-                $msg_error = "Pesanan dengan status '{$old_status}' tidak dapat diubah secara manual melalui form ini.";
+            if (empty($_SESSION['msg_error']) && in_array($old_status, $auto_statuses)) {
+                $_SESSION['msg_error'] = "Pesanan dengan status '{$old_status}' tidak dapat diubah secara manual melalui form ini.";
             }
 
-            if (!empty($msg_error)) {
-                // error sudah di-set, tidak perlu lanjut
-            } else {
+            if (empty($_SESSION['msg_error'])) {
                 // Update database
                 $stmt = $conn->prepare("UPDATE pesanan SET status_pesanan = ?, status_pembayaran = ? WHERE id_pesanan = ?");
                 $stmt->bind_param("ssi", $status_pesanan, $status_pembayaran, $id_pesanan);
                 if ($stmt->execute()) {
-                    $msg_success = "Status pesanan berhasil diperbarui.";
+                    $_SESSION['msg_success'] = "Status pesanan berhasil diperbarui.";
 
                     // Kirim Notifikasi WhatsApp jika status berubah
                     if ($status_pesanan !== $old_status) {
@@ -107,20 +137,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_update_status'
                         if (!empty($pesan_wa)) {
                             $res_wa = kirimPesanWhatsApp($nomor_wa, $pesan_wa);
                             if ($res_wa['success']) {
-                                $msg_success .= " Notifikasi WhatsApp berhasil dikirim ke pelanggan.";
+                                $_SESSION['msg_success'] .= " Notifikasi WhatsApp berhasil dikirim ke pelanggan.";
                             } else {
-                                $msg_error = "Status berhasil diperbarui, namun gagal mengirim WhatsApp: " . $res_wa['message'];
+                                $_SESSION['msg_error'] = "Status berhasil diperbarui, namun gagal mengirim WhatsApp: " . $res_wa['message'];
                             }
                         }
                     }
                 } else {
-                    $msg_error = "Gagal memperbarui status: " . $conn->error;
+                    $_SESSION['msg_error'] = "Gagal memperbarui status: " . $conn->error;
                 }
                 $stmt->close();
             }
         } else {
-            $msg_error = "Pesanan tidak ditemukan.";
+            $_SESSION['msg_error'] = "Pesanan tidak ditemukan.";
         }
+        header("Location: pesanan.php?action=view&id=" . $id_pesanan);
+        exit;
     }
 }
 
@@ -152,7 +184,7 @@ if (isset($_GET['action_payment'])) {
                 $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Sudah Dibayar', status_pesanan = 'Diproses' WHERE id_pesanan = ?");
                 $stmt->bind_param("i", $id_pesanan);
                 if ($stmt->execute()) {
-                    $msg_success = "Pembayaran untuk Pesanan OLN-" . (10000 + $id_pesanan) . " berhasil diverifikasi. Status diperbarui ke 'Diproses'.";
+                    $_SESSION['msg_success'] = "Pembayaran untuk Pesanan OLN-" . (10000 + $id_pesanan) . " berhasil diverifikasi. Status diperbarui ke 'Diproses'.";
                     
                     // Kirim Notifikasi WhatsApp jika status berubah ke 'Diproses'
                     if ($old_status !== 'Diproses') {
@@ -164,17 +196,17 @@ if (isset($_GET['action_payment'])) {
                         
                         $res_wa = kirimPesanWhatsApp($nomor_wa, $pesan_wa);
                         if ($res_wa['success']) {
-                            $msg_success .= " Notifikasi WhatsApp berhasil dikirim ke pelanggan.";
+                            $_SESSION['msg_success'] .= " Notifikasi WhatsApp berhasil dikirim ke pelanggan.";
                         } else {
-                            $msg_error = "Pembayaran diverifikasi, namun gagal mengirim WhatsApp: " . $res_wa['message'];
+                            $_SESSION['msg_error'] = "Pembayaran diverifikasi, namun gagal mengirim WhatsApp: " . $res_wa['message'];
                         }
                     }
                 } else {
-                    $msg_error = "Gagal memverifikasi pembayaran: " . $conn->error;
+                    $_SESSION['msg_error'] = "Gagal memverifikasi pembayaran: " . $conn->error;
                 }
                 $stmt->close();
             } else {
-                $msg_error = "Pesanan tidak ditemukan.";
+                $_SESSION['msg_error'] = "Pesanan tidak ditemukan.";
             }
         } elseif ($action_payment === 'reject') {
             // Ambil nama file bukti lama untuk dihapus
@@ -191,13 +223,16 @@ if (isset($_GET['action_payment'])) {
                 $stmt = $conn->prepare("UPDATE pesanan SET status_pembayaran = 'Belum Dibayar', status_pesanan = 'Menunggu Pembayaran', bukti_pembayaran = NULL, metode_pembayaran = NULL WHERE id_pesanan = ?");
                 $stmt->bind_param("i", $id_pesanan);
                 if ($stmt->execute()) {
-                    $msg_success = "Bukti pembayaran ditolak. Status dikembalikan ke 'Menunggu Pembayaran' agar pelanggan dapat mengunggah bukti baru.";
+                    $_SESSION['msg_success'] = "Bukti pembayaran ditolak. Status dikembalikan ke 'Menunggu Pembayaran' agar pelanggan dapat mengunggah bukti baru.";
                 } else {
-                    $msg_error = "Gagal memproses penolakan: " . $conn->error;
+                    $_SESSION['msg_error'] = "Gagal memproses penolakan: " . $conn->error;
                 }
                 $stmt->close();
             }
         }
+        // Redirect to detail page to clear the query parameters!
+        header("Location: pesanan.php?action=view&id=" . $id_pesanan);
+        exit;
     }
 }
 
@@ -678,11 +713,6 @@ $list_pesanan = $conn->query($query_all);
                                         <td><span class="admin-badge <?= $badge_bayar ?>"><?= htmlspecialchars($status_pembayaran) ?></span></td>
                                         <td><span class="admin-badge <?= $badge_pesanan ?>"><?= htmlspecialchars($status_pesanan) ?></span></td>
                                          <td style="text-align: right; white-space: nowrap;">
-                                             <?php if ($status_pembayaran === 'Sudah Dibayar'): ?>
-                                                 <a href="../unduh_kwitansi.php?id=<?= $row['id_pesanan'] ?>" target="_blank" class="admin-btn admin-btn-sm" style="background-color: var(--admin-accent); color: white; border-color: var(--admin-accent); display: inline-flex; align-items: center; gap: 4px; text-decoration: none;" title="Unduh Kwitansi">
-                                                     <i class="fa-solid fa-file-invoice"></i> Kwitansi
-                                                 </a>
-                                             <?php endif; ?>
                                              <a href="pesanan.php?action=view&id=<?= $row['id_pesanan'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" title="Kelola" style="display: inline-flex; align-items: center; gap: 4px; text-decoration: none;">
                                                  <i class="fa-solid fa-gears"></i> Kelola
                                              </a>
@@ -720,6 +750,35 @@ $list_pesanan = $conn->query($query_all);
                 closeAdminProofModal();
             }
         });
+
+        <?php if ($view_order): ?>
+        // Polling status pesanan secara real-time
+        const orderId = <?= intval($view_order['id_pesanan']) ?>;
+        const currentStatus = "<?= htmlspecialchars($view_order['status_pesanan']) ?>";
+        const currentPaymentStatus = "<?= htmlspecialchars($view_order['status_pembayaran']) ?>";
+        const currentBukti = "<?= htmlspecialchars($view_order['bukti_pembayaran'] ?? '') ?>";
+
+        function checkOrderStatus() {
+            fetch(`pesanan.php?action=check_status_ajax&id=${orderId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        const newStatus = data.status_pesanan;
+                        const newPaymentStatus = data.status_pembayaran;
+                        const newBukti = data.bukti_pembayaran || '';
+
+                        if (newStatus !== currentStatus || newPaymentStatus !== currentPaymentStatus || newBukti !== currentBukti) {
+                            // Jika ada perubahan status atau bukti pembayaran baru, refresh halaman secara otomatis
+                            window.location.reload();
+                        }
+                    }
+                })
+                .catch(err => console.error("Error checking order status:", err));
+        }
+
+        // Cek setiap 3 detik
+        setInterval(checkOrderStatus, 3000);
+        <?php endif; ?>
     </script>
 
     <!-- Modal Bukti Pembayaran Admin -->

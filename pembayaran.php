@@ -97,6 +97,20 @@ if (isset($_SESSION['sukses_pembayaran'])) {
 // Proses Upload Bukti Pembayaran (POST)
 $error_upload = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_upload'])) {
+    // Baca ulang status terbaru dari database untuk menghindari nilai stale
+    $stmt_fresh = $conn->prepare("SELECT status_pesanan, status_pembayaran FROM pesanan WHERE id_pesanan = ? AND id_pelanggan = ?");
+    $stmt_fresh->bind_param("ii", $id_pesanan, $id_pelanggan);
+    $stmt_fresh->execute();
+    $fresh_order = $stmt_fresh->get_result()->fetch_assoc();
+    $stmt_fresh->close();
+    if ($fresh_order) {
+        $status_pesanan    = $fresh_order['status_pesanan'];
+        $status_pembayaran = $fresh_order['status_pembayaran'];
+        // Re-compute is_expired berdasarkan status terbaru dari database
+        $is_expired = in_array($status_pesanan, ['Kedaluwarsa', 'Dibatalkan'])
+                   || in_array($status_pembayaran, ['Kedaluwarsa', 'Dibatalkan']);
+    }
+
     if ($is_expired) {
         $error_upload = "Batas waktu pembayaran telah berakhir. Pesanan dibatalkan secara otomatis.";
     } elseif ($status_pembayaran !== 'Belum Dibayar') {

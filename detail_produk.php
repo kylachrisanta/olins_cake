@@ -225,7 +225,7 @@ if (!function_exists('renderStars')) {
                     <!-- Peringatan Batas Pre-order H-3 -->
                     <div class="preorder-notice-box">
                         <i class="fa-solid fa-circle-info"></i>
-                        <p>Informasi: Minimal pre-order H-3 sebelum tanggal pengiriman.</p>
+                        <p>Informasi: Minimal pre-order H-3 sebelum tanggal pengiriman dan tiap harinya hanya memiliki kuota 5 pcs kue untuk dipesan.</p>
                     </div>
 
                     <!-- Jumlah Pemesanan & Tambah Ke Keranjang -->
