@@ -838,6 +838,31 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
         } else {
             initLightbox();
         }
+
+        // Real-time Status Polling to sync client state (handles admin reject/accept instantly)
+        const currentStatusPesanan = "<?= $status_pesanan ?>";
+        const currentStatusPembayaran = "<?= $status_pembayaran ?>";
+        const currentHasBukti = <?= empty($order['bukti_pembayaran']) ? 'false' : 'true' ?>;
+        const orderIdForPoll = <?= $id_pesanan ?>;
+
+        function startStatusPolling() {
+            setInterval(function() {
+                fetch(`cek_status_pesanan.php?id=${orderIdForPoll}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data && !data.error) {
+                            if (data.status_pesanan !== currentStatusPesanan || 
+                                data.status_pembayaran !== currentStatusPembayaran || 
+                                data.has_bukti !== currentHasBukti) {
+                                // Status berubah di database, reload halaman untuk update state secara otomatis
+                                window.location.reload();
+                            }
+                        }
+                    })
+                    .catch(err => console.error("Error polling status: ", err));
+            }, 3000); // Polling setiap 3 detik
+        }
+        startStatusPolling();
     </script>
     
     <!-- Lightbox Modal Penampil Bukti Pembayaran -->
