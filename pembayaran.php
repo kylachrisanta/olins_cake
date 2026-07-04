@@ -173,6 +173,53 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Global CSS -->
     <link rel="stylesheet" href="assets/css/style.css?v=<?= time(); ?>">
+    <style>
+        /* ── Lightbox Modal Penampil Bukti Pembayaran ── */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 200000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .lightbox-overlay.active .lightbox-content {
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+        .lightbox-close:hover {
+            color: var(--spiced-wine, #f2dfcc);
+        }
+    </style>
 </head>
 <body>
 
@@ -268,7 +315,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                             <?php if (!empty($order['bukti_pembayaran'])): ?>
                                 <div class="uploaded-proof-preview">
                                     <span>Bukti Pembayaran Diunggah:</span>
-                                    <a href="assets/uploads/bukti_pembayaran/<?= htmlspecialchars($order['bukti_pembayaran']) ?>" target="_blank" class="btn-view-proof">
+                                    <a href="#" class="btn-view-proof" id="btn-open-lightbox" data-img="assets/uploads/bukti_pembayaran/<?= htmlspecialchars($order['bukti_pembayaran']) ?>">
                                         <i class="fa-solid fa-image"></i> Lihat Bukti Pembayaran
                                     </a>
                                 </div>
@@ -742,6 +789,56 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
             document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
         }, 1000);
         <?php endif; ?>
+
+        // Inisialisasi Lightbox Modal untuk melihat bukti pembayaran
+        function initLightbox() {
+            const btnOpen = document.getElementById('btn-open-lightbox');
+            const lightbox = document.getElementById('proofLightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const btnClose = document.getElementById('close-lightbox');
+
+            if (btnOpen && lightbox && lightboxImg) {
+                btnOpen.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const imgUrl = btnOpen.getAttribute('data-img');
+                    lightboxImg.src = imgUrl;
+                    lightbox.style.display = 'flex';
+                    lightbox.offsetHeight; // force reflow
+                    lightbox.classList.add('active');
+                });
+            }
+
+            if (btnClose && lightbox) {
+                btnClose.addEventListener('click', closeLightbox);
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) {
+                        closeLightbox();
+                    }
+                });
+            }
+
+            function closeLightbox() {
+                if (lightbox) {
+                    lightbox.classList.remove('active');
+                    setTimeout(() => {
+                        lightbox.style.display = 'none';
+                    }, 300);
+                }
+            }
+        }
+
+        // Jalankan inisialisasi setelah DOM siap
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLightbox);
+        } else {
+            initLightbox();
+        }
     </script>
+    
+    <!-- Lightbox Modal Penampil Bukti Pembayaran -->
+    <div id="proofLightbox" class="lightbox-overlay" style="display: none;">
+        <span class="lightbox-close" id="close-lightbox">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" src="" alt="Bukti Pembayaran">
+    </div>
 </body>
 </html>
