@@ -1113,18 +1113,20 @@ if (count($checkout_items) === 0) {
             }
         }
 
-        const btnCancel = document.getElementById('btn-modal-cancel');
-        if (btnCancel) {
-            btnCancel.addEventListener('click', closeConfirmModal);
-        }
-        
-        // Submit Form setelah dikonfirmasi di Modal
-        const btnSubmit = document.getElementById('btn-modal-submit');
-        if (btnSubmit) {
-            btnSubmit.addEventListener('click', () => {
-                userConfirmed = true;
-                document.getElementById('checkout-form').submit();
-            });
+        function initConfirmModal() {
+            const btnCancel = document.getElementById('btn-modal-cancel');
+            if (btnCancel) {
+                btnCancel.addEventListener('click', closeConfirmModal);
+            }
+            
+            // Submit Form setelah dikonfirmasi di Modal
+            const btnSubmit = document.getElementById('btn-modal-submit');
+            if (btnSubmit) {
+                btnSubmit.addEventListener('click', () => {
+                    userConfirmed = true;
+                    document.getElementById('checkout-form').submit();
+                });
+            }
         }
 
         // Action choices in Warning Box
@@ -1273,11 +1275,15 @@ if (count($checkout_items) === 0) {
             document.body.appendChild(script);
         }
 
-        // Jalankan inisialisasi peta setelah seluruh elemen halaman selesai dimuat
+        // Jalankan inisialisasi peta & modal setelah seluruh elemen halaman selesai dimuat
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadGoogleMaps);
+            document.addEventListener('DOMContentLoaded', () => {
+                loadGoogleMaps();
+                initConfirmModal();
+            });
         } else {
             loadGoogleMaps();
+            initConfirmModal();
         }
     </script>
     <!-- Jendela Modal Konfirmasi Checkout -->
