@@ -322,7 +322,12 @@ if (isset($_GET['action_kategori']) && $_GET['action_kategori'] === 'edit_katego
 
 // Ambil Kategori untuk dropdown & list
 $kategori_list = [];
-$res_kat = $conn->query("SELECT * FROM kategori ORDER BY nama_kategori ASC");
+$res_kat = $conn->query("
+    SELECT k.*, 
+        (SELECT COUNT(*) FROM produk p WHERE p.kategori = k.nama_kategori) AS total_produk
+    FROM kategori k
+    ORDER BY k.nama_kategori ASC
+");
 if ($res_kat) {
     while($row = $res_kat->fetch_assoc()) {
         $kategori_list[] = $row;
@@ -770,9 +775,15 @@ if ($tab === 'testimoni') {
                                                 <a href="produk.php?tab=kategori&action_kategori=edit_kategori&id_kategori=<?= $row['id_kategori'] ?>" class="admin-btn admin-btn-secondary admin-btn-sm" style="margin-right: 4px;" title="Edit">
                                                     <i class="fa-solid fa-pen"></i> Edit
                                                 </a>
-                                                <a href="produk.php?tab=kategori&action_kategori=delete_kategori&id_kategori=<?= $row['id_kategori'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?')">
-                                                    <i class="fa-solid fa-trash"></i> Hapus
-                                                </a>
+                                                <?php if ($row['total_produk'] > 0): ?>
+                                                    <a href="produk.php?tab=kategori&action_kategori=delete_kategori&id_kategori=<?= $row['id_kategori'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus terblokir (digunakan produk)" onclick="alert('Kategori \'<?= htmlspecialchars(addslashes($row['nama_kategori'])) ?>\' tidak dapat dihapus karena sedang digunakan oleh <?= $row['total_produk'] ?> produk. Hubungkan produk ke kategori lain terlebih dahulu.'); return false;">
+                                                        <i class="fa-solid fa-trash"></i> Hapus
+                                                    </a>
+                                                <?php else: ?>
+                                                    <a href="produk.php?tab=kategori&action_kategori=delete_kategori&id_kategori=<?= $row['id_kategori'] ?>" class="admin-btn admin-btn-danger admin-btn-sm" title="Hapus" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori \'<?= htmlspecialchars(addslashes($row['nama_kategori'])) ?>\'?')">
+                                                        <i class="fa-solid fa-trash"></i> Hapus
+                                                    </a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
