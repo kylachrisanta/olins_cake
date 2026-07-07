@@ -33,9 +33,10 @@ $id_array = array_map('intval', explode(',', $items_str));
 $placeholders = implode(',', array_fill(0, count($id_array), '?'));
 
 // Ambil data produk di keranjang belanja yang terpilih
-$query = "SELECT k.id_keranjang, k.jumlah, p.id_produk, p.nama_produk, p.harga, p.gambar, p.kategori, p.ukuran 
+$query = "SELECT k.id_keranjang, k.jumlah, p.id_produk, p.nama_produk, p.harga, p.gambar, kat.nama_kategori AS kategori, p.ukuran 
           FROM keranjang k 
           JOIN produk p ON k.id_produk = p.id_produk 
+          LEFT JOIN kategori kat ON p.id_kategori = kat.id_kategori
           WHERE k.id_pelanggan = ? AND k.id_keranjang IN ($placeholders)";
           
 $stmt = $conn->prepare($query);

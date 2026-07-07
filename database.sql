@@ -9,34 +9,47 @@ CREATE TABLE IF NOT EXISTS `pelanggan` (
   `nama_pengguna` VARCHAR(50) NOT NULL UNIQUE,
   `nomor_wa` VARCHAR(20) NOT NULL,
   `kata_sandi` VARCHAR(255) NOT NULL,
-  `alamat` TEXT,
   `foto_profil` VARCHAR(255) DEFAULT NULL,
   `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Memasukkan Data Pelanggan Bawaan (Seed Data)
-INSERT INTO `pelanggan` (`id_pelanggan`, `nama_lengkap`, `nama_pengguna`, `nomor_wa`, `kata_sandi`, `alamat`) VALUES
-(1, 'Budi Santoso', 'budi_santoso', '081234567890', '$2y$10$MqLtIfRJopIwhZNFU1odoelo7D2YgCvyK2oZnJjItDezUUttPkTPe', 'Jl. Mawar No. 10, Jakarta Selatan'),
-(2, 'Ani Lestari', 'ani_lestari', '08111222333', '$2y$10$kNZ/aP/Nn6uFbxxaLV.hWOtgrA1YclgkWvA3VvXrs837ElKTQCIKa', 'Jl. Melati No. 5, Jakarta Pusat')
+INSERT INTO `pelanggan` (`id_pelanggan`, `nama_lengkap`, `nama_pengguna`, `nomor_wa`, `kata_sandi`) VALUES
+(1, 'Budi Santoso', 'budi_santoso', '081234567890', '$2y$10$MqLtIfRJopIwhZNFU1odoelo7D2YgCvyK2oZnJjItDezUUttPkTPe'),
+(2, 'Ani Lestari', 'ani_lestari', '08111222333', '$2y$10$kNZ/aP/Nn6uFbxxaLV.hWOtgrA1YclgkWvA3VvXrs837ElKTQCIKa')
 ON DUPLICATE KEY UPDATE 
   `nama_lengkap` = VALUES(`nama_lengkap`),
   `nomor_wa` = VALUES(`nomor_wa`),
-  `kata_sandi` = VALUES(`kata_sandi`),
-  `alamat` = VALUES(`alamat`);
+  `kata_sandi` = VALUES(`kata_sandi`);
+
+
+-- Tabel Kategori
+CREATE TABLE IF NOT EXISTS `kategori` (
+  `id_kategori` INT AUTO_INCREMENT PRIMARY KEY,
+  `nama_kategori` VARCHAR(50) NOT NULL UNIQUE,
+  `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Memasukkan Data Kategori Bawaan (Seed Data)
+INSERT INTO `kategori` (`id_kategori`, `nama_kategori`) VALUES
+(1, 'Bolu'),
+(2, 'Kue Kering'),
+(3, 'Kue Basah')
+ON DUPLICATE KEY UPDATE `nama_kategori` = VALUES(`nama_kategori`);
 
 
 -- Tabel Produk dengan Kolom Kategori, Ukuran, dan Masa Simpan
 CREATE TABLE IF NOT EXISTS `produk` (
   `id_produk` INT AUTO_INCREMENT PRIMARY KEY,
+  `id_kategori` INT NOT NULL,
   `nama_produk` VARCHAR(100) NOT NULL,
   `deskripsi` TEXT,
   `harga` INT NOT NULL,
   `gambar` VARCHAR(255) NOT NULL,
-  `kategori` ENUM('Bolu', 'Kue Kering', 'Kue Basah') NOT NULL,
   `ukuran` VARCHAR(50) NOT NULL,
   `masa_simpan` VARCHAR(100) NOT NULL,
-  `status_produk` ENUM('Aktif', 'Diarsipkan') NOT NULL DEFAULT 'Aktif',
-  `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  `dibuat_pada` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`id_kategori`) REFERENCES `kategori` (`id_kategori`) ON DELETE RESTRICT ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Tabel Keranjang Belanja Pelanggan
@@ -51,20 +64,20 @@ CREATE TABLE IF NOT EXISTS `keranjang` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Memasukkan Data Produk Lengkap
-INSERT INTO `produk` (`id_produk`, `nama_produk`, `deskripsi`, `harga`, `gambar`, `kategori`, `ukuran`, `masa_simpan`) VALUES
-(1, 'Strawberry Shortcake', 'Kue spons vanila lembut dilapisi krim segar melimpah dan buah strawberry pilihan segar.', 180000, 'strawberry_shortcake.png', 'Bolu', 'Diameter 18 cm', '3 Hari (Kulkas)'),
-(2, 'Signature Chocolate Fudge', 'Kue cokelat premium berlapis fudge cokelat pekat yang lumer di setiap gigitan.', 195000, 'chocolate_fudge.png', 'Bolu', 'Diameter 20 cm', '3 Hari (Suhu Ruang) / 7 Hari (Kulkas)'),
-(3, 'Classic Pandan Cheese', 'Kue pandan wangi alami daun suji dikombinasikan dengan gurihnya keju parut premium.', 165000, 'pandan_cheese.png', 'Bolu', 'Diameter 20 cm', '3 Hari (Suhu Ruang)'),
-(4, 'Nastar Keju Premium', 'Nastar nanas lembut dengan selai nanas homemade yang legit, dibalur dengan keju parut renyah di atasnya.', 95000, 'nastar.png', 'Kue Kering', 'Toples 500 gram', '1 Bulan (Wadah Kedap Udara)'),
-(5, 'Kastengel Edam', 'Kue kering keju premium bercita rasa gurih dari keju edam asli berkualitas tinggi.', 110000, 'kastengel.png', 'Kue Kering', 'Toples 500 gram', '1 Bulan (Wadah Kedap Udara)'),
-(6, 'Lapis Legit Premium', 'Kue lapis legit dengan aroma rempah harum khas tradisional, lembut dan moist di setiap lapisnya.', 250000, 'lapis_legit.png', 'Kue Basah', 'Loyang 20x20 cm', '4 Hari (Suhu Ruang) / 10 Hari (Kulkas)'),
-(7, 'Risoles Mayo Melt', 'Risoles gurih dengan balutan tepung roti renyah, diisi dengan smoked beef, telur rebus, dan saus mayones lumer.', 45000, 'risoles.png', 'Kue Basah', '1 Pax (Isi 10 Pcs)', '2 Hari (Kulkas) / 1 Bulan (Freezer)')
+INSERT INTO `produk` (`id_produk`, `id_kategori`, `nama_produk`, `deskripsi`, `harga`, `gambar`, `ukuran`, `masa_simpan`) VALUES
+(1, 1, 'Strawberry Shortcake', 'Kue spons vanila lembut dilapisi krim segar melimpah dan buah strawberry pilihan segar.', 180000, 'strawberry_shortcake.png', 'Diameter 18 cm', '3 Hari (Kulkas)'),
+(2, 1, 'Signature Chocolate Fudge', 'Kue cokelat premium berlapis fudge cokelat pekat yang lumer di setiap gigitan.', 195000, 'chocolate_fudge.png', 'Diameter 20 cm', '3 Hari (Suhu Ruang) / 7 Hari (Kulkas)'),
+(3, 1, 'Classic Pandan Cheese', 'Kue pandan wangi alami daun suji dikombinasikan dengan gurihnya keju parut premium.', 165000, 'pandan_cheese.png', 'Diameter 20 cm', '3 Hari (Suhu Ruang)'),
+(4, 2, 'Nastar Keju Premium', 'Nastar nanas lembut dengan selai nanas homemade yang legit, dibalur dengan keju parut renyah di atasnya.', 95000, 'nastar.png', 'Toples 500 gram', '1 Bulan (Wadah Kedap Udara)'),
+(5, 2, 'Kastengel Edam', 'Kue kering keju premium bercita rasa gurih dari keju edam asli berkualitas tinggi.', 110000, 'kastengel.png', 'Toples 500 gram', '1 Bulan (Wadah Kedap Udara)'),
+(6, 3, 'Lapis Legit Premium', 'Kue lapis legit dengan aroma rempah harum khas tradisional, lembut dan moist di setiap lapisnya.', 250000, 'lapis_legit.png', 'Loyang 20x20 cm', '4 Hari (Suhu Ruang) / 10 Hari (Kulkas)'),
+(7, 3, 'Risoles Mayo Melt', 'Risoles gurih dengan balutan tepung roti renyah, diisi dengan smoked beef, telur rebus, dan saus mayones lumer.', 45000, 'risoles.png', '1 Pax (Isi 10 Pcs)', '2 Hari (Kulkas) / 1 Bulan (Freezer)')
 ON DUPLICATE KEY UPDATE 
+  `id_kategori` = VALUES(`id_kategori`),
   `nama_produk` = VALUES(`nama_produk`),
   `deskripsi` = VALUES(`deskripsi`),
   `harga` = VALUES(`harga`),
   `gambar` = VALUES(`gambar`),
-  `kategori` = VALUES(`kategori`),
   `ukuran` = VALUES(`ukuran`),
   `masa_simpan` = VALUES(`masa_simpan`);
 
@@ -104,7 +117,3 @@ CREATE TABLE IF NOT EXISTS `detail_pesanan` (
   FOREIGN KEY (`id_produk`) REFERENCES `produk` (`id_produk`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Migrasi: Tambahkan kolom status_produk pada tabel produk (jalankan sekali pada database yang sudah ada)
-ALTER TABLE `produk` 
-  ADD COLUMN IF NOT EXISTS `status_produk` ENUM('Aktif','Diarsipkan') NOT NULL DEFAULT 'Aktif'
-  AFTER `masa_simpan`;

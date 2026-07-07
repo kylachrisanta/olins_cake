@@ -37,7 +37,7 @@ $id_produk = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 // Ambil data produk detail
 $product = null;
 if ($id_produk > 0) {
-    $stmt = $conn->prepare("SELECT * FROM produk WHERE id_produk = ?");
+    $stmt = $conn->prepare("SELECT p.*, k.nama_kategori AS kategori FROM produk p LEFT JOIN kategori k ON p.id_kategori = k.id_kategori WHERE p.id_produk = ?");
     $stmt->bind_param("i", $id_produk);
     $stmt->execute();
     $result = $stmt->get_result();

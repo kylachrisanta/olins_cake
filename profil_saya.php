@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Ambil Informasi Profil Terbaru Pelanggan
-$stmt = $conn->prepare("SELECT nama_lengkap, nama_pengguna, nomor_wa, alamat, foto_profil FROM pelanggan WHERE id_pelanggan = ?");
+$stmt = $conn->prepare("SELECT nama_lengkap, nama_pengguna, nomor_wa, foto_profil FROM pelanggan WHERE id_pelanggan = ?");
 $stmt->bind_param("i", $id_pelanggan);
 $stmt->execute();
 $result = $stmt->get_result();

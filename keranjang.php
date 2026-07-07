@@ -88,9 +88,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 }
 
 // Ambil data keranjang belanja saat ini
-$query = "SELECT k.id_keranjang, k.jumlah, p.id_produk, p.nama_produk, p.harga, p.gambar, p.kategori, p.ukuran 
+$query = "SELECT k.id_keranjang, k.jumlah, p.id_produk, p.nama_produk, p.harga, p.gambar, kat.nama_kategori AS kategori, p.ukuran 
           FROM keranjang k 
           JOIN produk p ON k.id_produk = p.id_produk 
+          LEFT JOIN kategori kat ON p.id_kategori = kat.id_kategori
           WHERE k.id_pelanggan = ? 
           ORDER BY k.dibuat_pada DESC";
 $stmt = $conn->prepare($query);

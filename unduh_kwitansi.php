@@ -39,7 +39,7 @@ if ($order['status_pembayaran'] !== 'Sudah Dibayar') {
 }
 
 // Fetch order items
-$stmt = $conn->prepare("SELECT dp.*, pr.nama_produk, pr.kategori, pr.ukuran FROM detail_pesanan dp JOIN produk pr ON dp.id_produk = pr.id_produk WHERE dp.id_pesanan = ?");
+$stmt = $conn->prepare("SELECT dp.*, pr.nama_produk, kat.nama_kategori AS kategori, pr.ukuran FROM detail_pesanan dp JOIN produk pr ON dp.id_produk = pr.id_produk LEFT JOIN kategori kat ON pr.id_kategori = kat.id_kategori WHERE dp.id_pesanan = ?");
 $stmt->bind_param("i", $id_pesanan);
 $stmt->execute();
 $items = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);

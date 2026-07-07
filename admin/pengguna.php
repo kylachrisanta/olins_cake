@@ -113,13 +113,6 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                 grid-template-columns: 1fr;
             }
         }
-        /* Kolom Alamat: word-wrap dan lebar fleksibel */
-        .pelanggan-table .col-alamat {
-            min-width: 220px;
-            white-space: normal;
-            word-break: break-word;
-            line-height: 1.5;
-        }
         .pelanggan-table .col-nama   { width: 160px; white-space: nowrap; }
         .pelanggan-table .col-user   { width: 130px; white-space: nowrap; }
         .pelanggan-table .col-wa     { width: 160px; white-space: nowrap; }
@@ -259,7 +252,6 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                             <th class="col-nama">Nama Lengkap</th>
                             <th class="col-user">Username</th>
                             <th class="col-wa">No. WhatsApp</th>
-                            <th class="col-alamat">Alamat Lengkap</th>
                             <th class="col-tgl">Tgl Terdaftar</th>
                         </tr>
                     </thead>
@@ -277,19 +269,13 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                                         ?>
                                         <a href="<?= $wa_url ?>" target="_blank" style="color: var(--admin-success); margin-left: 4px;" title="Hubungi">
                                             <i class="fa-brands fa-whatsapp"></i>
-                                        </a>
-                                    </td>
-                                    <td class="col-alamat">
-                                        <p style="font-size: 0.85rem; color: var(--admin-text-muted); line-height: 1.5; margin: 0;">
-                                            <?= !empty($row['alamat']) ? nl2br(htmlspecialchars($row['alamat'])) : '<span style="color: var(--admin-text-light); font-style: italic;">-</span>' ?>
-                                        </p>
                                     </td>
                                     <td class="col-tgl" style="font-size: 0.8rem; color: var(--admin-text-muted);"><?= date('d/m/Y', strtotime($row['dibuat_pada'])) ?></td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="5" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">Belum ada pelanggan terdaftar saat ini.</td>
+                                <td colspan="4" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">Belum ada pelanggan terdaftar saat ini.</td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

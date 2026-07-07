@@ -76,9 +76,10 @@ if ($status_pesanan === 'Kedaluwarsa' || $status_pesanan === 'Dibatalkan' || $st
 }
 
 // Ambil rincian produk pesanan
-$detail_query = "SELECT dp.id_produk, dp.jumlah, dp.harga_satuan, p.nama_produk, p.gambar, p.ukuran, p.kategori 
+$detail_query = "SELECT dp.id_produk, dp.jumlah, dp.harga_satuan, p.nama_produk, p.gambar, p.ukuran, kat.nama_kategori AS kategori 
                  FROM detail_pesanan dp 
                  JOIN produk p ON dp.id_produk = p.id_produk 
+                 LEFT JOIN kategori kat ON p.id_kategori = kat.id_kategori
                  WHERE dp.id_pesanan = ?";
 $stmt_d = $conn->prepare($detail_query);
 $stmt_d->bind_param("i", $id_pesanan);

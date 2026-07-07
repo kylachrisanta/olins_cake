@@ -88,8 +88,8 @@ if (isset($_GET['action_kategori']) && $_GET['action_kategori'] === 'delete_kate
         if ($kat_res && $kat_res->num_rows > 0) {
             $nama_kat = $kat_res->fetch_assoc()['nama_kategori'];
             
-            $prod_check = $conn->prepare("SELECT COUNT(*) as count FROM produk WHERE kategori = ?");
-            $prod_check->bind_param("s", $nama_kat);
+            $prod_check = $conn->prepare("SELECT COUNT(*) as count FROM produk WHERE id_kategori = ?");
+            $prod_check->bind_param("i", $id_del);
             $prod_check->execute();
             $p_count = $prod_check->get_result()->fetch_assoc()['count'];
             $prod_check->close();
@@ -115,13 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_produk']))
     $nama_produk = isset($_POST['nama_produk']) ? trim($_POST['nama_produk']) : '';
     $deskripsi = isset($_POST['deskripsi']) ? trim($_POST['deskripsi']) : '';
     $harga = isset($_POST['harga']) ? intval($_POST['harga']) : 0;
-    $kategori = isset($_POST['kategori']) ? trim($_POST['kategori']) : '';
+    $id_kategori = isset($_POST['kategori']) ? intval($_POST['kategori']) : 0;
     $ukuran = isset($_POST['ukuran']) ? trim($_POST['ukuran']) : '';
     $masa_simpan = isset($_POST['masa_simpan']) ? trim($_POST['masa_simpan']) : '';
     
     $redirect_url = "produk.php?tab=produk";
     
-    if (empty($nama_produk) || empty($kategori) || $harga <= 0 || empty($ukuran) || empty($masa_simpan)) {
+    if (empty($nama_produk) || empty($id_kategori) || $harga <= 0 || empty($ukuran) || empty($masa_simpan)) {
         $_SESSION['msg_error'] = "Harap isi semua kolom wajib.";
         $redirect_url = "produk.php?tab=produk&action=add";
     } elseif (!isset($_FILES['gambar']) || $_FILES['gambar']['error'] === UPLOAD_ERR_NO_FILE) {
@@ -146,8 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_add_produk']))
             }
             
             if (move_uploaded_file($filetmp, $dest_path)) {
-                $stmt = $conn->prepare("INSERT INTO produk (nama_produk, deskripsi, harga, gambar, kategori, ukuran, masa_simpan) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssissss", $nama_produk, $deskripsi, $harga, $new_filename, $kategori, $ukuran, $masa_simpan);
+                $stmt = $conn->prepare("INSERT INTO produk (nama_produk, deskripsi, harga, gambar, id_kategori, ukuran, masa_simpan) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssisiss", $nama_produk, $deskripsi, $harga, $new_filename, $id_kategori, $ukuran, $masa_simpan);
                 
                 if ($stmt->execute()) {
                     $_SESSION['msg_success'] = "Produk '$nama_produk' berhasil ditambahkan.";
@@ -174,14 +174,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
     $nama_produk = isset($_POST['nama_produk']) ? trim($_POST['nama_produk']) : '';
     $deskripsi = isset($_POST['deskripsi']) ? trim($_POST['deskripsi']) : '';
     $harga = isset($_POST['harga']) ? intval($_POST['harga']) : 0;
-    $kategori = isset($_POST['kategori']) ? trim($_POST['kategori']) : '';
+    $id_kategori = isset($_POST['kategori']) ? intval($_POST['kategori']) : 0;
     $ukuran = isset($_POST['ukuran']) ? trim($_POST['ukuran']) : '';
     $masa_simpan = isset($_POST['masa_simpan']) ? trim($_POST['masa_simpan']) : '';
     $old_gambar = isset($_POST['old_gambar']) ? trim($_POST['old_gambar']) : '';
     
     $redirect_url = "produk.php?tab=produk";
     
-    if ($id_produk <= 0 || empty($nama_produk) || empty($kategori) || $harga <= 0 || empty($ukuran) || empty($masa_simpan)) {
+    if ($id_produk <= 0 || empty($nama_produk) || empty($id_kategori) || $harga <= 0 || empty($ukuran) || empty($masa_simpan)) {
         $_SESSION['msg_error'] = "Harap isi semua kolom wajib.";
         $redirect_url = "produk.php?tab=produk&action=edit&id=" . $id_produk;
     } else {
@@ -216,8 +216,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
         }
         
         if ($upload_ok) {
-            $stmt = $conn->prepare("UPDATE produk SET nama_produk = ?, deskripsi = ?, harga = ?, gambar = ?, kategori = ?, ukuran = ?, masa_simpan = ? WHERE id_produk = ?");
-            $stmt->bind_param("ssissssi", $nama_produk, $deskripsi, $harga, $new_filename, $kategori, $ukuran, $masa_simpan, $id_produk);
+            $stmt = $conn->prepare("UPDATE produk SET nama_produk = ?, deskripsi = ?, harga = ?, gambar = ?, id_kategori = ?, ukuran = ?, masa_simpan = ? WHERE id_produk = ?");
+            $stmt->bind_param("ssisisis", $nama_produk, $deskripsi, $harga, $new_filename, $id_kategori, $ukuran, $masa_simpan, $id_produk);
             
             if ($stmt->execute()) {
                 $_SESSION['msg_success'] = "Produk berhasil diperbarui.";
@@ -324,7 +324,7 @@ if (isset($_GET['action_kategori']) && $_GET['action_kategori'] === 'edit_katego
 $kategori_list = [];
 $res_kat = $conn->query("
     SELECT k.*, 
-        (SELECT COUNT(*) FROM produk p WHERE p.kategori = k.nama_kategori) AS total_produk
+        (SELECT COUNT(*) FROM produk p WHERE p.id_kategori = k.id_kategori) AS total_produk
     FROM kategori k
     ORDER BY k.nama_kategori ASC
 ");
@@ -348,10 +348,11 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit') {
 
 // Ambil Semua Produk beserta jumlah transaksi per produk
 $list_produk = $conn->query("
-    SELECT p.*, 
+    SELECT p.*, k.nama_kategori AS kategori, 
         (SELECT COUNT(*) FROM detail_pesanan dp WHERE dp.id_produk = p.id_produk) AS total_transaksi
     FROM produk p
-    ORDER BY p.status_produk ASC, p.dibuat_pada DESC
+    LEFT JOIN kategori k ON p.id_kategori = k.id_kategori
+    ORDER BY p.dibuat_pada DESC
 ");
 
 // ==========================================
@@ -473,13 +474,13 @@ if ($tab === 'testimoni') {
         <!-- Tab Navigation Bar -->
         <div class="admin-tab-nav">
             <a href="produk.php?tab=produk" class="tab-btn <?= $tab === 'produk' ? 'active' : '' ?>">
-                <i class="fa-solid fa-cookie-bite"></i> Menu Produk
+                <i class="fa-solid fa-cookie-bite"></i> Produk
             </a>
             <a href="produk.php?tab=kategori" class="tab-btn <?= $tab === 'kategori' ? 'active' : '' ?>">
                 <i class="fa-solid fa-tags"></i> Kategori Produk
             </a>
             <a href="produk.php?tab=testimoni" class="tab-btn <?= $tab === 'testimoni' ? 'active' : '' ?>">
-                <i class="fa-solid fa-comment-dots"></i> Ulasan & Testimoni
+                <i class="fa-solid fa-comment-dots"></i> Testimoni Produk
             </a>
         </div>
 
@@ -531,7 +532,7 @@ if ($tab === 'testimoni') {
                                 <select id="kategori" name="kategori" class="admin-form-control" required>
                                     <option value="">-- Pilih Kategori --</option>
                                     <?php foreach ($kategori_list as $kat): ?>
-                                        <option value="<?= htmlspecialchars($kat['nama_kategori']) ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
+                                        <option value="<?= $kat['id_kategori'] ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -597,7 +598,7 @@ if ($tab === 'testimoni') {
                                 <select id="kategori" name="kategori" class="admin-form-control" required>
                                     <option value="">-- Pilih Kategori --</option>
                                     <?php foreach ($kategori_list as $kat): ?>
-                                        <option value="<?= htmlspecialchars($kat['nama_kategori']) ?>" <?= $edit_produk['kategori'] === $kat['nama_kategori'] ? 'selected' : '' ?>>
+                                        <option value="<?= $kat['id_kategori'] ?>" <?= $edit_produk['id_kategori'] == $kat['id_kategori'] ? 'selected' : '' ?>>
                                             <?= htmlspecialchars($kat['nama_kategori']) ?>
                                         </option>
                                     <?php endforeach; ?>
@@ -642,7 +643,7 @@ if ($tab === 'testimoni') {
                 <!-- DAFTAR TABEL PRODUK -->
                 <div class="admin-panel-card">
                     <div class="panel-card-header">
-                        <h3><i class="fa-solid fa-cookie-bite"></i> Daftar Menu Kue Terdaftar</h3>
+                        <h3><i class="fa-solid fa-cookie-bite"></i> Daftar Produk</h3>
                     </div>
 
                     <div class="admin-table-container">

@@ -32,7 +32,10 @@ foreach ($fallback_ids as $fid) {
 }
 
 // Ambil semua produk dari database
-$query = "SELECT * FROM produk ORDER BY kategori ASC, nama_produk ASC";
+$query = "SELECT p.*, k.nama_kategori AS kategori 
+          FROM produk p 
+          LEFT JOIN kategori k ON p.id_kategori = k.id_kategori 
+          ORDER BY k.nama_kategori ASC, p.nama_produk ASC";
 $result = $conn->query($query);
 $products = [];
 if ($result && $result->num_rows > 0) {
@@ -45,7 +48,7 @@ if ($result && $result->num_rows > 0) {
 $categories = [];
 $cat_query = "SELECT k.nama_kategori 
               FROM kategori k
-              INNER JOIN produk p ON p.kategori = k.nama_kategori
+              INNER JOIN produk p ON p.id_kategori = k.id_kategori
               GROUP BY k.nama_kategori
               ORDER BY k.nama_kategori ASC";
 $cat_result = $conn->query($cat_query);
