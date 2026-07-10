@@ -517,17 +517,31 @@
             padding: 12px 20px;
             font-size: 1rem;
             font-weight: 700;
-            border: 2px solid #333 !important;
-            background-color: #ffffff !important;
-            color: #111111 !important;
+            border: 2px solid #555555 !important;
+            background-color: #f5f5f5 !important;
+            color: #555555 !important;
             border-radius: 6px !important;
             cursor: not-allowed;
-            opacity: 0.5;
+            opacity: 0.6;
             transition: all 0.2s ease;
+            box-shadow: none !important;
+            font-family: inherit;
         }
 
         .btn-submit-payment-proof:hover:not(:disabled) {
-            background-color: #f0f0f0 !important;
+            background-color: #e8e8e8 !important;
+            color: #111111 !important;
+            border-color: #333 !important;
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .btn-submit-payment-proof:not(:disabled) {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            border-color: #333333 !important;
+            opacity: 1;
+            cursor: pointer;
         }
 
         /* Important Information card */
@@ -710,6 +724,128 @@
             color: #111111;
             margin-top: 2px;
         }
+
+        /* Lightbox Wireframe overlay */
+        .wf-lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.88);
+            z-index: 200000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .wf-lightbox-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .wf-lightbox-box {
+            position: relative;
+            background-color: #ffffff;
+            border: 2px solid #555;
+            border-radius: 10px;
+            padding: 24px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .wf-lightbox-overlay.active .wf-lightbox-box {
+            transform: scale(1);
+        }
+        .wf-lightbox-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #555;
+            background: none;
+            border: none;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .wf-lightbox-close:hover { color: #111; }
+        .wf-lightbox-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #111111;
+        }
+        .wf-lightbox-img-placeholder {
+            width: 100%;
+            height: 220px;
+            border: 2px solid #333;
+            border-radius: 6px;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        .wf-lightbox-img-placeholder svg {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .wf-lightbox-img-label {
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            border: 1.5px solid #333;
+            padding: 4px 10px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        .wf-lightbox-filename {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .btn-close-lightbox {
+            border: 1.5px solid #333;
+            background: #ffffff;
+            color: #111111;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-close-lightbox:hover { background: #f0f0f0; }
+
+        /* Success card with link to orders */
+        .btn-go-to-orders {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            border: 2px solid #333;
+            background: #111111;
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        .btn-go-to-orders:hover { background: #333333; }
     </style>
 </head>
 <body>
@@ -765,8 +901,9 @@
             </div>
 
             <!-- Dynamic Alert Notifications -->
-            <div id="alert-success-box" class="payment-alert-success" style="display: none;">
-                <i class="fa-solid fa-circle-check"></i>
+            <!-- SUCCESS: Tampil setelah bukti berhasil dikirim (sesuai $_SESSION['sukses_pembayaran'] di pembayaran.php) -->
+            <div id="alert-success-box" class="payment-alert-success" style="display: none; border-style: dashed !important; border-width: 2px !important; border-color: #333 !important;">
+                <i class="fa-solid fa-circle-check" style="font-size: 1.8rem; color: #111;"></i>
                 <div class="alert-text">
                     <strong>Kirim Bukti Sukses!</strong>
                     <p id="alert-success-text">Bukti pembayaran berhasil dikirim dan sedang menunggu verifikasi admin.</p>
@@ -809,6 +946,7 @@
                     </div>
 
                     <!-- State 2: Success status card (Hidden by default, shown after upload) -->
+                    <!-- Sesuai kondisi !empty($order['bukti_pembayaran']) di pembayaran.php baris 322 -->
                     <div class="payment-card success-status-card" id="timer-success-card" style="display: none;">
                         <i class="fa-solid fa-circle-check success-icon"></i>
                         <h3>Menunggu Verifikasi Admin</h3>
@@ -817,9 +955,19 @@
                         </p>
                         <div class="uploaded-proof-preview">
                             <span>Bukti Pembayaran Diunggah:</span>
-                            <a href="#" class="btn-view-proof" onclick="alert('Membuka file bukti pembayaran...'); return false;">
+                            <a href="#" class="btn-view-proof" id="btn-open-lightbox" onclick="openLightbox(); return false;">
                                 <i class="fa-solid fa-image"></i> Lihat Bukti Pembayaran
                             </a>
+                        </div>
+                        <a href="pesanan.html" class="btn-go-to-orders">
+                            <i class="fa-solid fa-list-check"></i> Lihat Pesanan Saya
+                        </a>
+                        <!-- Tombol Reset Demo: hanya untuk keperluan wireframe prototype -->
+                        <div style="margin-top: 20px; padding-top: 16px; border-top: 1.5px dashed #aaa;">
+                            <p style="font-size: 0.78rem; color: #888; margin-bottom: 8px; font-family: monospace;">[WIREFRAME DEMO] Klik tombol di bawah untuk kembali ke tampilan awal (timer countdown)</p>
+                            <button onclick="resetDemo()" style="border: 1.5px dashed #888; background: #fff; color: #555; padding: 6px 16px; border-radius: 4px; font-size: 0.8rem; cursor: pointer; font-family: monospace;">
+                                ↺ Reset Demo (Kembali ke Tampilan Timer)
+                            </button>
                         </div>
                     </div>
 
@@ -992,7 +1140,8 @@
                                         </div>
                                     </div>
 
-                                    <button type="submit" id="btn-submit-payment" class="btn-submit-payment-proof" style="width: 100%; margin-top: 24px;" disabled>
+                                    <button type="submit" id="btn-submit-payment" class="btn-submit-payment-proof" disabled
+                                        style="width: 100%; margin-top: 24px; background-color: #f0f0f0 !important; color: #777777 !important; border: 2px solid #aaaaaa !important; border-radius: 6px !important; box-shadow: none !important; font-weight: 700; font-size: 1rem; padding: 12px 20px; cursor: not-allowed; opacity: 0.7; font-family: inherit; display: flex; align-items: center; justify-content: center;">
                                         Kirim Bukti Pembayaran <i class="fa-solid fa-paper-plane" style="margin-left: 8px;"></i>
                                     </button>
                                 </div>
@@ -1004,10 +1153,10 @@
                     <div class="payment-card info-important-card">
                         <h3><i class="fa-solid fa-circle-info"></i> Informasi Penting</h3>
                         <ul class="info-list">
-                            <li>📌 Pembayaran harus dilakukan dalam waktu 1×24 jam setelah pesanan dibuat.</li>
-                            <li>📌 Bukti pembayaran wajib diunggah untuk memproses pesanan.</li>
-                            <li>📌 Pesanan akan mulai diproses setelah pembayaran diverifikasi oleh admin.</li>
-                            <li>📌 Pesanan yang tidak dibayar dalam batas waktu akan otomatis dibatalkan oleh sistem.</li>
+                            <li><i class="fa-solid fa-xmark" style="color: #444; margin-right: 6px;"></i> Pembayaran harus dilakukan dalam waktu 1×24 jam setelah pesanan dibuat.</li>
+                            <li><i class="fa-solid fa-xmark" style="color: #444; margin-right: 6px;"></i> Bukti pembayaran wajib diunggah untuk memproses pesanan.</li>
+                            <li><i class="fa-solid fa-xmark" style="color: #444; margin-right: 6px;"></i> Pesanan akan mulai diproses setelah pembayaran diverifikasi oleh admin.</li>
+                            <li><i class="fa-solid fa-xmark" style="color: #444; margin-right: 6px;"></i> Pesanan yang tidak dibayar dalam batas waktu akan otomatis dibatalkan oleh sistem.</li>
                         </ul>
                     </div>
 
@@ -1163,6 +1312,27 @@
         </div>
     </footer>
 
+    <!-- Lightbox Wireframe: Tampil saat klik "Lihat Bukti Pembayaran" -->
+    <!-- Sesuai .lightbox-overlay di pembayaran.php baris 197-240 -->
+    <div id="wf-lightbox" class="wf-lightbox-overlay" style="display: none;">
+        <div class="wf-lightbox-box">
+            <button class="wf-lightbox-close" onclick="closeLightbox()" aria-label="Tutup">&times;</button>
+            <div class="wf-lightbox-title">
+                <i class="fa-solid fa-image" style="margin-right: 8px;"></i>Bukti Pembayaran
+            </div>
+            <div class="wf-lightbox-img-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#ccc" stroke-width="1.5" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#ccc" stroke-width="1.5" />
+                </svg>
+                <div class="wf-lightbox-img-label"><i class="fa-solid fa-image"></i> BUKTI_PEMBAYARAN.JPG</div>
+            </div>
+            <div class="wf-lightbox-filename" id="lightbox-filename">bukti_10001_1751895327.jpg</div>
+            <br>
+            <button class="btn-close-lightbox" onclick="closeLightbox()">Tutup</button>
+        </div>
+    </div>
+
     <!-- Prototype Handling Script -->
     <script>
         // Mobile Menu Toggle
@@ -1260,25 +1430,70 @@
         function handlePaymentSubmit(event) {
             event.preventDefault();
 
-            // Hide form and active timer card
+            // Validasi: pastikan file sudah dipilih
+            const fileInput = document.getElementById('bukti_pembayaran');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                alert('Berkas bukti pembayaran wajib diunggah.');
+                return;
+            }
+
+            // Simpan nama file untuk lightbox
+            const fname = fileInput.files[0].name;
+            const lbFilename = document.getElementById('lightbox-filename');
+            if (lbFilename) lbFilename.innerText = fname;
+
+            // Hide form area and active timer card
             document.getElementById('payment-form-area').style.display = 'none';
             document.getElementById('timer-active-card').style.display = 'none';
 
-            // Show success status card
+            // Show success status card (sesuai kondisi !empty($order['bukti_pembayaran']) di pembayaran.php)
             document.getElementById('timer-success-card').style.display = 'block';
 
-            // Show success alert box
+            // Show success alert (sesuai $notifikasi_sukses dari $_SESSION['sukses_pembayaran'])
             const alertBox = document.getElementById('alert-success-box');
             alertBox.style.display = 'flex';
-            
-            // Save state in localStorage so the prototype remembers that payment was submitted!
+
+            // Save state in localStorage
             localStorage.setItem('wf_payment_submitted', 'true');
-            
-            // Also notify the parent order list page (pesanan.html) to show "Menunggu Verifikasi"
+            localStorage.setItem('wf_payment_filename', fname);
             localStorage.setItem('wf_order_status', 'Menunggu Verifikasi');
 
             // Scroll to top of section
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Lightbox: buka preview bukti pembayaran
+        function openLightbox() {
+            const overlay = document.getElementById('wf-lightbox');
+            // Restore filename dari localStorage jika ada
+            const savedFname = localStorage.getItem('wf_payment_filename');
+            if (savedFname) {
+                const lbFilename = document.getElementById('lightbox-filename');
+                if (lbFilename) lbFilename.innerText = savedFname;
+            }
+            overlay.style.display = 'flex';
+            overlay.offsetHeight; // force reflow
+            overlay.classList.add('active');
+        }
+
+        // Lightbox: tutup
+        function closeLightbox() {
+            const overlay = document.getElementById('wf-lightbox');
+            overlay.classList.remove('active');
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
+        }
+
+        // Tutup lightbox jika klik di luar area konten
+        document.getElementById('wf-lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+
+        // Reset Demo: hapus state payment submitted agar timer muncul kembali
+        function resetDemo() {
+            localStorage.removeItem('wf_payment_submitted');
+            localStorage.removeItem('wf_payment_filename');
+            localStorage.removeItem('wf_order_status');
+            window.location.reload();
         }
 
         // Countdown Timer Real-time (Simulated 23:59:59)

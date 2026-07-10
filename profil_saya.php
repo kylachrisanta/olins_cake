@@ -244,7 +244,7 @@ $stmt->close();
                                         <input type="text" id="nama_lengkap" name="nama_lengkap" class="contact-form-control" value="<?= htmlspecialchars($user['nama_lengkap']) ?>" required>
                                     </div>
                                     <div class="contact-form-group">
-                                        <label for="nama_pengguna_display">Nama Pengguna (Username) <span class="text-muted">(Tidak dapat diubah)</span></label>
+                                        <label for="nama_pengguna_display">Nama Pengguna <span class="text-muted">(Tidak dapat diubah)</span></label>
                                         <input type="text" id="nama_pengguna_display" class="contact-form-control" value="<?= htmlspecialchars($user['nama_pengguna']) ?>" readonly style="background-color: var(--warm-bg); cursor: not-allowed;">
                                     </div>
                                 </div>

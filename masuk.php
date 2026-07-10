@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <form action="masuk.php" method="POST">
                     <div class="contact-form-group">
-                        <label for="nama_pengguna">Nama Pengguna (Username)</label>
+                        <label for="nama_pengguna">Nama Pengguna</label>
                         <input type="text" id="nama_pengguna" name="nama_pengguna" class="contact-form-control" placeholder="Masukkan nama pengguna Anda" value="<?= htmlspecialchars($cookie_username) ?>" required autocomplete="username">
                     </div>
                     

@@ -4,152 +4,356 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wireframe - Testimoni - Olin's Cake</title>
-    <link rel="stylesheet" href="wireframe.css">
+    <!-- CSS imports are handled by wireframe.css -->
+    <link rel="stylesheet" href="wireframe.css?v=3">
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .testimonial-filter-bar {
+        /* Override star icon colors to force grayscale */
+        .testi-summary-stars, 
+        .testi-card-stars, 
+        .star-rating-selector label {
+            color: #333333 !important;
             display: flex;
-            justify-content: space-between;
+            gap: 3px;
+        }
+        .testi-summary-stars i.fa-regular, 
+        .testi-card-stars i.fa-regular {
+            color: #cccccc !important;
+        }
+
+        /* Ensure header has white background to prevent scroll overlapping */
+        header {
+            background-color: #ffffff !important;
+            border-bottom: 2px solid #333 !important;
+            box-shadow: none !important;
+            padding: 15px 0 !important;
+        }
+
+        body {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            font-family: 'Outfit', sans-serif !important;
+        }
+
+        footer {
+            border-top: 2px solid #333 !important;
+            background-color: #f8f9fa !important;
+            color: #111111 !important;
+            padding: 50px 0 30px 0 !important;
+        }
+
+        /* Gray layout adjustments to guarantee grayscale filters button */
+        .filter-btn {
+            background-color: #ffffff !important;
+            border: 1.5px solid #333 !important;
+            color: #111111 !important;
+            transition: all 0.2s ease !important;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            border-color: #111111 !important;
+            box-shadow: none !important;
+        }
+
+        /* Grayscale modal container styling */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(2px) !important;
+        }
+        .modal-container {
+            border: 2px solid #111 !important;
+            box-shadow: none !important;
+            border-radius: 8px !important;
+        }
+        .modal-header {
+            border-bottom: 2px solid #111 !important;
+        }
+        .form-control-item {
+            border: 2px solid #333 !important;
+            background-color: #ffffff !important;
+            color: #111111 !important;
+            border-radius: 6px !important;
+        }
+        .form-control-item:focus {
+            box-shadow: none !important;
+            border-color: #111111 !important;
+        }
+
+        /* Star Selector interactive hover rules override */
+        .star-rating-selector label:hover,
+        .star-rating-selector label:hover ~ label,
+        .star-rating-selector input:checked ~ label {
+            color: #111111 !important;
+        }
+
+        /* Grayscale Alerts */
+        .orders-alert-success {
+            border: 2px dashed #111111 !important;
+            background-color: #fafafa !important;
+            color: #111111 !important;
+            border-radius: 8px !important;
+            padding: 16px 20px;
+            display: flex;
             align-items: center;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
-            margin-bottom: 30px;
+            gap: 16px;
         }
-        .rating-tabs {
+        .alert-icon-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #eeeeee !important;
+            color: #111111 !important;
+            border: 1.5px solid #111 !important;
+            border-radius: 50%;
             display: flex;
-            gap: 10px;
-        }
-        .rating-tab {
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        .rating-tab.active {
-            background-color: var(--text-main);
-            color: var(--bg-card);
-        }
-        .testimonial-card-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
-        .testimonial-item {
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            padding: 20px;
-            border-radius: var(--radius);
-        }
-        .testimonial-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-        .rating-stars {
-            font-family: var(--font-mono);
-            color: #ffc107;
-            font-weight: 700;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
         }
     </style>
 </head>
 <body>
 
-    <header>
+    <!-- Floating Header -->
+    <header id="header">
         <div class="container navbar">
-            <a href="index.html" class="logo">
-                <div class="logo-box">WF</div> Olin's Cake <span>[Wireframe]</span>
+            <a href="index.html" class="logo" style="display: flex; align-items: center; text-decoration: none;">
+                <div class="wireframe-img-box" style="width: 55px; height: 55px; margin-right: 12px; border-radius: 6px !important;">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                        <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                    </svg>
+                    <div class="wireframe-img-label" style="font-size: 0.65rem; padding: 2px 4px;">LOGO</div>
+                </div>
+                <span style="font-weight: 800; color: #111; font-size: 1.35rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
             </a>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Beranda</a></li>
-                <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
-                <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
-                <li><a href="produk.html" class="nav-link">Produk</a></li>
-                <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
-                <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
-                <li><a href="profil.html" class="nav-link">Profil</a></li>
-                <li><a href="testimoni.html" class="nav-link active">Testimoni</a></li>
+            
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <!-- Nav links will be rendered dynamically by JS -->
             </ul>
+
+            <div class="nav-actions" id="nav-actions" style="display: flex; align-items: center; gap: 12px;">
+                <!-- Nav actions will be rendered dynamically by JS -->
+            </div>
         </div>
     </header>
 
-    <main class="container">
-        <ul class="breadcrumbs">
-            <li><a href="index.html">Beranda</a></li>
-            <li>Testimoni Pelanggan</li>
-        </ul>
+    <!-- Main Testimonials Page Content -->
+    <section class="testi-page" style="padding-top: 130px;">
+        <div class="container">
 
-        <section style="margin: 40px 0;">
-            <div class="section-header">
-                <h2>Ulasan &amp; Testimoni</h2>
-                <p>Apa kata pelanggan setia mengenai kelezatan kue pre-order buatan dapur kami.</p>
+            <!-- Breadcrumbs -->
+            <div class="detail-breadcrumb" style="margin-bottom: 24px;">
+                <a href="index.html">Beranda</a> <span>/</span> <span id="breadcrumb-product-name">Kastengel Keju</span> <span>/</span> <span>Ulasan Produk</span>
             </div>
 
-            <div class="testimonial-filter-bar">
-                <div class="rating-tabs">
-                    <button class="rating-tab active">Semua Ulasan</button>
-                    <button class="rating-tab">★ 5</button>
-                    <button class="rating-tab">★ 4</button>
-                    <button class="rating-tab">★ 3</button>
-                </div>
-                <a href="pesanan.html" class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;">Tulis Ulasan Baru</a>
+            <div class="profile-title-area">
+                <h1>Testimoni Pelanggan</h1>
+                <p>Kumpulan testimoni tulus dari pelanggan setia kami untuk <span id="title-product-name">Kastengel Keju</span>.</p>
             </div>
 
-            <div class="testimonial-card-grid">
-                <!-- Testimoni 1 -->
-                <div class="testimonial-item">
-                    <div class="testimonial-header">
-                        <div>
-                            <strong style="display: block;">Carolina Berliana</strong>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">Membeli: Kastengel Keju</span>
-                        </div>
-                        <span class="rating-stars">★★★★★ [5/5]</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic;">
-                        "Kastengel kejunya enak banget! Gurih keju tua-nya kerasa banget, renyah, dan ga bikin eneg. Toplesnya juga rapi dan aman pas pengiriman. Bakal langganan terus di Olin's Cake!"
-                    </p>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 15px; text-align: right;">25 Juni 2026</span>
-                </div>
-
-                <!-- Testimoni 2 -->
-                <div class="testimonial-item">
-                    <div class="testimonial-header">
-                        <div>
-                            <strong style="display: block;">Budi Santoso</strong>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">Membeli: Bolu Pisang</span>
-                        </div>
-                        <span class="rating-stars">★★★★☆ [4/5]</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic;">
-                        "Bolunya wangi pisang banget pas dibuka kotak kardusnya, teksturnya empuk lembut. Manisnya juga pas ga over-sweet. Pengiriman cepat dan dikemas rapi."
-                    </p>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 15px; text-align: right;">22 Juni 2026</span>
-                </div>
-
-                <!-- Testimoni 3 -->
-                <div class="testimonial-item">
-                    <div class="testimonial-header">
-                        <div>
-                            <strong style="display: block;">Siti Rahma</strong>
-                            <span style="font-size: 0.8rem; color: var(--text-muted);">Membeli: Bolu Tape</span>
-                        </div>
-                        <span class="rating-stars">★★★★★ [5/5]</span>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic;">
-                        "Bolu tape tradisional terenak yang pernah saya coba di Bekasi. Teksturnya super moist dan rasa tapenya berasa banget. Recommended!"
-                    </p>
-                    <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-top: 15px; text-align: right;">18 Juni 2026</span>
+            <!-- Notifikasi Alert Sukses / Error -->
+            <div id="alert-success-box" class="orders-alert-success" style="margin-bottom: 30px; display: none;">
+                <div class="alert-icon-circle"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="alert-text">
+                    <strong>Berhasil!</strong>
+                    <p id="alert-success-text">Testimoni Anda berhasil dikirim dan ditambahkan! Terima kasih atas ulasan Anda.</p>
                 </div>
             </div>
-        </section>
-    </main>
 
+            <div id="alert-error-box" class="orders-alert-success" style="background-color: #fafafa; border-color: #111; border-style: dashed; margin-bottom: 30px; display: none;">
+                <div class="alert-icon-circle" style="background-color: #eeeeee; color: #111;"><i class="fa-solid fa-circle-xmark"></i></div>
+                <div class="alert-text">
+                    <strong style="color: #111;">Gagal!</strong>
+                    <p id="alert-error-text" style="color: #111;"></p>
+                </div>
+            </div>
+
+            <!-- TESTIMONIAL PRODUCT SUMMARY CARD -->
+            <div class="testi-summary-wrapper" style="grid-template-columns: 1fr 1.2fr 1.2fr; border: 2px solid #111; border-radius: 8px;">
+                <div class="testi-summary-left" style="border-right: none; padding-right: 0;">
+                    <!-- Grayscale wireframe image placeholder with diagonal crossed lines -->
+                    <div class="wireframe-img-box" style="width: 140px; height: 140px;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" id="summary-img-label">KASTENGEL_KEJU.JPG</div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; flex-direction: column; justify-content: center; padding: 0 10px; border-right: 1px solid rgba(0, 0, 0, 0.1);">
+                    <h2 class="testi-summary-title" id="summary-product-name" style="font-size: 1.6rem; margin-bottom: 8px; font-weight: 800;">Kastengel Keju</h2>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="testi-summary-stars" id="summary-stars" style="margin-bottom: 0; font-size: 1.25rem;">
+                            <!-- Will be populated dynamically based on reviews -->
+                        </div>
+                        <span id="summary-avg-rating-text" style="font-weight: 700; font-size: 1.1rem; color: #111;">4.8 / 5</span>
+                    </div>
+                    <div class="testi-summary-total" id="summary-total-reviews-text" style="margin-top: 4px;">Berdasarkan 3 ulasan pelanggan</div>
+                </div>
+
+                <div class="testi-summary-right" style="padding-left: 20px; justify-content: center;">
+                    <div style="font-weight: 700; color: #111; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Tingkat Kepuasan</div>
+                    <p class="testi-summary-desc" id="summary-satisfaction-text" style="font-size: 0.95rem; line-height: 1.5; color: #555;">
+                        Sangat Puas! Kebanyakan pelanggan sangat menyukai cita rasa kue premium ini.
+                    </p>
+                </div>
+            </div>
+
+            <!-- CSS Breakpoint Overrides for 3-Column Summary Card -->
+            <style>
+                @media (max-width: 768px) {
+                    .testi-summary-wrapper {
+                        grid-template-columns: 1fr !important;
+                        text-align: center;
+                    }
+                    .testi-summary-wrapper div {
+                        border-right: none !important;
+                        padding-left: 0 !important;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                        padding-bottom: 16px;
+                    }
+                    .testi-summary-wrapper div:last-child {
+                        border-bottom: none;
+                        padding-bottom: 0;
+                    }
+                }
+            </style>
+
+            <!-- TOMBOL BERI TESTIMONI (JIKA LOGIN & BELUM MENGULAS PEMBELIAN PRODUK INI) -->
+            <div id="testi-pending-container" class="testi-pending-card" style="display: none; justify-content: space-between; align-items: center; border: 2px dashed #333; background: #fafafa; padding: 20px 24px; border-radius: 8px; margin-bottom: 30px; flex-wrap: wrap; gap: 16px;">
+                <div style="flex: 1; min-width: 280px;">
+                    <h4 style="font-weight: 700; color: #111; font-size: 1.1rem; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-cookie-bite"></i> Ulas Kue Pembelian Anda</h4>
+                    <p style="color: #555; font-size: 0.9rem;">Anda terverifikasi memiliki pesanan kue ini yang telah selesai. Bagikan testimoni Anda!</p>
+                </div>
+                <button type="button" class="btn-wireframe-filled" onclick="openReviewModal()" style="padding: 10px 24px; font-size: 0.95rem; border-radius: 6px !important; text-decoration: none; cursor: pointer; border: 1.5px solid #333;">
+                    <i class="fa-solid fa-pen-to-square" style="margin-right: 6px;"></i> Beri Testimoni
+                </button>
+            </div>
+
+            <!-- FILTERS BAR -->
+            <div class="testi-filters" id="testi-filters-bar">
+                <button class="filter-btn active" id="filter-btn-all" onclick="filterReviews('all')">Semua Ulasan</button>
+                <button class="filter-btn" id="filter-btn-photo" onclick="filterReviews('photo')"><i class="fa-solid fa-image" style="margin-right: 4px;"></i> Dengan Foto</button>
+                <button class="filter-btn" id="filter-btn-5" onclick="filterReviews('5')">5 Bintang</button>
+                <button class="filter-btn" id="filter-btn-4" onclick="filterReviews('4')">4 Bintang</button>
+                <button class="filter-btn" id="filter-btn-3" onclick="filterReviews('3')">3 Bintang</button>
+                <button class="filter-btn" id="filter-btn-2" onclick="filterReviews('2')">2 Bintang</button>
+                <button class="filter-btn" id="filter-btn-1" onclick="filterReviews('1')">1 Bintang</button>
+            </div>
+
+            <!-- TESTIMONIALS LIST GRID -->
+            <div class="testi-grid-custom" id="reviews-container">
+                <!-- Testimoni will be dynamically rendered here from localStorage/mock data -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FORM TESTIMONI MODAL OVERLAY -->
+    <div class="modal-overlay" id="review-modal" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="font-weight: 800; font-size: 1.25rem;">Beri Testimoni Kue</h3>
+                <button type="button" class="modal-close" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="testi-form" onsubmit="handleReviewSubmit(event)">
+                    <div style="margin-bottom: 20px; text-align: center; background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1.5px solid #333;">
+                        <strong style="color: #111; font-size: 1.05rem;" id="form-product-name">Kastengel Keju</strong>
+                    </div>
+
+                    <!-- Input Rating (1-5) -->
+                    <div class="form-group-item">
+                        <label class="field-label">Rating Produk *</label>
+                        <div class="star-rating-selector">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5" title="5 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4" title="4 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3" title="3 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2" title="2 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1" title="1 bintang"><i class="fa-solid fa-star"></i></label>
+                        </div>
+                        <span id="error-rating" style="color: #c93b2b; font-size: 0.85rem; display: none; font-weight: bold; margin-top: 4px;">Harap pilih rating bintang.</span>
+                    </div>
+
+                    <!-- Input Isi Ulasan -->
+                    <div class="form-group-item">
+                        <label for="isi_testimoni" class="field-label">Isi Ulasan / Testimoni *</label>
+                        <textarea id="isi_testimoni" name="isi_testimoni" class="form-control-item" rows="5" placeholder="Tulis ulasan Anda mengenai kelezatan kue ini..."></textarea>
+                        <span id="error-ulasan" style="color: #c93b2b; font-size: 0.85rem; display: none; font-weight: bold; margin-top: 4px;">Isi ulasan wajib diisi.</span>
+                    </div>
+
+                    <!-- Input Upload Foto -->
+                    <div class="form-group-item">
+                        <label for="foto_testimoni" class="field-label">Unggah Foto (Opsional)</label>
+                        <input type="file" id="foto_testimoni" name="foto_testimoni" class="form-control-item" accept="image/png, image/jpeg, image/jpg" style="padding: 8px;">
+                        <small style="color: #666; display: block; margin-top: 4px;">Format diizinkan: JPG, JPEG, PNG. Maksimal ukuran file: 2 MB.</small>
+                        <span id="error-file" style="color: #c93b2b; font-size: 0.85rem; display: none; font-weight: bold; margin-top: 4px;">Format file atau ukuran tidak valid.</span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="display: flex; gap: 12px; margin-top: 30px;">
+                        <button type="submit" class="btn-wireframe-filled" style="flex: 1; padding: 12px; border-radius: 6px !important; border: 1.5px solid #333; cursor: pointer; font-size: 0.95rem;">Kirim Testimoni</button>
+                        <button type="button" class="btn-wireframe-outline" style="flex: 1; padding: 12px; border-radius: 6px !important; border: 1.5px solid #333; cursor: pointer; font-size: 0.95rem;" onclick="closeReviewModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX OVERLAY FOR ZOOMING PHOTO -->
+    <div class="lightbox-modal" id="lightbox" onclick="closeLightbox()" style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); position: fixed; top:0; left:0; width:100%; height:100%; z-index:2000;">
+        <button class="lightbox-close" onclick="closeLightbox()" style="position: absolute; top: 20px; right: 20px; font-size: 2.5rem; background: transparent; border: none; color: #fff; cursor: pointer;">&times;</button>
+        <div style="background: #fff; padding: 24px; border-radius: 8px; max-width: 500px; width: 90%; text-align: center; border: 2px solid #111;" onclick="event.stopPropagation()">
+            <h4 style="margin-bottom: 16px; font-weight: 800; color: #111; font-size: 1.1rem; text-transform: uppercase;">Detail Foto Ulasan</h4>
+            <div class="wireframe-img-box" style="width: 100%; height: 300px; margin-bottom: 16px;">
+                <svg xmlns="http://www.w3.org/2000/svg">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                </svg>
+                <div class="wireframe-img-label" id="lightbox-img-label">FOTO_ULASAN.JPG</div>
+            </div>
+            <button class="btn-wireframe-outline" onclick="closeLightbox()" style="padding: 8px 24px; font-size: 0.9rem; border-radius: 6px !important; cursor: pointer; border: 1.5px solid #333;">Tutup</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer>
         <div class="container footer-grid">
             <div class="footer-col">
-                <h4 style="font-family: var(--font-mono);">Olin's Cake</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color);">Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.</p>
+                <div class="footer-logo" style="font-weight: 800; font-size: 1.25rem; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                    <div class="wireframe-img-box" style="width: 36px; height: 36px; border-radius: 4px !important;">
+                        <svg xmlns="http://www.w3.org/2000/svg">
+                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                        </svg>
+                        <div class="wireframe-img-label" style="font-size: 0.5rem; padding: 1px 3px;">LOGO</div>
+                    </div>
+                    Olin's Cake
+                </div>
+                <p>
+                    Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
+                </p>
+                <div class="social-links" style="display: flex; gap: 8px; margin-top: 15px;">
+                    <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="social-btn" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                </div>
             </div>
+            
             <div class="footer-col">
                 <h4>Tautan Cepat</h4>
                 <ul class="footer-links">
@@ -159,20 +363,23 @@
                     <li><a href="produk.html">Produk</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="#">Hubungi Kami</a></li>
-                    <li><a href="#">Syarat Ketentuan</a></li>
+                    <li><a href="#">Kontak Kami</a></li>
+                    <li><a href="masuk.html">Masuk Akun</a></li>
+                    <li><a href="daftar.html">Daftar Baru</a></li>
                     <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
+
             <div class="footer-col">
                 <h4>Hubungi Kami</h4>
-                <p style="font-size: 0.9rem; color: var(--border-color); line-height: 1.6;">
-                    Email: carolinaberliana11@gmail.com<br>
-                    WhatsApp: +62 895-2923-6657<br>
-                    Lokasi: Kp. Karang Jaya Blok D No.1 RT 002/RW 026, Karang Satria, Tambun Utara, Bekasi
+                <p>
+                    <i class="fa-solid fa-envelope" style="margin-right: 8px; color: #111;"></i> info@olinscake.com<br>
+                    <i class="fa-solid fa-phone" style="margin-right: 8px; color: #111;"></i> +62 895-2923-6657<br>
+                    <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px; color: #111;"></i> Kebayoran Baru, Jakarta Selatan
                 </p>
             </div>
         </div>
@@ -181,5 +388,571 @@
         </div>
     </footer>
 
+    <!-- JavaScript Actions -->
+    <script>
+        // Default categories & products
+        const defaultProducts = [
+            {
+                id: 1,
+                nama_produk: "Kastengel Keju",
+                kategori: "Kue Kering",
+                harga: 120000,
+                ukuran: "Toples 500 gram",
+                masa_simpan: "1 Bulan",
+                deskripsi: "Kue kering keju edam gurih renyah (Toples 500 gram).",
+                gambar: "kastengel.jpg"
+            },
+            {
+                id: 2,
+                nama_produk: "Bolu Pisang",
+                kategori: "Bolu",
+                harga: 60000,
+                ukuran: "Diameter 20 cm",
+                masa_simpan: "3 Hari",
+                deskripsi: "Bolu pisang premium lembut beraroma harum (Diameter 20 cm).",
+                gambar: "bolu_pisang.jpg"
+            },
+            {
+                id: 3,
+                nama_produk: "Bolu Tape",
+                kategori: "Bolu",
+                harga: 60000,
+                ukuran: "Diameter 20 cm",
+                masa_simpan: "3 Hari",
+                deskripsi: "Bolu tape manis tradisional tekstur lembut (Diameter 20 cm).",
+                gambar: "bolu_tape.jpg"
+            },
+            {
+                id: 4,
+                nama_produk: "Bolu Pandan",
+                kategori: "Bolu",
+                harga: 60000,
+                ukuran: "Diameter 20 cm",
+                masa_simpan: "3 Hari",
+                deskripsi: "Bolu pandan wangi daun suji alami bertekstur empuk (Diameter 20 cm).",
+                gambar: "bolu_pandan.jpg"
+            }
+        ];
+
+        // Default testimonials database
+        const defaultTestimonials = [
+            {
+                id_testimoni: 1,
+                id_produk: 1,
+                nama_lengkap: "Carolina Berliana",
+                rating: 5,
+                isi_testimoni: "Kastengel kejunya enak banget! Gurih keju tua-nya kerasa banget, renyah, dan ga bikin eneg. Toplesnya juga rapi dan aman pas pengiriman. Bakal langganan terus di Olin's Cake!",
+                dibuat_pada: "2026-06-25 10:00:00",
+                gambar: null,
+                avatar_initial: "CB",
+                foto_profil: null
+            },
+            {
+                id_testimoni: 2,
+                id_produk: 2,
+                nama_lengkap: "Budi Santoso",
+                rating: 4,
+                isi_testimoni: "Bolunya wangi pisang banget pas dibuka kotak kardusnya, teksturnya empuk lembut. Manisnya juga pas ga over-sweet. Pengiriman cepat dan dikemas rapi.",
+                dibuat_pada: "2026-06-22 11:30:00",
+                gambar: null,
+                avatar_initial: "BS",
+                foto_profil: null
+            },
+            {
+                id_testimoni: 3,
+                id_produk: 3,
+                nama_lengkap: "Siti Rahma",
+                rating: 5,
+                isi_testimoni: "Bolu tape tradisional terenak yang pernah saya coba di Bekasi. Teksturnya super moist dan rasa tapenya berasa banget. Recommended!",
+                dibuat_pada: "2026-06-18 15:45:00",
+                gambar: null,
+                avatar_initial: "SR",
+                foto_profil: null
+            },
+            {
+                id_testimoni: 4,
+                id_produk: 1,
+                nama_lengkap: "Jatmiko",
+                rating: 4,
+                isi_testimoni: "Kejunya melimpah, rasanya mantap. Hanya saja pengiriman agak lambat sedikit dari estimasi. Tapi rasanya top!",
+                dibuat_pada: "2026-06-28 14:20:00",
+                gambar: "testi_review_pic.jpg",
+                avatar_initial: "JA",
+                foto_profil: null
+            },
+            {
+                id_testimoni: 5,
+                id_produk: 4,
+                nama_lengkap: "Rina",
+                rating: 5,
+                isi_testimoni: "Bolunya sangat wangi daun suji asli, tekstur sangat spongy lembut. Anak-anak di rumah suka banget!",
+                dibuat_pada: "2026-06-30 09:15:00",
+                gambar: null,
+                avatar_initial: "RI",
+                foto_profil: null
+            }
+        ];
+
+        // Global Variables
+        let products = [];
+        let testimonials = [];
+        let currentProduct = null;
+        let currentFilter = 'all';
+        let idProduk = 1;
+
+        // Initialize Data
+        function initData() {
+            // Load products from localStorage or default
+            if (!localStorage.getItem('wf_products')) {
+                localStorage.setItem('wf_products', JSON.stringify(defaultProducts));
+            }
+            products = JSON.parse(localStorage.getItem('wf_products'));
+
+            // Load testimonials from localStorage or default
+            if (!localStorage.getItem('wf_testimonials')) {
+                localStorage.setItem('wf_testimonials', JSON.stringify(defaultTestimonials));
+            }
+            testimonials = JSON.parse(localStorage.getItem('wf_testimonials'));
+
+            // Get id_produk from query parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            idProduk = parseInt(urlParams.get('id_produk')) || 1;
+
+            // Find current product
+            currentProduct = products.find(p => p.id === idProduk);
+            if (!currentProduct) {
+                // fallback to first product if not found
+                currentProduct = products[0];
+                idProduk = currentProduct.id;
+            }
+        }
+
+        // Render Stars Helper
+        function renderStars(rating) {
+            let html = '';
+            const floor = Math.floor(rating);
+            const diff = rating - floor;
+            for (let i = 1; i <= 5; i++) {
+                if (i <= floor) {
+                    html += '<i class="fa-solid fa-star"></i>';
+                } else if (i === floor + 1 && diff >= 0.4) {
+                    html += '<i class="fa-solid fa-star-half-stroke"></i>';
+                } else {
+                    html += '<i class="fa-regular fa-star"></i>';
+                }
+            }
+            return html;
+        }
+
+        // Satisfaction Text Helper
+        function getSatisfactionText(rating, count) {
+            if (count === 0) {
+                return "Belum ada ulasan untuk kue premium ini. Jadilah yang pertama memberikan ulasan!";
+            }
+            if (rating >= 4.7) {
+                return "Sangat Puas! Kebanyakan pelanggan sangat menyukai cita rasa kue premium ini.";
+            } else if (rating >= 4.3) {
+                return "Puas! Sebagian besar pembeli puas dengan tekstur dan rasa kue ini.";
+            } else if (rating >= 4.0) {
+                return "Memuaskan! Kue ini direkomendasikan oleh banyak pelanggan kami.";
+            } else {
+                return "Cukup Memuaskan! Kami berterima kasih atas setiap masukan untuk meningkatkan resep kue ini.";
+            }
+        }
+
+        // Format Date Helper
+        function formatIndonesianDate(dateStr) {
+            const date = new Date(dateStr.replace(/-/g, "/"));
+            if (isNaN(date.getTime())) return dateStr;
+            const months = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            return `${day} ${months[month]} ${year}`;
+        }
+
+        // Calculate and Render Stats
+        function renderProductStats() {
+            const productReviews = testimonials.filter(t => t.id_produk === idProduk);
+            const count = productReviews.length;
+            
+            let sum = 0;
+            productReviews.forEach(r => sum += r.rating);
+            const avg = count > 0 ? Math.round((sum / count) * 10) / 10 : 0.0;
+
+            // Update UI elements
+            document.getElementById('summary-product-name').textContent = currentProduct.nama_produk;
+            document.getElementById('summary-img-label').textContent = currentProduct.gambar.toUpperCase();
+            
+            document.getElementById('summary-stars').innerHTML = renderStars(avg);
+            document.getElementById('summary-avg-rating-text').textContent = avg.toFixed(1).replace('.', ',') + ' / 5';
+            document.getElementById('summary-total-reviews-text').textContent = `Berdasarkan ${count} ulasan pelanggan`;
+            document.getElementById('summary-satisfaction-text').textContent = getSatisfactionText(avg, count);
+        }
+
+        // Render Reviews List
+        function renderReviewsList() {
+            const reviewsContainer = document.getElementById('reviews-container');
+            reviewsContainer.innerHTML = '';
+
+            // Filter reviews for this product
+            let filtered = testimonials.filter(t => t.id_produk === idProduk);
+
+            // Filter by active button
+            if (currentFilter === 'photo') {
+                filtered = filtered.filter(t => t.gambar !== null && t.gambar !== '');
+            } else if (currentFilter !== 'all') {
+                const targetRating = parseInt(currentFilter);
+                filtered = filtered.filter(t => t.rating === targetRating);
+            }
+
+            // Sort reviews newest first
+            filtered.sort((a, b) => new Date(b.dibuat_pada) - new Date(a.dibuat_pada));
+
+            if (filtered.length === 0) {
+                reviewsContainer.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-light); background-color: var(--white); border-radius: 8px; border: 2px dashed #333;">
+                        <i class="fa-regular fa-comment-dots" style="font-size: 3rem; color: #777; margin-bottom: 16px;"></i>
+                        <h3 style="font-weight: 800; color: #111;">Belum Ada Ulasan</h3>
+                        <p style="color: #666; margin-top: 4px;">Ulasan dengan filter terpilih tidak ditemukan.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(t => {
+                // Profile Avatar HTML
+                let avatarHtml = '';
+                if (t.foto_profil) {
+                    // In real app, user photo. In wireframe, simple initial box or label
+                    avatarHtml = `<div class="testi-avatar" style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid #111; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.8rem; background: #eee; font-weight: bold; overflow: hidden;"><i class="fa-solid fa-user" style="font-size: 1.25rem;"></i></div>`;
+                } else {
+                    avatarHtml = `<div class="testi-avatar" style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid #111; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 0.95rem; background: #eee; font-weight: 800; color: #111;">${t.avatar_initial}</div>`;
+                }
+
+                // Review Image HTML
+                let imageHtml = '';
+                if (t.gambar) {
+                    imageHtml = `
+                        <div class="testi-card-img-container" style="margin-top: 12px; margin-bottom: 12px;" onclick="openLightbox('${t.gambar}')">
+                            <div class="wireframe-img-box" style="width: 100%; height: 160px; cursor: pointer;">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                </svg>
+                                <div class="wireframe-img-label">${t.gambar.toUpperCase()}</div>
+                            </div>
+                            <div class="testi-card-img-zoom-hint" style="margin-top: 4px; font-size: 0.8rem; color: #666; cursor: pointer;">
+                                <i class="fa-solid fa-magnifying-glass-plus"></i> Perbesar
+                            </div>
+                        </div>
+                    `;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'testi-card-premium';
+                card.style.border = '2px solid #111';
+                card.style.borderRadius = '8px';
+                card.style.boxShadow = 'none';
+
+                card.innerHTML = `
+                    <div style="display: flex; flex-direction: column; height: 100%;">
+                        <!-- Header: Avatar, Name, Rating -->
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                            ${avatarHtml}
+                            <div style="display: flex; flex-direction: column; gap: 2px;">
+                                <h4 class="testi-name" style="font-size: 0.95rem; font-weight: 800; color: #111; margin: 0;">${t.nama_lengkap}</h4>
+                                <div class="testi-card-stars" style="font-size: 0.85rem;">
+                                    ${renderStars(t.rating)}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Text -->
+                        <p class="testi-card-text" style="font-style: italic; color: #555; font-size: 0.95rem; line-height: 1.6; margin-bottom: 12px; flex-grow: 1;">
+                            "${t.isi_testimoni}"
+                        </p>
+
+                        <!-- Review Attachment Photo -->
+                        ${imageHtml}
+
+                        <!-- Date -->
+                        <div class="testi-card-date" style="font-size: 0.8rem; color: #777; font-weight: bold; border-top: 1.5px dashed #aaa; padding-top: 10px; margin-top: auto; text-align: right;">
+                            ${formatIndonesianDate(t.dibuat_pada)}
+                        </div>
+                    </div>
+                `;
+
+                reviewsContainer.appendChild(card);
+            });
+        }
+
+        // Filter Reviews Handler
+        function filterReviews(filterVal) {
+            currentFilter = filterVal;
+            
+            // Remove active classes
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Add active to current
+            const btnMap = {
+                'all': 'filter-btn-all',
+                'photo': 'filter-btn-photo',
+                '5': 'filter-btn-5',
+                '4': 'filter-btn-4',
+                '3': 'filter-btn-3',
+                '2': 'filter-btn-2',
+                '1': 'filter-btn-1'
+            };
+            const activeBtn = document.getElementById(btnMap[filterVal]);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            renderReviewsList();
+        }
+
+        // Header and Login Simulator Actions
+        function initHeader() {
+            const navMenu = document.getElementById('nav-menu');
+            const navActions = document.getElementById('nav-actions');
+            const isLoggedIn = localStorage.getItem('wf_logged_in') === 'true';
+
+            if (isLoggedIn) {
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                    <li><a href="keranjang.html" class="nav-link">Keranjang</a></li>
+                    <li><a href="pesanan.html" class="nav-link">Pesanan</a></li>
+                    <li><a href="profil.html" class="nav-link">Profil</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="#" id="logout-btn" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important; background-color: #ffffff !important; color: #111111 !important;">
+                        Keluar
+                    </a>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.setItem('wf_logged_in', 'false');
+                    window.location.reload();
+                });
+
+                // Check pending reviews simulation
+                // Show pending container if the customer hasn't submitted a review for this product
+                const isReviewed = localStorage.getItem('wf_reviewed_product_' + idProduk) === 'true';
+                if (!isReviewed) {
+                    document.getElementById('testi-pending-container').style.display = 'flex';
+                } else {
+                    document.getElementById('testi-pending-container').style.display = 'none';
+                }
+
+            } else {
+                navMenu.innerHTML = `
+                    <li><a href="index.html" class="nav-link">Beranda</a></li>
+                    <li><a href="tentang.html" class="nav-link">Tentang Kami</a></li>
+                    <li><a href="cara_pesan.html" class="nav-link">Cara Pesan</a></li>
+                    <li><a href="produk.html" class="nav-link">Produk</a></li>
+                `;
+                
+                navActions.innerHTML = `
+                    <a href="masuk.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Masuk
+                    </a>
+                    <a href="daftar.html" class="btn-wireframe-filled" style="text-decoration: none; padding: 8px 24px; font-size: 0.95rem; border-radius: 30px !important;">
+                        Daftar
+                    </a>
+                `;
+
+                // If logged out, cannot see pending review container
+                document.getElementById('testi-pending-container').style.display = 'none';
+            }
+        }
+
+        // Lightbox Functions
+        function openLightbox(imgFilename) {
+            const lightbox = document.getElementById('lightbox');
+            document.getElementById('lightbox-img-label').textContent = imgFilename.toUpperCase();
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        // Review Modal Functions
+        function openReviewModal() {
+            document.getElementById('form-product-name').textContent = currentProduct.nama_produk;
+            const modal = document.getElementById('review-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('review-modal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            document.getElementById('testi-form').reset();
+            hideErrors();
+            document.body.style.overflow = '';
+        }
+
+        function hideErrors() {
+            document.getElementById('error-rating').style.display = 'none';
+            document.getElementById('error-ulasan').style.display = 'none';
+            document.getElementById('error-file').style.display = 'none';
+            document.getElementById('alert-success-box').style.display = 'none';
+            document.getElementById('alert-error-box').style.display = 'none';
+        }
+
+        // Form Submit Handler (Simulation)
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            hideErrors();
+
+            let isValid = true;
+
+            // Check Rating selection
+            const ratings = document.getElementsByName('rating');
+            let ratingVal = 0;
+            for (let i = 0; i < ratings.length; i++) {
+                if (ratings[i].checked) {
+                    ratingVal = parseInt(ratings[i].value);
+                    break;
+                }
+            }
+
+            if (ratingVal === 0) {
+                document.getElementById('error-rating').style.display = 'block';
+                isValid = false;
+            }
+
+            // Check Review Content
+            const ulasanText = document.getElementById('isi_testimoni').value.trim();
+            if (ulasanText === '') {
+                document.getElementById('error-ulasan').style.display = 'block';
+                isValid = false;
+            }
+
+            // Check Upload File type/size
+            const fileInput = document.getElementById('foto_testimoni');
+            let filenameSim = null;
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileType = file.type;
+                const fileSize = file.size;
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+                if (!allowedTypes.includes(fileType)) {
+                    document.getElementById('error-file').textContent = "Format file tidak didukung. Hanya JPG, JPEG, PNG.";
+                    document.getElementById('error-file').style.display = 'block';
+                    isValid = false;
+                } else if (fileSize > 2 * 1024 * 1024) {
+                    document.getElementById('error-file').textContent = "Ukuran file maksimal 2 MB.";
+                    document.getElementById('error-file').style.display = 'block';
+                    isValid = false;
+                } else {
+                    filenameSim = `testi_1_${idProduk}_10001_${file.name}`;
+                }
+            }
+
+            if (!isValid) {
+                document.getElementById('alert-error-text').textContent = "Harap perbaiki kesalahan pada formulir ulasan Anda.";
+                document.getElementById('alert-error-box').style.display = 'flex';
+                document.getElementById('alert-error-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Simulate successful insertion
+            const loggedInName = localStorage.getItem('wf_user_fullname') || "Carolina Berliana";
+            
+            // Get initials
+            const words = loggedInName.split(" ");
+            let initials = "";
+            if (words.length >= 2) {
+                initials = (words[0].substring(0,1) + words[1].substring(0,1)).toUpperCase();
+            } else {
+                initials = loggedInName.substring(0, Math.min(2, loggedInName.length)).toUpperCase();
+            }
+
+            const now = new Date();
+            const dateFormatted = now.getFullYear() + '-' + 
+                                  String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                                  String(now.getDate()).padStart(2, '0') + ' ' + 
+                                  String(now.getHours()).padStart(2, '0') + ':' + 
+                                  String(now.getMinutes()).padStart(2, '0') + ':' + 
+                                  String(now.getSeconds()).padStart(2, '0');
+
+            const newReview = {
+                id_testimoni: testimonials.length + 1,
+                id_produk: idProduk,
+                nama_lengkap: loggedInName,
+                rating: ratingVal,
+                isi_testimoni: ulasanText,
+                dibuat_pada: dateFormatted,
+                gambar: filenameSim,
+                avatar_initial: initials,
+                foto_profil: localStorage.getItem('wf_user_has_avatar') === 'true' ? 'avatar.jpg' : null
+            };
+
+            // Save to LocalStorage
+            testimonials.push(newReview);
+            localStorage.setItem('wf_testimonials', JSON.stringify(testimonials));
+
+            // Set reviewed flag to hide pending card
+            localStorage.setItem('wf_reviewed_product_' + idProduk, 'true');
+
+            // Close modal
+            closeReviewModal();
+
+            // Show success alert box
+            document.getElementById('alert-success-box').style.display = 'flex';
+            document.getElementById('alert-success-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Refresh UI Stats & List
+            renderProductStats();
+            renderReviewsList();
+            initHeader();
+        }
+
+        // On Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            initData();
+
+            // Set Breadcrumbs and Title dynamic values
+            document.getElementById('breadcrumb-product-name').textContent = currentProduct.nama_produk;
+            document.getElementById('title-product-name').textContent = currentProduct.nama_produk;
+
+            // Load components
+            initHeader();
+            renderProductStats();
+            renderReviewsList();
+
+            // Close lightbox click backdrop rule
+            document.getElementById('lightbox').addEventListener('click', function(e) {
+                if (e.target === this) closeLightbox();
+            });
+
+            // Toggle Mobile Menu
+            const menuToggle = document.getElementById('menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    menuToggle.classList.toggle('active');
+                    navMenu.classList.toggle('active');
+                });
+            }
+        });
+    </script>
 </body>
 </html>

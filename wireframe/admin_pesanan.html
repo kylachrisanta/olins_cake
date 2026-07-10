@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -33,8 +33,8 @@
             font-size: 0.95rem;
         }
         .detail-row-item blockquote {
-            background-color: #f8f9fa;
-            border-left: 3px solid #333;
+            background-color: rgba(210, 179, 140, 0.05);
+            border-left: 3px solid #8B5C2A;
             padding: 10px 14px;
             border-radius: 4px;
             font-size: 0.9rem;
@@ -46,19 +46,18 @@
             align-items: center;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1.5px solid #333;
+            border-bottom: 1px solid var(--admin-border, #dee2e6);
         }
         .item-list-row:last-child { border-bottom: none; }
         .total-summary-box {
-            background-color: #f8f9fa;
-            border: 1.5px solid #333;
+            background-color: rgba(0, 0, 0, 0.02);
+            border: 1px solid var(--admin-border, #dee2e6);
             border-radius: 6px;
             padding: 16px;
             margin-top: 16px;
             display: flex;
             flex-direction: column;
         }
-        /* Modal Bukti Pembayaran Admin */
         .admin-proof-modal {
             display: none;
             position: fixed;
@@ -74,7 +73,7 @@
         .admin-proof-modal.active { display: flex; }
         .admin-proof-modal-content {
             background-color: #ffffff;
-            border: 2px solid #333;
+            border: 1px solid var(--admin-border, #dee2e6);
             border-radius: 8px;
             max-width: 500px;
             width: 100%;
@@ -85,21 +84,41 @@
             gap: 16px;
             position: relative;
         }
+        .admin-btn-danger.admin-btn-sm {
+            background-color: rgba(220, 38, 38, 0.09);
+            color: #c53030;
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            font-weight: 600;
+        }
+        .admin-btn-danger.admin-btn-sm:hover {
+            background-color: rgba(220, 38, 38, 0.18);
+            color: #991b1b;
+            border-color: rgba(220, 38, 38, 0.55);
+        }
+        .admin-btn-restore {
+            background-color: rgba(46, 196, 182, 0.1);
+            color: #0e7370;
+            border: 1px solid rgba(46, 196, 182, 0.4);
+            font-weight: 600;
+        }
+        .admin-btn-restore:hover {
+            background-color: rgba(46, 196, 182, 0.2);
+            color: #0a5856;
+        }
     </style>
 </head>
 <body>
 
     <!-- Sidebar Admin Panel -->
     <div class="admin-sidebar" id="adminSidebar">
-        <div class="admin-logo" style="display: flex; align-items: center; text-decoration: none;">
-            <div class="wireframe-img-box" style="width: 45px; height: 45px; margin-right: 10px; border-radius: 6px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
-                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
-                </svg>
-                <div class="wireframe-img-label" style="font-size: 0.55rem; padding: 1px 3px;">LOGO</div>
-            </div>
-            <span style="font-weight: 800; color: #111; font-size: 1.2rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: #888;">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin's <span>Cake</span></span>
             <span class="wireframe-indicator" style="margin-left: 8px;">WF</span>
         </div>
         
@@ -114,37 +133,31 @@
                 <a href="admin_pesanan.html"><i class="fa-solid fa-receipt"></i> Kelola Pesanan</a>
             </li>
             <li class="admin-menu-item">
-                <a href="admin_testimoni.html"><i class="fa-solid fa-comment-dots"></i> Kelola Testimoni</a>
-            </li>
-            <li class="admin-menu-item">
-                <a href="admin_pengguna.html"><i class="fa-solid fa-users"></i> Kelola Pengguna</a>
+                <a href="admin_pengguna.html"><i class="fa-solid fa-users"></i> Daftar Pengguna</a>
             </li>
         </ul>
 
         <div class="admin-user-profile">
-            <div class="admin-avatar">AD</div>
+            <div class="admin-avatar">CA</div>
             <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
                 <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Carolina Berliana</span>
                 <span class="admin-profile-role">Administrator</span>
             </div>
-            <a href="admin_login.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 6px 12px; font-size: 0.85rem; border-radius: 6px !important; background-color: #ffffff !important; color: #111111 !important;">
-                Keluar
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;" title="Keluar">
+                <i class="fa-solid fa-right-from-bracket"></i>
             </a>
         </div>
     </div>
-
     <!-- Header Mobile Hamburger -->
-    <div style="background-color: #ffffff; border-bottom: 2.5px solid #333; padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
         <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
-            <div class="wireframe-img-box" style="width: 35px; height: 35px; margin-right: 4px; border-radius: 4px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
-                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
-                </svg>
-                <div class="wireframe-img-label" style="font-size: 0.45rem; padding: 1px 2px;">LOGO</div>
-            </div>
-            <span style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.5px;">Olin's Cake</span>
-            <span class="wireframe-indicator">WF</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: #888;">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            Olin's Cake <span class="wireframe-indicator">WF</span>
         </div>
         <button class="admin-mobile-nav-toggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
             <i class="fa-solid fa-bars"></i>
@@ -153,122 +166,96 @@
 
     <!-- Main Layout -->
     <div class="admin-layout">
-
-        <!-- Header (matches pesanan.php L352-364) -->
-        <div class="admin-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <!-- Header -->
+        <div class="admin-header">
             <div class="admin-header-title">
-                <h1>Kelola Pesanan</h1>
+                <h1 id="page-title">Kelola Pesanan</h1>
                 <p>Pantau detail transaksi masuk dan perbarui status pesanan serta pengiriman.</p>
             </div>
             <div class="admin-header-actions" id="header-action-container"></div>
         </div>
 
-        <!-- Notifikasi (matches pesanan.php L366-379) -->
+        <!-- Notifikasi -->
         <div id="alert-banner" style="display: none; padding: 16px; margin-bottom: 24px; align-items: center; gap: 10px; border-radius: 6px; border: 1.5px solid #333; background-color: #f8f9fa;">
             <i class="fa-solid fa-circle-check"></i>
             <span id="alert-message">Aksi berhasil dilakukan.</span>
         </div>
 
-        <!-- ================================================
-             VIEW 1: DAFTAR SEMUA PESANAN (matches pesanan.php L624-696)
-             ================================================ -->
-        <div id="section-list-pesanan" class="admin-panel-card" style="padding: 24px; display: none;">
-            <div class="panel-card-header" style="margin-bottom: 20px;">
+        <!-- VIEW 1: DAFTAR SEMUA PESANAN -->
+        <div id="section-list-pesanan" class="admin-panel-card" style="display: none;">
+            <div class="panel-card-header">
                 <h3><i class="fa-solid fa-receipt"></i> Daftar Pesanan Pre-Order</h3>
             </div>
-
             <div class="admin-table-container">
                 <table class="admin-table" style="width: 100%;">
                     <thead>
                         <tr>
-                            <th style="padding: 12px;">No. Order</th>
-                            <th style="padding: 12px;">Nama Pelanggan</th>
-                            <th style="padding: 12px;">Tanggal Pemesanan</th>
-                            <th style="padding: 12px;">Tanggal Pengiriman</th>
-                            <th style="padding: 12px;">Total Bayar</th>
-                            <th style="padding: 12px;">Status Bayar</th>
-                            <th style="padding: 12px;">Status Pesanan</th>
-                            <th style="padding: 12px; text-align: right;">Aksi</th>
+                            <th>No. Order</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Tanggal Pemesanan</th>
+                            <th>Tanggal Pengiriman</th>
+                            <th>Total Bayar</th>
+                            <th>Status Bayar</th>
+                            <th>Status Pesanan</th>
+                            <th style="text-align: right;">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody id="pesanan-table-body">
-                        <!-- Rendered by JS -->
-                    </tbody>
+                    <tbody id="pesanan-table-body"></tbody>
                 </table>
             </div>
         </div>
-
-        <!-- ================================================
-             VIEW 2: DETAIL PESANAN (matches pesanan.php L381-621)
-             ================================================ -->
+        <!-- VIEW 2: DETAIL PESANAN -->
         <div id="section-detail-pesanan" style="display: none;">
             <div class="details-grid">
-
-                <!-- Kolom Kiri: Rincian Produk, Pengiriman, dan Pembayaran -->
+                <!-- Kolom Kiri -->
                 <div style="display: flex; flex-direction: column; gap: 24px;">
-
-                    <!-- 1. Ringkasan Pengantaran (matches pesanan.php L396-453) -->
-                    <div class="admin-panel-card" style="padding: 24px;">
-                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <!-- 1. Ringkasan Pengantaran -->
+                    <div class="admin-panel-card">
+                        <div class="panel-card-header">
                             <h3><i class="fa-solid fa-truck"></i> Informasi Pengantaran / Pengambilan</h3>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" id="detail-delivery-grid">
-                            <!-- Rendered by JS -->
-                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;" id="detail-delivery-grid"></div>
                     </div>
 
-                    <!-- 2. Rincian Kue Dipesan (matches pesanan.php L456-493) -->
-                    <div class="admin-panel-card" style="padding: 24px;">
-                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <!-- 2. Rincian Kue Dipesan -->
+                    <div class="admin-panel-card">
+                        <div class="panel-card-header">
                             <h3><i class="fa-solid fa-basket-shopping"></i> Rincian Produk Kue</h3>
                         </div>
-                        <div id="detail-items-list" style="display: flex; flex-direction: column; gap: 4px;">
-                            <!-- Rendered by JS -->
-                        </div>
-                        <div class="total-summary-box" id="detail-total-box">
-                            <!-- Rendered by JS -->
-                        </div>
+                        <div id="detail-items-list" style="display: flex; flex-direction: column; gap: 4px;"></div>
+                        <div class="total-summary-box" id="detail-total-box"></div>
                     </div>
-
                 </div>
 
-                <!-- Kolom Kanan: Pengaturan Status & Info Pembayaran -->
+                <!-- Kolom Kanan -->
                 <div style="display: flex; flex-direction: column; gap: 24px;">
-
-                    <!-- 3. Panel Update Status (matches pesanan.php L500-573) -->
-                    <div class="admin-panel-card" style="height: fit-content; padding: 24px;">
-                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <!-- 3. Panel Update Status -->
+                    <div class="admin-panel-card" style="height: fit-content;">
+                        <div class="panel-card-header">
                             <h3><i class="fa-solid fa-gears"></i> Kelola Status Pesanan</h3>
                         </div>
-                        <div id="detail-status-panel">
-                            <!-- Rendered by JS -->
-                        </div>
+                        <div id="detail-status-panel"></div>
                     </div>
 
-                    <!-- 4. Detail Info Pembayaran (matches pesanan.php L576-618) -->
-                    <div class="admin-panel-card" style="height: fit-content; padding: 24px;">
-                        <div class="panel-card-header" style="margin-bottom: 20px;">
+                    <!-- 4. Detail Info Pembayaran -->
+                    <div class="admin-panel-card" style="height: fit-content;">
+                        <div class="panel-card-header">
                             <h3><i class="fa-solid fa-wallet"></i> Bukti &amp; Metode Pembayaran</h3>
                         </div>
-                        <div id="detail-payment-panel" style="display: flex; flex-direction: column; gap: 12px;">
-                            <!-- Rendered by JS -->
-                        </div>
+                        <div id="detail-payment-panel" style="display: flex; flex-direction: column; gap: 12px;"></div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- Modal Bukti Pembayaran Admin (matches pesanan.php L721-733) -->
+    <!-- Modal Bukti Pembayaran Admin -->
     <div class="admin-proof-modal" id="adminProofModal">
         <div class="admin-proof-modal-content">
-            <h4 style="color: #111; font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1.5px solid #333; padding-bottom: 12px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
-                <span><i class="fa-solid fa-receipt" style="margin-right: 6px;"></i> Bukti Transfer Pembayaran</span>
+            <h4 style="color: #111; font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1.5px solid var(--admin-border, #dee2e6); padding-bottom: 12px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <span><i class="fa-solid fa-receipt" style="margin-right: 6px; color: #8B5C2A;"></i> Bukti Transfer Pembayaran</span>
                 <button onclick="closeProofModal()" style="background: none; border: none; font-size: 1.4rem; cursor: pointer; color: #333; line-height: 1;">&times;</button>
             </h4>
-            
             <div class="wireframe-img-box" style="width: 100%; height: 250px; border-radius: 6px !important;">
                 <svg xmlns="http://www.w3.org/2000/svg">
                     <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
@@ -276,7 +263,6 @@
                 </svg>
                 <div class="wireframe-img-label" style="font-size: 0.75rem; padding: 4px 8px;">BUKTI TRANSFER</div>
             </div>
-            
             <div style="width: 100%; display: flex; justify-content: center; margin-top: 8px;">
                 <button onclick="closeProofModal()" class="admin-btn admin-btn-secondary" style="min-width: 120px; justify-content: center; cursor: pointer;">
                     <i class="fa-solid fa-arrow-left"></i> Kembali
@@ -284,11 +270,8 @@
             </div>
         </div>
     </div>
-
     <script>
-        // ============================
-        // SEED DATA
-        // ============================
+        // Seed data dengan status Menunggu Verifikasi untuk memicu tombol Setujui/Tolak
         const defaultOrders = [
             {
                 id: 1,
@@ -353,8 +336,8 @@
                 waktu_pengiriman: "10:00 - 12:00",
                 total_bayar: 350000,
                 ongkos_kirim: 30000,
-                status_pembayaran: "Sudah Dibayar",
-                status_pesanan: "Selesai",
+                status_pembayaran: "Belum Dibayar",
+                status_pesanan: "Menunggu Verifikasi",
                 catatan: "",
                 metode_pembayaran: "Transfer Bank Mandiri",
                 batas_pembayaran: "15 Jul 2026, 10:00",
@@ -390,7 +373,19 @@
             }
         ];
 
-        // Badge helper (matches pesanan.php L652-663)
+        // Load data from localStorage if existing
+        if (!localStorage.getItem('wf_orders')) {
+            localStorage.setItem('wf_orders', JSON.stringify(defaultOrders));
+        }
+
+        function getOrders() {
+            return JSON.parse(localStorage.getItem('wf_orders'));
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem('wf_orders', JSON.stringify(orders));
+        }
+
         function badgePesanan(status) {
             const map = {
                 'Menunggu Pembayaran': 'admin-badge-waiting',
@@ -418,13 +413,11 @@
             return 'Rp ' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         }
 
-        // Parse URL param
         const urlParams = new URLSearchParams(window.location.search);
         const action = urlParams.get('action');
         const viewId = parseInt(urlParams.get('id')) || null;
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Handle flash messages
             const flashMsg = localStorage.getItem('wf_pesanan_flash');
             if (flashMsg) {
                 const banner = document.getElementById('alert-banner');
@@ -440,18 +433,19 @@
                 renderListView();
             }
         });
-
-        // Render orders list table (matches pesanan.php L624-696)
         function renderListView() {
+            document.getElementById('page-title').innerText = "Kelola Pesanan";
             document.getElementById('header-action-container').innerHTML = '';
             document.getElementById('section-list-pesanan').style.display = 'block';
+            document.getElementById('section-detail-pesanan').style.display = 'none';
             const tbody = document.getElementById('pesanan-table-body');
-            if (defaultOrders.length === 0) {
+            const orders = getOrders();
+            if (orders.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#777;padding:40px 0;">Belum ada pesanan masuk.</td></tr>`;
                 return;
             }
             tbody.innerHTML = '';
-            defaultOrders.forEach(o => {
+            orders.forEach(o => {
                 const kwitansiBtn = o.status_pembayaran === 'Sudah Dibayar'
                     ? `<a href="#" class="admin-btn admin-btn-primary admin-btn-sm" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;margin-right:4px;" title="Unduh Kwitansi"><i class="fa-solid fa-file-invoice"></i> Kwitansi</a>`
                     : '';
@@ -476,29 +470,30 @@
             });
         }
 
-        // Render order detail view (matches pesanan.php L381-621)
         function renderDetailView(id) {
-            const o = defaultOrders.find(x => x.id === id);
+            const orders = getOrders();
+            const o = orders.find(x => x.id === id);
             if (!o) { renderListView(); return; }
 
-            // Set back button in header (matches pesanan.php L358-362)
+            document.getElementById('page-title').innerText = "Detail Pesanan " + o.kode;
             document.getElementById('header-action-container').innerHTML = `
                 <a href="admin_pesanan.html" class="admin-btn admin-btn-secondary"><i class="fa-solid fa-chevron-left"></i> Kembali ke Daftar Pesanan</a>
             `;
+            document.getElementById('section-list-pesanan').style.display = 'none';
             document.getElementById('section-detail-pesanan').style.display = 'block';
 
-            // Delivery grid (matches pesanan.php L400-452)
+            // Delivery info panel
             const delivGrid = document.getElementById('detail-delivery-grid');
             let delivHTML = `
                 <div class="detail-row-item">
-                    <label>Penerima</label><span>${o.nama_penerima}</span>
+                    <label>Penerima</label><span>${escapeHtml(o.nama_penerima)}</span>
                 </div>
                 <div class="detail-row-item">
                     <label>No. WhatsApp</label>
-                    <span>${o.nomor_wa} <a href="#" style="color:#333;margin-left:8px;" title="Chat WhatsApp"><i class="fa-brands fa-whatsapp"></i> Chat WhatsApp</a></span>
+                    <span>${escapeHtml(o.nomor_wa)} <a href="#" style="color:#0e7370;margin-left:8px;" title="Chat WhatsApp"><i class="fa-brands fa-whatsapp"></i> Chat WhatsApp</a></span>
                 </div>
                 <div class="detail-row-item">
-                    <label>Metode Pengiriman</label><span>${o.metode_pengiriman}</span>
+                    <label>Metode Pengiriman</label><span>${escapeHtml(o.metode_pengiriman)}</span>
                 </div>
             `;
             if (o.metode_pengiriman === 'Kirim ke Alamat') {
@@ -506,14 +501,14 @@
             }
             delivHTML += `
                 <div class="detail-row-item" style="grid-column: 1 / -1;">
-                    <label>Alamat Pengiriman</label><span>${o.alamat_pengiriman}</span>
+                    <label>Alamat Pengiriman</label><span>${escapeHtml(o.alamat_pengiriman)}</span>
                 </div>
             `;
             if (o.metode_pengiriman === 'Kirim ke Alamat') {
                 delivHTML += `
                     <div class="detail-row-item">
                         <label>Koordinat Pelanggan</label>
-                        <span><a href="#" style="color:#333;font-weight:bold;text-decoration:underline;"><i class="fa-solid fa-map-location-dot" style="margin-right:4px;"></i>Buka di Google Maps</a></span>
+                        <span><a href="#" style="color:#8B5C2A;font-weight:bold;text-decoration:underline;"><i class="fa-solid fa-map-location-dot" style="margin-right:4px;color:#d9534f;"></i>Buka di Google Maps</a></span>
                     </div>
                 `;
             }
@@ -529,13 +524,13 @@
                 delivHTML += `
                     <div class="detail-row-item" style="grid-column: 1 / -1;">
                         <label>Catatan Tambahan</label>
-                        <blockquote>"${o.catatan}"</blockquote>
+                        <blockquote>"${escapeHtml(o.catatan)}"</blockquote>
                     </div>
                 `;
             }
             delivGrid.innerHTML = delivHTML;
 
-            // Order Items list (matches pesanan.php L462-477)
+            // Product items list
             const itemsList = document.getElementById('detail-items-list');
             let itemsHTML = '';
             o.items.forEach(it => {
@@ -551,8 +546,8 @@
                                 <div class="wireframe-img-label" style="font-size:0.4rem;padding:1px 2px;">KUE</div>
                             </div>
                             <div>
-                                <strong style="color:#111;font-size:0.95rem;">${it.nama_produk}</strong>
-                                <span style="display:block;font-size:0.75rem;color:#666;">${it.ukuran}</span>
+                                <strong style="color:#111;font-size:0.95rem;">${escapeHtml(it.nama_produk)}</strong>
+                                <span style="display:block;font-size:0.75rem;color:#666;">${escapeHtml(it.ukuran)}</span>
                             </div>
                         </div>
                         <div style="text-align:right;">
@@ -564,7 +559,7 @@
             });
             itemsList.innerHTML = itemsHTML;
 
-            // Total Summary box (matches pesanan.php L479-492)
+            // Total summary
             document.getElementById('detail-total-box').innerHTML = `
                 <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#666;margin-bottom:6px;">
                     <span>Total Belanja</span><span>${formatRp(o.total_bayar - o.ongkos_kirim)}</span>
@@ -572,12 +567,12 @@
                 <div style="display:flex;justify-content:space-between;font-size:0.85rem;color:#666;margin-bottom:8px;">
                     <span>Ongkos Kirim</span><span>${formatRp(o.ongkos_kirim)}</span>
                 </div>
-                <div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.1rem;border-top:1.5px solid #333;padding-top:8px;margin-top:4px;">
+                <div style="display:flex;justify-content:space-between;font-weight:800;font-size:1.1rem;border-top:1.5px solid var(--admin-border, #dee2e6);padding-top:8px;margin-top:4px;">
                     <span>Total Bayar</span><span style="color:#111;">${formatRp(o.total_bayar)}</span>
                 </div>
             `;
 
-            // Status Panel (matches pesanan.php L500-573)
+            // Status management panel
             const autoStatuses = ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Dibatalkan', 'Kedaluwarsa'];
             const isAuto = autoStatuses.includes(o.status_pesanan);
             const statusPanel = document.getElementById('detail-status-panel');
@@ -620,19 +615,19 @@
                 `;
                 if (o.status_pembayaran === 'Sudah Dibayar') {
                     statusPanel.innerHTML += `
-                        <div style="margin-top:16px;border-top:1px dashed #aaa;padding-top:16px;">
+                        <div style="margin-top:16px;border-top:1px dashed var(--admin-border, #dee2e6);padding-top:16px;">
                             <a href="#" class="admin-btn admin-btn-primary" style="width:100%;justify-content:center;gap:8px;text-decoration:none;"><i class="fa-solid fa-file-invoice"></i> Unduh Kwitansi Pembayaran</a>
                         </div>
                     `;
                 }
             }
 
-            // Payment Panel (matches pesanan.php L576-618)
+            // Payment verification panel
             const payPanel = document.getElementById('detail-payment-panel');
             let payHTML = `
                 <div class="detail-row-item">
                     <label>Metode Pembayaran</label>
-                    <span>${o.metode_pembayaran || 'Belum Memilih'}</span>
+                    <span>${escapeHtml(o.metode_pembayaran) || 'Belum Memilih'}</span>
                 </div>
                 <div class="detail-row-item">
                     <label>Batas Waktu</label>
@@ -644,7 +639,7 @@
                     <div class="detail-row-item">
                         <label>Bukti Transfer</label>
                         <div style="margin-top:8px;">
-                            <a href="javascript:void(0);" onclick="openProofModal()" style="display:block;width:100%;text-align:center;border:1.5px solid #333;border-radius:6px;overflow:hidden;text-decoration:none;">
+                            <a href="javascript:void(0);" onclick="openProofModal()" style="display:block;width:100%;text-align:center;border:1.5px solid var(--admin-border, #dee2e6);border-radius:6px;overflow:hidden;text-decoration:none;">
                                 <div class="wireframe-img-box" style="width:100%;height:160px;border-radius:0 !important;">
                                     <svg xmlns="http://www.w3.org/2000/svg">
                                         <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
@@ -652,7 +647,7 @@
                                     </svg>
                                     <div class="wireframe-img-label" style="font-size:0.65rem;padding:2px 6px;">BUKTI TRANSFER</div>
                                 </div>
-                                <span style="display:block;background:#f8f9fa;padding:8px;font-size:0.8rem;color:#333;font-weight:700;border-top:1.5px solid #333;">
+                                <span style="display:block;background:#f8f9fa;padding:8px;font-size:0.8rem;color:#333;font-weight:700;border-top:1.5px solid var(--admin-border, #dee2e6);">
                                     <i class="fa-solid fa-magnifying-glass"></i> Lihat Gambar Penuh
                                 </span>
                             </a>
@@ -669,7 +664,7 @@
                 }
             } else {
                 payHTML += `
-                    <div style="display:flex;align-items:center;gap:8px;padding:12px;border:1.5px dashed #333;border-radius:6px;font-size:0.85rem;color:#555;">
+                    <div style="display:flex;align-items:center;gap:8px;padding:12px;border:1.5px dashed var(--admin-border, #dee2e6);border-radius:6px;font-size:0.85rem;color:#555;">
                         <i class="fa-solid fa-circle-exclamation"></i>
                         <span>Belum mengunggah bukti pembayaran.</span>
                     </div>
@@ -681,25 +676,30 @@
         function handleUpdateStatus(e, id) {
             e.preventDefault();
             const newStatus = document.getElementById('status_pesanan').value;
-            const o = defaultOrders.find(x => x.id === id);
+            const orders = getOrders();
+            const o = orders.find(x => x.id === id);
             if (o) {
                 o.status_pesanan = newStatus;
                 if (['Diproses','Siap Dikirim','Siap Diambil','Selesai'].includes(newStatus)) {
                     o.status_pembayaran = 'Sudah Dibayar';
                 }
+                saveOrders(orders);
                 localStorage.setItem('wf_pesanan_flash', `Status pesanan ${o.kode} berhasil diperbarui menjadi "${newStatus}".`);
                 window.location.href = 'admin_pesanan.html?action=view&id=' + id;
             }
         }
 
         function handleVerify(id, type) {
-            const o = defaultOrders.find(x => x.id === id);
+            const orders = getOrders();
+            const o = orders.find(x => x.id === id);
             if (type === 'approve' && confirm('Konfirmasi bahwa dana transfer telah masuk?')) {
                 if (o) { o.status_pesanan = 'Diproses'; o.status_pembayaran = 'Sudah Dibayar'; }
+                saveOrders(orders);
                 localStorage.setItem('wf_pesanan_flash', 'Pembayaran berhasil dikonfirmasi. Status diubah ke Diproses.');
                 window.location.href = 'admin_pesanan.html?action=view&id=' + id;
             } else if (type === 'reject' && confirm('Tolak bukti pembayaran ini? Pelanggan harus mengunggah ulang.')) {
                 if (o) { o.status_pesanan = 'Menunggu Pembayaran'; o.status_pembayaran = 'Belum Dibayar'; o.bukti_tersedia = false; }
+                saveOrders(orders);
                 localStorage.setItem('wf_pesanan_flash', 'Bukti pembayaran ditolak. Status dikembalikan ke Menunggu Pembayaran.');
                 window.location.href = 'admin_pesanan.html?action=view&id=' + id;
             }
@@ -711,10 +711,14 @@
         function closeProofModal() {
             document.getElementById('adminProofModal').classList.remove('active');
         }
-        // Close on backdrop click
         document.getElementById('adminProofModal').addEventListener('click', function(e) {
             if (e.target === this) closeProofModal();
         });
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
     </script>
 </body>
 </html>

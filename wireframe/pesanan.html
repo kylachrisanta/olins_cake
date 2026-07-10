@@ -402,6 +402,136 @@
             gap: 12px;
             margin-top: 8px;
         }
+
+        /* Modal Formulir Ulasan Testimoni Grayscale */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(2px) !important;
+            z-index: 2100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-container {
+            background: #ffffff;
+            border: 2px solid #111 !important;
+            border-radius: 8px !important;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: none !important;
+        }
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 2px solid #111 !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h3 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #111111;
+            margin: 0;
+        }
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: #111;
+        }
+        .modal-body {
+            padding: 24px;
+        }
+        .form-group-item {
+            margin-bottom: 20px;
+        }
+        .form-group-item label.field-label {
+            display: block;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        .form-control-item {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 6px !important;
+            border: 2px solid #333 !important;
+            font-size: 1rem;
+            color: #111111;
+            background-color: #ffffff;
+            outline: none;
+            font-family: inherit;
+        }
+        .form-control-item:focus {
+            border-color: #111111 !important;
+        }
+
+        /* Star Selector Rating */
+        .star-rating-selector {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 6px;
+        }
+        .star-rating-selector input {
+            display: none;
+        }
+        /* Override FA icon di dalam star selector - ganti icon menjadi karakter unicode bintang */
+        .star-rating-selector label {
+            font-size: 2rem;
+            color: #cccccc;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+            font-family: serif; /* gunakan font serif agar karakter ★ muncul */
+        }
+        .star-rating-selector label i.fa-solid.fa-star {
+            /* Override: tampilkan sebagai karakter bintang unicode, bukan kotak wireframe */
+            font-size: 2rem !important;
+            width: auto !important;
+            height: auto !important;
+            border: none !important;
+            background: none !important;
+            border-radius: 0 !important;
+            background-image: none !important;
+            color: inherit !important;
+            margin: 0 !important;
+            display: inline !important;
+            font-family: 'Font Awesome 6 Free' !important;
+            font-weight: 900 !important;
+        }
+        .star-rating-selector label i.fa-solid.fa-star::before {
+            content: "★" !important;
+            display: inline !important;
+            font-size: 2rem !important;
+            color: inherit !important;
+        }
+        .star-rating-selector label:hover,
+        .star-rating-selector label:hover ~ label,
+        .star-rating-selector input:checked ~ label {
+            color: #111111 !important;
+        }
     </style>
 </head>
 <body>
@@ -496,7 +626,7 @@
                                         <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_1</div>
                                     </div>
                                 </div>
-                                <div class="item-name-spec">
+                                <div class="item-name-spec" id="product-spec-10027-1">
                                     <span class="name">Kastengel Keju</span>
                                     <span class="category">Kue Kering (Toples 500gr)</span>
                                 </div>
@@ -519,7 +649,7 @@
                                         <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_2</div>
                                     </div>
                                 </div>
-                                <div class="item-name-spec">
+                                <div class="item-name-spec" id="product-spec-10027-5">
                                     <span class="name">Nastar Premium</span>
                                     <span class="category">Kue Kering (Toples 500gr)</span>
                                 </div>
@@ -601,9 +731,11 @@
                                     <span class="category">Bolu (Diameter 20cm)</span>
                                     
                                     <!-- Review button if status Selesai -->
-                                    <a href="testimoni.html?id_produk=3&id_pesanan=10012" class="btn-action-fill" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px !important; display: inline-flex; width: fit-content; margin-top: 6px; height: auto;">
-                                        <i class="fa-solid fa-star" style="font-size: 0.7rem;"></i> Beri Testimoni
-                                    </a>
+                                    <div id="review-btn-container-10012-3">
+                                        <button type="button" onclick="openReviewModal(3, 10012, 'Bolu Tape')" class="btn-action-fill" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px !important; display: inline-flex; width: fit-content; margin-top: 6px; height: auto; cursor: pointer; border: 1.5px solid #333;">
+                                            <i class="fa-solid fa-star" style="font-size: 0.7rem;"></i> Beri Testimoni
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="item-qty-price">
                                     <span class="qty">Jumlah: <strong>1x</strong></span>
@@ -632,6 +764,9 @@
                         <div class="footer-actions">
                             <a href="detail_pesanan.html" class="btn-action-outline">
                                 <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                            </a>
+                            <a href="#" onclick="alert('[PROTOTIPE] Mengunduh berkas kwitansi pre-order...'); return false;" class="btn-action-outline">
+                                <i class="fa-solid fa-receipt"></i> Kwitansi
                             </a>
                             <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10012." target="_blank" class="btn-action-outline">
                                 <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
@@ -727,6 +862,65 @@
         </div>
     </footer>
 
+    <!-- FORM TESTIMONI MODAL OVERLAY -->
+    <div class="modal-overlay" id="review-modal" style="display: none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="font-weight: 800; font-size: 1.25rem;">Beri Testimoni Kue</h3>
+                <button type="button" class="modal-close" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="testi-form" onsubmit="handleReviewSubmit(event)">
+                    <input type="hidden" id="form-id-produk" name="id_produk" value="">
+                    <input type="hidden" id="form-id-pesanan" name="id_pesanan" value="">
+
+                    <div style="margin-bottom: 20px; text-align: center; background: #f8f9fa; padding: 12px; border-radius: 6px; border: 1.5px solid #333;">
+                        <strong style="color: #111; font-size: 1.05rem;" id="form-product-name">Kastengel Keju</strong>
+                    </div>
+
+                    <!-- Input Rating (1-5) -->
+                    <div class="form-group-item">
+                        <label class="field-label">Rating Produk *</label>
+                        <div class="star-rating-selector">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5" title="5 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4" title="4 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3" title="3 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2" title="2 bintang"><i class="fa-solid fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1" title="1 bintang"><i class="fa-solid fa-star"></i></label>
+                        </div>
+                        <span id="error-rating" style="color: #c93b2b; font-size: 0.85rem; display: none; font-weight: bold; margin-top: 4px;">Harap pilih rating bintang.</span>
+                    </div>
+
+                    <!-- Input Isi Ulasan -->
+                    <div class="form-group-item">
+                        <label for="isi_testimoni" class="field-label">Isi Ulasan / Testimoni *</label>
+                        <textarea id="isi_testimoni" name="isi_testimoni" class="form-control-item" rows="5" placeholder="Tulis ulasan Anda mengenai kelezatan kue ini..."></textarea>
+                        <span id="error-ulasan" style="color: #c93b2b; font-size: 0.85rem; display: none; font-weight: bold; margin-top: 4px;">Isi ulasan wajib diisi.</span>
+                    </div>
+
+                    <!-- Input Upload Foto -->
+                    <div class="form-group-item">
+                        <label for="foto_testimoni" class="field-label">Unggah Foto (Opsional)</label>
+                        <input type="file" id="foto_testimoni" name="foto_testimoni" class="form-control-item" accept="image/png, image/jpeg, image/jpg" style="padding: 8px;">
+                        <small style="color: #666; display: block; margin-top: 4px;">Format diizinkan: JPG, JPEG, PNG. Maksimal ukuran file: 2 MB.</small>
+                        <span id="error-file" style="color: #c93b2b; font-size: 0.85rem; display: none; font-weight: bold; margin-top: 4px;">Format file atau ukuran tidak valid.</span>
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="display: flex; gap: 12px; margin-top: 30px;">
+                        <button type="submit" class="btn-wireframe-filled" style="flex: 1; padding: 12px; border-radius: 6px !important; border: 1.5px solid #333; cursor: pointer; font-size: 0.95rem;">Kirim Testimoni</button>
+                        <button type="button" class="btn-wireframe-outline" style="flex: 1; padding: 12px; border-radius: 6px !important; border: 1.5px solid #333; cursor: pointer; font-size: 0.95rem;" onclick="closeReviewModal()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Cancel Order Confirmation Modal -->
     <div id="cancelModal" class="cancel-modal">
         <div class="cancel-modal-content">
@@ -782,11 +976,158 @@
             window.location.reload();
         }
 
-        // Close modal when clicking outside
+        // Review Modal Functions
+        function openReviewModal(idProduk, idPesanan, namaProduk) {
+            document.getElementById('form-id-produk').value = idProduk;
+            document.getElementById('form-id-pesanan').value = idPesanan;
+            document.getElementById('form-product-name').textContent = namaProduk;
+            
+            const modal = document.getElementById('review-modal');
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            const modal = document.getElementById('review-modal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+            document.getElementById('testi-form').reset();
+            hideReviewErrors();
+            document.body.style.overflow = '';
+        }
+
+        function hideReviewErrors() {
+            document.getElementById('error-rating').style.display = 'none';
+            document.getElementById('error-ulasan').style.display = 'none';
+            document.getElementById('error-file').style.display = 'none';
+        }
+
+        // Form Submit Handler (Simulation)
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+            hideReviewErrors();
+
+            let isValid = true;
+
+            // Check Rating selection
+            const ratings = document.getElementsByName('rating');
+            let ratingVal = 0;
+            for (let i = 0; i < ratings.length; i++) {
+                if (ratings[i].checked) {
+                    ratingVal = parseInt(ratings[i].value);
+                    break;
+                }
+            }
+
+            if (ratingVal === 0) {
+                document.getElementById('error-rating').style.display = 'block';
+                isValid = false;
+            }
+
+            // Check Review Content
+            const ulasanText = document.getElementById('isi_testimoni').value.trim();
+            if (ulasanText === '') {
+                document.getElementById('error-ulasan').style.display = 'block';
+                isValid = false;
+            }
+
+            // Check Upload File
+            const fileInput = document.getElementById('foto_testimoni');
+            let filenameSim = null;
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                const fileType = file.type;
+                const fileSize = file.size;
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+                if (!allowedTypes.includes(fileType)) {
+                    document.getElementById('error-file').textContent = "Format file tidak didukung. Hanya JPG, JPEG, PNG.";
+                    document.getElementById('error-file').style.display = 'block';
+                    isValid = false;
+                } else if (fileSize > 2 * 1024 * 1024) {
+                    document.getElementById('error-file').textContent = "Ukuran file maksimal 2 MB.";
+                    document.getElementById('error-file').style.display = 'block';
+                    isValid = false;
+                } else {
+                    filenameSim = `testi_1_${document.getElementById('form-id-produk').value}_${document.getElementById('form-id-pesanan').value}_${file.name}`;
+                }
+            }
+
+            if (!isValid) return;
+
+            const idPrd = document.getElementById('form-id-produk').value;
+            const idPsn = document.getElementById('form-id-pesanan').value;
+
+            // Save reviewed flag to localStorage
+            localStorage.setItem('wf_reviewed_order_' + idPsn + '_product_' + idPrd, 'true');
+            localStorage.setItem('wf_reviewed_product_' + idPrd, 'true');
+
+            // Save new review to testimonials list
+            let testimonials = JSON.parse(localStorage.getItem('wf_testimonials')) || [];
+            
+            const loggedInName = localStorage.getItem('wf_user_fullname') || "Carolina Berliana";
+            const words = loggedInName.split(" ");
+            let initials = "";
+            if (words.length >= 2) {
+                initials = (words[0].substring(0,1) + words[1].substring(0,1)).toUpperCase();
+            } else {
+                initials = loggedInName.substring(0, Math.min(2, loggedInName.length)).toUpperCase();
+            }
+
+            const now = new Date();
+            const dateFormatted = now.getFullYear() + '-' + 
+                                  String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                                  String(now.getDate()).padStart(2, '0') + ' ' + 
+                                  String(now.getHours()).padStart(2, '0') + ':' + 
+                                  String(now.getMinutes()).padStart(2, '0') + ':' + 
+                                  String(now.getSeconds()).padStart(2, '0');
+
+            const newReview = {
+                id_testimoni: testimonials.length + 1,
+                id_produk: parseInt(idPrd),
+                nama_lengkap: loggedInName,
+                rating: ratingVal,
+                isi_testimoni: ulasanText,
+                dibuat_pada: dateFormatted,
+                gambar: filenameSim,
+                avatar_initial: initials,
+                foto_profil: localStorage.getItem('wf_user_has_avatar') === 'true' ? 'avatar.jpg' : null
+            };
+
+            testimonials.push(newReview);
+            localStorage.setItem('wf_testimonials', JSON.stringify(testimonials));
+
+            // Close modal
+            closeReviewModal();
+
+            // Show success alert on top of page
+            const alertBox = document.getElementById('alert-box');
+            document.getElementById('alert-title').innerText = 'Testimoni Dikirim!';
+            document.getElementById('alert-desc').innerText = 'Terima kasih! Ulasan dan testimoni kue Anda berhasil dikirim.';
+            alertBox.style.display = 'flex';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Hide or update button instantly
+            const btnContainer = document.getElementById('review-btn-container-' + idPsn + '-' + idPrd);
+            if (btnContainer) {
+                btnContainer.innerHTML = `<span style="font-size: 0.75rem; color: #555; font-weight: bold; font-family: monospace; display: inline-block; margin-top: 6px;">✓ Ulasan Telah Dikirim</span>`;
+            }
+        }
+
+        // Close modals when clicking outside
         window.addEventListener('click', function(event) {
-            const modal = document.getElementById('cancelModal');
-            if (event.target === modal) {
+            const cancelModal = document.getElementById('cancelModal');
+            const reviewModal = document.getElementById('review-modal');
+            if (event.target === cancelModal) {
                 closeCancelModal();
+            }
+            if (event.target === reviewModal) {
+                closeReviewModal();
             }
         });
 
@@ -895,6 +1236,58 @@
                     alertBox.style.display = 'flex';
                     localStorage.removeItem('wf_payment_submitted'); // Consume notification
                 }
+            } else if (status === 'Selesai') {
+                // Change badge style and icon
+                badge.className = 'order-status-badge status-completed';
+                icon.className = 'fa-solid fa-circle-check';
+                text.innerText = 'Selesai';
+
+                // Change actions (add Kwitansi)
+                actions.innerHTML = `
+                    <a href="detail_pesanan.html" class="btn-action-outline">
+                        <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                    </a>
+                    <a href="#" onclick="alert('[PROTOTIPE] Mengunduh berkas kwitansi pre-order...'); return false;" class="btn-action-outline">
+                        <i class="fa-solid fa-receipt"></i> Kwitansi
+                    </a>
+                    <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10027." target="_blank" class="btn-action-outline">
+                        <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                    </a>
+                `;
+
+                // Add "Beri Testimoni" buttons in items list dynamically for OLN-10027 items
+                const spec1 = document.getElementById('product-spec-10027-1');
+                const spec5 = document.getElementById('product-spec-10027-5');
+
+                if (spec1) {
+                    const hasReviewed1 = localStorage.getItem('wf_reviewed_order_10027_product_1') === 'true';
+                    if (hasReviewed1) {
+                        spec1.insertAdjacentHTML('beforeend', `<span style="font-size: 0.75rem; color: #555; font-weight: bold; font-family: monospace; display: inline-block; margin-top: 6px;">✓ Ulasan Telah Dikirim</span>`);
+                    } else {
+                        spec1.insertAdjacentHTML('beforeend', `
+                            <div id="review-btn-container-10027-1">
+                                <button type="button" onclick="openReviewModal(1, 10027, 'Kastengel Keju')" class="btn-action-fill" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px !important; display: inline-flex; width: fit-content; margin-top: 6px; height: auto; cursor: pointer; border: 1.5px solid #333;">
+                                    <i class="fa-solid fa-star" style="font-size: 0.7rem;"></i> Beri Testimoni
+                                </button>
+                            </div>
+                        `);
+                    }
+                }
+
+                if (spec5) {
+                    const hasReviewed5 = localStorage.getItem('wf_reviewed_order_10027_product_5') === 'true';
+                    if (hasReviewed5) {
+                        spec5.insertAdjacentHTML('beforeend', `<span style="font-size: 0.75rem; color: #555; font-weight: bold; font-family: monospace; display: inline-block; margin-top: 6px;">✓ Ulasan Telah Dikirim</span>`);
+                    } else {
+                        spec5.insertAdjacentHTML('beforeend', `
+                            <div id="review-btn-container-10027-5">
+                                <button type="button" onclick="openReviewModal(5, 10027, 'Nastar Premium')" class="btn-action-fill" style="padding: 4px 10px; font-size: 0.75rem; border-radius: 4px !important; display: inline-flex; width: fit-content; margin-top: 6px; height: auto; cursor: pointer; border: 1.5px solid #333;">
+                                    <i class="fa-solid fa-star" style="font-size: 0.7rem;"></i> Beri Testimoni
+                                </button>
+                            </div>
+                        `);
+                    }
+                }
             } else if (status === 'Dibatalkan') {
                 // Change badge style and icon
                 badge.className = 'order-status-badge status-cancelled';
@@ -930,6 +1323,15 @@
                     document.getElementById('alert-desc').innerText = 'Pesanan Pre-Order Anda berhasil dibuat! Silakan lakukan pembayaran sesuai instruksi.';
                     alertBox.style.display = 'flex';
                     localStorage.removeItem('wf_checkout_success_notif'); // Consume notification
+                }
+            }
+
+            // Check reviewed status for OLN-10012 Bolu Tape (id_produk 3)
+            const hasReviewed10012_3 = localStorage.getItem('wf_reviewed_order_10012_product_3') === 'true';
+            if (hasReviewed10012_3) {
+                const btnContainer = document.getElementById('review-btn-container-10012-3');
+                if (btnContainer) {
+                    btnContainer.innerHTML = `<span style="font-size: 0.75rem; color: #555; font-weight: bold; font-family: monospace; display: inline-block; margin-top: 6px;">✓ Ulasan Telah Dikirim</span>`;
                 }
             }
         });

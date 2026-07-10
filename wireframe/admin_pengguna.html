@@ -1,10 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wireframe - Kelola Pengguna - Olin's Cake</title>
+    <title>Wireframe - Daftar Pengguna - Olin's Cake</title>
+    <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Wireframe CSS -->
     <link rel="stylesheet" href="wireframe.css">
     <style>
         .users-row {
@@ -15,61 +17,84 @@
         @media (max-width: 992px) {
             .users-row { grid-template-columns: 1fr; }
         }
+        .pelanggan-table .col-nama   { width: 160px; white-space: nowrap; }
+        .pelanggan-table .col-user   { width: 130px; white-space: nowrap; }
+        .pelanggan-table .col-wa     { width: 160px; white-space: nowrap; }
+        .pelanggan-table .col-tgl    { width: 110px; white-space: nowrap; }
+        .admin-btn-danger.admin-btn-sm {
+            background-color: rgba(220, 38, 38, 0.09);
+            color: #c53030;
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            font-weight: 600;
+        }
+        .admin-btn-danger.admin-btn-sm:hover {
+            background-color: rgba(220, 38, 38, 0.18);
+            color: #991b1b;
+            border-color: rgba(220, 38, 38, 0.55);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Admin Panel -->
     <div class="admin-sidebar" id="adminSidebar">
-        <div class="admin-logo" style="display: flex; align-items: center; text-decoration: none;">
-            <div class="wireframe-img-box" style="width: 45px; height: 45px; margin-right: 10px; border-radius: 6px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
-                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
-                </svg>
-                <div class="wireframe-img-label" style="font-size: 0.55rem; padding: 1px 3px;">LOGO</div>
-            </div>
-            <span style="font-weight: 800; color: #111; font-size: 1.2rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
+        <div class="admin-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: #888;">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin's <span>Cake</span></span>
             <span class="wireframe-indicator" style="margin-left: 8px;">WF</span>
         </div>
+        
         <ul class="admin-menu">
-            <li class="admin-menu-item"><a href="admin_index.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-            <li class="admin-menu-item"><a href="admin_produk.html"><i class="fa-solid fa-cookie-bite"></i> Kelola Produk</a></li>
-            <li class="admin-menu-item"><a href="admin_pesanan.html"><i class="fa-solid fa-receipt"></i> Kelola Pesanan</a></li>
-            <li class="admin-menu-item"><a href="admin_testimoni.html"><i class="fa-solid fa-comment-dots"></i> Kelola Testimoni</a></li>
-            <li class="admin-menu-item active"><a href="admin_pengguna.html"><i class="fa-solid fa-users"></i> Kelola Pengguna</a></li>
+            <li class="admin-menu-item">
+                <a href="admin_index.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_produk.html"><i class="fa-solid fa-cookie-bite"></i> Kelola Produk</a>
+            </li>
+            <li class="admin-menu-item">
+                <a href="admin_pesanan.html"><i class="fa-solid fa-receipt"></i> Kelola Pesanan</a>
+            </li>
+            <li class="admin-menu-item active">
+                <a href="admin_pengguna.html"><i class="fa-solid fa-users"></i> Daftar Pengguna</a>
+            </li>
         </ul>
+
         <div class="admin-user-profile">
-            <div class="admin-avatar">AD</div>
+            <div class="admin-avatar">CA</div>
             <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
                 <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Carolina Berliana</span>
                 <span class="admin-profile-role">Administrator</span>
             </div>
-            <a href="admin_login.html" class="btn-wireframe-outline" style="text-decoration: none; padding: 6px 12px; font-size: 0.85rem; border-radius: 6px !important; background-color: #ffffff !important; color: #111111 !important;">Keluar</a>
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;" title="Keluar">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
         </div>
     </div>
 
-    <!-- Mobile Header -->
-    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 2.5px solid #333; padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
+    <!-- Header Mobile Hamburger -->
+    <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
         <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
-            <div class="wireframe-img-box" style="width: 35px; height: 35px; margin-right: 4px; border-radius: 4px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
-                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
-                </svg>
-                <div class="wireframe-img-label" style="font-size: 0.45rem; padding: 1px 2px;">LOGO</div>
-            </div>
-            <span style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.5px;">Olin's Cake</span>
-            <span class="wireframe-indicator">WF</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: #888;">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            Olin's Cake <span class="wireframe-indicator">WF</span>
         </div>
-        <button onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
+        <button class="admin-mobile-nav-toggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
             <i class="fa-solid fa-bars"></i>
         </button>
     </div>
-
     <!-- Main Layout -->
     <div class="admin-layout">
-        <div class="admin-header" style="margin-bottom: 24px;">
+        <!-- Header -->
+        <div class="admin-header">
             <div class="admin-header-title">
                 <h1>Kelola Pengguna</h1>
                 <p>Manajemen akun administrator toko serta pemantauan pelanggan terdaftar.</p>
@@ -83,92 +108,81 @@
         </div>
 
         <div class="users-row">
-
-            <!-- Kolom Kiri: Kelola Akun Admin -->
+            <!-- Kolom Kiri -->
             <div style="display: flex; flex-direction: column; gap: 24px;">
-
-                <!-- Form Tambah/Edit Admin -->
-                <div class="admin-panel-card" style="padding: 24px;">
-                    <div class="panel-card-header" id="admin-form-header" style="margin-bottom: 20px;">
-                        <h3><i class="fa-solid fa-user-plus"></i> Tambah Akun Admin</h3>
+                
+                <!-- Form Edit (Hanya Muncul saat Edit) -->
+                <div class="admin-panel-card" id="section-edit-admin" style="display: none;">
+                    <div class="panel-card-header">
+                        <h3><i class="fa-solid fa-user-pen"></i> Edit Akun Admin</h3>
                     </div>
-                    <form onsubmit="handleSaveAdmin(event)" id="admin-form">
+                    <form onsubmit="handleSaveAdmin(event)">
                         <input type="hidden" id="edit_admin_id">
-
                         <div class="admin-form-group" style="margin-bottom: 16px;">
                             <label for="nama_lengkap_admin">Nama Lengkap *</label>
-                            <input type="text" id="nama_lengkap_admin" class="admin-form-control" placeholder="Contoh: Admin Baru" required autocomplete="off">
+                            <input type="text" id="nama_lengkap_admin" class="admin-form-control" required autocomplete="off">
                         </div>
-
                         <div class="admin-form-group" style="margin-bottom: 16px;">
                             <label for="username_admin">Username *</label>
-                            <input type="text" id="username_admin" class="admin-form-control" placeholder="Masukkan username" required autocomplete="off">
+                            <input type="text" id="username_admin" class="admin-form-control" required autocomplete="off">
                         </div>
-
                         <div class="admin-form-group" style="margin-bottom: 20px;">
-                            <label for="password_admin" id="password-label">Password *</label>
-                            <input type="password" id="password_admin" class="admin-form-control" placeholder="Masukkan password" required>
+                            <label for="password_admin">Password Baru (Kosongkan jika tidak ingin diubah)</label>
+                            <input type="password" id="password_admin" class="admin-form-control" placeholder="Masukkan password baru">
                         </div>
-
-                        <div style="display: flex; gap: 10px;" id="admin-form-btns">
-                            <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; justify-content: center;">
-                                <i class="fa-solid fa-floppy-disk"></i> Simpan Admin
-                            </button>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">Simpan</button>
+                            <button type="button" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center;" onclick="cancelEditAdmin()">Batal</button>
                         </div>
                     </form>
                 </div>
 
                 <!-- Tabel Daftar Admin -->
-                <div class="admin-panel-card" style="padding: 24px;">
-                    <div class="panel-card-header" style="margin-bottom: 20px;">
-                        <h3><i class="fa-solid fa-user-shield"></i> Daftar Administrator</h3>
+                <div class="admin-panel-card">
+                    <div class="panel-card-header">
+                        <h3><i class="fa-solid fa-user-shield"></i> Daftar Admin</h3>
                     </div>
                     <div class="admin-table-container">
                         <table class="admin-table" style="width: 100%;">
                             <thead>
                                 <tr>
-                                    <th style="padding: 12px;">Nama</th>
-                                    <th style="padding: 12px;">Username</th>
-                                    <th style="text-align: right; width: 120px; padding: 12px;">Aksi</th>
+                                    <th>Nama</th>
+                                    <th>Username</th>
+                                    <th style="text-align: right; width: 120px;">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-table-body">
-                                <!-- Rendered by JS -->
-                            </tbody>
+                            <tbody id="admin-table-body"></tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
 
-            <!-- Kolom Kanan: Daftar Pelanggan -->
-            <div class="admin-panel-card" style="height: fit-content; padding: 24px;">
-                <div class="panel-card-header" style="margin-bottom: 20px;">
-                    <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan Terdaftar</h3>
-                </div>
-                <div class="admin-table-container">
-                    <table class="admin-table" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th style="padding: 12px;">Nama Lengkap</th>
-                                <th style="padding: 12px;">Username</th>
-                                <th style="padding: 12px;">No. WhatsApp</th>
-                                <th style="padding: 12px;">Alamat Lengkap</th>
-                                <th style="padding: 12px;">Tgl Terdaftar</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pelanggan-table-body">
-                            <!-- Rendered by JS -->
-                        </tbody>
-                    </table>
-                </div>
+            <!-- Kolom Kanan (Kosong sesuai pengguna.php) -->
+            <div></div>
+        </div>
+        <!-- Tabel Daftar Pelanggan (Full Width) -->
+        <div class="admin-panel-card" style="margin-top: 24px;">
+            <div class="panel-card-header">
+                <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan</h3>
             </div>
-
+            <div class="admin-table-container">
+                <table class="admin-table pelanggan-table" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th class="col-nama">Nama Lengkap</th>
+                            <th class="col-user">Username</th>
+                            <th class="col-wa">No. WhatsApp</th>
+                            <th class="col-tgl">Tgl Terdaftar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pelanggan-table-body"></tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <script>
-        const CURRENT_ADMIN_ID = 1; // Simulate logged-in admin ID
+        const CURRENT_ADMIN_ID = 1;
 
         const defaultAdmins = [
             { id: 1, nama_lengkap: "Carolina Berliana", username: "carolinaberliana" },
@@ -176,26 +190,40 @@
         ];
 
         const defaultPelanggan = [
-            { id: 1, nama_lengkap: "Siti Rahmawati", nama_pengguna: "siti_r", nomor_wa: "08123456789", alamat: "Jl. Melati No. 12, Bandung, Jawa Barat", dibuat_pada: "15/07/2026" },
-            { id: 2, nama_lengkap: "Budi Santoso", nama_pengguna: "budi_s", nomor_wa: "08198765432", alamat: "Jl. Mawar No. 5, Bandung", dibuat_pada: "16/07/2026" },
-            { id: 3, nama_lengkap: "Dewi Permata", nama_pengguna: "dewi.permata", nomor_wa: "08112349876", alamat: "Jl. Dahlia Blok C No. 3, Cimahi", dibuat_pada: "14/07/2026" }
+            { id: 1, nama_lengkap: "Siti Rahmawati", nama_pengguna: "siti_r", nomor_wa: "08123456789", dibuat_pada: "15/07/2026" },
+            { id: 2, nama_lengkap: "Budi Santoso", nama_pengguna: "budi_s", nomor_wa: "08198765432", dibuat_pada: "16/07/2026" },
+            { id: 3, nama_lengkap: "Dewi Permata", nama_pengguna: "dewi.permata", nomor_wa: "08112349876", dibuat_pada: "14/07/2026" }
         ];
 
-        let editMode = false;
+        if (!localStorage.getItem('wf_admins')) {
+            localStorage.setItem('wf_admins', JSON.stringify(defaultAdmins));
+        }
+        if (!localStorage.getItem('wf_pelanggan')) {
+            localStorage.setItem('wf_pelanggan', JSON.stringify(defaultPelanggan));
+        }
+
+        function getAdmins() {
+            return JSON.parse(localStorage.getItem('wf_admins'));
+        }
+
+        function saveAdmins(admins) {
+            localStorage.setItem('wf_admins', JSON.stringify(admins));
+        }
 
         function renderAdminTable() {
             const tbody = document.getElementById('admin-table-body');
             tbody.innerHTML = '';
-            defaultAdmins.forEach(a => {
+            const admins = getAdmins();
+            admins.forEach(a => {
                 const isCurrent = a.id === CURRENT_ADMIN_ID;
-                const currentBadge = isCurrent ? `<span style="font-size:0.7rem;background:#eee;border:1px solid #aaa;padding:1px 6px;border-radius:4px;font-weight:700;margin-left:6px;">Aktif Anda</span>` : '';
+                const currentBadge = isCurrent ? `<span style="font-size: 0.7rem; background-color: rgba(46, 196, 182, 0.15); color: #0e7370; padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-left: 6px;">Aktif Anda</span>` : '';
                 const deleteBtn = !isCurrent
                     ? `<button type="button" class="admin-btn admin-btn-danger admin-btn-sm" style="margin-left:2px;" onclick="handleDeleteAdmin(${a.id})" title="Hapus"><i class="fa-solid fa-trash"></i></button>`
                     : '';
                 tbody.innerHTML += `
                     <tr>
-                        <td style="padding:12px;"><strong>${a.nama_lengkap}</strong>${currentBadge}</td>
-                        <td style="padding:12px;"><code>${a.username}</code></td>
+                        <td style="padding:12px;"><strong>${escapeHtml(a.nama_lengkap)}</strong>${currentBadge}</td>
+                        <td style="padding:12px;"><code>${escapeHtml(a.username)}</code></td>
                         <td style="text-align:right;padding:12px;">
                             <button type="button" class="admin-btn admin-btn-secondary admin-btn-sm" onclick="loadEditAdmin(${a.id})" title="Ubah"><i class="fa-solid fa-pen"></i></button>
                             ${deleteBtn}
@@ -204,86 +232,71 @@
                 `;
             });
         }
-
         function renderPelangganTable() {
             const tbody = document.getElementById('pelanggan-table-body');
-            if (defaultPelanggan.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#777;padding:40px 0;">Belum ada pelanggan terdaftar saat ini.</td></tr>`;
+            const pelanggan = JSON.parse(localStorage.getItem('wf_pelanggan'));
+            if (pelanggan.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#777;padding:40px 0;">Belum ada pelanggan terdaftar saat ini.</td></tr>`;
                 return;
             }
             tbody.innerHTML = '';
-            defaultPelanggan.forEach(p => {
+            pelanggan.forEach(p => {
+                const waMsg = "Halo " + p.nama_lengkap + ", ini dari Olin's Cake.";
+                const waUrl = "https://wa.me/" + p.nomor_wa.replace(/[^0-9]/g, '') + "?text=" + encodeURIComponent(waMsg);
                 tbody.innerHTML += `
                     <tr>
-                        <td style="padding:12px;"><strong>${p.nama_lengkap}</strong></td>
-                        <td style="padding:12px;"><code>${p.nama_pengguna}</code></td>
-                        <td style="padding:12px;">
-                            ${p.nomor_wa}
-                            <a href="#" style="color:#333;margin-left:4px;" title="Hubungi"><i class="fa-brands fa-whatsapp"></i></a>
+                        <td class="col-nama"><strong>${escapeHtml(p.nama_lengkap)}</strong></td>
+                        <td class="col-user"><code>${escapeHtml(p.nama_pengguna)}</code></td>
+                        <td class="col-wa">
+                            ${escapeHtml(p.nomor_wa)}
+                            <a href="${waUrl}" target="_blank" style="color:#2ec4b6;margin-left:4px;" title="Hubungi"><i class="fa-brands fa-whatsapp"></i></a>
                         </td>
-                        <td style="padding:12px;">
-                            <p style="font-size:0.85rem;color:#666;line-height:1.4;max-width:200px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${p.alamat}</p>
-                        </td>
-                        <td style="padding:12px;font-size:0.8rem;color:#666;">${p.dibuat_pada}</td>
+                        <td class="col-tgl" style="font-size:0.8rem;color:#666;">${p.dibuat_pada}</td>
                     </tr>
                 `;
             });
         }
 
         function loadEditAdmin(id) {
-            const a = defaultAdmins.find(x => x.id === id);
+            const admins = getAdmins();
+            const a = admins.find(x => x.id === id);
             if (!a) return;
 
-            editMode = true;
-            document.getElementById('edit_admin_id').value = id;
+            document.getElementById('edit_admin_id').value = a.id;
             document.getElementById('nama_lengkap_admin').value = a.nama_lengkap;
             document.getElementById('username_admin').value = a.username;
             document.getElementById('password_admin').value = '';
-            document.getElementById('password_admin').removeAttribute('required');
-            document.getElementById('password-label').innerText = 'Password Baru (Kosongkan jika tidak ingin diubah)';
-            document.getElementById('admin-form-header').innerHTML = `<h3><i class="fa-solid fa-user-pen"></i> Edit Akun Admin</h3>`;
-            document.getElementById('admin-form-btns').innerHTML = `
-                <button type="submit" class="admin-btn admin-btn-primary" style="flex:1;justify-content:center;">Simpan</button>
-                <button type="button" class="admin-btn admin-btn-secondary" style="flex:1;justify-content:center;" onclick="resetAdminForm()">Batal</button>
-            `;
+            
+            document.getElementById('section-edit-admin').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function resetAdminForm() {
-            editMode = false;
-            document.getElementById('edit_admin_id').value = '';
-            document.getElementById('nama_lengkap_admin').value = '';
-            document.getElementById('username_admin').value = '';
-            document.getElementById('password_admin').value = '';
-            document.getElementById('password_admin').setAttribute('required', '');
-            document.getElementById('password-label').innerText = 'Password *';
-            document.getElementById('admin-form-header').innerHTML = `<h3><i class="fa-solid fa-user-plus"></i> Tambah Akun Admin</h3>`;
-            document.getElementById('admin-form-btns').innerHTML = `
-                <button type="submit" class="admin-btn admin-btn-primary" style="width:100%;justify-content:center;">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan Admin
-                </button>
-            `;
+        function cancelEditAdmin() {
+            document.getElementById('section-edit-admin').style.display = 'none';
         }
 
         function handleSaveAdmin(e) {
             e.preventDefault();
-            const id = parseInt(document.getElementById('edit_admin_id').value) || null;
+            const id = parseInt(document.getElementById('edit_admin_id').value);
             const nama = document.getElementById('nama_lengkap_admin').value.trim();
             const username = document.getElementById('username_admin').value.trim();
 
-            if (editMode && id) {
-                const aIdx = defaultAdmins.findIndex(x => x.id === id);
-                if (aIdx > -1) {
-                    defaultAdmins[aIdx].nama_lengkap = nama;
-                    defaultAdmins[aIdx].username = username;
-                    showAlert(`Profil admin berhasil diperbarui.`);
+            const admins = getAdmins();
+            const aIdx = admins.findIndex(x => x.id === id);
+            if (aIdx > -1) {
+                // Cek duplikasi username lain
+                const isDuplicate = admins.some(x => x.username.toLowerCase() === username.toLowerCase() && x.id !== id);
+                if (isDuplicate) {
+                    alert(`Username '${username}' sudah digunakan oleh admin lain.`);
+                    return;
                 }
-            } else {
-                const newAdmin = { id: Date.now(), nama_lengkap: nama, username: username };
-                defaultAdmins.push(newAdmin);
-                showAlert(`Admin '${nama}' berhasil ditambahkan.`);
+                admins[aIdx].nama_lengkap = nama;
+                admins[aIdx].username = username;
+                saveAdmins(admins);
+                showAlert(`Profil admin berhasil diperbarui.`);
+                cancelEditAdmin();
+                renderAdminTable();
             }
-            resetAdminForm();
-            renderAdminTable();
         }
 
         function handleDeleteAdmin(id) {
@@ -292,9 +305,11 @@
                 return;
             }
             if (confirm('Apakah Anda yakin ingin menghapus admin ini?')) {
-                const idx = defaultAdmins.findIndex(x => x.id === id);
+                const admins = getAdmins();
+                const idx = admins.findIndex(x => x.id === id);
                 if (idx > -1) {
-                    defaultAdmins.splice(idx, 1);
+                    admins.splice(idx, 1);
+                    saveAdmins(admins);
                     renderAdminTable();
                     showAlert('Admin berhasil dihapus.');
                 }
@@ -306,6 +321,11 @@
             document.getElementById('alert-message').innerText = msg;
             banner.style.display = 'flex';
             setTimeout(() => { banner.style.display = 'none'; }, 4000);
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
         document.addEventListener('DOMContentLoaded', () => {

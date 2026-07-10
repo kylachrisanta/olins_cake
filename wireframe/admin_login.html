@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -38,7 +38,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: var(--admin-dark-bg);
+            background-color: rgba(0, 0, 0, 0.05);
             border: 2px solid var(--admin-accent);
             display: flex;
             align-items: center;
@@ -56,6 +56,18 @@
             font-size: 0.85rem;
             margin-top: 4px;
         }
+        .alert-error {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #111;
+            border: 1.5px dashed #333;
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
 </head>
 <body>
@@ -67,22 +79,28 @@
                 <div class="login-logo-circle">
                     <i class="fa-solid fa-lock"></i>
                 </div>
-                <h1>Olin's Cake Admin <span class="wireframe-indicator">Wireframe</span></h1>
+                <h1>Olin's Cake Admin <span class="wireframe-indicator">WF</span></h1>
                 <p>Silakan masuk menggunakan kredensial Administrator Anda</p>
             </div>
 
-            <form action="admin_index.html" method="GET">
-                <div class="form-group">
-                    <label class="form-label" for="username">Username</label>
-                    <input type="text" id="username" class="form-control" placeholder="Masukkan username admin" value="admin" required>
+            <!-- Error Banner (Simulated) -->
+            <div class="alert-error" id="error-banner" style="display: none;">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <span id="error-message">Username atau password salah.</span>
+            </div>
+
+            <form onsubmit="handleLogin(event)">
+                <div class="admin-form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" class="admin-form-control" placeholder="Masukkan username admin" value="admin" required autocomplete="off">
                 </div>
                 
-                <div class="form-group">
-                    <label class="form-label" for="password">Password</label>
-                    <input type="password" id="password" class="form-control" placeholder="Masukkan password" value="password" required>
+                <div class="admin-form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" class="admin-form-control" placeholder="Masukkan password" value="password" required>
                 </div>
 
-                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px; justify-content: center; gap: 8px;">
+                <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; margin-top: 10px; justify-content: center; gap: 8px;">
                     Masuk Panel Admin <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </form>
@@ -96,5 +114,21 @@
         </div>
     </div>
 
+    <script>
+        function handleLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            const errorBanner = document.getElementById('error-banner');
+
+            if (user === 'admin' && pass === 'password') {
+                errorBanner.style.display = 'none';
+                window.location.href = 'admin_index.html';
+            } else {
+                errorBanner.style.display = 'flex';
+                document.getElementById('error-message').innerText = "Username atau password salah.";
+            }
+        }
+    </script>
 </body>
 </html>

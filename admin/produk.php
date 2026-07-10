@@ -360,9 +360,10 @@ $list_produk = $conn->query("
 // ==========================================
 $grouped_testi = [];
 if ($tab === 'testimoni') {
-    $query_testi = "SELECT t.*, p.nama_produk, p.gambar AS gambar_produk, p.kategori, pl.foto_profil 
+    $query_testi = "SELECT t.*, p.nama_produk, p.gambar AS gambar_produk, k.nama_kategori AS kategori, pl.foto_profil 
                     FROM testimoni t 
                     LEFT JOIN produk p ON t.id_produk = p.id_produk 
+                    LEFT JOIN kategori k ON p.id_kategori = k.id_kategori 
                     LEFT JOIN pelanggan pl ON t.id_pelanggan = pl.id_pelanggan 
                     ORDER BY (p.id_produk IS NULL) ASC, p.nama_produk ASC, t.dibuat_pada DESC";
     $list_testi = $conn->query($query_testi);

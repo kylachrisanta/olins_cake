@@ -421,14 +421,204 @@
             font-family: inherit;
             font-weight: 700;
             border: 2px solid #333 !important;
-            background-color: #cccccc !important;
-            color: #111111 !important;
+            background-color: #333333 !important;
+            color: #ffffff !important;
             border-radius: 6px !important;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .btn-submit-checkout:hover {
-            background-color: #b8b8b8 !important;
+            background-color: #111111 !important;
+        }
+        .btn-submit-checkout:disabled {
+            background-color: #cccccc !important;
+            color: #888888 !important;
+            border-color: #aaaaaa !important;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Kapasitas info box */
+        .info-kapasitas-ok {
+            background-color: #f0f0f0 !important;
+            color: #111111 !important;
+            border: 1.5px solid #555 !important;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-kapasitas-err {
+            background-color: #fafafa !important;
+            color: #111111 !important;
+            border: 2px dashed #333 !important;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── Modal Konfirmasi Pesanan (Grayscale) ── */
+        .confirm-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(3px);
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .confirm-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .confirm-modal-content {
+            background-color: #ffffff;
+            border: 2px solid #333 !important;
+            border-radius: 12px !important;
+            width: 90%;
+            max-width: 480px;
+            padding: 28px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+            box-sizing: border-box;
+        }
+        .confirm-modal-overlay.active .confirm-modal-content {
+            transform: translateY(0);
+        }
+        .confirm-modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1.5px dashed #333;
+        }
+        .confirm-modal-header i {
+            font-size: 2.2rem;
+            color: #333333;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .confirm-modal-header h2 {
+            font-size: 1.3rem;
+            color: #111111;
+            margin: 0;
+            font-weight: 800;
+        }
+        .confirm-modal-desc {
+            margin: 0 0 16px 0;
+            color: #555555;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .confirm-summary-box {
+            background-color: #fafafa !important;
+            border-radius: 8px !important;
+            padding: 16px;
+            border: 1.5px solid #aaaaaa !important;
+            box-sizing: border-box;
+        }
+        .confirm-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-size: 0.875rem;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .confirm-summary-row:last-child {
+            margin-bottom: 0;
+        }
+        .confirm-summary-row .label {
+            color: #666666;
+            flex-shrink: 0;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+        .confirm-summary-row strong {
+            color: #111111;
+            text-align: right;
+            word-break: break-word;
+            font-weight: 700;
+        }
+        .confirm-total-row {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1.5px dashed #555 !important;
+            font-size: 1rem;
+        }
+        .confirm-total-row .label {
+            color: #111111 !important;
+            font-weight: 700;
+        }
+        .confirm-total-row strong {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #111111 !important;
+        }
+        .confirm-warning-note {
+            margin: 14px 0 0 0;
+            font-size: 0.8rem;
+            color: #444444;
+            background: #f5f5f5;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px dashed #888;
+            text-align: center;
+            line-height: 1.45;
+        }
+        .confirm-modal-footer {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 12px;
+            margin-top: 22px;
+        }
+        .btn-modal-cancel {
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            border: 2px solid #555 !important;
+            background-color: #ffffff !important;
+            color: #333333 !important;
+            border-radius: 6px !important;
+            transition: all 0.2s ease;
+        }
+        .btn-modal-cancel:hover {
+            background-color: #f0f0f0 !important;
+        }
+        .btn-modal-submit {
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            border: 2px solid #111 !important;
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            border-radius: 6px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+        .btn-modal-submit:hover {
+            background-color: #333333 !important;
         }
     </style>
 </head>
@@ -608,6 +798,7 @@
                                         <label for="tanggal_pengiriman">Tanggal Pengiriman/Pengambilan <span style="color:red;">*</span></label>
                                         <input type="date" id="tanggal_pengiriman" class="contact-form-control" required>
                                         <small class="text-muted"><i class="fa-solid fa-clock"></i> Minimal pre-order adalah H-3 sebelum tanggal pengiriman.</small>
+                                        <div id="info-kapasitas" style="display:none; margin-top: 8px;"></div>
                                     </div>
                                     <div class="contact-form-group">
                                         <label for="waktu_pengiriman">Waktu Pengiriman/Pengambilan <span style="color:red;">*</span></label>
@@ -705,7 +896,7 @@
                             </div>
 
                             <!-- Tombol Final Checkout -->
-                            <button type="submit" id="btn-submit-checkout" class="btn-submit-checkout">
+                            <button type="submit" id="btn-submit-checkout" class="btn-submit-checkout" disabled>
                                 Pembayaran <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
                             </button>
                         </div>
@@ -926,6 +1117,212 @@
 
             // Sync radio button borders initially
             toggleDeliveryMethod('Kirim ke Alamat');
+        });
+    </script>
+
+    <!-- Modal Konfirmasi Pesanan (Wireframe Grayscale) -->
+    <div id="confirmCheckoutModal" class="confirm-modal-overlay" style="display: none;">
+        <div class="confirm-modal-content">
+            <div class="confirm-modal-header">
+                <i class="fa-solid fa-circle-question"></i>
+                <h2>Konfirmasi Pesanan Anda</h2>
+            </div>
+            <div class="confirm-modal-body">
+                <p class="confirm-modal-desc">Harap periksa kembali detail pesanan Anda sebelum membuat pesanan:</p>
+                <div class="confirm-summary-box">
+                    <div class="confirm-summary-row">
+                        <span class="label">Penerima:</span>
+                        <strong id="confirm-penerima">-</strong>
+                    </div>
+                    <div class="confirm-summary-row">
+                        <span class="label">No. WhatsApp:</span>
+                        <strong id="confirm-wa">-</strong>
+                    </div>
+                    <div class="confirm-summary-row">
+                        <span class="label">Metode:</span>
+                        <strong id="confirm-metode">-</strong>
+                    </div>
+                    <div class="confirm-summary-row" id="confirm-alamat-row">
+                        <span class="label">Alamat Kirim:</span>
+                        <strong id="confirm-alamat">-</strong>
+                    </div>
+                    <div class="confirm-summary-row">
+                        <span class="label">Jadwal Kirim:</span>
+                        <strong id="confirm-jadwal">-</strong>
+                    </div>
+                    <div class="confirm-summary-row confirm-total-row">
+                        <span class="label">Total Pembayaran:</span>
+                        <strong id="confirm-total">-</strong>
+                    </div>
+                </div>
+                <p class="confirm-warning-note">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Pesanan yang telah dikirim tidak dapat diubah secara mandiri.
+                </p>
+            </div>
+            <div class="confirm-modal-footer">
+                <button type="button" class="btn-modal-cancel" id="btn-modal-cancel">Periksa Kembali</button>
+                <button type="button" class="btn-modal-submit" id="btn-modal-submit">
+                    <i class="fa-solid fa-check"></i> Ya, Buat Pesanan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Tambahan: Logika Modal Konfirmasi & Simulasi Validasi ──
+
+        let userConfirmed = false;
+        let isCapacityValid = false;
+        let selectedMetode = 'Kirim ke Alamat';
+
+        // Override form submit: tampilkan modal konfirmasi dulu
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!isCapacityValid) {
+                alert('[WIREFRAME] Kapasitas penuh untuk tanggal yang dipilih. Silakan pilih tanggal lain.');
+                return;
+            }
+
+            if (!userConfirmed) {
+                // Populate modal fields
+                const penerima = document.getElementById('nama_penerima').value.trim();
+                const wa = document.getElementById('nomor_wa').value.trim();
+                const metodeEl = document.querySelector('input[name="metode_pengiriman"]:checked');
+                const metode = metodeEl ? metodeEl.value : '-';
+
+                document.getElementById('confirm-penerima').innerText = penerima || '-';
+                document.getElementById('confirm-wa').innerText = wa || '-';
+                document.getElementById('confirm-metode').innerText = metode;
+
+                const alamatRow = document.getElementById('confirm-alamat-row');
+                if (metode === 'Kirim ke Alamat') {
+                    const alamat = document.getElementById('input-alamat').value.trim();
+                    document.getElementById('confirm-alamat').innerText = alamat || '-';
+                    alamatRow.style.display = 'flex';
+                } else {
+                    alamatRow.style.display = 'none';
+                }
+
+                // Format tanggal
+                const tglVal = document.getElementById('tanggal_pengiriman').value;
+                const jamVal = document.getElementById('waktu_pengiriman').value;
+                let displayTgl = tglVal;
+                if (tglVal) {
+                    const parts = tglVal.split('-');
+                    if (parts.length === 3) {
+                        displayTgl = parts[2] + '/' + parts[1] + '/' + parts[0];
+                    }
+                }
+                document.getElementById('confirm-jadwal').innerText = (displayTgl || '-') + (jamVal ? ' (Jam ' + jamVal + ')' : '');
+
+                // Total
+                document.getElementById('confirm-total').innerText = document.getElementById('summary-total').innerText;
+
+                // Tampilkan modal
+                const modal = document.getElementById('confirmCheckoutModal');
+                modal.style.display = 'flex';
+                modal.offsetHeight; // force reflow
+                modal.classList.add('active');
+            }
+        });
+
+        // Tutup Modal
+        function closeConfirmModal() {
+            const modal = document.getElementById('confirmCheckoutModal');
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+
+        // Tombol "Periksa Kembali"
+        document.getElementById('btn-modal-cancel').addEventListener('click', closeConfirmModal);
+
+        // Tombol "Ya, Buat Pesanan" → simulasikan submit lanjut ke pembayaran
+        document.getElementById('btn-modal-submit').addEventListener('click', function() {
+            userConfirmed = true;
+            closeConfirmModal();
+            // Simpan data sementara ke localStorage untuk simulasi pembayaran
+            const penerima = document.getElementById('nama_penerima').value.trim();
+            const metodeEl = document.querySelector('input[name="metode_pengiriman"]:checked');
+            const metode = metodeEl ? metodeEl.value : 'Kirim ke Alamat';
+            const tgl = document.getElementById('tanggal_pengiriman').value;
+            const jam = document.getElementById('waktu_pengiriman').value;
+            const total = document.getElementById('summary-total').innerText;
+
+            localStorage.setItem('wf_checkout_penerima', penerima);
+            localStorage.setItem('wf_checkout_metode', metode);
+            localStorage.setItem('wf_checkout_tanggal', tgl);
+            localStorage.setItem('wf_checkout_jam', jam);
+            localStorage.setItem('wf_checkout_total', total);
+
+            setTimeout(() => {
+                alert('[WIREFRAME] Pesanan berhasil dibuat! Melanjutkan ke halaman Pembayaran...');
+                window.location.href = 'pembayaran.html';
+            }, 300);
+        });
+
+        // Simulasi validasi tanggal + cek kapasitas
+        const dateInput2 = document.getElementById('tanggal_pengiriman');
+        if (dateInput2) {
+            dateInput2.addEventListener('change', function() {
+                const val = this.value;
+                const infoDiv = document.getElementById('info-kapasitas');
+
+                if (!val) {
+                    isCapacityValid = false;
+                    if (infoDiv) infoDiv.style.display = 'none';
+                    syncSubmitBtn();
+                    return;
+                }
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const minDate = new Date(today);
+                minDate.setDate(today.getDate() + 3);
+                const selected = new Date(val + 'T00:00:00');
+
+                if (selected < minDate) {
+                    alert('Minimal pemesanan adalah H-3 sebelum tanggal pengiriman. Silakan pilih tanggal lain.');
+                    this.value = '';
+                    isCapacityValid = false;
+                    if (infoDiv) infoDiv.style.display = 'none';
+                    syncSubmitBtn();
+                    return;
+                }
+
+                // Mock: simulate kapasitas check (wireframe)
+                if (infoDiv) {
+                    infoDiv.style.display = 'block';
+                    infoDiv.className = 'info-kapasitas-ok';
+                    infoDiv.innerHTML = '<i class="fa-solid fa-circle-check"></i> Jadwal tersedia! Kapasitas terpakai: 3/5 pcs (Sisa: 2 pcs). [Simulasi Wireframe]';
+                }
+                isCapacityValid = true;
+                syncSubmitBtn();
+            });
+        }
+
+        // Sinkronisasi state tombol submit
+        function syncSubmitBtn() {
+            const btn = document.getElementById('btn-submit-checkout');
+            const waktu = document.getElementById('waktu_pengiriman').value;
+            const tanggal = document.getElementById('tanggal_pengiriman').value;
+            const nama = document.getElementById('nama_penerima').value.trim();
+
+            const ready = isCapacityValid && waktu && tanggal && nama;
+            btn.disabled = !ready;
+        }
+
+        // Trigger syncSubmitBtn juga saat field lain berubah
+        ['waktu_pengiriman', 'nama_penerima'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('change', syncSubmitBtn);
+        });
+        const namaPenerimaEl = document.getElementById('nama_penerima');
+        if (namaPenerimaEl) namaPenerimaEl.addEventListener('input', syncSubmitBtn);
+
+        // Tutup modal jika klik di luar area konten
+        document.getElementById('confirmCheckoutModal').addEventListener('click', function(e) {
+            if (e.target === this) closeConfirmModal();
         });
     </script>
 </body>

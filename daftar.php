@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="contact-form-group">
-                        <label for="nama_pengguna">Nama Pengguna (Username)</label>
+                        <label for="nama_pengguna">Nama Pengguna</label>
                         <input type="text" id="nama_pengguna" name="nama_pengguna" class="contact-form-control" placeholder="Contoh: ratih_ningsih" value="<?= isset($_POST['nama_pengguna']) ? htmlspecialchars($_POST['nama_pengguna']) : '' ?>" required autocomplete="username">
                     </div>
 

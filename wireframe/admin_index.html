@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -15,18 +15,18 @@
 
     <!-- Sidebar Admin Panel -->
     <div class="admin-sidebar" id="adminSidebar">
-        <div class="admin-logo" style="display: flex; align-items: center; text-decoration: none;">
-            <div class="wireframe-img-box" style="width: 45px; height: 45px; margin-right: 10px; border-radius: 6px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
-                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
-                </svg>
-                <div class="wireframe-img-label" style="font-size: 0.55rem; padding: 1px 3px;">LOGO</div>
-            </div>
-            <span style="font-weight: 800; color: #111; font-size: 1.2rem; letter-spacing: 0.5px; text-transform: uppercase;">Olin's Cake</span>
+        <div class="admin-logo">
+            <!-- SVG Cake Icon (sesuai sidebar.php) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.6rem; height: 1.6rem; display: inline-block; vertical-align: middle; margin-right: 8px; color: #888;">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            <span>Olin&#39;s <span>Cake</span></span>
             <span class="wireframe-indicator" style="margin-left: 8px;">WF</span>
         </div>
-        
+
         <ul class="admin-menu">
             <li class="admin-menu-item active">
                 <a href="admin_index.html">
@@ -44,26 +44,21 @@
                 </a>
             </li>
             <li class="admin-menu-item">
-                <a href="admin_testimoni.html">
-                    <i class="fa-solid fa-comment-dots"></i> Kelola Testimoni
-                </a>
-            </li>
-            <li class="admin-menu-item">
                 <a href="admin_pengguna.html">
-                    <i class="fa-solid fa-users"></i> Kelola Pengguna
+                    <i class="fa-solid fa-users"></i> Daftar Pengguna
                 </a>
             </li>
         </ul>
 
         <div class="admin-user-profile">
-            <div class="admin-avatar">AD</div>
+            <div class="admin-avatar">CA</div>
             <div class="admin-profile-info" style="flex-grow: 1; overflow: hidden;">
                 <span class="admin-profile-name" style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                     Carolina Berliana
                 </span>
                 <span class="admin-profile-role">Administrator</span>
             </div>
-            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;">
+            <a href="admin_login.html" style="color: var(--admin-danger); font-size: 1.15rem; display: flex; align-items: center; margin-left: 8px;" title="Keluar">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </a>
         </div>
@@ -72,14 +67,13 @@
     <!-- Header Mobile Hamburger -->
     <div style="background-color: var(--admin-sidebar-bg); border-bottom: 1px solid var(--admin-border); padding: 12px 20px; display: none; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 99;" class="admin-mobile-header-bar">
         <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.15rem;">
-            <div class="wireframe-img-box" style="width: 35px; height: 35px; margin-right: 4px; border-radius: 4px !important;">
-                <svg xmlns="http://www.w3.org/2000/svg">
-                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
-                    <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
-                </svg>
-                <div class="wireframe-img-label" style="font-size: 0.45rem; padding: 1px 2px;">LOGO</div>
-            </div>
-            <span style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 0.5px;">Olin's Cake</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="logo-svg" style="width: 1.5rem; height: 1.5rem; display: inline-block; vertical-align: middle; margin-right: 4px; margin-top: -2px; color: #888;">
+                <circle cx="9" cy="7" r="2"/>
+                <path d="M7.2 7.9 3 11v9c0 .6.4 1 1 1h16c.6 0 1-.4 1-1v-9l-4.2-3.1"/>
+                <path d="M5.1 12.8 19 12"/>
+                <path d="M8.9 15.6 19 15"/>
+            </svg>
+            Olin&#39;s Cake
             <span class="wireframe-indicator">WF</span>
         </div>
         <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem; background: none; border: none; cursor: pointer;">
@@ -115,7 +109,7 @@
 
             <!-- Card Pesanan Diproses -->
             <div class="admin-stat-card card-proses-pesanan">
-                <i class="fa-solid fa-spinner fa-spin admin-stat-icon"></i>
+                <i class="fa-solid fa-spinner fa-spin-custom admin-stat-icon" style="animation-duration: 4s;"></i>
                 <span class="admin-stat-label">Pesanan Diproses</span>
                 <span class="admin-stat-value">0</span>
             </div>
@@ -138,9 +132,9 @@
         <!-- Baris Grafik Statistik -->
         <div class="admin-row">
             <!-- Grafik Pendapatan Bulanan -->
-            <div class="admin-panel-card" style="padding: 24px;">
-                <div class="panel-card-header" style="margin-bottom: 20px;">
-                    <h3 style="font-size: 1.15rem; font-weight: 700;"><i class="fa-solid fa-chart-column"></i> Tren Pendapatan Bulanan</h3>
+            <div class="admin-panel-card">
+                <div class="panel-card-header">
+                    <h3><i class="fa-solid fa-chart-column"></i> Tren Pendapatan Bulanan</h3>
                     <span style="font-size: 0.8rem; color: var(--admin-text-light);">Berdasarkan pesanan lunas</span>
                 </div>
                 <div style="position: relative; height: 300px; width: 100%;">
@@ -149,20 +143,81 @@
             </div>
 
             <!-- Grafik Proporsi Status Pesanan -->
-            <div class="admin-panel-card" style="padding: 24px;">
-                <div class="panel-card-header" style="margin-bottom: 20px;">
-                    <h3 style="font-size: 1.15rem; font-weight: 700;"><i class="fa-solid fa-chart-pie"></i> Status Pesanan</h3>
+            <div class="admin-panel-card">
+                <div class="panel-card-header">
+                    <h3><i class="fa-solid fa-chart-pie"></i> Status Pesanan</h3>
                 </div>
                 <div style="position: relative; height: 300px; width: 100%; display: flex; align-items: center; justify-content: center;">
-                    <canvas id="statusChart" style="max-height: 250px; max-width: 250px;"></canvas>
+                    <canvas id="statusChart" style="max-height: 280px; max-width: 280px;"></canvas>
                 </div>
             </div>
         </div>
+
+        <!-- Baris Perencanaan Produksi (Pesanan per Tanggal Pengiriman) -->
+        <div class="admin-panel-card" style="margin-top: 24px;">
+            <div class="panel-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <h3><i class="fa-solid fa-calendar-check"></i> Pesanan per Tanggal Pengiriman</h3>
+                </div>
+                <!-- Filter Hari | Minggu | Bulan -->
+                <div class="admin-btn-group" style="display: flex; gap: 5px;">
+                    <a href="admin_index.html?filter=hari" class="admin-btn admin-btn-secondary admin-btn-sm" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Hari Ini</a>
+                    <a href="admin_index.html?filter=minggu" class="admin-btn admin-btn-primary admin-btn-sm" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Minggu Ini</a>
+                    <a href="admin_index.html?filter=bulan" class="admin-btn admin-btn-secondary admin-btn-sm" style="padding: 6px 12px; font-size: 0.8rem; text-decoration: none;">Bulan Ini</a>
+                </div>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Tanggal Pengiriman</th>
+                            <th style="text-align: center; width: 150px;">Jumlah Pesanan</th>
+                            <th style="text-align: center; width: 180px;">Total Produk (pcs)</th>
+                            <th style="text-align: center; width: 200px;">Status Produksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Baris contoh: Beban Tertinggi -->
+                        <tr style="background-color: rgba(234, 179, 8, 0.05);">
+                            <td><strong>12 Juli 2026</strong></td>
+                            <td style="text-align: center;">
+                                <span class="admin-badge admin-badge-info">3 Pesanan</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <strong>12 pcs</strong>
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="admin-badge" style="background-color: rgba(239, 68, 68, 0.15); color: #dc2626; border: 1px solid rgba(239, 68, 68, 0.3); font-weight: 700;">
+                                    <i class="fa-solid fa-fire"></i> Beban Tertinggi
+                                </span>
+                            </td>
+                        </tr>
+                        <!-- Baris contoh: Normal -->
+                        <tr>
+                            <td><strong>15 Juli 2026</strong></td>
+                            <td style="text-align: center;">
+                                <span class="admin-badge admin-badge-info">1 Pesanan</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <strong>4 pcs</strong>
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="admin-badge" style="background-color: rgba(46, 196, 182, 0.15); color: var(--admin-success); border: 1px solid rgba(46, 196, 182, 0.35); font-weight: 700;">
+                                    Normal
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <!-- Chart rendering script -->
     <script>
-        // Setup Chart.js global defaults for Grayscale Wireframe Look
+        // Setup Chart.js global defaults untuk Grayscale Wireframe Look
         Chart.defaults.color = '#6c757d';
         Chart.defaults.borderColor = '#dee2e6';
 
@@ -177,11 +232,12 @@
                     data: [1200000, 1850000, 2400000, 1500000, 3100000, 4200000],
                     backgroundColor: 'rgba(108, 117, 125, 0.1)',
                     borderColor: '#495057',
-                    borderWidth: 2,
+                    borderWidth: 3,
                     pointBackgroundColor: '#495057',
                     pointBorderColor: '#FFFFFF',
                     pointBorderWidth: 2,
-                    pointRadius: 5,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
                     tension: 0.3,
                     fill: true
                 }]
@@ -194,7 +250,12 @@
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return 'Rp ' + value.toLocaleString('id-ID');
+                            }
+                        }
                     }
                 }
             }
@@ -205,16 +266,18 @@
         const statusChart = new Chart(ctxStatus, {
             type: 'doughnut',
             data: {
-                labels: ['Menunggu Pembayaran', 'Diproses', 'Selesai', 'Dibatalkan'],
+                labels: ['Menunggu Pembayaran', 'Menunggu Verifikasi', 'Diproses', 'Selesai', 'Kedaluwarsa', 'Dibatalkan'],
                 datasets: [{
-                    data: [1, 0, 1, 0],
+                    data: [3, 2, 5, 12, 2, 1],
                     backgroundColor: [
-                        '#6c757d',
-                        '#adb5bd',
-                        '#343a40',
-                        '#dee2e6'
+                        '#ff9f1c',
+                        '#3b82f6',
+                        '#a21caf',
+                        '#2ec4b6',
+                        '#e71d36',
+                        '#a8a09a'
                     ],
-                    borderWidth: 1,
+                    borderWidth: 2,
                     borderColor: '#FFFFFF'
                 }]
             },
@@ -225,7 +288,8 @@
                     legend: {
                         position: 'bottom',
                         labels: {
-                            font: { size: 10 }
+                            padding: 15,
+                            font: { size: 11 }
                         }
                     }
                 },
