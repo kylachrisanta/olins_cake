@@ -593,8 +593,6 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                 </p>
                 <div class="social-links">
                     <a href="https://www.instagram.com/olinscake?igsh=MTgzeWszeGFxc2Iwag==" class="social-btn" aria-label="Instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="#" class="social-btn" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
             </div>
             
