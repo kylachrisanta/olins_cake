@@ -217,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action_edit_produk'])
         
         if ($upload_ok) {
             $stmt = $conn->prepare("UPDATE produk SET nama_produk = ?, deskripsi = ?, harga = ?, gambar = ?, id_kategori = ?, ukuran = ?, masa_simpan = ? WHERE id_produk = ?");
-            $stmt->bind_param("ssisisis", $nama_produk, $deskripsi, $harga, $new_filename, $id_kategori, $ukuran, $masa_simpan, $id_produk);
+            $stmt->bind_param("ssisissi", $nama_produk, $deskripsi, $harga, $new_filename, $id_kategori, $ukuran, $masa_simpan, $id_produk);
             
             if ($stmt->execute()) {
                 $_SESSION['msg_success'] = "Produk berhasil diperbarui.";
