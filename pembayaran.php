@@ -439,7 +439,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                                     <p class="pane-intro">Pindai kode QRIS di bawah menggunakan GoPay, OVO, Dana, LinkAja, atau Mobile Banking Anda.</p>
                                     
                                     <div class="qris-code-container">
-                                        <img src="assets/images/contoh_qris.jpg" alt="QRIS Code" class="qris-img" style="max-width: 250px; width: 100%; height: auto; border: 1px solid var(--admin-border, #dfdfdf); border-radius: var(--radius-sm, 6px); padding: 8px; background-color: #ffffff; display: block; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                                        <img src="assets/images/contoh_qris.png" alt="QRIS Code" class="qris-img" style="max-width: 250px; width: 100%; height: auto; border: 1px solid var(--admin-border, #dfdfdf); border-radius: var(--radius-sm, 6px); padding: 8px; background-color: #ffffff; display: block; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                                         <div class="qris-amount-badge">
                                             Nominal: <strong>Rp <?= number_format($order['total_bayar'], 0, ',', '.') ?></strong>
                                         </div>
