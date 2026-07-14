@@ -147,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="checkbox" id="ingat_saya" name="ingat_saya" <?= !empty($cookie_username) ? 'checked' : '' ?>>
                             <label for="ingat_saya">Ingat Saya</label>
                         </div>
-                        <a href="lupa_password.php" style="color: var(--spiced-wine); font-size: 0.95rem; font-weight: 600; text-decoration: none;">Lupa Password?</a>
+                        <a href="lupa_password.php" style="color: var(--spiced-wine); font-size: 0.95rem; font-weight: 600; text-decoration: none;">Lupa Kata Sandi?</a>
                     </div>
                     
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
                 
                 <div class="modal-footer-text">
-                    Belum memiliki akun? <a href="daftar.php">Daftar Akun Baru</a>
+                    Belum memiliki akun? <a href="daftar.php">Daftar Akun</a>
                 </div>
             </div>
         </div>

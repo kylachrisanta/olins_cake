@@ -609,10 +609,8 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#hubungi">Kontak Kami</a></li>
                     <li><a href="masuk.php">Masuk Akun</a></li>
                     <li><a href="daftar.php">Daftar Baru</a></li>
-                    <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
 

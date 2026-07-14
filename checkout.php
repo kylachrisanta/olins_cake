@@ -301,7 +301,7 @@ if (count($checkout_items) === 0) {
                                         <div class="method-card-content">
                                             <i class="fa-solid fa-store"></i>
                                             <span class="title">Ambil di Toko</span>
-                                            <span class="desc">Ambil pesanan secara mandiri ke gerai kami</span>
+                                            <span class="desc">Ambil pesanan secara mandiri ke toko kami</span>
                                         </div>
                                     </label>
                                 </div>
@@ -333,7 +333,7 @@ if (count($checkout_items) === 0) {
                                             <label style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--cowhide-cocoa);">Detail Alamat Pengiriman & Patokan <span class="text-danger">*</span></label>
                                             <input type="text" id="input-alamat" name="alamat_pengiriman" class="contact-form-control" placeholder="Ketik nama jalan, kelurahan, kecamatan, atau kota..." required autocomplete="off" style="padding: 12px 14px;">
                                             <small class="text-muted" style="display: block; margin-top: 6px; line-height: 1.4;">
-                                                * Alamat terisi otomatis dari peta. Anda juga dapat <strong>mengetik</strong> untuk mencari dan memilih saran alamat, atau <strong>geser pin</strong> di peta untuk menyesuaikan lokasi secara akurat.
+                                                * Alamat terisi otomatis dari peta. Anda juga dapat <strong>mencari</strong> alamat, atau <strong>menggeser pin</strong> di peta untuk menyesuaikan lokasi.
                                             </small>
                                         </div>
 
@@ -520,10 +520,8 @@ if (count($checkout_items) === 0) {
             <div class="footer-col">
                 <h4>Bantuan</h4>
                 <ul class="footer-links">
-                    <li><a href="index.php#hubungi">Kontak Kami</a></li>
                     <li><a href="masuk.php">Masuk Akun</a></li>
                     <li><a href="daftar.php">Daftar Baru</a></li>
-                    <li><a href="#">Kebijakan Privasi</a></li>
                 </ul>
             </div>
 
