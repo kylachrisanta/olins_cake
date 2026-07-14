@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 // Mulai Session
 session_start();
 
@@ -419,10 +419,10 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                                     
                                     <div class="bank-account-card">
                                         <div class="bank-brand">
-                                            <i class="fa-solid fa-building-columns"></i> Bank BCA
+                                            <i class="fa-solid fa-building-columns"></i> Bank BRI
                                         </div>
                                         <div class="account-number-row">
-                                            <span id="rekening-number" class="number">1234567890</span>
+                                            <span id="rekening-number" class="number">001202234005432</span>
                                             <button type="button" class="btn-copy-account" onclick="copyAccountNo()">
                                                 <i class="fa-regular fa-copy"></i> <span id="copy-btn-text">Salin</span>
                                             </button>
@@ -502,7 +502,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                             <li>📌 Pembayaran harus dilakukan dalam waktu 1×24 jam setelah pesanan dibuat.</li>
                             <li>📌 Bukti pembayaran wajib diunggah untuk memproses pesanan.</li>
                             <li>📌 Pesanan akan mulai diproses setelah pembayaran diverifikasi oleh admin.</li>
-                            <li>📌 Pesanan yang tidak dibayar dalam batas waktu akan otomatis dibatalkan oleh sistem.</li>
+                            <li>📌 Pesanan yang tidak dibayar dalam batas waktu akan kedaluwarsa atau otomatis dibatalkan oleh sistem.</li>
                         </ul>
                     </div>
 
@@ -592,7 +592,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                     Premium Home Bakery menyajikan kebahagiaan manis di setiap potongan kue. Dibuat fresh setiap hari dengan bahan kualitas premium dari dapur kami ke pintu rumah Anda.
                 </p>
                 <div class="social-links">
-                    <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/olinscake?igsh=MTgzeWszeGFxc2Iwag==" class="social-btn" aria-label="Instagram" target="_blank"><i class="fa-brands fa-instagram"></i></a>
                     <a href="#" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
                     <a href="#" class="social-btn" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
                 </div>
