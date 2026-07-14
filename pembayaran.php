@@ -439,47 +439,7 @@ $kode_order = "OLN-" . (10000 + $order['id_pesanan']);
                                     <p class="pane-intro">Pindai kode QRIS di bawah menggunakan GoPay, OVO, Dana, LinkAja, atau Mobile Banking Anda.</p>
                                     
                                     <div class="qris-code-container">
-                                        <!-- Sharp vector placeholder QR code -->
-                                        <svg class="qris-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="100" height="100" fill="#ffffff" rx="4"/>
-                                            <!-- QR Border blocks -->
-                                            <rect x="5" y="5" width="25" height="25" fill="#2C1B10" />
-                                            <rect x="9" y="9" width="17" height="17" fill="#ffffff" />
-                                            <rect x="13" y="13" width="9" height="9" fill="#2C1B10" />
-                                            
-                                            <rect x="70" y="5" width="25" height="25" fill="#2C1B10" />
-                                            <rect x="74" y="9" width="17" height="17" fill="#ffffff" />
-                                            <rect x="78" y="13" width="9" height="9" fill="#2C1B10" />
-
-                                            <rect x="5" y="70" width="25" height="25" fill="#2C1B10" />
-                                            <rect x="9" y="74" width="17" height="17" fill="#ffffff" />
-                                            <rect x="13" y="78" width="9" height="9" fill="#2C1B10" />
-
-                                            <!-- Random QR Blocks to simulate a QR code -->
-                                            <rect x="35" y="5" width="5" height="15" fill="#2C1B10"/>
-                                            <rect x="45" y="10" width="10" height="5" fill="#2C1B10"/>
-                                            <rect x="60" y="5" width="5" height="5" fill="#2C1B10"/>
-                                            <rect x="35" y="25" width="15" height="5" fill="#2C1B10"/>
-                                            <rect x="55" y="20" width="10" height="10" fill="#2C1B10"/>
-                                            <rect x="40" y="35" width="5" height="15" fill="#2C1B10"/>
-                                            <rect x="10" y="35" width="15" height="5" fill="#2C1B10"/>
-                                            <rect x="20" y="45" width="10" height="10" fill="#2C1B10"/>
-                                            <rect x="5" y="60" width="20" height="5" fill="#2C1B10"/>
-                                            
-                                            <rect x="35" y="70" width="5" height="25" fill="#2C1B10"/>
-                                            <rect x="45" y="75" width="15" height="5" fill="#2C1B10"/>
-                                            <rect x="50" y="85" width="10" height="10" fill="#2C1B10"/>
-                                            <rect x="70" y="35" width="15" height="5" fill="#2C1B10"/>
-                                            <rect x="75" y="45" width="20" height="5" fill="#2C1B10"/>
-                                            <rect x="85" y="55" width="10" height="10" fill="#2C1B10"/>
-                                            <rect x="65" y="70" width="5" height="15" fill="#2C1B10"/>
-                                            <rect x="80" y="75" width="15" height="15" fill="#2C1B10"/>
-                                            <rect x="75" y="90" width="5" height="5" fill="#2C1B10"/>
-
-                                            <!-- Center logo block -->
-                                            <rect x="42" y="42" width="16" height="16" fill="#743014" rx="2"/>
-                                            <text x="50" y="52" font-size="8" font-weight="bold" fill="#ffffff" text-anchor="middle">QRIS</text>
-                                        </svg>
+                                        <img src="assets/images/contoh_qris.jpg" alt="QRIS Code" class="qris-img" style="max-width: 250px; width: 100%; height: auto; border: 1px solid var(--admin-border, #dfdfdf); border-radius: var(--radius-sm, 6px); padding: 8px; background-color: #ffffff; display: block; margin: 0 auto 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
                                         <div class="qris-amount-badge">
                                             Nominal: <strong>Rp <?= number_format($order['total_bayar'], 0, ',', '.') ?></strong>
                                         </div>
