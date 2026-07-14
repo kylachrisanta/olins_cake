@@ -578,9 +578,14 @@
     <section class="orders-section">
         <div class="container">
             
-            <div class="orders-title-area">
-                <h1>Pesanan Saya</h1>
-                <p>Pantau status pre-order kue lezat Anda secara berkala.</p>
+            <div class="orders-title-area" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-bottom: 20px;">
+                <div>
+                    <h1 style="margin: 0;">Pesanan Saya</h1>
+                    <p style="margin: 5px 0 0 0;">Pantau status pre-order kue lezat Anda secara berkala.</p>
+                </div>
+                <button type="button" onclick="resetSimulation()" class="btn-action-outline" style="padding: 6px 14px; font-size: 0.85rem; border-radius: 20px !important; cursor: pointer;">
+                    <i class="fa-solid fa-rotate-left"></i> Reset State Simulasi
+                </button>
             </div>
 
             <!-- Alert Box (Simulated notification) -->
@@ -595,6 +600,83 @@
             <!-- List Wrapper of Orders -->
             <div id="orders-list-area">
                 
+                <!-- Order 3: Static waiting for payment OLN-10026 -->
+                <div class="order-card-wrapper" id="card-order-3">
+                    
+                    <!-- Header Card: Info Kode & Status -->
+                    <div class="order-card-header">
+                        <div class="order-info-left">
+                            <span class="order-code">OLN-10026</span>
+                            <span class="order-date">Tanggal Pemesanan: 28/06/2026 11:20</span>
+                        </div>
+                        <div class="order-info-right">
+                            <span class="order-status-badge status-waiting" id="badge-status-3">
+                                <i class="fa-regular fa-clock" id="badge-icon-3"></i> <span id="badge-text-3">Menunggu Pembayaran</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Body Card: Rincian Kue -->
+                    <div class="order-card-body">
+                        <div class="order-items-list-area">
+                            <h5>Rincian Kue Dipesan:</h5>
+                            
+                            <div class="order-item-row-detail">
+                                <div class="item-img-circle">
+                                    <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                        </svg>
+                                        <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_4</div>
+                                    </div>
+                                </div>
+                                <div class="item-name-spec" id="product-spec-10026-2">
+                                    <span class="name">Bolu Pisang</span>
+                                    <span class="category">Bolu (Diameter 20cm)</span>
+                                </div>
+                                <div class="item-qty-price">
+                                    <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    <span class="price">Rp 85.000 / pcs</span>
+                                </div>
+                                <div class="item-row-subtotal">
+                                    Rp 85.000
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Footer Card: Total & Aksi -->
+                    <div class="order-card-footer">
+                        <div class="footer-totals">
+                            <div class="total-row">
+                                <span>Ongkos Kirim:</span>
+                                <strong>Rp 15.000</strong>
+                            </div>
+                            <div class="total-row main-total">
+                                <span>Total Pembayaran:</span>
+                                <span class="price">Rp 100.000</span>
+                            </div>
+                        </div>
+                        <div class="footer-actions" id="actions-3">
+                            <a href="pembayaran.html?id=10026" class="btn-action-fill" id="btn-pay-3">
+                                <i class="fa-solid fa-wallet"></i> Bayar Sekarang
+                            </a>
+                            <button type="button" class="btn-action-danger" id="btn-cancel-3" onclick="openCancelModal('OLN-10026')">
+                                <i class="fa-solid fa-ban"></i> Batalkan Pesanan
+                            </button>
+                            <a href="detail_pesanan.html?id=10026" class="btn-action-outline">
+                                <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                            </a>
+                            <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10026." target="_blank" class="btn-action-outline">
+                                <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
                 <!-- Order 1: Simulated dynamic order OLN-10027 -->
                 <div class="order-card-wrapper" id="card-order-1">
                     
@@ -776,6 +858,77 @@
 
                 </div>
 
+                <!-- Order 4: Static Cancelled OLN-10020 -->
+                <div class="order-card-wrapper" id="card-order-4">
+                    
+                    <!-- Header Card: Info Kode & Status -->
+                    <div class="order-card-header">
+                        <div class="order-info-left">
+                            <span class="order-code">OLN-10020</span>
+                            <span class="order-date">Tanggal Pemesanan: 18/06/2026 14:05</span>
+                        </div>
+                        <div class="order-info-right">
+                            <span class="order-status-badge status-cancelled">
+                                <i class="fa-solid fa-circle-xmark"></i> Dibatalkan
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Body Card: Rincian Kue -->
+                    <div class="order-card-body">
+                        <div class="order-items-list-area">
+                            <h5>Rincian Kue Dipesan:</h5>
+                            
+                            <div class="order-item-row-detail">
+                                <div class="item-img-circle">
+                                    <div class="wireframe-img-box" style="width: 100%; height: 100%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg">
+                                            <line x1="0" y1="0" x2="100%" y2="100%" stroke="#555" stroke-width="1.2" />
+                                            <line x1="100%" y1="0" x2="0" y2="100%" stroke="#555" stroke-width="1.2" />
+                                        </svg>
+                                        <div class="wireframe-img-label" style="font-size: 0.4rem;">gambar_2</div>
+                                    </div>
+                                </div>
+                                <div class="item-name-spec">
+                                    <span class="name">Signature Chocolate Fudge</span>
+                                    <span class="category">Cokelat (Diameter 20 cm)</span>
+                                </div>
+                                <div class="item-qty-price">
+                                    <span class="qty">Jumlah: <strong>1x</strong></span>
+                                    <span class="price">Rp 195.000 / pcs</span>
+                                </div>
+                                <div class="item-row-subtotal">
+                                    Rp 195.000
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Footer Card: Total & Aksi -->
+                    <div class="order-card-footer">
+                        <div class="footer-totals">
+                            <div class="total-row">
+                                <span>Ongkos Kirim:</span>
+                                <strong>Rp 15.000</strong>
+                            </div>
+                            <div class="total-row main-total">
+                                <span>Total Pembayaran:</span>
+                                <span class="price">Rp 210.000</span>
+                            </div>
+                        </div>
+                        <div class="footer-actions">
+                            <a href="detail_pesanan.html?id=10020" class="btn-action-outline">
+                                <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                            </a>
+                            <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10020." target="_blank" class="btn-action-outline">
+                                <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
 
             <!-- Empty state (hidden by default) -->
@@ -924,19 +1077,20 @@
     <!-- Cancel Order Confirmation Modal -->
     <div id="cancelModal" class="cancel-modal">
         <div class="cancel-modal-content">
-            <h4>
+            <h4 style="font-weight: 700; margin: 0; font-size: 1.15rem; width: 100%; border-bottom: 1.5px solid #333 !important; padding-bottom: 12px; text-align: left;">
                 <i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> Batalkan Pesanan
             </h4>
-            <div class="cancel-modal-body">
-                <p style="font-weight: 700; margin-bottom: 8px;">Apakah Anda yakin ingin membatalkan pesanan <span id="cancel-order-code" style="text-decoration: underline;"></span> ini?</p>
+            <div style="width: 100%; text-align: left; margin: 8px 0;">
+                <p style="font-weight: 700; margin-bottom: 8px; color: #111111;">Apakah Anda yakin ingin membatalkan pesanan <span id="cancel-order-code" style="text-decoration: underline;"></span> ini?</p>
                 <p style="font-size: 0.9rem; color: #555; line-height: 1.4; margin: 0;">
                     <i class="fa-solid fa-circle-info" style="margin-right: 4px;"></i> Pesanan yang dibatalkan tidak dapat dilanjutkan kembali.
                 </p>
             </div>
-            <div class="cancel-modal-footer">
-                <button type="button" onclick="closeCancelModal()" class="btn-action-outline">Kembali</button>
-                <button type="button" onclick="confirmCancelOrder()" class="btn-action-danger" style="border-color: #777 !important; color: #111 !important;">Ya, Batalkan Pesanan</button>
-            </div>
+            <form onsubmit="confirmCancelOrder(); return false;" style="width: 100%; display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; margin-bottom: 0;">
+                <input type="hidden" name="id_pesanan" id="cancel-order-id" value="">
+                <button type="button" onclick="closeCancelModal()" class="btn-action-outline" style="padding: 10px 20px; font-size: 0.9rem; border-radius: 30px !important;">Kembali</button>
+                <button type="submit" class="btn-action-danger" style="padding: 10px 20px; font-size: 0.9rem; border-radius: 30px !important; border-color: #333 !important; color: #111 !important;">Ya, Batalkan Pesanan</button>
+            </form>
         </div>
     </div>
 
@@ -952,7 +1106,9 @@
         });
 
         // Cancel Modal Actions
+        let cancelOrderTarget = '';
         function openCancelModal(orderCode) {
+            cancelOrderTarget = orderCode;
             document.getElementById('cancel-order-code').innerText = orderCode;
             document.getElementById('cancelModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -967,10 +1123,14 @@
         function confirmCancelOrder() {
             closeCancelModal();
 
-            // Set state in localStorage
-            localStorage.setItem('wf_order_status', 'Dibatalkan');
-            localStorage.setItem('wf_order_cancelled_notif', 'true');
-            localStorage.removeItem('wf_payment_submitted'); // Reset payment if cancelled
+            if (cancelOrderTarget === 'OLN-10027') {
+                localStorage.setItem('wf_order_status', 'Dibatalkan');
+                localStorage.setItem('wf_order_cancelled_notif', 'true');
+                localStorage.removeItem('wf_payment_submitted'); // Reset payment if cancelled
+            } else {
+                localStorage.setItem('wf_order_status_' + cancelOrderTarget, 'Dibatalkan');
+                localStorage.setItem('wf_order_cancelled_notif_' + cancelOrderTarget, 'true');
+            }
 
             // Reload page to reflect cancelled status
             window.location.reload();
@@ -1334,7 +1494,57 @@
                     btnContainer.innerHTML = `<span style="font-size: 0.75rem; color: #555; font-weight: bold; font-family: monospace; display: inline-block; margin-top: 6px;">✓ Ulasan Telah Dikirim</span>`;
                 }
             }
+
+            // Check status for OLN-10026
+            const status26 = localStorage.getItem('wf_order_status_OLN-10026') || 'Menunggu Pembayaran';
+            if (status26 === 'Dibatalkan') {
+                const badge26 = document.getElementById('badge-status-3');
+                const icon26 = document.getElementById('badge-icon-3');
+                const text26 = document.getElementById('badge-text-3');
+                const actions26 = document.getElementById('actions-3');
+
+                if (badge26 && icon26 && text26 && actions26) {
+                    badge26.className = 'order-status-badge status-cancelled';
+                    icon26.className = 'fa-solid fa-circle-xmark';
+                    text26.innerText = 'Dibatalkan';
+
+                    actions26.innerHTML = `
+                        <a href="detail_pesanan.html?id=10026" class="btn-action-outline">
+                            <i class="fa-solid fa-circle-info"></i> Detail Pesanan
+                        </a>
+                        <a href="https://wa.me/6289529236657?text=Halo%20Olin's%20Cake,%20saya%20ingin%20menanyakan%20status%20pesanan%20pre-order%20saya%20dengan%20nomor%20OLN-10026." target="_blank" class="btn-action-outline">
+                            <i class="fa-brands fa-whatsapp"></i> Hubungi Admin
+                        </a>
+                    `;
+                }
+
+                const wasCancelledNotif26 = localStorage.getItem('wf_order_cancelled_notif_OLN-10026') === 'true';
+                if (wasCancelledNotif26) {
+                    const alertBox = document.getElementById('alert-box');
+                    document.getElementById('alert-title').innerText = 'Pesanan Dibatalkan';
+                    document.getElementById('alert-desc').innerText = 'Pesanan Anda dengan nomor OLN-10026 telah berhasil dibatalkan.';
+                    alertBox.style.display = 'flex';
+                    localStorage.removeItem('wf_order_cancelled_notif_OLN-10026'); // Consume notification
+                }
+            }
         });
+
+        // Reset State Simulasi
+        function resetSimulation() {
+            localStorage.removeItem('wf_order_status');
+            localStorage.removeItem('wf_order_cancelled_notif');
+            localStorage.removeItem('wf_payment_submitted');
+            localStorage.removeItem('wf_order_status_OLN-10026');
+            localStorage.removeItem('wf_order_cancelled_notif_OLN-10026');
+            localStorage.removeItem('wf_reviewed_order_10012_product_3');
+            localStorage.removeItem('wf_reviewed_order_10027_product_1');
+            localStorage.removeItem('wf_reviewed_order_10027_product_5');
+            localStorage.removeItem('wf_reviewed_product_1');
+            localStorage.removeItem('wf_reviewed_product_3');
+            localStorage.removeItem('wf_reviewed_product_5');
+            alert('Status simulasi direset kembali ke default!');
+            window.location.reload();
+        }
     </script>
 </body>
 </html>

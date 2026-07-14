@@ -226,13 +226,6 @@ $stmt->close();
                                                 Rp <?= number_format($item['harga'] * $item['jumlah'], 0, ',', '.') ?>
                                             </div>
                                         </div>
-
-                                        <!-- Tombol Hapus Kue -->
-                                        <div class="cart-remove-col">
-                                            <button type="button" class="cart-item-remove" onclick="deleteCartItem(<?= $item['id_keranjang'] ?>)" aria-label="Hapus dari keranjang">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </button>
-                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>

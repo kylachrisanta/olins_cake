@@ -89,8 +89,17 @@ if (isset($_GET['action']) && $_GET['action'] === 'edit_admin') {
 // Ambil Daftar Semua Admin
 $list_admin = $conn->query("SELECT * FROM admin ORDER BY nama_lengkap ASC");
 
-// Ambil Daftar Semua Pelanggan
-$list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DESC");
+// Ambil Daftar Semua Pelanggan dengan Filter Pencarian
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if (!empty($search)) {
+    $search_like = "%" . $search . "%";
+    $stmt_p = $conn->prepare("SELECT * FROM pelanggan WHERE nama_lengkap LIKE ? OR nama_pengguna LIKE ? OR nomor_wa LIKE ? ORDER BY dibuat_pada DESC");
+    $stmt_p->bind_param("sss", $search_like, $search_like, $search_like);
+    $stmt_p->execute();
+    $list_pelanggan = $stmt_p->get_result();
+} else {
+    $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DESC");
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -180,9 +189,9 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                                 <input type="password" id="password" name="password" class="admin-form-control" placeholder="Masukkan password baru">
                             </div>
                             
-                            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                                <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">Simpan</button>
-                                <a href="pengguna.php" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
+                            <div class="admin-form-actions">
+                                <button type="submit" class="admin-btn admin-btn-primary">Simpan</button>
+                                <a href="pengguna.php" class="admin-btn admin-btn-secondary">Batal</a>
                             </div>
                         </form>
                     </div>
@@ -241,8 +250,23 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
 
         <!-- Tabel Daftar Pelanggan (Full Width) -->
         <div class="admin-panel-card" style="margin-top: 24px;">
-            <div class="panel-card-header">
+            <div class="panel-card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--admin-border); padding-bottom: 16px; margin-bottom: 20px;">
                 <h3><i class="fa-solid fa-users"></i> Daftar Pelanggan</h3>
+                <!-- Form Pencarian Pelanggan Modern Pill-Shaped -->
+                <form action="pengguna.php" method="GET" style="display: flex; gap: 8px; align-items: center; margin: 0;">
+                    <div class="admin-search-wrapper">
+                        <input type="text" name="search" class="admin-search-control" placeholder="Cari nama, username, wa..." value="<?= htmlspecialchars($search) ?>" autocomplete="off">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    </div>
+                    <?php if (!empty($search)): ?>
+                        <a href="pengguna.php" class="admin-btn admin-btn-secondary admin-btn-sm" style="border-radius: 30px; padding: 8px 14px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;" title="Reset Pencarian">
+                            <i class="fa-solid fa-times"></i>
+                        </a>
+                    <?php endif; ?>
+                    <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm" style="border-radius: 30px; padding: 8px 18px; height: 36px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem;">
+                        Cari
+                    </button>
+                </form>
             </div>
 
             <div class="admin-table-container">
@@ -275,7 +299,14 @@ $list_pelanggan = $conn->query("SELECT * FROM pelanggan ORDER BY dibuat_pada DES
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">Belum ada pelanggan terdaftar saat ini.</td>
+                                <td colspan="4" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">
+                                    <?php if (!empty($search)): ?>
+                                        Tidak ada pelanggan yang cocok dengan kata kunci "<strong><?= htmlspecialchars($search) ?></strong>".
+                                        <br><a href="pengguna.php" style="color: var(--admin-accent); font-weight: 600; text-decoration: underline; margin-top: 8px; display: inline-block;">Reset Pencarian</a>
+                                    <?php else: ?>
+                                        Belum ada pelanggan terdaftar saat ini.
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endif; ?>
                     </tbody>

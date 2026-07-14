@@ -18,6 +18,10 @@ $current_page = isset($page) ? $page : 'dashboard';
             <path d="M8.9 15.6 19 15"/>
         </svg>
         <span>Olin's <span>Cake</span></span>
+        <!-- Close Button Mobile -->
+        <button class="sidebar-close-btn" onclick="document.getElementById('adminSidebar').classList.remove('active'); document.getElementById('sidebarOverlay').classList.remove('active')" aria-label="Tutup Menu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
     
     <ul class="admin-menu">
@@ -68,10 +72,13 @@ $current_page = isset($page) ? $page : 'dashboard';
             <path d="M8.9 15.6 19 15"/>
         </svg> Olin's Cake
     </div>
-    <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.toggle('active')" style="display: block; font-size: 1.3rem;">
+    <button class="admin-mobile-nav-toggle" id="adminSidebarToggle" onclick="document.getElementById('adminSidebar').classList.add('active'); document.getElementById('sidebarOverlay').classList.add('active')" style="display: block; font-size: 1.3rem;">
         <i class="fa-solid fa-bars"></i>
     </button>
 </div>
+
+<!-- Overlay Backdrop Mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('adminSidebar').classList.remove('active'); this.classList.remove('active')"></div>
 
 <style>
     @media (max-width: 768px) {

@@ -285,6 +285,14 @@ body {
     border-radius: var(--radius-md);
     padding: 24px;
     border: 1px solid var(--admin-border);
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.admin-panel-card canvas {
+    width: 100% !important;
+    max-width: 100% !important;
 }
 
 .panel-card-header {
@@ -572,9 +580,53 @@ select.admin-form-control option {
     cursor: pointer;
 }
 
+/* Sidebar close button */
+.sidebar-close-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--admin-text-light);
+    font-size: 1.35rem;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    padding: 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-close-btn:hover {
+    color: var(--admin-accent);
+}
+
+/* Sidebar overlay backdrop */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(44, 27, 16, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 98;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    visibility: visible;
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
+    .admin-logo {
+        position: relative;
+    }
+    
     .admin-sidebar {
         transform: translateX(-100%);
+        overflow-y: auto;
+        box-shadow: 0 0 30px rgba(44, 27, 16, 0.15);
     }
     
     .admin-sidebar.active {
@@ -588,5 +640,164 @@ select.admin-form-control option {
     
     .admin-mobile-nav-toggle {
         display: block;
+    }
+    
+    .sidebar-close-btn {
+        display: inline-flex;
+        position: absolute;
+        right: 0;
+        top: calc(50% - 12px); /* aligns vertically with border-bottom padding of logo */
+    }
+}
+
+/* Custom Admin Search Styles */
+.admin-search-wrapper {
+    position: relative;
+    width: 280px;
+}
+
+.admin-search-wrapper i.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+    color: var(--admin-text-light);
+    font-size: 0.95rem;
+    pointer-events: none;
+}
+
+.admin-search-control {
+    width: 100%;
+    padding: 8px 16px 8px 36px;
+    border-radius: 30px;
+    border: 1px solid var(--admin-border);
+    background-color: var(--admin-card-bg);
+    color: var(--admin-text-main);
+    font-size: 0.88rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(44, 27, 16, 0.03);
+}
+
+.admin-search-control:focus {
+    border-color: var(--admin-accent);
+    box-shadow: 0 0 0 3px rgba(116, 48, 20, 0.08);
+}
+
+/* Card padding reduction on smaller screens */
+@media (max-width: 568px) {
+    .admin-panel-card {
+        padding: 16px;
+    }
+    .panel-card-header {
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    .admin-panel-card {
+        padding: 12px;
+    }
+}
+
+/* Custom Admin Form Layout Grids & Tab Navigation Overrides */
+.admin-form-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.admin-form-grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.admin-form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+@media (max-width: 568px) {
+    .admin-form-grid-2,
+    .admin-form-grid-3 {
+        grid-template-columns: 1fr;
+        gap: 0; /* Form groups have their own margin-bottom */
+    }
+    
+    .admin-form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .admin-form-actions .admin-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .admin-tab-nav {
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+        -webkit-overflow-scrolling: touch;
+        gap: 8px;
+    }
+    
+    .admin-tab-nav .tab-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        display: inline-flex;
+    }
+
+    .admin-table th, .admin-table td {
+        padding: 12px 10px;
+        font-size: 0.85rem;
+    }
+}
+
+/* Category row responsiveness */
+.admin-kategori-row {
+    grid-template-columns: 0.7fr 1.3fr;
+}
+
+@media (max-width: 992px) {
+    .admin-kategori-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive adjustments for payment proof modal */
+@media (max-width: 568px) {
+    .admin-proof-modal {
+        padding: 10px;
+    }
+    .admin-proof-modal-content {
+        padding: 16px;
+        gap: 12px;
+    }
+    #adminProofImg {
+        max-height: 280px !important;
+        object-fit: contain;
+    }
+}
+
+/* Responsive search wrapper for admin panels */
+@media (max-width: 568px) {
+    .admin-search-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-grow: 1;
+    }
+    .panel-card-header form {
+        width: 100%;
+        display: flex;
+        gap: 6px;
     }
 }

@@ -81,7 +81,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
                 </div>
                 <h1>Freshly Baked <span>with Love</span>, Made Special for You</h1>
                 <p class="hero-slogan">
-                    Menghadirkan kelezatan kue rumahan premium bertekstur lembut dengan cita rasa elegan, diracik khusus untuk melengkapi momen istimewa Anda.
+                    Menghadirkan kelezatan kue rumahan premium, diracik khusus untuk melengkapi momen istimewa Anda. Seluruh produk dibuat berdasarkan sistem pre-order minimal H-3 sebelum tanggal pengambilan atau pengiriman untuk memastikan kualitas dan kesegaran kue tetap terjaga.
                 </p>
 
             </div>

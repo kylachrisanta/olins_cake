@@ -102,6 +102,31 @@ if ($res_produksi && $res_produksi->num_rows > 0) {
     while ($row = $res_produksi->fetch_assoc()) {
         $row['jumlah_pesanan'] = intval($row['jumlah_pesanan']);
         $row['total_produk'] = intval($row['total_produk']);
+        
+        // Fetch detailed product list for this delivery date
+        $tgl_pengiriman = $row['tanggal_pengiriman'];
+        $details_query = "SELECT pr.nama_produk, SUM(dp.jumlah) AS total_qty
+                          FROM detail_pesanan dp
+                          JOIN pesanan p ON dp.id_pesanan = p.id_pesanan
+                          JOIN produk pr ON dp.id_produk = pr.id_produk
+                          WHERE p.tanggal_pengiriman = ?
+                            AND p.status_pesanan NOT IN ('Dibatalkan', 'Kedaluwarsa')
+                          GROUP BY dp.id_produk
+                          ORDER BY pr.nama_produk ASC";
+        $stmt_det = $conn->prepare($details_query);
+        $stmt_det->bind_param("s", $tgl_pengiriman);
+        $stmt_det->execute();
+        $res_det = $stmt_det->get_result();
+        $produk_list = [];
+        while ($det_row = $res_det->fetch_assoc()) {
+            $produk_list[] = [
+                'nama_produk' => $det_row['nama_produk'],
+                'total_qty' => intval($det_row['total_qty'])
+            ];
+        }
+        $stmt_det->close();
+        $row['produk_list'] = $produk_list;
+        
         $data_produksi[] = $row;
         if ($row['total_produk'] > $max_pcs) {
             $max_pcs = $row['total_produk'];
@@ -235,6 +260,13 @@ if ($res_produksi && $res_produksi->num_rows > 0) {
                                 <tr <?= $is_max ? 'style="background-color: rgba(234, 179, 8, 0.05);"' : '' ?>>
                                     <td>
                                         <strong><?= $tgl_formatted ?></strong>
+                                        <?php if (!empty($prod_row['produk_list'])): ?>
+                                            <ul style="margin: 8px 0 0 0; padding-left: 16px; text-align: left; font-size: 0.85rem; color: #555; line-height: 1.45; list-style-type: disc;">
+                                                <?php foreach ($prod_row['produk_list'] as $p_item): ?>
+                                                    <li><?= htmlspecialchars($p_item['nama_produk']) ?> (<?= $p_item['total_qty'] ?> pcs)</li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        <?php endif; ?>
                                     </td>
                                     <td style="text-align: center;">
                                         <span class="admin-badge admin-badge-info"><?= $prod_row['jumlah_pesanan'] ?> Pesanan</span>

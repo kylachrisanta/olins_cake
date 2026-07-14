@@ -336,7 +336,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
 
         @media (max-width: 767px) {
             .failed-progress-bar {
-                left: 32px;
+                left: 22px;
                 top: 22px;
                 width: 4px;
                 height: calc(100% - 44px);
@@ -643,6 +643,10 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                 grid-template-columns: 1fr;
             }
 
+            .products-table-header {
+                display: none !important;
+            }
+
             .product-item-row {
                 flex-direction: column;
                 align-items: flex-start;
@@ -680,12 +684,12 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
             .timeline-steps {
                 flex-direction: column;
                 align-items: flex-start;
-                padding-left: 10px;
+                padding-left: 0px;
             }
 
             .timeline-steps::before {
                 top: 22px;
-                left: 32px;
+                left: 22px;
                 bottom: 22px;
                 width: 4px;
                 height: calc(100% - 44px);
@@ -699,7 +703,7 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                 display: block !important;
                 position: absolute;
                 top: 22px;
-                left: 32px;
+                left: 22px;
                 width: 4px;
                 background-color: var(--olive-harvest);
                 z-index: 2;
@@ -744,6 +748,36 @@ $wa_link = "https://wa.me/6289529236657?text=" . urlencode($wa_message);
                 align-items: flex-start;
                 margin-left: 16px;
                 width: auto;
+            }
+        }
+
+        @media (max-width: 568px) {
+            .detail-section {
+                padding-top: 90px;
+                padding-bottom: 40px;
+            }
+            .detail-header-card, .timeline-card, .info-card, .products-card {
+                padding: 16px;
+            }
+            .detail-header-info h1 {
+                font-size: 1.4rem;
+            }
+            .detail-header-info p {
+                font-size: 0.88rem;
+            }
+            .detail-actions-area {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+            .right-actions {
+                flex-direction: column;
+                gap: 8px;
+                width: 100%;
+            }
+            .detail-actions-area .btn, .right-actions .btn {
+                width: 100%;
+                justify-content: center;
             }
         }
 

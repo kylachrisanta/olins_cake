@@ -1238,6 +1238,9 @@ footer {
 
 /* Responsive Styles */
 @media (max-width: 1024px) {
+    .nav-menu {
+        gap: 16px; /* Reduce gap on tablet screens to prevent menu from wrapping */
+    }
     .hero h1 {
         font-size: 3rem;
     }
@@ -1250,6 +1253,10 @@ footer {
     }
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
     }
 }
 
@@ -1264,9 +1271,29 @@ footer {
         font-size: 2rem;
     }
     
-    /* Nav Toggle */
+    /* Header & Logo Mobile Adjustments */
+    header {
+        padding: 12px 0;
+    }
+    header.scrolled {
+        padding: 8px 0;
+    }
+    .logo {
+        font-size: 1.25rem;
+    }
+    .logo-svg {
+        width: 1.3rem !important;
+        height: 1.3rem !important;
+    }
+
+    /* Nav Toggle (44x44px Touch Target) */
     .menu-toggle {
         display: flex;
+        padding: 12px;
+        margin-right: -12px;
+        margin-top: -8px;
+        margin-bottom: -8px;
+        z-index: 1001;
     }
     .nav-menu {
         position: fixed;
@@ -1283,6 +1310,8 @@ footer {
         gap: 24px;
         transition: right 0.4s ease;
         z-index: 999;
+        overflow-y: auto; /* Scrollable menu for small screens */
+        max-height: 100vh;
     }
     .nav-menu.active {
         right: 0;
@@ -1310,6 +1339,9 @@ footer {
         padding-top: 100px;
         min-height: auto;
         padding-bottom: 60px;
+    }
+    .hero h1 {
+        font-size: 2.5rem;
     }
     .hero-grid {
         grid-template-columns: 1fr;
@@ -1348,8 +1380,16 @@ footer {
         gap: 20px;
     }
     .about-card {
-        flex-direction: row;
-        gap: 20px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+    }
+    .about-card-content h4 {
+        text-align: center;
+    }
+    .about-card-content p {
+        text-align: center;
     }
     
     /* Products */
@@ -1358,6 +1398,12 @@ footer {
         gap: 30px;
         max-width: 400px;
         margin: 0 auto;
+    }
+    
+    /* Cara Pesan Grid */
+    .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
     }
     
     /* Testimoni */
@@ -1388,7 +1434,19 @@ footer {
     
     .footer-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
+        gap: 40px;
+    }
+    .footer-links li {
+        margin-bottom: 16px; /* Spacing to prevent accidental misclicks on touch screens */
+    }
+    .social-links {
+        margin-top: 16px;
+        gap: 16px;
+    }
+    .social-btn {
+        width: 44px; /* Expanded target size (min 44px) */
+        height: 44px;
+        font-size: 1.25rem;
     }
 }
 
@@ -1964,6 +2022,9 @@ footer {
         align-items: flex-start;
         gap: 16px;
     }
+    .catalog-title h1 {
+        font-size: 1.75rem;
+    }
     .search-container {
         max-width: 100%;
     }
@@ -2319,7 +2380,7 @@ footer {
 
 .cart-item-row {
     display: grid;
-    grid-template-columns: auto 80px 1.5fr 1fr 120px 1fr auto;
+    grid-template-columns: auto 80px 1.5fr 1fr 120px 1fr;
     gap: 20px;
     align-items: center;
     padding: 24px;
@@ -2499,40 +2560,27 @@ footer {
 
 @media (max-width: 850px) {
     .cart-item-row {
-        grid-template-columns: auto 60px 1.5fr 1fr;
-        grid-template-rows: auto auto;
-        gap: 12px 16px;
+        grid-template-columns: auto 70px 1fr auto;
+        grid-template-rows: auto auto auto;
+        gap: 10px 16px;
         padding: 16px;
-    }
-    .cart-item-subtotal {
-        grid-column: 3;
-        grid-row: 2;
-        text-align: left;
-    }
-    .cart-qty-col {
-        grid-column: 4;
-        grid-row: 2;
-    }
-    .cart-remove-col {
-        grid-column: 4;
-        grid-row: 1;
-        justify-self: end;
-    }
-}
-
-@media (max-width: 480px) {
-    .cart-item-row {
-        grid-template-columns: auto 50px 1fr;
-        grid-template-rows: auto auto auto auto;
-        gap: 8px 12px;
+        align-items: center;
     }
     .cart-item-checkbox-col {
         grid-column: 1;
-        grid-row: 1 / span 4;
+        grid-row: 1 / span 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .cart-item-img-col {
         grid-column: 2;
-        grid-row: 1 / span 2;
+        grid-row: 1 / span 3;
+        align-self: center;
+    }
+    .cart-item-img-wrapper {
+        width: 70px;
+        height: 70px;
     }
     .cart-item-details-col {
         grid-column: 3;
@@ -2541,21 +2589,87 @@ footer {
     .cart-item-price-col {
         grid-column: 3;
         grid-row: 2;
+        align-self: center;
     }
     .cart-qty-col {
         grid-column: 3;
         grid-row: 3;
-        justify-self: start;
+        align-self: center;
     }
     .cart-item-subtotal-col {
-        grid-column: 3;
-        grid-row: 4;
-        text-align: left;
-    }
-    .cart-remove-col {
-        grid-column: 3;
+        grid-column: 4;
         grid-row: 2;
         justify-self: end;
+    }
+    .cart-summary-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 568px) {
+    .cart-section {
+        padding-top: 90px;
+        padding-bottom: 40px;
+    }
+    .cart-title-area h1 {
+        font-size: 1.75rem;
+    }
+    .cart-title-area p {
+        font-size: 0.88rem;
+    }
+    .cart-item-row {
+        grid-template-columns: auto 60px 1fr auto;
+        grid-template-rows: auto auto auto;
+        gap: 8px 12px;
+        padding: 12px;
+        align-items: center;
+    }
+    .cart-item-img-wrapper {
+        width: 60px;
+        height: 60px;
+    }
+    .cart-item-checkbox-col {
+        grid-column: 1;
+        grid-row: 1 / span 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .cart-item-img-col {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        align-self: center;
+    }
+    .cart-item-details-col {
+        grid-column: 3 / span 2;
+        grid-row: 1;
+    }
+    .cart-item-price-col {
+        grid-column: 3 / span 2;
+        grid-row: 2;
+    }
+    .cart-qty-col {
+        grid-column: 2 / span 2;
+        grid-row: 3;
+        align-self: center;
+    }
+    .cart-item-subtotal-col {
+        grid-column: 4;
+        grid-row: 3;
+        justify-self: end;
+        align-self: center;
+    }
+    
+    .cart-header-actions {
+        padding: 12px 16px;
+    }
+    .select-all-label {
+        font-size: 0.85rem;
+        gap: 8px;
+    }
+    .btn-delete-selected {
+        font-size: 0.82rem;
+        gap: 4px;
     }
 }
 
@@ -2986,6 +3100,71 @@ footer {
     }
 }
 
+@media (max-width: 568px) {
+    .checkout-section {
+        padding-top: 90px;
+        padding-bottom: 40px;
+    }
+    .checkout-title-area h1 {
+        font-size: 1.75rem;
+    }
+    .checkout-title-area p {
+        font-size: 0.88rem;
+    }
+    .checkout-card-header {
+        padding: 16px;
+    }
+    .checkout-card-body {
+        padding: 16px;
+    }
+    #map {
+        height: 250px !important;
+    }
+    .summary-header {
+        padding: 16px;
+    }
+    .summary-checkout-items {
+        padding: 16px;
+    }
+    .summary-item-row {
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+    .summary-item-row .item-pic {
+        width: 44px;
+        height: 44px;
+    }
+    .summary-item-row .item-name-qty .name {
+        font-size: 0.88rem;
+    }
+    .summary-item-row .item-name-qty .spec {
+        font-size: 0.72rem;
+    }
+    .summary-item-row .item-name-qty .qty {
+        font-size: 0.78rem;
+    }
+    .summary-item-row .item-sub {
+        font-size: 0.88rem;
+    }
+    .summary-price-breakdown {
+        padding: 16px;
+    }
+    .checkout-warning-box-inline {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .warning-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .warning-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
 /* ==========================================================================
    My Orders (Pesanan Saya) Page Styles
    ========================================================================== */
@@ -3374,6 +3553,72 @@ footer {
     max-width: 400px;
     margin-left: auto;
     margin-right: auto;
+}
+
+@media (max-width: 568px) {
+    .orders-section {
+        padding-top: 90px;
+        padding-bottom: 40px;
+    }
+    .orders-title-area h1 {
+        font-size: 1.75rem;
+        margin-bottom: 6px;
+    }
+    .orders-title-area p {
+        font-size: 0.88rem;
+    }
+    .order-card-wrapper {
+        border-radius: var(--radius-md);
+    }
+    .order-card-header {
+        padding: 16px;
+        gap: 8px;
+    }
+    .order-code {
+        font-size: 1.15rem;
+    }
+    .order-card-body {
+        padding: 16px;
+    }
+    .order-items-list-area {
+        padding-top: 16px;
+    }
+    .order-item-row-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 16px;
+    }
+    .order-item-row-detail .item-img-circle {
+        align-self: flex-start;
+    }
+    .order-item-row-detail .item-qty-price {
+        align-items: flex-start;
+        font-size: 0.8rem;
+    }
+    .order-item-row-detail .item-row-subtotal {
+        text-align: left;
+        min-width: 0;
+        border-top: 1px solid rgba(68, 45, 28, 0.05);
+        width: 100%;
+        padding-top: 6px;
+        font-size: 0.95rem;
+    }
+    .order-card-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 16px;
+    }
+    .footer-actions {
+        width: 100%;
+        flex-direction: column;
+        gap: 8px !important;
+    }
+    .footer-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* ==========================================================================
@@ -4334,6 +4579,111 @@ footer {
 .status-verifying {
     background-color: #dbeafe;
     color: #1e40af;
+}
+
+@media (max-width: 568px) {
+    .payment-section {
+        padding-top: 90px;
+        padding-bottom: 40px;
+    }
+    .payment-title-area h1 {
+        font-size: 1.75rem;
+    }
+    .payment-title-area p {
+        font-size: 0.88rem;
+    }
+    .payment-card {
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    .payment-card .card-header {
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+    }
+    .timer-countdown {
+        gap: 12px;
+    }
+    .timer-segment {
+        min-width: 50px;
+    }
+    .timer-number {
+        font-size: 1.8rem;
+    }
+    .timer-divider {
+        font-size: 1.5rem;
+        padding-bottom: 10px;
+    }
+    .total-card {
+        padding: 16px;
+    }
+    .total-amount {
+        font-size: 1.8rem;
+    }
+    .bank-account-card {
+        padding: 16px;
+    }
+    .upload-dropzone {
+        padding: 24px 16px;
+    }
+    .upload-text {
+        font-size: 0.9rem;
+    }
+    .img-frame, #img-preview {
+        max-height: 240px;
+    }
+    .image-preview-container {
+        padding: 16px;
+    }
+    .info-list li {
+        font-size: 0.82rem;
+    }
+    .summary-order-card h3 {
+        padding-bottom: 10px;
+        margin-bottom: 12px;
+    }
+    .summary-meta-rows {
+        gap: 8px;
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+    .summary-meta-rows .meta-row {
+        font-size: 0.82rem;
+    }
+    .side-product-list h4 {
+        margin-bottom: 8px;
+        font-size: 0.88rem;
+    }
+    .side-product-row {
+        gap: 10px;
+        margin-bottom: 8px;
+        font-size: 0.82rem;
+    }
+    .side-costs-breakdown {
+        margin-top: 16px;
+        padding-top: 12px;
+    }
+    .side-costs-breakdown .cost-row {
+        font-size: 0.82rem;
+        margin-bottom: 6px;
+    }
+    .grand-total-row .price-val {
+        font-size: 1.15rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .account-number-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .account-number-row .number {
+        font-size: 1.5rem;
+    }
+    .btn-copy-account {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* ==========================================

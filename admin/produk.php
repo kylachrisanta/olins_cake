@@ -515,7 +515,7 @@ if ($tab === 'testimoni') {
                     <form action="produk.php?tab=produk" method="POST" enctype="multipart/form-data">
                         <input type="hidden" name="action_add_produk" value="1">
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="admin-form-grid-2">
                             <div class="admin-form-group">
                                 <label for="nama_produk">Nama Produk *</label>
                                 <input type="text" id="nama_produk" name="nama_produk" class="admin-form-control" placeholder="Contoh: Classic Red Velvet" required autocomplete="off">
@@ -527,7 +527,7 @@ if ($tab === 'testimoni') {
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                        <div class="admin-form-grid-3">
                             <div class="admin-form-group">
                                 <label for="kategori">Kategori *</label>
                                 <select id="kategori" name="kategori" class="admin-form-control" required>
@@ -560,11 +560,11 @@ if ($tab === 'testimoni') {
                             <span style="font-size: 0.75rem; color: var(--admin-text-light);">Disarankan dimensi 4:3 (Kotak/Lanskap) dan format JPG/PNG/WEBP (Maksimal 2 MB).</span>
                         </div>
 
-                        <div style="display: flex; gap: 15px; margin-top: 10px;">
-                            <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">
+                        <div class="admin-form-actions">
+                            <button type="submit" class="admin-btn admin-btn-primary">
                                 <i class="fa-solid fa-floppy-disk"></i> Simpan Produk
                             </button>
-                            <a href="produk.php?tab=produk" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
+                            <a href="produk.php?tab=produk" class="admin-btn admin-btn-secondary">Batal</a>
                         </div>
                     </form>
                 </div>
@@ -581,7 +581,7 @@ if ($tab === 'testimoni') {
                         <input type="hidden" name="id_produk" value="<?= $edit_produk['id_produk'] ?>">
                         <input type="hidden" name="old_gambar" value="<?= htmlspecialchars($edit_produk['gambar']) ?>">
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="admin-form-grid-2">
                             <div class="admin-form-group">
                                 <label for="nama_produk">Nama Produk *</label>
                                 <input type="text" id="nama_produk" name="nama_produk" class="admin-form-control" value="<?= htmlspecialchars($edit_produk['nama_produk']) ?>" required autocomplete="off">
@@ -593,7 +593,7 @@ if ($tab === 'testimoni') {
                             </div>
                         </div>
 
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                        <div class="admin-form-grid-3">
                             <div class="admin-form-group">
                                 <label for="kategori">Kategori *</label>
                                 <select id="kategori" name="kategori" class="admin-form-control" required>
@@ -631,12 +631,12 @@ if ($tab === 'testimoni') {
                             <input type="file" id="gambar" name="gambar" class="admin-form-control" accept="image/*">
                         </div>
 
-                    <div style="display: flex; gap: 15px; margin-top: 10px;">
-                        <button type="submit" class="admin-btn admin-btn-primary" style="flex: 1; justify-content: center;">
-                            <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
-                        </button>
-                        <a href="produk.php?tab=produk" class="admin-btn admin-btn-secondary" style="flex: 1; justify-content: center; text-align: center;">Batal</a>
-                    </div>
+                        <div class="admin-form-actions">
+                            <button type="submit" class="admin-btn admin-btn-primary">
+                                <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan
+                            </button>
+                            <a href="produk.php?tab=produk" class="admin-btn admin-btn-secondary">Batal</a>
+                        </div>
                 </form>
             </div>
 
@@ -711,7 +711,7 @@ if ($tab === 'testimoni') {
         <!-- ======================================================= -->
         <?php elseif ($tab === 'kategori'): ?>
             
-            <div class="admin-row" style="grid-template-columns: 0.7fr 1.3fr;">
+            <div class="admin-row admin-kategori-row">
                 
                 <!-- Kolom Form (Tambah/Edit Kategori) -->
                 <div class="admin-panel-card" style="height: fit-content;">

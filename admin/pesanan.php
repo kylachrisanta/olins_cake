@@ -437,7 +437,7 @@ $list_pesanan = $conn->query($query_all);
                         <div class="panel-card-header">
                             <h3><i class="fa-solid fa-truck"></i> Informasi Pengantaran / Pengambilan</h3>
                         </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="admin-form-grid-2">
                             <div class="detail-row-item">
                                 <label>Penerima</label>
                                 <span><?= htmlspecialchars($view_order['nama_penerima']) ?></span>
@@ -638,14 +638,14 @@ $list_pesanan = $conn->query($query_all);
                                         </a>
                                     </div>
                                     <?php if ($view_order['status_pesanan'] === 'Menunggu Verifikasi'): ?>
-                                        <div style="display: flex; gap: 10px; margin-top: 12px;">
-                                            <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=verify" class="admin-btn admin-btn-success admin-btn-sm" style="flex: 1; justify-content: center; text-align: center;" onclick="return confirm('Konfirmasi bahwa dana transfer telah masuk?')">
-                                                <i class="fa-solid fa-check"></i> Setujui
-                                            </a>
-                                            <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=reject" class="admin-btn admin-btn-danger admin-btn-sm" style="flex: 1; justify-content: center; text-align: center;" onclick="return confirm('Tolak bukti pembayaran ini? Pelanggan harus mengunggah ulang.')">
-                                                <i class="fa-solid fa-xmark"></i> Tolak
-                                            </a>
-                                        </div>
+                                        <div class="admin-form-actions">
+                                             <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=verify" class="admin-btn admin-btn-success admin-btn-sm" onclick="return confirm('Konfirmasi bahwa dana transfer telah masuk?')">
+                                                 <i class="fa-solid fa-check"></i> Setujui
+                                             </a>
+                                             <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=reject" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Tolak bukti pembayaran ini? Pelanggan harus mengunggah ulang.')">
+                                                 <i class="fa-solid fa-xmark"></i> Tolak
+                                             </a>
+                                         </div>
                                     <?php endif; ?>
                                 </div>
                             <?php else: ?>

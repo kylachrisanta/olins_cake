@@ -294,15 +294,24 @@ require_once 'config/database.php';
             .timeline-svg {
                 display: none;
             }
+            .timeline-line-mobile {
+                left: 24px;
+            }
+            .timeline-row {
+                justify-content: flex-start;
+                padding-left: 56px;
+                margin-bottom: 64px;
+            }
+            .timeline-card {
+                width: 100%;
+                padding: 24px;
+            }
             .step-badge {
                 width: 48px;
                 height: 48px;
                 top: -24px;
-                left: -24px;
+                left: -56px;
                 font-size: 1.25rem;
-            }
-            .timeline-card {
-                padding: 24px;
             }
         }
     </style>
