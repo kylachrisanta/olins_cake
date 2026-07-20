@@ -5,9 +5,9 @@ session_start();
 // Import Koneksi Database
 require_once 'config/database.php';
 
-// Jika sudah masuk, alihkan ke beranda
+// Jika sudah masuk, alihkan ke halaman produk
 if (isset($_SESSION['pelanggan_id'])) {
-    header("Location: index.php");
+    header("Location: produk.php");
     exit;
 }
 
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
 
-                header("Location: index.php");
+                header("Location: produk.php");
                 exit;
             } else {
                 $pesan_error = "Kata sandi yang Anda masukkan salah.";
