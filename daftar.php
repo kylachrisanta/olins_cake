@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div class="contact-form-group">
                         <label for="nomor_wa">Nomor WhatsApp</label>
-                        <input type="text" id="nomor_wa" name="nomor_wa" class="contact-form-control" placeholder="Contoh: 081234567890" value="<?= isset($_POST['nomor_wa']) ? htmlspecialchars($_POST['nomor_wa']) : '' ?>" required>
+                        <input type="text" id="nomor_wa" name="nomor_wa" class="contact-form-control" placeholder="Contoh: 6281234567890" value="<?= isset($_POST['nomor_wa']) ? htmlspecialchars($_POST['nomor_wa']) : '' ?>" required>
                     </div>
                     
                     <div class="contact-form-group">

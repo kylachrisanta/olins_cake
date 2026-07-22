@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="fa-solid fa-lock"></i>
                 </div>
                 <h1>Olin's <span>Cake</span> Admin</h1>
-                <p>Silakan masuk menggunakan kredensial Administrator Anda</p>
+                <p>Silakan masuk menggunakan akun Admin</p>
             </div>
 
             <?php if (!empty($error_login)): ?>
@@ -140,17 +140,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <form action="login.php" method="POST">
                 <div class="admin-form-group">
-                    <label for="username">Username</label>
-                    <input type="text" id="username" name="username" class="admin-form-control" placeholder="Masukkan username admin" required autocomplete="off">
+                    <label for="username">Nama Pengguna</label>
+                    <input type="text" id="username" name="username" class="admin-form-control" placeholder="Masukkan nama pengguna" required autocomplete="off">
                 </div>
                 
                 <div class="admin-form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" class="admin-form-control" placeholder="Masukkan password" required>
+                    <label for="password">Kata Sandi</label>
+                    <input type="password" id="password" name="password" class="admin-form-control" placeholder="Masukkan kata sandi" required>
                 </div>
 
                 <button type="submit" class="admin-btn admin-btn-primary" style="width: 100%; margin-top: 10px; justify-content: center;">
-                    Masuk Panel Admin <i class="fa-solid fa-arrow-right"></i>
+                    Masuk <i class="fa-solid fa-arrow-right"></i>
                 </button>
             </form>
 

@@ -365,8 +365,8 @@ require_once 'config/database.php';
     <!-- Cara Pesan Section -->
     <section class="cara-pesan-section" id="cara-pesan">
         <div class="timeline-header">
-            <h2>Cara Memesan</h2>
-            <p>Ikuti perjalanan seru kue impianmu dari oven kami ke meja makanmu. Cukup beberapa langkah mudah!</p>
+            <h2>Cara Pesan</h2>
+            <p>Ikuti langkah-langkah pemesanan Olin's Cake dengan mudah, mulai dari memilih produk hingga pesanan siap diterima.</p>
         </div>
 
         <div class="timeline-container">

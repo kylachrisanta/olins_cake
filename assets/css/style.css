@@ -1495,9 +1495,10 @@ footer {
 .auth-side-img {
     flex: 1.1;
     background-color: var(--warm-bg);
-    background-image: linear-gradient(rgba(68, 45, 28, 0.6), rgba(116, 48, 20, 0.4)), url('../images/auth_illustration.png');
+    background-image: linear-gradient(rgba(68, 45, 28, 0.6), rgba(116, 48, 20, 0.4)), url('../images/BG Daftar dan Masuk.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
