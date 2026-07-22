@@ -464,9 +464,7 @@ header.scrolled {
     aspect-ratio: 1;
     object-fit: cover;
     border-radius: var(--radius-lg);
-    border: 3px solid var(--olive-harvest);
-    padding: 6px;
-    background-color: var(--white);
+    border: 2px solid var(--olive-harvest);
     box-shadow: var(--shadow-lg);
     z-index: 2;
     transition: transform 0.5s ease;
