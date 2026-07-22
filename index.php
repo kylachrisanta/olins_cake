@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // Start Session
 session_start();
 
@@ -87,7 +87,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'logout') {
             </div>
             <div class="hero-img-container">
                 <div class="hero-img-backdrop"></div>
-                <img src="assets/images/hero_cake.png" alt="Olin's Cake Premium Cake" class="hero-img">
+                <img src="assets/images/logo.jpg" alt="Olin's Cake" class="hero-img">
             </div>
         </div>
     </section>
