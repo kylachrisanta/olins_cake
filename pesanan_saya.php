@@ -376,7 +376,7 @@ $stmt->close();
                 <i class="fa-solid fa-triangle-exclamation" style="color: #c93b2b; margin-right: 6px;"></i> Batalkan Pesanan
             </h4>
             <div style="width: 100%; text-align: left; margin: 8px 0;">
-                <p style="font-weight: 700; margin-bottom: 8px; color: var(--text-main);">Apakah Anda yakin ingin membatalkan pesanan <span id="cancel-order-code" style="color: var(--spiced-wine);"></span> ini?</p>
+                <p style="font-weight: 700; margin-bottom: 8px; color: var(--text-main);">Apakah Anda yakin membatalkan pesanan <span id="cancel-order-code" style="color: var(--spiced-wine);"></span> ini?</p>
                 <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; margin: 0;">
                     <i class="fa-solid fa-circle-info" style="color: #c93b2b; margin-right: 4px;"></i> Pesanan yang dibatalkan tidak dapat dilanjutkan kembali.
                 </p>

@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </a>
             
             <div class="auth-quote">
-                <p>"Kue lembut premium buatan rumahan dengan bahan kualitas terbaik untuk melengkapi kebahagiaan setiap momen spesial Anda."</p>
+                <p>"Selamat datang di Olin's Cake. Nikmati berbagai pilihan kue rumahan yang dibuat dengan sistem pre-order menggunakan bahan berkualitas."</p>
                 <span>Freshly Baked with Love</span>
             </div>
             

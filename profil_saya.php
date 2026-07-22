@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // Mulai Session
 session_start();
 
@@ -207,7 +207,7 @@ $stmt->close();
                         <p class="username">@<?= htmlspecialchars($user['nama_pengguna']) ?></p>
                         <hr class="card-divider">
                         <div class="info-row">
-                            <span><i class="fa-solid fa-whatsapp text-success"></i> WhatsApp:</span>
+                            <span><i class="fa-brands fa-whatsapp" style="color: var(--spiced-wine); margin-right: 6px;"></i> WhatsApp:</span>
                             <strong><?= htmlspecialchars($user['nomor_wa']) ?></strong>
                         </div>
                     </div>
