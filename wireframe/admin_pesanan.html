@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -50,13 +50,83 @@
         }
         .item-list-row:last-child { border-bottom: none; }
         .total-summary-box {
-            background-color: rgba(0, 0, 0, 0.02);
+            background-color: #ffffff;
             border: 1px solid var(--admin-border, #dee2e6);
             border-radius: 6px;
             padding: 16px;
             margin-top: 16px;
             display: flex;
             flex-direction: column;
+        }
+        /* ======= Tab Navigasi Kelola Pesanan Wireframe ======= */
+        .order-tab-nav {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            gap: 4px;
+            padding: 16px 20px 0;
+            border-bottom: 2px solid var(--admin-border, #dee2e6);
+            margin-bottom: 0;
+        }
+        .order-tab-nav::-webkit-scrollbar { display: none; }
+        .order-tab {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 6px 6px 0 0;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #666;
+            text-decoration: none;
+            border: 1px solid transparent;
+            border-bottom: none;
+            transition: background 0.18s, color 0.18s;
+            position: relative;
+            bottom: -2px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .order-tab:hover {
+            color: #8B5C2A;
+            background-color: rgba(210, 179, 140, 0.07);
+        }
+        .order-tab.active {
+            color: #8B5C2A;
+            background-color: #ffffff;
+            border-color: var(--admin-border, #dee2e6);
+            border-bottom-color: #ffffff;
+        }
+        .order-tab-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 20px;
+            height: 20px;
+            padding: 0 6px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .badge-danger  { background-color: rgba(239, 68, 68, 0.15);  color: #ef4444; }
+        .badge-info    { background-color: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+        .badge-success { background-color: rgba(46, 196, 182, 0.15); color: #2ec4b6; }
+        .badge-warning { background-color: rgba(217, 119, 6, 0.15);  color: #d97706; }
+        .badge-muted   { background-color: rgba(0, 0, 0, 0.07);      color: #666; }
+
+        @media (max-width: 568px) {
+            .order-tab-nav { padding: 10px 12px 0; gap: 4px; }
+            .order-tab { padding: 6px 10px; font-size: 0.78rem; gap: 5px; }
+            .order-tab-badge { min-width: 18px; height: 18px; font-size: 0.68rem; padding: 0 5px; }
+        }
+        @media (max-width: 360px) {
+            .order-tab-nav { padding: 8px 8px 0; gap: 3px; }
+            .order-tab { padding: 6px 8px; font-size: 0.75rem; }
         }
         .admin-proof-modal {
             display: none;
@@ -186,6 +256,8 @@
             <div class="panel-card-header">
                 <h3><i class="fa-solid fa-receipt"></i> Daftar Pesanan Pre-Order</h3>
             </div>
+            <!-- Tab Navigasi Filter Status Pesanan -->
+            <div class="order-tab-nav" id="orderTabNav"></div>
             <div class="admin-table-container">
                 <table class="admin-table" style="width: 100%;">
                     <thead>
@@ -433,19 +505,90 @@
                 renderListView();
             }
         });
+        let currentTab = 'tindakan';
+
+        function filterTab(tabKey) {
+            currentTab = tabKey;
+            renderListView();
+        }
+
         function renderListView() {
             document.getElementById('page-title').innerText = "Kelola Pesanan";
             document.getElementById('header-action-container').innerHTML = '';
             document.getElementById('section-list-pesanan').style.display = 'block';
             document.getElementById('section-detail-pesanan').style.display = 'none';
-            const tbody = document.getElementById('pesanan-table-body');
+
             const orders = getOrders();
-            if (orders.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#777;padding:40px 0;">Belum ada pesanan masuk.</td></tr>`;
+
+            // Hitung jumlah pesanan per tab
+            const countTindakan    = orders.filter(o => ['Menunggu Pembayaran', 'Menunggu Verifikasi'].includes(o.status_pesanan)).length;
+            const countDiproses    = orders.filter(o => ['Diproses', 'Siap Dikirim', 'Siap Diambil'].includes(o.status_pesanan)).length;
+            const countSelesai     = orders.filter(o => o.status_pesanan === 'Selesai').length;
+            const countDibatalkan  = orders.filter(o => o.status_pesanan === 'Dibatalkan').length;
+            const countKedaluwarsa = orders.filter(o => o.status_pesanan === 'Kedaluwarsa').length;
+            const countSemua       = orders.length;
+
+            // Render Tab Navigation
+            const tabNav = document.getElementById('orderTabNav');
+            if (tabNav) {
+                tabNav.innerHTML = `
+                    <a href="javascript:void(0)" onclick="filterTab('tindakan')" class="order-tab ${currentTab === 'tindakan' ? 'active' : ''}">
+                        <i class="fa-solid fa-bell"></i> Perlu Tindakan
+                        ${countTindakan > 0 ? `<span class="order-tab-badge badge-danger">${countTindakan}</span>` : ''}
+                    </a>
+                    <a href="javascript:void(0)" onclick="filterTab('diproses')" class="order-tab ${currentTab === 'diproses' ? 'active' : ''}">
+                        <i class="fa-solid fa-gears"></i> Diproses
+                        ${countDiproses > 0 ? `<span class="order-tab-badge badge-info">${countDiproses}</span>` : ''}
+                    </a>
+                    <a href="javascript:void(0)" onclick="filterTab('selesai')" class="order-tab ${currentTab === 'selesai' ? 'active' : ''}">
+                        <i class="fa-solid fa-circle-check"></i> Selesai
+                        ${countSelesai > 0 ? `<span class="order-tab-badge badge-success">${countSelesai}</span>` : ''}
+                    </a>
+                    <a href="javascript:void(0)" onclick="filterTab('dibatalkan')" class="order-tab ${currentTab === 'dibatalkan' ? 'active' : ''}">
+                        <i class="fa-solid fa-ban"></i> Dibatalkan
+                        ${countDibatalkan > 0 ? `<span class="order-tab-badge badge-muted">${countDibatalkan}</span>` : ''}
+                    </a>
+                    <a href="javascript:void(0)" onclick="filterTab('kedaluwarsa')" class="order-tab ${currentTab === 'kedaluwarsa' ? 'active' : ''}">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Kedaluwarsa
+                        ${countKedaluwarsa > 0 ? `<span class="order-tab-badge badge-warning">${countKedaluwarsa}</span>` : ''}
+                    </a>
+                    <a href="javascript:void(0)" onclick="filterTab('semua')" class="order-tab ${currentTab === 'semua' ? 'active' : ''}">
+                        <i class="fa-solid fa-list"></i> Semua
+                        <span class="order-tab-badge badge-muted">${countSemua}</span>
+                    </a>
+                `;
+            }
+
+            // Filter data pesanan sesuai tab aktif
+            let filteredOrders = orders;
+            if (currentTab === 'tindakan') {
+                filteredOrders = orders.filter(o => ['Menunggu Pembayaran', 'Menunggu Verifikasi'].includes(o.status_pesanan));
+            } else if (currentTab === 'diproses') {
+                filteredOrders = orders.filter(o => ['Diproses', 'Siap Dikirim', 'Siap Diambil'].includes(o.status_pesanan));
+            } else if (currentTab === 'selesai') {
+                filteredOrders = orders.filter(o => o.status_pesanan === 'Selesai');
+            } else if (currentTab === 'dibatalkan') {
+                filteredOrders = orders.filter(o => o.status_pesanan === 'Dibatalkan');
+            } else if (currentTab === 'kedaluwarsa') {
+                filteredOrders = orders.filter(o => o.status_pesanan === 'Kedaluwarsa');
+            }
+
+            const tbody = document.getElementById('pesanan-table-body');
+            if (filteredOrders.length === 0) {
+                const emptyMessages = {
+                    'tindakan': 'Tidak ada pesanan yang memerlukan tindakan.',
+                    'diproses': 'Tidak ada pesanan yang sedang diproses.',
+                    'selesai': 'Belum ada pesanan yang selesai.',
+                    'dibatalkan': 'Tidak ada pesanan yang dibatalkan.',
+                    'kedaluwarsa': 'Tidak ada pesanan yang kedaluwarsa.',
+                    'semua': 'Belum ada pesanan masuk.'
+                };
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:#777;padding:40px 0;">${emptyMessages[currentTab] || 'Belum ada pesanan masuk.'}</td></tr>`;
                 return;
             }
+
             tbody.innerHTML = '';
-            orders.forEach(o => {
+            filteredOrders.forEach(o => {
                 const kwitansiBtn = o.status_pembayaran === 'Sudah Dibayar'
                     ? `<a href="#" class="admin-btn admin-btn-primary admin-btn-sm" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;margin-right:4px;" title="Unduh Kwitansi"><i class="fa-solid fa-file-invoice"></i> Kwitansi</a>`
                     : '';
@@ -657,7 +800,7 @@
                 if (o.status_pesanan === 'Menunggu Verifikasi') {
                     payHTML += `
                         <div style="display:flex;gap:10px;margin-top:12px;">
-                            <button class="admin-btn admin-btn-success admin-btn-sm" style="flex:1;justify-content:center;" onclick="handleVerify(${o.id},'approve')"><i class="fa-solid fa-check"></i> Setujui</button>
+                            <button class="admin-btn admin-btn-success admin-btn-sm" style="flex:1;justify-content:center;color:white;" onclick="handleVerify(${o.id},'approve')"><i class="fa-solid fa-check"></i> Setujui</button>
                             <button class="admin-btn admin-btn-danger admin-btn-sm" style="flex:1;justify-content:center;" onclick="handleVerify(${o.id},'reject')"><i class="fa-solid fa-xmark"></i> Tolak</button>
                         </div>
                     `;
