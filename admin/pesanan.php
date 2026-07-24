@@ -377,7 +377,7 @@ $kode_order_header = $view_order ? 'OLN-' . (10000 + $view_order['id_pesanan']) 
             border-bottom: none;
         }
         .total-summary-box {
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: var(--admin-card-bg);
             border: 1px solid var(--admin-border);
             border-radius: var(--radius-sm);
             padding: 16px;
