@@ -683,7 +683,7 @@ $kode_order_header = $view_order ? 'OLN-' . (10000 + $view_order['id_pesanan']) 
                                     </div>
                                     <?php if ($view_order['status_pesanan'] === 'Menunggu Verifikasi'): ?>
                                         <div class="admin-form-actions">
-                                             <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=verify" class="admin-btn admin-btn-success admin-btn-sm" onclick="return confirm('Konfirmasi bahwa dana transfer telah masuk?')">
+                                             <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=verify" class="admin-btn admin-btn-success admin-btn-sm" style="color: white;" onclick="return confirm('Konfirmasi bahwa dana transfer telah masuk?')">
                                                  <i class="fa-solid fa-check"></i> Setujui
                                              </a>
                                              <a href="pesanan.php?action=view&id=<?= $view_order['id_pesanan'] ?>&action_payment=reject" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Tolak bukti pembayaran ini? Pelanggan harus mengunggah ulang.')">
