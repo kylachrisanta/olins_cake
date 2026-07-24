@@ -805,11 +805,19 @@ select.admin-form-control option {
 /* ======= Tab Navigasi Kelola Pesanan ======= */
 .order-tab-nav {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
     gap: 4px;
     padding: 16px 20px 0;
     border-bottom: 2px solid var(--admin-border);
     margin-bottom: 0;
+}
+
+.order-tab-nav::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 .order-tab {
@@ -828,6 +836,7 @@ select.admin-form-control option {
     position: relative;
     bottom: -2px;
     white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .order-tab:hover {
@@ -861,14 +870,32 @@ select.admin-form-control option {
 .badge-warning { background-color: rgba(217, 119, 6, 0.15);  color: #d97706; }
 .badge-muted   { background-color: rgba(0, 0, 0, 0.07);      color: var(--admin-text-muted); }
 
-/* Responsive tab untuk layar kecil */
+/* Responsive tab untuk layar kecil (Mobile & iPhone 5) */
 @media (max-width: 568px) {
     .order-tab-nav {
         padding: 10px 12px 0;
-        gap: 3px;
+        gap: 4px;
     }
     .order-tab {
         padding: 6px 10px;
-        font-size: 0.76rem;
+        font-size: 0.78rem;
+        gap: 5px;
+    }
+    .order-tab-badge {
+        min-width: 18px;
+        height: 18px;
+        font-size: 0.68rem;
+        padding: 0 5px;
+    }
+}
+
+@media (max-width: 360px) {
+    .order-tab-nav {
+        padding: 8px 8px 0;
+        gap: 3px;
+    }
+    .order-tab {
+        padding: 6px 8px;
+        font-size: 0.75rem;
     }
 }
