@@ -270,12 +270,53 @@ if (isset($_GET['action']) && $_GET['action'] === 'view') {
     }
 }
 
-// 3. DAFTAR SEMUA PESANAN
-$query_all = "SELECT p.*, pl.nama_lengkap as nama_pelanggan 
-              FROM pesanan p 
-              JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
-              ORDER BY p.dibuat_pada DESC";
-$list_pesanan = $conn->query($query_all);
+// Tab filter aktif — default ke 'tindakan'
+$tab_aktif = (isset($_GET['tab']) && !isset($_GET['action'])) ? trim($_GET['tab']) : 'tindakan';
+
+// Mapping tab ke daftar status_pesanan
+$filter_map = [
+    'tindakan'    => ["Menunggu Pembayaran", "Menunggu Verifikasi"],
+    'diproses'    => ["Diproses", "Siap Dikirim", "Siap Diambil"],
+    'selesai'     => ["Selesai"],
+    'dibatalkan'  => ["Dibatalkan"],
+    'kedaluwarsa' => ["Kedaluwarsa"],
+    'semua'       => [],
+];
+if (!array_key_exists($tab_aktif, $filter_map)) {
+    $tab_aktif = 'tindakan';
+}
+
+// 3. DAFTAR PESANAN — difilter berdasarkan tab
+$statuses = $filter_map[$tab_aktif];
+if (!empty($statuses)) {
+    $placeholders = implode(',', array_fill(0, count($statuses), '?'));
+    $stmt_list = $conn->prepare(
+        "SELECT p.*, pl.nama_lengkap as nama_pelanggan
+         FROM pesanan p
+         JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan
+         WHERE p.status_pesanan IN ($placeholders)
+         ORDER BY p.dibuat_pada DESC"
+    );
+    $types = str_repeat('s', count($statuses));
+    $stmt_list->bind_param($types, ...$statuses);
+    $stmt_list->execute();
+    $list_pesanan = $stmt_list->get_result();
+} else {
+    $list_pesanan = $conn->query(
+        "SELECT p.*, pl.nama_lengkap as nama_pelanggan
+         FROM pesanan p
+         JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan
+         ORDER BY p.dibuat_pada DESC"
+    );
+}
+
+// Hitung jumlah pesanan per tab untuk badge angka
+$count_tindakan    = $conn->query("SELECT COUNT(*) FROM pesanan WHERE status_pesanan IN ('Menunggu Pembayaran','Menunggu Verifikasi')")->fetch_row()[0];
+$count_diproses    = $conn->query("SELECT COUNT(*) FROM pesanan WHERE status_pesanan IN ('Diproses','Siap Dikirim','Siap Diambil')")->fetch_row()[0];
+$count_selesai     = $conn->query("SELECT COUNT(*) FROM pesanan WHERE status_pesanan = 'Selesai'")->fetch_row()[0];
+$count_dibatalkan  = $conn->query("SELECT COUNT(*) FROM pesanan WHERE status_pesanan = 'Dibatalkan'")->fetch_row()[0];
+$count_kedaluwarsa = $conn->query("SELECT COUNT(*) FROM pesanan WHERE status_pesanan = 'Kedaluwarsa'")->fetch_row()[0];
+$count_semua       = $conn->query("SELECT COUNT(*) FROM pesanan")->fetch_row()[0];
 
 // Siapkan kode pesanan untuk judul halaman (digunakan di <title> dan <h1>)
 $kode_order_header = $view_order ? 'OLN-' . (10000 + $view_order['id_pesanan']) : '';
@@ -670,6 +711,44 @@ $kode_order_header = $view_order ? 'OLN-' . (10000 + $view_order['id_pesanan']) 
                     <h3><i class="fa-solid fa-receipt"></i> Daftar Pesanan Pre-Order</h3>
                 </div>
 
+                <!-- Tab Navigasi Filter Status Pesanan -->
+                <div class="order-tab-nav">
+                    <a href="pesanan.php?tab=tindakan" class="order-tab <?= $tab_aktif === 'tindakan'    ? 'active' : '' ?>">
+                        <i class="fa-solid fa-bell"></i> Perlu Tindakan
+                        <?php if ($count_tindakan > 0): ?>
+                            <span class="order-tab-badge badge-danger"><?= $count_tindakan ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <a href="pesanan.php?tab=diproses" class="order-tab <?= $tab_aktif === 'diproses'    ? 'active' : '' ?>">
+                        <i class="fa-solid fa-gears"></i> Diproses
+                        <?php if ($count_diproses > 0): ?>
+                            <span class="order-tab-badge badge-info"><?= $count_diproses ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <a href="pesanan.php?tab=selesai" class="order-tab <?= $tab_aktif === 'selesai'     ? 'active' : '' ?>">
+                        <i class="fa-solid fa-circle-check"></i> Selesai
+                        <?php if ($count_selesai > 0): ?>
+                            <span class="order-tab-badge badge-success"><?= $count_selesai ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <a href="pesanan.php?tab=dibatalkan" class="order-tab <?= $tab_aktif === 'dibatalkan'  ? 'active' : '' ?>">
+                        <i class="fa-solid fa-ban"></i> Dibatalkan
+                        <?php if ($count_dibatalkan > 0): ?>
+                            <span class="order-tab-badge badge-muted"><?= $count_dibatalkan ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <a href="pesanan.php?tab=kedaluwarsa" class="order-tab <?= $tab_aktif === 'kedaluwarsa' ? 'active' : '' ?>">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Kedaluwarsa
+                        <?php if ($count_kedaluwarsa > 0): ?>
+                            <span class="order-tab-badge badge-warning"><?= $count_kedaluwarsa ?></span>
+                        <?php endif; ?>
+                    </a>
+                    <a href="pesanan.php?tab=semua" class="order-tab <?= $tab_aktif === 'semua'        ? 'active' : '' ?>">
+                        <i class="fa-solid fa-list"></i> Semua
+                        <span class="order-tab-badge badge-muted"><?= $count_semua ?></span>
+                    </a>
+                </div>
+
                 <div class="admin-table-container">
                     <table class="admin-table">
                         <thead>
@@ -724,7 +803,19 @@ $kode_order_header = $view_order ? 'OLN-' . (10000 + $view_order['id_pesanan']) 
                                 <?php endwhile; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="8" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">Belum ada pesanan masuk.</td>
+                                    <td colspan="8" style="text-align: center; color: var(--admin-text-light); padding: 40px 0;">
+                                        <?php
+                                        $pesan_kosong = [
+                                            'tindakan'    => 'Tidak ada pesanan yang memerlukan tindakan.',
+                                            'diproses'    => 'Tidak ada pesanan yang sedang diproses.',
+                                            'selesai'     => 'Belum ada pesanan yang selesai.',
+                                            'dibatalkan'  => 'Tidak ada pesanan yang dibatalkan.',
+                                            'kedaluwarsa' => 'Tidak ada pesanan yang kedaluwarsa.',
+                                            'semua'       => 'Belum ada pesanan masuk.',
+                                        ];
+                                        echo $pesan_kosong[$tab_aktif] ?? 'Belum ada pesanan masuk.';
+                                        ?>
+                                    </td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
