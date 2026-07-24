@@ -276,13 +276,16 @@ $query_all = "SELECT p.*, pl.nama_lengkap as nama_pelanggan
               JOIN pelanggan pl ON p.id_pelanggan = pl.id_pelanggan 
               ORDER BY p.dibuat_pada DESC";
 $list_pesanan = $conn->query($query_all);
+
+// Siapkan kode pesanan untuk judul halaman (digunakan di <title> dan <h1>)
+$kode_order_header = $view_order ? 'OLN-' . (10000 + $view_order['id_pesanan']) : '';
 ?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $view_order ? 'Detail Pesanan' : 'Kelola Pesanan' ?> - Olin's Cake</title>
+    <title><?= $view_order ? 'Detail Pesanan ' . $kode_order_header : 'Kelola Pesanan' ?> - Olin's Cake</title>
     <!-- FontAwesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Admin CSS -->
@@ -391,7 +394,7 @@ $list_pesanan = $conn->query($query_all);
         <!-- Header -->
         <div class="admin-header">
             <div class="admin-header-title">
-                <h1><?= $view_order ? 'Detail Pesanan' : 'Kelola Pesanan' ?></h1>
+                <h1><?= $view_order ? 'Detail Pesanan ' . $kode_order_header : 'Kelola Pesanan' ?></h1>
                 <p>Pantau detail transaksi masuk dan perbarui status pesanan serta pengiriman.</p>
             </div>
             <div class="admin-header-actions">
